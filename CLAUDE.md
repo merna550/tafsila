@@ -44,5 +44,5 @@ _Updated at the end of every session._
 
 - Milestone: M0 — repository setup (in progress)
 - Last done: monorepo foundation: Next.js RTL web, Hono API (/api/health), engine (geometry + sleeve-cap solver), schemas, config, ui, utils, test-fixtures; lint/format/duplication/architecture checks green; 18 tests passing; standalone build verified
-- Next: run scripts/bootstrap.sh on the Mac; create GitHub repo + board + labels; Supabase init; first issues from SRS M1
+- Next: run scripts/bootstrap.sh on the Mac; create project board; GitHub labels synced from .github/labels.yml (#1); Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval

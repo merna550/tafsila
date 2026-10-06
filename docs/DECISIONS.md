@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-007 · 2026-10-07 · Do not pin Alpine apk package versions
+
+**Decision:** `apk add` in Dockerfiles stays unpinned (hadolint DL3018 ignored on its own line); reproducibility comes from the pinned base image tag.
+**Reason:** Alpine removes old package versions from its mirrors, so pinned versions break future builds.
+**Alternatives:** Pin apk versions (builds break when mirrors drop them); Debian-slim base (bigger image).
+
 ## ADR-006 · 2026-10-07 · Architecture style per part
 
 **Decision:** Modular monolith. Frontend: feature-sliced. API: hexagonal (ports & adapters) with a composition root. Engine: functional core with a plugin pipeline of feature modules. See docs/ARCHITECTURE.md.
