@@ -1,0 +1,118 @@
+# Tafsila GitHub labels — single source of truth.
+# Apply with: scripts/setup-labels.sh   (idempotent: creates or updates)
+# Rule: every open issue has exactly ONE status:*, ONE type:*, ONE priority:*, ONE size:*,
+#       ONE plan:* and ONE build:* label, plus one or more area:* labels.
+
+# ---------- Status (lifecycle; automation keeps these in sync) ----------
+- {
+    name: "status:triage",
+    color: "ededed",
+    description: "New. Needs labels, size and model recommendation (/triage)",
+  }
+- { name: "status:needs-plan", color: "c5def5", description: "Triaged. Needs an implementation plan (/plan)" }
+- {
+    name: "status:plan-review",
+    color: "fbca04",
+    description: "Plan posted. Waiting for Merna to approve the plan",
+  }
+- {
+    name: "status:ready",
+    color: "0e8a16",
+    description: "Plan approved (or no plan needed). Ready to build (/build)",
+  }
+- { name: "status:in-progress", color: "1d76db", description: "Being implemented on a branch" }
+- {
+    name: "status:in-review",
+    color: "5319e7",
+    description: "PR open, CI green, preview link posted. Merna reviews",
+  }
+- { name: "status:changes-requested", color: "d93f0b", description: "Review feedback to address" }
+- { name: "status:blocked", color: "b60205", description: "Cannot continue. Reason in the last comment" }
+- { name: "status:on-staging", color: "bfd4f2", description: "Merged to main and deployed to staging" }
+- { name: "status:released", color: "0b3d0b", description: "Deployed to production" }
+
+# ---------- Model recommendation (token budget) ----------
+- {
+    name: "plan:opus",
+    color: "6f42c1",
+    description: "Plan with Opus: ambiguous, cross-cutting, architecture, new pattern geometry",
+  }
+- {
+    name: "plan:sonnet",
+    color: "a371f7",
+    description: "Plan with Sonnet: clear scope, follows an existing pattern",
+  }
+- { name: "plan:none", color: "e4d9f7", description: "No separate plan needed: the issue itself is the plan" }
+- {
+    name: "build:opus",
+    color: "0052cc",
+    description: "Build with Opus: hard geometry/maths, tricky debugging, risky migration",
+  }
+- {
+    name: "build:sonnet",
+    color: "4c9aff",
+    description: "Build with Sonnet: standard implementation from an approved plan (default)",
+  }
+- {
+    name: "build:haiku",
+    color: "b3d4ff",
+    description: "Build with Haiku: mechanical change, docs, copy, config, simple tests",
+  }
+
+# ---------- Size (expected effort; drives token budget) ----------
+- { name: "size:XS", color: "f9f9f9", description: "< 30 min, 1 file" }
+- { name: "size:S", color: "f1f1f1", description: "< 2 h, few files" }
+- { name: "size:M", color: "e1e1e1", description: "half a day" }
+- { name: "size:L", color: "c9c9c9", description: "1–2 days: consider splitting" }
+- {
+    name: "size:XL",
+    color: "a8a8a8",
+    description: "Too big: must be split into smaller issues before building",
+  }
+
+# ---------- Type ----------
+- { name: "type:feature", color: "a2eeef", description: "New user-facing capability" }
+- { name: "type:bug", color: "d73a4a", description: "Something is wrong" }
+- { name: "type:chore", color: "fef2c0", description: "Maintenance, refactor, deps, tooling" }
+- { name: "type:docs", color: "0075ca", description: "Documentation only" }
+- { name: "type:test", color: "c2e0c6", description: "Tests only" }
+- {
+    name: "type:spike",
+    color: "f9d0c4",
+    description: "Research / prototype; output is a decision, not production code",
+  }
+
+# ---------- Priority ----------
+- { name: "priority:P0", color: "b60205", description: "Urgent: production broken or blocking everything" }
+- { name: "priority:P1", color: "d93f0b", description: "Current milestone" }
+- { name: "priority:P2", color: "fbca04", description: "Next milestone" }
+- { name: "priority:P3", color: "c2e0c6", description: "Nice to have" }
+
+# ---------- Area ----------
+- { name: "area:engine", color: "5319e7", description: "Pattern engine, blocks, validation" }
+- { name: "area:ui", color: "1d76db", description: "Web UI, RTL, viewer, projector, direct-cut" }
+- { name: "area:api", color: "0e8a16", description: "Server routes, services, jobs" }
+- { name: "area:db", color: "006b75", description: "Schema, migrations, RLS" }
+- { name: "area:ai", color: "8250df", description: "Prompts, DesignSpec analysis, chat edits, evals" }
+- { name: "area:payments", color: "bf8700", description: "Paymob, credits, plans" }
+- { name: "area:3d", color: "0969da", description: "3D preview / simulation" }
+- { name: "area:infra", color: "57606a", description: "CI/CD, environments, monitoring" }
+- { name: "area:docs", color: "0075ca", description: "SRS, decisions, CLAUDE.md" }
+
+# ---------- Flags ----------
+- {
+    name: "needs:decision",
+    color: "e99695",
+    description: "Waiting on a product decision from Merna (question in last comment)",
+  }
+- {
+    name: "needs:sew-test",
+    color: "ff9f1c",
+    description: "Must be validated by sewing a physical toile before release",
+  }
+- {
+    name: "agent:auto",
+    color: "000000",
+    description: "Allowed to be implemented unattended by the Claude GitHub Action",
+  }
+- { name: "good-first", color: "7057ff", description: "Small and self-contained" }

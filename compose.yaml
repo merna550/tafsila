@@ -1,0 +1,56 @@
+# Tafsila local services. Supabase itself runs via the Supabase CLI (`supabase start`, also Docker).
+# Profiles:
+#   (default)  inngest          -> background-jobs dev server
+#   app        web (prod image) -> run the production image locally against local Supabase
+#   sim        sim (v2)         -> 3D simulation service
+#   tools      newman           -> run the Postman collection in a container
+# Examples:  docker compose up -d                 docker compose --profile app up -d --build
+name: tafsila
+
+x-host: &host
+  extra_hosts: ["host.docker.internal:host-gateway"] # reach Supabase CLI + host app on Linux too
+
+services:
+  inngest:
+    image: inngest/inngest:latest
+    command: "inngest dev -u http://host.docker.internal:3000/api/inngest"
+    ports: ["8288:8288"]
+    <<: *host
+    restart: unless-stopped
+
+  web:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args: { VERSION: local, GIT_SHA: local }
+    image: tafsila-web:local
+    env_file: [.env.docker] # copy from .env.docker.example; points at host.docker.internal:54321
+    ports: ["3001:3000"] # 3001 so it can run next to `pnpm dev` on 3000
+    <<: *host
+    read_only: true
+    tmpfs: ["/tmp", "/app/apps/web/.next/cache"]
+    security_opt: ["no-new-privileges:true"]
+    deploy: { resources: { limits: { cpus: "1.0", memory: 768M } } }
+    restart: unless-stopped
+
+  sim:
+    profiles: ["sim"]
+    build: { context: services/sim }
+    image: tafsila-sim:local
+    env_file: [.env.docker]
+    ports: ["8000:8000"]
+    <<: *host
+    security_opt: ["no-new-privileges:true"]
+
+  newman:
+    profiles: ["tools"]
+    image: postman/newman:alpine
+    volumes: ["./postman:/etc/newman:ro"]
+    command: >
+      run tafsila.postman_collection.json
+      -e environments/local.postman_environment.json
+      --env-var baseUrl=http://host.docker.internal:3000
+      --env-var supabaseUrl=http://host.docker.internal:54321
+      --reporters cli
+    <<: *host

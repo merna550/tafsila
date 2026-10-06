@@ -1,0 +1,98 @@
+name: Docker image
+# Lints, builds, scans and smoke-tests the web image on every PR.
+# On main and on version tags: multi-arch build (amd64 + arm64) and push to GHCR with SBOM + provenance.
+on:
+  pull_request:
+    paths: ["apps/web/**", "packages/**", "pnpm-lock.yaml", ".dockerignore", ".github/workflows/docker.yml"]
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/tafsila-web
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with: { dockerfile: apps/web/Dockerfile, failure-threshold: warning }
+
+  build:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        if: github.event_name == 'push'
+        with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,format=short
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=raw,value=staging,enable=${{ github.ref == 'refs/heads/main' }}
+
+      # 1) Build for the runner's arch and load it locally for scanning + smoke test
+      - name: Build (local, amd64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          load: true
+          tags: tafsila-web:ci
+          build-args: |
+            VERSION=${{ steps.meta.outputs.version }}
+            GIT_SHA=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Vulnerability scan (fail on critical)
+        uses: aquasecurity/trivy-action@0.28.0
+        with: { image-ref: "tafsila-web:ci", severity: CRITICAL, exit-code: "1", ignore-unfixed: true }
+
+      - name: Smoke test container
+        run: |
+          docker run -d --name web -p 3000:3000 --env-file .github/ci.env tafsila-web:ci
+          for i in $(seq 1 30); do curl -fsS http://localhost:3000/api/health && exit 0; sleep 2; done
+          docker logs web; exit 1
+
+      # 2) Push multi-arch only from main / tags (same Dockerfile, cached layers)
+      - name: Build & push (amd64 + arm64)
+        if: github.event_name == 'push'
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.meta.outputs.version }}
+            GIT_SHA=${{ github.sha }}
+          provenance: mode=max
+          sbom: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Attest image
+        if: github.event_name == 'push'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

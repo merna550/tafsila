@@ -1,0 +1,18 @@
+name: Feature
+description: New capability (run /triage to complete labels and model recommendation)
+labels: ["type:feature", "status:triage"]
+body:
+  - type: textarea
+    id: goal
+    attributes: { label: Goal / problem, description: "What should the user be able to do, and why?" }
+    validations: { required: true }
+  - type: textarea
+    id: criteria
+    attributes: { label: Acceptance criteria, value: "- [ ] \n- [ ] " }
+    validations: { required: true }
+  - type: input
+    id: srs
+    attributes: { label: SRS requirement IDs, placeholder: "FR-PAT-03, FR-VAL-02" }
+  - type: textarea
+    id: scope
+    attributes: { label: Out of scope / notes }

@@ -1,0 +1,18 @@
+import { designSpecSchema, measurementsSchema } from "@tafsila/schemas";
+import { describe, expect, it } from "vitest";
+import { vNeckHalfCircleDress } from "./designs";
+import { sizeM } from "./measurements";
+
+describe("fixtures stay valid against the shared schemas", () => {
+  it("the demo dress is a valid DesignSpec", () => {
+    expect(designSpecSchema.safeParse(vNeckHalfCircleDress).success).toBe(true);
+  });
+
+  it("size M is a valid Measurements object", () => {
+    expect(measurementsSchema.safeParse(sizeM).success).toBe(true);
+  });
+
+  it("the schema rejects categories outside release 1", () => {
+    expect(designSpecSchema.safeParse({ ...vNeckHalfCircleDress, category: "jacket" }).success).toBe(false);
+  });
+});

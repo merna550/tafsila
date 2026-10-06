@@ -1,0 +1,21 @@
+name: Code quality
+on: [pull_request]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Format
+        run: pnpm prettier --check .
+      - name: Lint (complexity, JSDoc on every function, no any, cycles)
+        run: pnpm eslint . --max-warnings 0
+      - name: Types
+        run: pnpm turbo run typecheck
+      - name: Duplicate code
+        run: pnpm jscpd .
+      - name: Architecture rules
+        run: pnpm depcruise apps packages --config .dependency-cruiser.cjs
