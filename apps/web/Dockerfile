@@ -31,6 +31,8 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 # ---------- builder: compile ----------
 FROM deps AS builder
 COPY --from=pruner /app/out/full/ .
+# turbo prune skips root config files that workspace tsconfigs extend
+COPY tsconfig.base.json ./
 RUN pnpm turbo run build --filter=web
 
 # ---------- runner: minimal runtime image ----------
