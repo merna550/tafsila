@@ -9,7 +9,9 @@ ARG NODE_VERSION=22
 
 # ---------- base: pinned Node + pnpm via corepack ----------
 FROM node:${NODE_VERSION}-alpine AS base
-# hadolint ignore=DL3018  # Alpine removes old package versions; base image tag is pinned instead
+# Alpine deletes old package versions from its mirrors, so pinning apk packages breaks future builds.
+# Reproducibility comes from the pinned base image tag instead.
+# hadolint ignore=DL3018
 RUN apk add --no-cache libc6-compat
 ENV PNPM_HOME=/pnpm PATH=/pnpm:$PATH NEXT_TELEMETRY_DISABLED=1
 RUN corepack enable
@@ -29,6 +31,8 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 # ---------- builder: compile ----------
 FROM deps AS builder
 COPY --from=pruner /app/out/full/ .
+# turbo prune skips root config files that workspace tsconfigs extend
+COPY tsconfig.base.json ./
 RUN pnpm turbo run build --filter=web
 
 # ---------- runner: minimal runtime image ----------
