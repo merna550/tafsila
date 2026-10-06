@@ -13,5 +13,6 @@ Follow docs/WORKFLOW.md. Issue: $ARGUMENTS
    - Re-check build:* label; change it if the plan shows a different difficulty.
 3. If the plan requires a costly or irreversible decision not in the docs, add `needs:decision` and ask ONE precise question in the comment; otherwise decide, and list the decision for DECISIONS.md.
 4. Save the same plan to `docs/plans/<N>-<slug>.md` (committed with the build).
-5. Set status: `status:plan-review` if plan:opus or size:L, else `status:ready`.
+5. Set status: `status:plan-review` if plan:opus or size:L, else `status:ready`; move the board card to match:
+   `scripts/gh-project.sh status <issue-url> Ready` (plan-review stays in Backlog until Merna approves).
 6. Tell Merna in Arabic (max 4 lines) what is needed from her, if anything.

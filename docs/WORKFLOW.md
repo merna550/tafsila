@@ -116,3 +116,28 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 | prod    | "Deploy to production" workflow (Merna) | Supabase prod project          | live           | production model |
 
 All config goes through `packages/config/env.ts` (Zod-validated); the app refuses to start with missing/invalid variables. Migrations live in `supabase/migrations` and are applied by CI: staging on merge, prod on release.
+
+## 8. GitHub board and milestones
+
+Board: **Tafsila** project (`merna550`, project #4). Columns: Backlog → Ready → In progress → In review → Done.
+Helper: `scripts/gh-project.sh add <url> [column]` and `scripts/gh-project.sh status <url> <column>` (needs `gh auth refresh -s project` once).
+
+| Status label                                               | Board column | Set by                     |
+| ---------------------------------------------------------- | ------------ | -------------------------- |
+| `status:triage`, `status:needs-plan`, `status:plan-review` | Backlog      | `/triage`, `/plan`         |
+| `status:ready`                                             | Ready        | `/triage` or `/plan`       |
+| `status:in-progress`, `status:changes-requested`           | In progress  | `/build`                   |
+| `status:in-review` (issue) and its PR                      | In review    | `/build`                   |
+| closed / merged                                            | Done         | board workflow (automatic) |
+
+Every issue and its PR carry the same milestone. Milestone map (SRS §12):
+
+| Milestone             | Work that belongs there                                           |
+| --------------------- | ----------------------------------------------------------------- |
+| M0 - Setup            | repo, tooling, CI/CD, environments, docs/process, AI agent config |
+| M1 - Engine core      | schemas, measurements, blocks, garment modules, validation        |
+| M2 - Viewer & outputs | SVG viewer, projector, direct-cut, PDF export                     |
+| M3 - AI layer         | photo analysis, confirmation UI, chat edits, versions             |
+| M4 - Fabric           | yardage/nesting, fabric catalogue and recommendations             |
+| M5 - 3D & billing     | 3D preview, credits, Paymob, plans, admin                         |
+| M6 - Closed beta      | beta feedback fixes, release readiness                            |
