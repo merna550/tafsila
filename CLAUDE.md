@@ -9,21 +9,21 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Where to look
 
-| Need                                                                | File                                                                                                |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Requirements (IDs like FR-PAT-03)                                   | `docs/SRS.md`                                                                                       |
-| Decisions already made — do not re-ask                              | `docs/DECISIONS.md`                                                                                 |
-| Lifecycle, labels, model choice, Definition of Done, milestones     | `docs/WORKFLOW.md`                                                                                  |
-| Architecture of each part (web, api, engine, sim)                   | `docs/ARCHITECTURE.md`                                                                              |
-| Clean code rules, where code lives, JSDoc template                  | `docs/CODING_STANDARDS.md`                                                                          |
-| Backend docs, tutorials, Docker, environments                       | `docs/backend/`                                                                                     |
-| Frontend docs (design system, RTL, state)                           | `docs/frontend/README.md`                                                                           |
-| Engine docs (methods, modules, validation, units)                   | `docs/engine/README.md`                                                                             |
-| Per-area agent notes (loaded with those files)                      | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                         |
-| Path-scoped rules and task skills                                   | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)           |
-| Learn a term / technology / pattern (glossary, maps, reading paths) | `docs/handbook/START_HERE.md`                                                                       |
-| Manual test cases                                                   | `docs/test-cases/`                                                                                  |
-| Saved prompts                                                       | `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`) |
+| Need                                                                | File                                                                                                                                  |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Requirements (IDs like FR-PAT-03)                                   | `docs/SRS.md`                                                                                                                         |
+| Decisions already made — do not re-ask                              | `docs/DECISIONS.md`                                                                                                                   |
+| Lifecycle, labels, model choice, Definition of Done, milestones     | `docs/WORKFLOW.md`                                                                                                                    |
+| Architecture of each part (web, api, engine, sim)                   | `docs/ARCHITECTURE.md`                                                                                                                |
+| Clean code rules, where code lives, JSDoc template                  | `docs/CODING_STANDARDS.md`                                                                                                            |
+| Backend docs, tutorials, Docker, environments                       | `docs/backend/`                                                                                                                       |
+| Frontend docs (design system, RTL, state)                           | `docs/frontend/README.md`                                                                                                             |
+| Engine docs (methods, modules, validation, units)                   | `docs/engine/README.md`                                                                                                               |
+| Per-area agent notes (loaded with those files)                      | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                                                           |
+| Path-scoped rules and task skills                                   | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)                                             |
+| Learn a term / technology / pattern (glossary, maps, reading paths) | `docs/handbook/START_HERE.md`                                                                                                         |
+| Manual test cases                                                   | `docs/test-cases/`                                                                                                                    |
+| Saved prompts                                                       | `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`, `/explain`, `/learn`, `/onboard`) |
 
 ## Non-negotiable rules
 
@@ -41,13 +41,13 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Commands
 
-`pnpm dev:all` start everything · `pnpm test` · `pnpm test:e2e` · `pnpm quality` · `pnpm api:postman` · `pnpm api:test` · `pnpm db:reset` · `pnpm docker:build`
+`pnpm dev:all` start everything · `pnpm test` · `pnpm test:e2e` · `pnpm quality` · `pnpm api:postman` · `pnpm api:test` · `pnpm docs:check` · `pnpm db:reset` · `pnpm docker:build`
 
 ## Current status
 
 _Updated at the end of every session._
 
 - Milestone: M0 - Foundation & environments (in progress)
-- Last done: 33 technology cards with dated fact checks and ADR-011..014 (#9, stacked on #8); handbook core (#8); MVP milestone plan v2 (#6)
-- Next: handbook CI check (#10); Supabase init; first issues from SRS M1
+- Last done: handbook upkeep: `pnpm docs:check` in quality and CI, PR "Concepts introduced" rule, lychee workflow, `/explain` `/learn` `/onboard` (#10); 33 technology cards with dated fact checks and ADR-011..014 (#9); handbook core (#8); MVP milestone plan v2 (#6)
+- Next: Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval

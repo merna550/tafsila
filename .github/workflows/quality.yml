@@ -19,3 +19,7 @@ jobs:
         run: pnpm jscpd .
       - name: Architecture rules
         run: pnpm depcruise apps packages --config .dependency-cruiser.cjs
+      - name: Handbook (every dependency has a tech card, relative links resolve)
+        run: pnpm docs:check
+      - name: Handbook check tests
+        run: pnpm test:docs

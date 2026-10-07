@@ -12,14 +12,16 @@
     "dev:all": "supabase start && docker compose up -d && turbo run dev",
     "dev:stop": "docker compose down && supabase stop",
     "build": "turbo run build",
-    "test": "turbo run test",
+    "test": "turbo run test && pnpm test:docs",
+    "test:docs": "vitest run scripts",
     "typecheck": "turbo run typecheck",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "jscpd": "jscpd .",
     "depcruise": "depcruise apps packages --config .dependency-cruiser.cjs",
-    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise",
+    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm docs:check",
+    "docs:check": "node scripts/check-handbook.mjs",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > packages/api/src/adapters/supabase/database.gen.ts",
     "docker:build": "docker build -f apps/web/Dockerfile -t tafsila-web:local .",
@@ -53,6 +55,7 @@
     "turbo": "^2.11.7",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.1",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "yaml": "^2.9.1"
   }
 }

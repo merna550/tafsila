@@ -41,3 +41,18 @@ Tafsila is built mostly by AI agents and reviewed by a human. The handbook exist
 | Merged a PR that teaches a new concept        | Add a line at the top of [learning-log.md](learning-log.md)                                                          |
 
 Every link in the handbook must resolve (relative links to files that exist, official URLs for the outside world). Small additions are fine for the cheapest model; accuracy matters more than length.
+
+## How the handbook stays current
+
+The handbook is kept alive by the pull-request process, not by goodwill.
+
+| Mechanism                         | What it does                                                                                                                                                       |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| "Concepts introduced" in every PR | The [PR template](../../.github/pull_request_template.md) asks for new libraries, patterns or terms and links to their glossary entry or card ("None" if nothing). |
+| Definition of Done                | [WORKFLOW section 5](../WORKFLOW.md) has a checkbox: concepts added here and listed in [learning-log.md](learning-log.md).                                         |
+| `pnpm docs:check`                 | Fails when a direct dependency has no [tech card](tech/README.md) or a relative link in `docs/` is broken. Part of `pnpm quality` and the CI quality workflow.     |
+| lychee (`docs-links.yml`)         | Checks external links on PRs touching `docs/**` (warning only) and weekly (opens an issue). See [Handbook checks](tech/handbook-checks.md).                        |
+| `/build` and `/review`            | `/build` writes the entries and the PR section; `/review` fails the checklist when a new dependency has no card.                                                   |
+| `/explain`, `/learn`, `/onboard`  | Learning commands for the owner and newcomers: explain a term, file or PR; a short lesson with an exercise; the reading path for a role. They never edit code.     |
+
+Typical use: `/explain RLS`, `/learn hexagonal`, `/onboard beginner`.

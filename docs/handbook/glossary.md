@@ -436,6 +436,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Starts the Inngest dev server by default; profiles `app`, `sim`, `tools` start more. **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://docs.docker.com/compose/>
 
+<a id="docs-check"></a>
+
+### docs:check
+
+**Plain words:** A command (`pnpm docs:check`) that fails when a library has no technology card or a link inside `docs/` points nowhere.  
+**In Tafsila:** `scripts/check-handbook.mjs`; runs inside `pnpm quality` and the Code quality workflow ([ADR-015](../DECISIONS.md)). **Card:** [Handbook checks](tech/handbook-checks.md) · **Level:** intermediate  
+**Learn:** <https://lychee.cli.rs/>
+
 <a id="domain"></a>
 
 ### Domain (layer)
@@ -985,6 +993,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** CSS that says `start` and `end` instead of `left` and `right`, so one layout works in left-to-right and right-to-left languages.  
 **In Tafsila:** Tailwind classes `ms-*`, `me-*`, `ps-*`, `pe-*` ([frontend docs](../frontend/README.md)). **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** intermediate  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values>
+
+<a id="lychee"></a>
+
+### lychee
+
+**Plain words:** A tool that visits every web link in the docs and reports the ones that are dead.  
+**In Tafsila:** `.github/workflows/docs-links.yml`: runs on pull requests that touch `docs/**` (a warning, never blocking) and every Monday (opens an issue if links are broken). **Card:** [Handbook checks](tech/handbook-checks.md) · **Level:** intermediate  
+**Learn:** <https://lychee.cli.rs/>
 
 <a id="letter-m"></a>
 
