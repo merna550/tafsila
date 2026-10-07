@@ -1,6 +1,6 @@
 # Plan #10: Keep the handbook alive
 
-Issue: #10 · plan:none · build:sonnet · Milestone: M0 - Foundation & environments · Stacked on #9 (PR #12)
+Issue: #10 · plan:none · build:sonnet · Milestone: M0 - Foundation & environments
 
 The issue body is the plan (`plan:none`). What was done:
 
