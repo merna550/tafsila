@@ -70,6 +70,23 @@ describe("claude.yml model resolution", () => {
   });
 });
 
+describe("dispatch.yml triggers (issue #50)", () => {
+  it("starts on events that may free or add work, with a 6-hour cron as a safety net", () => {
+    expect(dispatch.on.issues.types).toEqual(["labeled", "closed"]);
+    expect(dispatch.on.pull_request.types).toEqual(["closed"]);
+    expect(dispatch.on.schedule).toEqual([{ cron: "0 */6 * * *" }]);
+    expect(dispatch.concurrency).toEqual({ group: "dispatch", "cancel-in-progress": false });
+  });
+
+  it("selects only for status labels that change what can start", () => {
+    const condition = dispatch.jobs.select.if;
+    for (const label of ["status:ready", "status:in-review", "status:blocked"])
+      expect(condition).toContain(`"${label}"`);
+    expect(condition).toContain("github.event_name != 'issues'");
+    expect(condition).toContain("github.event.action == 'closed'");
+  });
+});
+
 describe("dispatch.yml", () => {
   it("maps the pick step outputs to the select job outputs", () => {
     expect(dispatch.jobs.select.outputs).toEqual({

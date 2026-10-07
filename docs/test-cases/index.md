@@ -27,6 +27,8 @@
 | docs/16-cloud-agents.md    | TC-INFRA-16-14 | Claude may use the tools /build needs (#46)         | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-15 | Dispatcher builds the picked issue end to end (#46) | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-16 | Builder subagent runs to the end (#48)              | High     | ⬜  | ⬜      |
+| docs/16-cloud-agents.md    | TC-INFRA-16-17 | Dispatcher triggers and label filter (#50)          | High     | ⬜  | ⬜      |
+| docs/16-cloud-agents.md    | TC-INFRA-16-18 | Ready label starts a build (#50)                    | High     | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-01 | Format hook fixes a badly formatted file            | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-02 | Format hook reports remaining lint errors           | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-03 | Stop hook checks affected packages only             | High     | ✅  | ⬜      |

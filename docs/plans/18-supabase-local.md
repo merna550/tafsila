@@ -2,7 +2,7 @@
 
 Issue: #18 · plan:sonnet · build:sonnet · Milestone: M0 - Foundation & environments
 
-The issue body is the plan. Done (ADR-020):
+The issue body is the plan. Done (ADR-021):
 
 1. `supabase init`; `supabase/config.toml` edited: phone auth + three test OTP numbers (dummy Twilio provider, never called), email confirmations on (mail catcher), Google declared and disabled, private bucket `design-photos`.
 2. Scripts `db:start`, `db:stop`, `db:reset`, `db:types` (writes `database.types.ts`).
