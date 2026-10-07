@@ -94,8 +94,17 @@ export default tseslint.config(
     rules: { "jsdoc/require-jsdoc": "off", "no-magic-numbers": "off", "no-console": "off" },
   },
   {
+    // Plain-JS scripts keep their types in JSDoc (no TypeScript annotations), so the TS-flavoured JSDoc rules are relaxed.
+    files: ["scripts/**/*.mjs"],
+    rules: {
+      "jsdoc/no-types": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "max-lines-per-function": ["error", { max: 60, skipBlankLines: true, skipComments: true }],
+    },
+  },
+  {
     // Tests: allow longer blocks and anonymous callbacks without JSDoc.
-    files: ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "e2e/**"],
+    files: ["**/*.test.ts", "**/*.test.tsx", "**/*.test.mjs", "**/*.spec.ts", "e2e/**"],
     rules: {
       "jsdoc/require-jsdoc": "off",
       "max-lines-per-function": "off",
