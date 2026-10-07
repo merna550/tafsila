@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-008 · 2026-10-07 · Per-area agent configuration
+
+**Decision:** Agent instructions are split by area: root `CLAUDE.md` for project-wide rules, nested `CLAUDE.md` in `apps/web`, `packages/api` and `packages/engine` (loaded only when those files are touched), path-scoped rules in `.claude/rules/**` (`paths:` frontmatter), and task skills in `.claude/skills/` that link to the existing tutorials instead of repeating them.
+**Reason:** Agents load only the rules for the files they edit (fewer tokens, less noise), and common tasks follow one fixed procedure that ends with the Definition of Done.
+**Alternatives:** One large root `CLAUDE.md` (loaded every session, grows without bound); slash commands only (no automatic loading by path).
+
 ## ADR-007 · 2026-10-07 · Do not pin Alpine apk package versions
 
 **Decision:** `apk add` in Dockerfiles stays unpinned (hadolint DL3018 ignored on its own line); reproducibility comes from the pinned base image tag.
