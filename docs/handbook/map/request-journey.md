@@ -8,7 +8,7 @@ Source of truth: [ARCHITECTURE section 2](../../ARCHITECTURE.md). Pattern: [hexa
 sequenceDiagram
   autonumber
   participant B as Browser
-  participant N as Next.js route<br/>apps/web/src/app/api/[[...route]]/route.ts
+  participant N as Next.js catch-all route<br/>apps/web/src/app/api/.../route.ts
   participant H as Hono app<br/>packages/api/src/app.ts
   participant M as Middleware<br/>(error handler today)
   participant R as Route<br/>routes/health.ts
