@@ -25,6 +25,8 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 - **Comment:** write `@claude <what to do>` on an issue or PR. Only comments from Merna run.
 - **Automatic:** the dispatcher (`.github/workflows/dispatch.yml`) runs every 2 hours. It builds the highest-priority `status:ready` issue whose "Depends on" issues are closed and that has no `needs:decision`. You can run it now: Actions → Dispatch agent → Run workflow.
 
+To check what it would pick without spending a Claude run, tick **dry_run** in the Run workflow form: the `dry-run` job prints the issue and model and Claude is not called.
+
 The dispatcher starts nothing when an issue is already `status:in-progress` (`DISPATCH_MAX_PARALLEL`, default 1; with 2 the second must be in a different `area:*`) or when 3 or more PRs wait for your review, and it starts at most `DISPATCH_DAILY_LIMIT` builds per UTC day (repo variable, default 4). Its run summary says what it picked and why, or why not (for example "Daily limit reached: 4 build(s) today").
 
 ## Follow progress

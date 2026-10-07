@@ -2,10 +2,16 @@ name: Dispatch agent
 # Light orchestrator (issue #16): every 2 hours picks the next ready issue and calls claude.yml.
 # Pause with the repo variable DISPATCH_ENABLED=false. Parallel builds: DISPATCH_MAX_PARALLEL (default 1).
 # At most DISPATCH_DAILY_LIMIT builds per UTC day (default 4, issue #17).
+# Manual runs can set dry_run to print the pick without calling Claude (issue #38).
 on:
   schedule:
     - cron: "0 */2 * * *"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Only print the issue and model the dispatcher would build; do not call Claude
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,8 +31,8 @@ jobs:
       issue: ${{ steps.pick.outputs.issue }}
       model: ${{ steps.pick.outputs.model }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
       - id: pick
@@ -38,9 +44,25 @@ jobs:
           DISPATCH_DAILY_LIMIT: ${{ vars.DISPATCH_DAILY_LIMIT }}
         run: node scripts/dispatch.mjs
 
+  dry-run:
+    needs: select
+    if: inputs.dry_run
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Print the resolved issue and model
+        env:
+          ISSUE: ${{ needs.select.outputs.issue }}
+          MODEL: ${{ needs.select.outputs.model }}
+        run: |
+          line="Dry run: issue=#${ISSUE:-none} model=${MODEL:-none}. Claude was not called."
+          echo "$line"
+          printf '### Dispatcher (dry run)\n\n%s\n' "$line" >> "$GITHUB_STEP_SUMMARY"
+
   build:
     needs: select
-    if: needs.select.outputs.issue != ''
+    # `inputs.dry_run` is empty on the schedule trigger, so scheduled runs always build.
+    if: needs.select.outputs.issue != '' && !inputs.dry_run
     uses: ./.github/workflows/claude.yml
     with:
       issue: ${{ needs.select.outputs.issue }}
