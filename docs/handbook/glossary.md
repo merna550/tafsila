@@ -420,6 +420,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** FR-CUT-01 to FR-CUT-04 ([SRS section 4.8](../SRS.md)); curves are given as points every 2 to 3 cm. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
+<a id="dispatcher"></a>
+
+### Dispatcher
+
+**Plain words:** A small scheduled robot that looks at the open issues and starts the next one for the cloud agent, following simple rules (priority, dependencies, one at a time, no more than 3 PRs waiting).  
+**In Tafsila:** `.github/workflows/dispatch.yml` runs `scripts/dispatch.mjs` every 2 hours; pause it with the repo variable `DISPATCH_ENABLED=false` ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**Learn:** <https://docs.github.com/en/actions/using-workflows/reusing-workflows>
+
 <a id="docker"></a>
 
 ### Docker
@@ -674,6 +682,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** An open-source JavaScript project that publishes parametric sewing patterns.  
 **In Tafsila:** The planned basis for the engine's drafting methods; licence verified as MIT on 2026-10-07, see the [card](tech/freesewing.md) ([SRS section 1.4 and 13](../SRS.md)). **Card:** [FreeSewing](tech/freesewing.md) · **Level:** intermediate  
 **Learn:** <https://freesewing.eu/docs/about/>
+
+<a id="fine-grained-pat"></a>
+
+### Fine-grained personal access token
+
+**Plain words:** A GitHub password-like token that you limit to one repository and a few permissions, and that expires.  
+**In Tafsila:** `AGENT_GITHUB_TOKEN` lets the cloud agent push branches and open PRs (contents, pull requests, issues: read/write). PRs opened with the default `GITHUB_TOKEN` do not start CI, which is why a personal token is needed ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016). **Card:** [GitHub Actions](tech/github.md) · **Level:** intermediate  
+**Learn:** <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens>
 
 <a id="letter-g"></a>
 
@@ -1601,6 +1617,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A separate Python service for a later release that simulates how cloth hangs.  
 **In Tafsila:** Only a template Dockerfile exists; it talks to the API through a `JobQueue` port ([ARCHITECTURE section 4](../ARCHITECTURE.md)). **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** advanced  
 **Learn:** <https://fastapi.tiangolo.com/>
+
+<a id="sessionstart-hook"></a>
+
+### SessionStart hook
+
+**Plain words:** A command Claude Code runs automatically when a session starts, configured in `.claude/settings.json`.  
+**In Tafsila:** Runs `scripts/agent-setup.sh`, which exits at once unless `CLAUDE_CODE_REMOTE=true` (a cloud session), so it never runs on a laptop; in the cloud it enables corepack and runs `pnpm install --frozen-lockfile` (ADR-016). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**Learn:** <https://docs.claude.com/en/docs/claude-code/hooks>
 
 <a id="skill-agent"></a>
 

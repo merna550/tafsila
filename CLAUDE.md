@@ -48,6 +48,6 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 _Updated at the end of every session._
 
 - Milestone: M0 - Foundation & environments (in progress)
-- Last done: handbook upkeep: `pnpm docs:check` in quality and CI, PR "Concepts introduced" rule, lychee workflow, `/explain` `/learn` `/onboard` (#10); 33 technology cards with dated fact checks and ADR-011..014 (#9); handbook core (#8); MVP milestone plan v2 (#6)
+- Last done: cloud agents without the GitHub App: SessionStart hook (cloud-only), `claude.yml`, dispatcher, tutorial, ADR-016 (#16, PR open; the end-to-end cloud test needs Merna); handbook upkeep `pnpm docs:check` (#10); 33 technology cards (#9); handbook core (#8); MVP milestone plan v2 (#6)
 - Next: Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval
