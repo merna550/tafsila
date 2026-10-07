@@ -2,9 +2,34 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-014 · 2026-10-07 · Vercel Pro and the Node 22 pin must be revisited before launch
+
+**Decision:** Record two dated findings from the tech-card fact check (issue #9): (1) the Vercel Hobby plan is restricted to non-commercial, personal use, so the production project moves to Vercel Pro (about $20 per developer seat per month) before the first paying user (milestone M8 at the latest); development and previews may stay on Hobby while there is no revenue. (2) Node 22 is in Maintenance LTS until 2027-04-30; move `.nvmrc`, `engines` and the Dockerfile to Node 24 (or 26) by mid 2027. Supabase staging/production projects also need Pro (free projects pause after a week of inactivity).
+**Reason:** Using a free plan against its terms, or running an unsupported Node version, are avoidable launch risks. Both costs are small and known in advance.
+**Alternatives:** Stay on Hobby (violates the plan terms once we charge); host the Docker image elsewhere (more operations work; remains the exit path, [ADR-004](#adr-004--2026-10-06--docker-images-for-portability-and-production-like-testing)). Money decision: Merna confirms the Pro upgrade at M8.
+**Sources:** [Vercel Hobby plan](https://vercel.com/docs/plans/hobby), [Node.js release schedule](https://github.com/nodejs/Release/blob/main/schedule.json), [Supabase pricing](https://supabase.com/pricing) (all checked 2026-10-07).
+
+## ADR-013 · 2026-10-07 · Tooling and quality gates
+
+**Decision:** pnpm workspaces + Turborepo; Vitest (with fast-check for engine properties) and Playwright for tests; ESLint (jsdoc, sonarjs, import-x, typescript-eslint) + Prettier for style; jscpd for duplication; dependency-cruiser for architecture; Husky + lint-staged locally and the same checks in CI. Details in the tech cards under `docs/handbook/tech/`.
+**Reason:** Agents write most code, so every rule in CODING_STANDARDS must be checked by a tool, with fast local feedback and CI as the final gate.
+**Alternatives:** npm/Yarn, Nx, Jest, Cypress, Biome (fewer plugins for our JSDoc and complexity rules), review-only enforcement.
+
+## ADR-012 · 2026-10-07 · Background jobs, payments and data access
+
+**Decision:** Inngest for background jobs (AI analysis, PDF, nesting) behind a `JobQueue` port; Paymob (cards, wallets, kiosk cash) behind a `PaymentGateway` port, Stripe is not available to Egypt-based merchants; Postgres (via Supabase) for transactional data, accessed through Drizzle in repository adapters (to be confirmed by a spike when the first repository is built in M1).
+**Reason:** No queue servers to run alone; local payment methods are required in Egypt; money and versions must change atomically.
+**Alternatives:** BullMQ + Redis, Trigger.dev, QStash, Kafka; Stripe, PayPal; MongoDB; Prisma or raw SQL.
+
+## ADR-011 · 2026-10-07 · Frontend stack
+
+**Decision:** Next.js App Router + React, Tailwind CSS with logical properties for RTL, shadcn/ui components copied into `packages/ui`, TanStack Query for server data, Zustand for the editor session only, next-intl for Arabic (default) and English, React Hook Form + Zod for forms.
+**Reason:** Server rendering and SEO for Arabic pages, one deploy for UI and API, accessible components we own, RTL without mirrored CSS.
+**Alternatives:** Vite SPA + separate API, Remix, Astro, Nuxt/SvelteKit; MUI/Chakra; CSS-in-JS; Redux; react-i18next.
+
 ## ADR-010 · 2026-10-07 · Handbook: link to the docs, never duplicate them
 
-**Decision:** `docs/handbook/` explains terms, technologies and patterns in plain English and links to SRS, ARCHITECTURE, CODING_STANDARDS, DECISIONS and WORKFLOW, which stay the source of truth. Things that are designed but not built yet are marked "planned" with the SRS or ADR reference. Glossary entries name a technology card as plain text until that card exists (issue #9), so no link in the handbook points to a missing file.
+**Decision:** `docs/handbook/` explains terms, technologies and patterns in plain English and links to SRS, ARCHITECTURE, CODING_STANDARDS, DECISIONS and WORKFLOW, which stay the source of truth. Things that are designed but not built yet are marked "planned" with the SRS or ADR reference. Glossary entries named a technology card as plain text until it existed; issue #9 replaced them with links.
 **Reason:** One source of truth per fact; the handbook cannot drift into a second, conflicting spec; every relative link can be checked.
 **Alternatives:** Copy rules into the handbook (drifts); wait for tech cards before writing the glossary (blocks the core pages).
 

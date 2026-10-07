@@ -53,7 +53,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Agent (AI agent)
 
 **Plain words:** An AI model that does a task by itself using tools (read files, run commands, open pull requests) instead of only chatting.  
-**In Tafsila:** Most of Tafsila is built by Claude agents following [CLAUDE.md](../../CLAUDE.md) and [WORKFLOW.md](../WORKFLOW.md); the owner reviews. See [skill](#skill-agent) and [slash command](#slash-command). **Card:** Claude Code (planned in #9) · **Level:** beginner  
+**In Tafsila:** Most of Tafsila is built by Claude agents following [CLAUDE.md](../../CLAUDE.md) and [WORKFLOW.md](../WORKFLOW.md); the owner reviews. See [skill](#skill-agent) and [slash command](#slash-command). **Card:** [Claude Code](tech/claude-code.md) · **Level:** beginner  
 **Learn:** <https://docs.claude.com/en/docs/claude-code/overview>
 
 <a id="ai-provider"></a>
@@ -69,7 +69,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### API (Application Programming Interface)
 
 **Plain words:** A set of addresses and rules that lets one program ask another to do something. Here: the web app asks the server over HTTP.  
-**In Tafsila:** `packages/api` (Hono), served at `/api/*`. Today: `GET /api/health`. See [request journey](map/request-journey.md). **Card:** Hono (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/api` (Hono), served at `/api/*`. Today: `GET /api/health`. See [request journey](map/request-journey.md). **Card:** [Hono](tech/hono.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/API>
 
 <a id="app-router"></a>
@@ -77,7 +77,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### App Router
 
 **Plain words:** Next.js's way of building pages from folders: a `page.tsx` inside `src/app/<route>/` becomes a URL.  
-**In Tafsila:** `apps/web/src/app/`, including the catch-all `api/[[...route]]/route.ts`. **Card:** Next.js (planned in #9) · **Level:** beginner  
+**In Tafsila:** `apps/web/src/app/`, including the catch-all `api/[[...route]]/route.ts`. **Card:** [Next.js](tech/nextjs.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs/app>
 
 <a id="arabic-indic-digits"></a>
@@ -101,7 +101,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Attestation
 
 **Plain words:** A signed statement about how an image was built and what is inside it.  
-**In Tafsila:** Written by the Docker workflow (`attestations: write` permission); see [SBOM](#sbom). **Card:** Docker (planned in #9) · **Level:** advanced  
+**In Tafsila:** Written by the Docker workflow (`attestations: write` permission); see [SBOM](#sbom). **Card:** [Docker](tech/docker.md) · **Level:** advanced  
 **Learn:** <https://docs.docker.com/build/metadata/attestations/>
 
 <a id="auth"></a>
@@ -109,7 +109,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Auth (authentication and authorisation)
 
 **Plain words:** Authentication proves who you are (login); authorisation decides what you may do.  
-**In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
 <a id="letter-b"></a>
@@ -193,7 +193,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Build (compile)
 
 **Plain words:** Turning source code into the files that actually run, checking types and optimising along the way.  
-**In Tafsila:** `pnpm build` runs `turbo run build`; the web app builds with `next build` into a standalone output ([ADR-004](../DECISIONS.md)). **Card:** Turborepo (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm build` runs `turbo run build`; the web app builds with `next build` into a standalone output ([ADR-004](../DECISIONS.md)). **Card:** [Turborepo](tech/turborepo.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs/app/getting-started/deploying>
 
 <a id="bust-point"></a>
@@ -221,7 +221,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### CI/CD (continuous integration / delivery)
 
 **Plain words:** Robots that run on every change: **CI** runs checks and tests; **CD** ships the result to an environment.  
-**In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** GitHub Actions (planned in #9) · **Level:** beginner  
+**In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
 **Learn:** <https://docs.github.com/en/actions>
 
 <a id="claude-md"></a>
@@ -245,7 +245,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Client Component
 
 **Plain words:** A React component that runs in the browser, so it can react to clicks and keep state. Marked with `"use client"` in Next.js.  
-**In Tafsila:** Interactive tools (viewer, projector, forms) are Client Components ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** Next.js (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Interactive tools (viewer, projector, forms) are Client Components ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/getting-started/server-and-client-components>
 
 <a id="closure"></a>
@@ -277,7 +277,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Container
 
 **Plain words:** A packaged, isolated mini-computer that runs one program with everything it needs. Same container, same behaviour anywhere.  
-**In Tafsila:** The web app ships as a Docker container image ([ADR-004](../DECISIONS.md)); `compose.yaml` runs local services. **Card:** Docker (planned in #9) · **Level:** beginner  
+**In Tafsila:** The web app ships as a Docker container image ([ADR-004](../DECISIONS.md)); `compose.yaml` runs local services. **Card:** [Docker](tech/docker.md) · **Level:** beginner  
 **Learn:** <https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/>
 
 <a id="container-di"></a>
@@ -301,7 +301,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Corepack
 
 **Plain words:** A Node.js tool that runs the exact package-manager version a project asks for.  
-**In Tafsila:** Makes `pnpm` use the version pinned in `packageManager` in `package.json` (set up by `scripts/bootstrap.sh`). **Card:** pnpm (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Makes `pnpm` use the version pinned in `packageManager` in `package.json` (set up by `scripts/bootstrap.sh`). **Card:** [pnpm](tech/pnpm.md) · **Level:** intermediate  
 **Learn:** <https://nodejs.org/api/corepack.html>
 
 <a id="coverage"></a>
@@ -309,7 +309,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Coverage
 
 **Plain words:** The share of code lines that tests run. It shows what is untested, not whether tests are good.  
-**In Tafsila:** Engine coverage target is 85% or more ([SRS NFR-10](../SRS.md)). **Card:** Vitest (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Engine coverage target is 85% or more ([SRS NFR-10](../SRS.md)). **Card:** [Vitest](tech/vitest.md) · **Level:** intermediate  
 **Learn:** <https://vitest.dev/guide/coverage>
 
 <a id="credit"></a>
@@ -349,7 +349,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Cyclomatic and cognitive complexity
 
 **Plain words:** Numbers that estimate how hard a function is to read: more branches, loops and nesting means a higher score.  
-**In Tafsila:** Lint limits: cyclomatic 10, cognitive 15, nesting depth 3 ([CODING_STANDARDS section 3](../CODING_STANDARDS.md)). **Card:** ESLint (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Lint limits: cyclomatic 10, cognitive 15, nesting depth 3 ([CODING_STANDARDS section 3](../CODING_STANDARDS.md)). **Card:** [ESLint](tech/eslint-prettier.md) · **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Cyclomatic_complexity>
 
 <a id="letter-d"></a>
@@ -369,7 +369,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Dependency
 
 **Plain words:** Code written by someone else that your code uses, listed in `package.json`.  
-**In Tafsila:** Locked by the [lockfile](#lockfile). **Card:** pnpm (planned in #9) · **Level:** beginner  
+**In Tafsila:** Locked by the [lockfile](#lockfile). **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://docs.npmjs.com/about-packages-and-modules>
 
 <a id="dependency-injection"></a>
@@ -385,7 +385,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### dependency-cruiser
 
 **Plain words:** A tool that reads import statements and fails when code imports something it must not.  
-**In Tafsila:** `pnpm depcruise`, rules in `.dependency-cruiser.cjs` ([CODING_STANDARDS section 8](../CODING_STANDARDS.md)). **Level:** intermediate  
+**In Tafsila:** `pnpm depcruise`, rules in `.dependency-cruiser.cjs` ([CODING_STANDARDS section 8](../CODING_STANDARDS.md)). **Card:** [jscpd and dependency-cruiser](tech/jscpd-dependency-cruiser.md) · **Level:** intermediate  
 **Learn:** <https://github.com/sverweij/dependency-cruiser>
 
 <a id="deploy"></a>
@@ -393,7 +393,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Deploy / deployment
 
 **Plain words:** Putting a version of the app on a server so people can use it.  
-**In Tafsila:** Preview per PR, staging on merge to `main`, production by one manual click ([WORKFLOW section 7](../WORKFLOW.md)). **Card:** Vercel (planned in #9) · **Level:** beginner  
+**In Tafsila:** Preview per PR, staging on merge to `main`, production by one manual click ([WORKFLOW section 7](../WORKFLOW.md)). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
 **Learn:** <https://vercel.com/docs/deployments/overview>
 
 <a id="design-system"></a>
@@ -401,7 +401,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Design system
 
 **Plain words:** One shared set of components, colours and spacing so every screen looks and behaves the same.  
-**In Tafsila:** `packages/ui` plus tokens in `apps/web/src/app/globals.css` ([frontend docs](../frontend/README.md)). **Card:** Tailwind CSS (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/ui` plus tokens in `apps/web/src/app/globals.css` ([frontend docs](../frontend/README.md)). **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
 **Learn:** <https://ui.shadcn.com/docs>
 
 <a id="designspec"></a>
@@ -409,7 +409,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### DesignSpec
 
 **Plain words:** A JSON description of the garment's design (category, neckline, sleeve, skirt, closure, pockets, lining). It is the only thing AI produces.  
-**In Tafsila:** `packages/schemas/src/design-spec.ts`; catalogue in [SRS section 6.1](../SRS.md). See [pattern journey](map/pattern-journey.md). **Card:** Zod (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/schemas/src/design-spec.ts`; catalogue in [SRS section 6.1](../SRS.md). See [pattern journey](map/pattern-journey.md). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://zod.dev/>
 
 <a id="direct-cut"></a>
@@ -425,7 +425,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Docker
 
 **Plain words:** A tool that builds and runs [containers](#container).  
-**In Tafsila:** `pnpm docker:build`, `compose.yaml`, `apps/web/Dockerfile` ([ADR-004](../DECISIONS.md)). **Card:** Docker (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm docker:build`, `compose.yaml`, `apps/web/Dockerfile` ([ADR-004](../DECISIONS.md)). **Card:** [Docker](tech/docker.md) · **Level:** beginner  
 **Learn:** <https://docs.docker.com/get-started/>
 
 <a id="docker-compose"></a>
@@ -433,7 +433,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Docker Compose
 
 **Plain words:** A file (`compose.yaml`) that starts several containers together with one command.  
-**In Tafsila:** Starts the Inngest dev server by default; profiles `app`, `sim`, `tools` start more. **Card:** Docker (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Starts the Inngest dev server by default; profiles `app`, `sim`, `tools` start more. **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://docs.docker.com/compose/>
 
 <a id="domain"></a>
@@ -457,7 +457,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Drizzle (ORM)
 
 **Plain words:** A TypeScript library that lets code talk to a database with typed objects instead of raw SQL strings.  
-**In Tafsila:** Listed in the tech stack ([SRS section 3.1](../SRS.md)); not installed yet. **Card:** Drizzle (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Listed in the tech stack ([SRS section 3.1](../SRS.md)); not installed yet. **Card:** [Drizzle](tech/drizzle.md) · **Level:** intermediate  
 **Learn:** <https://orm.drizzle.team/docs/overview>
 
 <a id="dxf"></a>
@@ -477,7 +477,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### E2E (end-to-end) test
 
 **Plain words:** A test that drives the real app like a user (click, type, read the screen) from start to finish.  
-**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English (planned; [SRS section 11](../SRS.md)). **Card:** Playwright (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English (planned; [SRS section 11](../SRS.md)). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
 **Learn:** <https://playwright.dev/docs/intro>
 
 <a id="ease"></a>
@@ -517,7 +517,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### engine-strict
 
 **Plain words:** A pnpm/npm setting that turns a wrong Node version from a warning into an error.  
-**In Tafsila:** `.npmrc` has `engine-strict=true`; see [troubleshooting](troubleshooting.md#pnpm-dev-fails-wrong-node-version). **Card:** pnpm (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `.npmrc` has `engine-strict=true`; see [troubleshooting](troubleshooting.md#pnpm-dev-fails-wrong-node-version). **Card:** [pnpm](tech/pnpm.md) · **Level:** intermediate  
 **Learn:** <https://pnpm.io/npmrc#engine-strict>
 
 <a id="engine-version"></a>
@@ -541,7 +541,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Environment variable (env var)
 
 **Plain words:** A named setting given to a program from outside the code, such as a URL or secret key.  
-**In Tafsila:** Declared and validated only in `packages/config/src/env.ts`; examples in `.env.example`. Secrets never go in code ([CLAUDE.md](../../CLAUDE.md) rule 6). **Card:** Zod (planned in #9) · **Level:** beginner  
+**In Tafsila:** Declared and validated only in `packages/config/src/env.ts`; examples in `.env.example`. Secrets never go in code ([CLAUDE.md](../../CLAUDE.md) rule 6). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://12factor.net/config>
 
 <a id="eslint"></a>
@@ -549,7 +549,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### ESLint
 
 **Plain words:** A tool that reads code and reports style and bug risks.  
-**In Tafsila:** `pnpm lint`; config `eslint.config.mjs` enforces [CODING_STANDARDS](../CODING_STANDARDS.md). **Card:** ESLint (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm lint`; config `eslint.config.mjs` enforces [CODING_STANDARDS](../CODING_STANDARDS.md). **Card:** [ESLint](tech/eslint-prettier.md) · **Level:** beginner  
 **Learn:** <https://eslint.org/docs/latest/>
 
 <a id="exif"></a>
@@ -559,6 +559,13 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Hidden data in photos (camera, time, sometimes GPS location).  
 **In Tafsila:** Stripped before upload for privacy ([SRS section 9](../SRS.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Exif>
+
+<a id="exit-path"></a>
+
+### Exit path
+
+**Plain words:** A planned way to leave a vendor or tool later without rewriting the product.  
+**In Tafsila:** Vercel can be replaced by our Docker image; Supabase is standard Postgres; services use ports so adapters can change ([ADR-004](../DECISIONS.md), [ADR-003](../DECISIONS.md)). See [lock-in](#lock-in). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner
 
 <a id="letter-f"></a>
 
@@ -585,7 +592,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### FastAPI
 
 **Plain words:** A Python web framework for APIs.  
-**In Tafsila:** Planned for `services/sim`. **Level:** intermediate  
+**In Tafsila:** Planned for `services/sim`. **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** intermediate  
 **Learn:** <https://fastapi.tiangolo.com/>
 
 <a id="fast-check"></a>
@@ -593,7 +600,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### fast-check
 
 **Plain words:** A library that generates many random inputs to test a rule, then shrinks any failure to a small example.  
-**In Tafsila:** Planned for every FR-VAL rule across the size matrix ([engine docs](../engine/README.md)). **Card:** Vitest (planned in #9) · **Level:** advanced  
+**In Tafsila:** Planned for every FR-VAL rule across the size matrix ([engine docs](../engine/README.md)). **Card:** [fast-check](tech/fast-check.md) · **Level:** advanced  
 **Learn:** <https://fast-check.dev/docs/introduction/>
 
 <a id="fawry"></a>
@@ -601,7 +608,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Fawry
 
 **Plain words:** An Egyptian payment network where a customer pays in cash or at a kiosk with a reference code.  
-**In Tafsila:** Supported through Paymob ([SRS section 3.1](../SRS.md)). **Card:** Paymob (planned in #9) · **Level:** beginner  
+**In Tafsila:** Supported through Paymob ([SRS section 3.1](../SRS.md)). **Card:** [Paymob](tech/paymob-fawry.md) · **Level:** beginner  
 **Learn:** <https://developers.paymob.com/>
 
 <a id="feature-flag"></a>
@@ -609,7 +616,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Feature flag
 
 **Plain words:** A switch that turns a feature on or off without redeploying.  
-**In Tafsila:** PostHog on the frontend and a `FeatureFlags` port on the backend (planned, [ARCHITECTURE section 6](../ARCHITECTURE.md)). **Card:** PostHog (planned in #9) · **Level:** intermediate  
+**In Tafsila:** PostHog on the frontend and a `FeatureFlags` port on the backend (planned, [ARCHITECTURE section 6](../ARCHITECTURE.md)). **Card:** [PostHog](tech/sentry-posthog.md) · **Level:** intermediate  
 **Learn:** <https://posthog.com/docs/feature-flags>
 
 <a id="feature-module"></a>
@@ -641,7 +648,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Fixture
 
 **Plain words:** Ready-made test data shared by many tests.  
-**In Tafsila:** `packages/test-fixtures` (sizes, measurements, designs such as `vNeckHalfCircleDress`). **Card:** Vitest (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/test-fixtures` (sizes, measurements, designs such as `vNeckHalfCircleDress`). **Card:** [Vitest](tech/vitest.md) · **Level:** beginner  
 **Learn:** <https://vitest.dev/guide/test-context>
 
 <a id="formatting"></a>
@@ -649,7 +656,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Formatting
 
 **Plain words:** Automatic layout of code (spaces, quotes, line breaks) so diffs show real changes only.  
-**In Tafsila:** Prettier on commit and in CI (`pnpm format:check`). **Card:** Prettier (planned in #9) · **Level:** beginner  
+**In Tafsila:** Prettier on commit and in CI (`pnpm format:check`). **Card:** [Prettier](tech/eslint-prettier.md) · **Level:** beginner  
 **Learn:** <https://prettier.io/docs/>
 
 <a id="freesewing"></a>
@@ -657,7 +664,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### FreeSewing
 
 **Plain words:** An open-source JavaScript project that publishes parametric sewing patterns.  
-**In Tafsila:** The planned basis for the engine's drafting methods; licence check is an open question ([SRS section 1.4 and 13](../SRS.md)). **Level:** intermediate  
+**In Tafsila:** The planned basis for the engine's drafting methods; licence verified as MIT on 2026-10-07, see the [card](tech/freesewing.md) ([SRS section 1.4 and 13](../SRS.md)). **Card:** [FreeSewing](tech/freesewing.md) · **Level:** intermediate  
 **Learn:** <https://freesewing.eu/docs/about/>
 
 <a id="letter-g"></a>
@@ -669,7 +676,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### GarmentCode
 
 **Plain words:** A research framework for programmatic sewing patterns with cloth simulation.  
-**In Tafsila:** Basis for the v2 `services/sim` ([SRS section 1.4](../SRS.md)). **Level:** advanced  
+**In Tafsila:** Basis for the v2 `services/sim` ([SRS section 1.4](../SRS.md)). **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** advanced  
 **Learn:** <https://arxiv.org/html/2306.03642v2>
 
 <a id="ghcr"></a>
@@ -677,7 +684,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### GHCR (GitHub Container Registry)
 
 **Plain words:** GitHub's storage for Docker images.  
-**In Tafsila:** The `Docker image` workflow pushes `ghcr.io/<owner>/tafsila-web` (`.github/workflows/docker.yml`). **Card:** Docker (planned in #9) · **Level:** intermediate  
+**In Tafsila:** The `Docker image` workflow pushes `ghcr.io/<owner>/tafsila-web` (`.github/workflows/docker.yml`). **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry>
 
 <a id="git"></a>
@@ -693,7 +700,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### GitHub Actions
 
 **Plain words:** GitHub's built-in robot runner: workflows in `.github/workflows/` run on pushes and pull requests.  
-**In Tafsila:** See [CI/CD](#ci-cd). **Card:** GitHub Actions (planned in #9) · **Level:** beginner  
+**In Tafsila:** See [CI/CD](#ci-cd). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
 **Learn:** <https://docs.github.com/en/actions>
 
 <a id="grading"></a>
@@ -721,7 +728,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### hadolint
 
 **Plain words:** A linter for Dockerfiles.  
-**In Tafsila:** Runs in the `Docker image` workflow; see [troubleshooting](troubleshooting.md#hadolint-dl3018-fails-the-docker-ci-job) and [ADR-007](../DECISIONS.md). **Card:** Docker (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Runs in the `Docker image` workflow; see [troubleshooting](troubleshooting.md#hadolint-dl3018-fails-the-docker-ci-job) and [ADR-007](../DECISIONS.md). **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://github.com/hadolint/hadolint>
 
 <a id="healthcheck"></a>
@@ -729,7 +736,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Health check
 
 **Plain words:** A tiny endpoint or command that answers "is the app alive?".  
-**In Tafsila:** `GET /api/health` (`packages/api/src/routes/health.ts`); used by the Docker `HEALTHCHECK`, CI smoke tests and uptime monitors. **Card:** Hono (planned in #9) · **Level:** beginner  
+**In Tafsila:** `GET /api/health` (`packages/api/src/routes/health.ts`); used by the Docker `HEALTHCHECK`, CI smoke tests and uptime monitors. **Card:** [Hono](tech/hono.md) · **Level:** beginner  
 **Learn:** <https://docs.docker.com/reference/dockerfile/#healthcheck>
 
 <a id="heic"></a>
@@ -769,7 +776,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Hono
 
 **Plain words:** A small, fast web framework for writing HTTP APIs in TypeScript.  
-**In Tafsila:** `packages/api` builds a Hono app (`createApp`) that Next.js mounts at `/api` ([ADR-005](../DECISIONS.md)). **Card:** Hono (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `packages/api` builds a Hono app (`createApp`) that Next.js mounts at `/api` ([ADR-005](../DECISIONS.md)). **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://hono.dev/docs/>
 
 <a id="http"></a>
@@ -785,7 +792,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Husky and lint-staged
 
 **Plain words:** Husky runs a script on Git events; lint-staged runs formatters and linters only on the files you are committing.  
-**In Tafsila:** `.husky/pre-commit` runs `lint-staged`; config in `package.json`. **Level:** intermediate  
+**In Tafsila:** `.husky/pre-commit` runs `lint-staged`; config in `package.json`. **Card:** [Husky and lint-staged](tech/husky-lint-staged.md) · **Level:** intermediate  
 **Learn:** <https://typicode.github.io/husky/>
 
 <a id="letter-i"></a>
@@ -797,7 +804,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### i18n (internationalisation)
 
 **Plain words:** Building an app so it can show several languages ("i" + 18 letters + "n").  
-**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (planned, next-intl). **Card:** next-intl (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (planned, next-intl). **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/Internationalization>
 
 <a id="idempotency"></a>
@@ -813,7 +820,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Inngest
 
 **Plain words:** A service that runs background jobs (work that should not block a web request).  
-**In Tafsila:** Dev server in `compose.yaml`; jobs in `packages/api/src/jobs/` (planned). **Card:** Inngest (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Dev server in `compose.yaml`; jobs in `packages/api/src/jobs/` (planned). **Card:** [Inngest](tech/inngest.md) · **Level:** intermediate  
 **Learn:** <https://www.inngest.com/docs>
 
 <a id="issue"></a>
@@ -833,7 +840,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### jscpd
 
 **Plain words:** A tool that finds copy-pasted code.  
-**In Tafsila:** `pnpm jscpd` (config `.jscpd.json`: 50 tokens, 5 lines). **Level:** intermediate  
+**In Tafsila:** `pnpm jscpd` (config `.jscpd.json`: 50 tokens, 5 lines). **Card:** [jscpd and dependency-cruiser](tech/jscpd-dependency-cruiser.md) · **Level:** intermediate  
 **Learn:** <https://github.com/kucherenko/jscpd>
 
 <a id="jsdoc"></a>
@@ -841,7 +848,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JSDoc
 
 **Plain words:** A comment format (`/** ... */`) that documents what a function is for, its parameters and return value.  
-**In Tafsila:** Required on every function, component, class and type ([CODING_STANDARDS section 5](../CODING_STANDARDS.md)). See [code style](code-style.md). **Card:** ESLint (planned in #9) · **Level:** beginner  
+**In Tafsila:** Required on every function, component, class and type ([CODING_STANDARDS section 5](../CODING_STANDARDS.md)). See [code style](code-style.md). **Card:** [ESLint](tech/eslint-prettier.md) · **Level:** beginner  
 **Learn:** <https://jsdoc.app/>
 
 <a id="json"></a>
@@ -857,7 +864,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JSON Schema
 
 **Plain words:** A standard way to describe what valid JSON looks like.  
-**In Tafsila:** Generated from the Zod schemas for the Python sim service and AI structured output ([ARCHITECTURE section 4](../ARCHITECTURE.md)). **Card:** Zod (planned in #9) · **Level:** advanced  
+**In Tafsila:** Generated from the Zod schemas for the Python sim service and AI structured output ([ARCHITECTURE section 4](../ARCHITECTURE.md)). **Card:** [Zod](tech/zod.md) · **Level:** advanced  
 **Learn:** <https://json-schema.org/understanding-json-schema>
 
 <a id="jsx"></a>
@@ -865,7 +872,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JSX / TSX
 
 **Plain words:** A way of writing HTML-like markup inside JavaScript (`.jsx`) or TypeScript (`.tsx`) files.  
-**In Tafsila:** All React components, such as `packages/ui/src/button.tsx`. **Card:** React (planned in #9) · **Level:** beginner  
+**In Tafsila:** All React components, such as `packages/ui/src/button.tsx`. **Card:** [React](tech/react.md) · **Level:** beginner  
 **Learn:** <https://react.dev/learn/writing-markup-with-jsx>
 
 <a id="jwt"></a>
@@ -873,7 +880,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JWT (JSON Web Token)
 
 **Plain words:** A signed token that proves who the user is; the server checks the signature instead of asking the database each time.  
-**In Tafsila:** Supabase issues it; API auth middleware verifies it (planned, M1). **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Supabase issues it; API auth middleware verifies it (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://jwt.io/introduction>
 
 <a id="letter-k"></a>
@@ -913,7 +920,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Layer (Docker)
 
 **Plain words:** One step of an image build, cached so unchanged steps are skipped on the next build.  
-**In Tafsila:** See [multi-stage build](#multi-stage-build). Not the same as an architecture layer. **Card:** Docker (planned in #9) · **Level:** intermediate  
+**In Tafsila:** See [multi-stage build](#multi-stage-build). Not the same as an architecture layer. **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://docs.docker.com/build/cache/>
 
 <a id="lcp"></a>
@@ -929,7 +936,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Ledger
 
 **Plain words:** A list where entries are only ever added, never edited, so history cannot be rewritten.  
-**In Tafsila:** Credits are an append-only ledger ([ARCHITECTURE section 5](../ARCHITECTURE.md)). **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Credits are an append-only ledger ([ARCHITECTURE section 5](../ARCHITECTURE.md)). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Ledger>
 
 <a id="lining"></a>
@@ -945,7 +952,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Linting
 
 **Plain words:** Automatic checking of code for mistakes and style rule violations.  
-**In Tafsila:** `pnpm lint` (ESLint, zero warnings allowed). **Card:** ESLint (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm lint` (ESLint, zero warnings allowed). **Card:** [ESLint](tech/eslint-prettier.md) · **Level:** beginner  
 **Learn:** <https://eslint.org/docs/latest/>
 
 <a id="llm"></a>
@@ -956,12 +963,19 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Token-saving rules in [WORKFLOW section 2](../WORKFLOW.md); the model analyses photos ([SRS section 9](../SRS.md)). **Level:** beginner  
 **Learn:** <https://docs.claude.com/en/docs/build-with-claude/overview>
 
+<a id="lock-in"></a>
+
+### Lock-in
+
+**Plain words:** When switching away from a vendor or tool would cost so much that you are stuck with it.  
+**In Tafsila:** We avoid it with ports and adapters, standard formats (Postgres, Docker images, web-standard `Request`/`Response`) and an [exit path](#exit-path) per vendor. **Card:** [Supabase](tech/supabase.md) · **Level:** beginner
+
 <a id="lockfile"></a>
 
 ### Lockfile
 
 **Plain words:** A file that records the exact version of every installed dependency so every machine installs the same thing.  
-**In Tafsila:** `pnpm-lock.yaml`. CI installs with `--frozen-lockfile`. **Card:** pnpm (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm-lock.yaml`. CI installs with `--frozen-lockfile`. **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://pnpm.io/git#lockfiles>
 
 <a id="css-logical"></a>
@@ -969,7 +983,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Logical CSS properties
 
 **Plain words:** CSS that says `start` and `end` instead of `left` and `right`, so one layout works in left-to-right and right-to-left languages.  
-**In Tafsila:** Tailwind classes `ms-*`, `me-*`, `ps-*`, `pe-*` ([frontend docs](../frontend/README.md)). **Card:** Tailwind CSS (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Tailwind classes `ms-*`, `me-*`, `ps-*`, `pe-*` ([frontend docs](../frontend/README.md)). **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** intermediate  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values>
 
 <a id="letter-m"></a>
@@ -997,7 +1011,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Measurements
 
 **Plain words:** The body measurements (bust, waist, hip, arm length...) used to draft a pattern, always in millimetres.  
-**In Tafsila:** `measurementsSchema` in `packages/schemas/src/measurements.ts`; saved per client profile. **Card:** Zod (planned in #9) · **Level:** beginner  
+**In Tafsila:** `measurementsSchema` in `packages/schemas/src/measurements.ts`; saved per client profile. **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://freesewing.org/docs/measurements/>
 
 <a id="memory-adapter"></a>
@@ -1021,7 +1035,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Middleware
 
 **Plain words:** Code that runs on every request before (or after) the route, for example login checks or logging.  
-**In Tafsila:** `packages/api/src/middleware/` (today the error handler). Not the same as Next.js `middleware.ts`. **Card:** Hono (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `packages/api/src/middleware/` (today the error handler). Not the same as Next.js `middleware.ts`. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://hono.dev/docs/guides/middleware>
 
 <a id="migration"></a>
@@ -1029,7 +1043,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Migration
 
 **Plain words:** A versioned script that changes the database structure, kept in Git.  
-**In Tafsila:** `supabase/migrations/` (empty until M1); applied by CI; how-to in `docs/backend/tutorials/add-migration.md`. **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `supabase/migrations/` (empty until M1); applied by CI; how-to in `docs/backend/tutorials/add-migration.md`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/deployment/database-migrations>
 
 <a id="milestone"></a>
@@ -1061,7 +1075,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Monorepo
 
 **Plain words:** One Git repository holding several apps and packages.  
-**In Tafsila:** The whole of Tafsila ([ADR-005](../DECISIONS.md)). **Card:** Turborepo (planned in #9) · **Level:** beginner  
+**In Tafsila:** The whole of Tafsila ([ADR-005](../DECISIONS.md)). **Card:** [Turborepo](tech/turborepo.md) · **Level:** beginner  
 **Learn:** <https://monorepo.tools/>
 
 <a id="multi-stage-build"></a>
@@ -1069,7 +1083,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Multi-stage build
 
 **Plain words:** A Dockerfile with several `FROM` steps: build in a big stage, copy only the results into a small final image.  
-**In Tafsila:** `apps/web/Dockerfile`: `base`, `pruner`, `deps`, `builder`, `runner`. **Card:** Docker (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `apps/web/Dockerfile`: `base`, `pruner`, `deps`, `builder`, `runner`. **Card:** [Docker](tech/docker.md) · **Level:** intermediate  
 **Learn:** <https://docs.docker.com/build/building/multi-stage/>
 
 <a id="mvp"></a>
@@ -1113,7 +1127,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### next-intl
 
 **Plain words:** A library that adds translations and locale routing to Next.js.  
-**In Tafsila:** Planned for `ar` (default) and `en`. **Card:** next-intl (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned for `ar` (default) and `en`. **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
 **Learn:** <https://next-intl.dev/docs/getting-started>
 
 <a id="nextjs"></a>
@@ -1121,7 +1135,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Next.js
 
 **Plain words:** A React framework that provides routing, server rendering and API route handlers.  
-**In Tafsila:** `apps/web`. See [App Router](#app-router). **Card:** Next.js (planned in #9) · **Level:** beginner  
+**In Tafsila:** `apps/web`. See [App Router](#app-router). **Card:** [Next.js](tech/nextjs.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs>
 
 <a id="node"></a>
@@ -1129,7 +1143,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Node.js
 
 **Plain words:** A program that runs JavaScript outside the browser.  
-**In Tafsila:** Required version `>=22.22.2 <23` (`package.json` engines, `.nvmrc`). **Card:** Node.js (planned in #9) · **Level:** beginner  
+**In Tafsila:** Required version `>=22.22.2 <23` (`package.json` engines, `.nvmrc`). **Card:** [Node.js](tech/nodejs.md) · **Level:** beginner  
 **Learn:** <https://nodejs.org/en/learn/getting-started/introduction-to-nodejs>
 
 <a id="notch"></a>
@@ -1145,7 +1159,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### nvm (Node Version Manager)
 
 **Plain words:** A tool that installs several Node versions and switches between them per terminal.  
-**In Tafsila:** `nvm use` reads `.nvmrc`; see [troubleshooting](troubleshooting.md#pnpm-dev-fails-wrong-node-version). **Card:** Node.js (planned in #9) · **Level:** beginner  
+**In Tafsila:** `nvm use` reads `.nvmrc`; see [troubleshooting](troubleshooting.md#pnpm-dev-fails-wrong-node-version). **Card:** [Node.js](tech/nodejs.md) · **Level:** beginner  
 **Learn:** <https://github.com/nvm-sh/nvm>
 
 <a id="letter-o"></a>
@@ -1157,7 +1171,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### OpenAPI
 
 **Plain words:** A standard file format describing every endpoint of an API.  
-**In Tafsila:** Generated from the routes (`pnpm api:openapi`, planned) and shown at `/api/docs`; feeds the Postman collection. **Card:** Hono (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Generated from the routes (`pnpm api:openapi`, planned) and shown at `/api/docs`; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://spec.openapis.org/oas/latest.html>
 
 <a id="orm"></a>
@@ -1165,7 +1179,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### ORM
 
 **Plain words:** A library that maps database rows to objects in code.  
-**In Tafsila:** See [Drizzle](#drizzle). **Card:** Drizzle (planned in #9) · **Level:** intermediate  
+**In Tafsila:** See [Drizzle](#drizzle). **Card:** [Drizzle](tech/drizzle.md) · **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Object-relational_mapping>
 
 <a id="otp"></a>
@@ -1173,7 +1187,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### OTP (one-time password)
 
 **Plain words:** A short code sent by SMS that proves you own a phone number.  
-**In Tafsila:** Phone login via Supabase Auth ([SRS section 4.1](../SRS.md), M1). **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** Phone login via Supabase Auth ([SRS section 4.1](../SRS.md), M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth/phone-login>
 
 <a id="letter-p"></a>
@@ -1185,7 +1199,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Package
 
 **Plain words:** A folder of code with its own `package.json`, usable by other code.  
-**In Tafsila:** `@tafsila/api`, `@tafsila/engine`, `@tafsila/schemas` and others under `packages/`. **Card:** pnpm (planned in #9) · **Level:** beginner  
+**In Tafsila:** `@tafsila/api`, `@tafsila/engine`, `@tafsila/schemas` and others under `packages/`. **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://docs.npmjs.com/about-packages-and-modules>
 
 <a id="pattern-piece"></a>
@@ -1217,7 +1231,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Paymob
 
 **Plain words:** An Egyptian payment provider (cards, mobile wallets, Fawry reference codes).  
-**In Tafsila:** Behind a `PaymentGateway` port; `PAYMOB_MODE` is `sandbox` or `live` ([SRS section 4.14](../SRS.md)). **Card:** Paymob (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Behind a `PaymentGateway` port; `PAYMOB_MODE` is `sandbox` or `live` ([SRS section 4.14](../SRS.md)). **Card:** [Paymob](tech/paymob-fawry.md) · **Level:** intermediate  
 **Learn:** <https://developers.paymob.com/>
 
 <a id="pdf-tiling"></a>
@@ -1249,7 +1263,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Playwright
 
 **Plain words:** A tool that controls a real browser to run end-to-end tests.  
-**In Tafsila:** See [E2E test](#e2e-test). **Card:** Playwright (planned in #9) · **Level:** intermediate  
+**In Tafsila:** See [E2E test](#e2e-test). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
 **Learn:** <https://playwright.dev/docs/intro>
 
 <a id="pnpm"></a>
@@ -1257,7 +1271,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### pnpm
 
 **Plain words:** A package manager that installs dependencies fast and shares them between projects.  
-**In Tafsila:** The only package manager used here (`packageManager: pnpm@10.34.6`). **Card:** pnpm (planned in #9) · **Level:** beginner  
+**In Tafsila:** The only package manager used here (`packageManager: pnpm@10.34.6`). **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://pnpm.io/motivation>
 
 <a id="pockets"></a>
@@ -1289,7 +1303,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Postgres (PostgreSQL)
 
 **Plain words:** A widely used relational database that stores data in tables.  
-**In Tafsila:** Provided by Supabase ([SRS section 7](../SRS.md)). **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** Provided by Supabase ([SRS section 7](../SRS.md)). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://www.postgresql.org/docs/current/tutorial.html>
 
 <a id="posthog"></a>
@@ -1297,7 +1311,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### PostHog
 
 **Plain words:** A product-analytics and feature-flag service.  
-**In Tafsila:** Planned, wrapped in `shared/analytics` ([ARCHITECTURE section 6](../ARCHITECTURE.md)). **Card:** PostHog (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned, wrapped in `shared/analytics` ([ARCHITECTURE section 6](../ARCHITECTURE.md)). **Card:** [PostHog](tech/sentry-posthog.md) · **Level:** intermediate  
 **Learn:** <https://posthog.com/docs>
 
 <a id="postman"></a>
@@ -1305,7 +1319,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Postman and Newman
 
 **Plain words:** Postman is an app for trying API requests; Newman runs a Postman collection from the command line (and in CI).  
-**In Tafsila:** `postman/` folder; `compose.yaml` profile `tools` runs Newman. **Level:** beginner  
+**In Tafsila:** `postman/` folder; `compose.yaml` profile `tools` runs Newman. **Card:** [Postman and Newman](tech/postman-newman.md) · **Level:** beginner  
 **Learn:** <https://learning.postman.com/docs/>
 
 <a id="prettier"></a>
@@ -1313,7 +1327,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Prettier
 
 **Plain words:** A tool that formats code automatically.  
-**In Tafsila:** See [formatting](#formatting). **Card:** Prettier (planned in #9) · **Level:** beginner  
+**In Tafsila:** See [formatting](#formatting). **Card:** [Prettier](tech/eslint-prettier.md) · **Level:** beginner  
 **Learn:** <https://prettier.io/docs/>
 
 <a id="preview-deployment"></a>
@@ -1321,7 +1335,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Preview deployment
 
 **Plain words:** A temporary copy of the app built for one pull request so it can be tried before merging.  
-**In Tafsila:** Link posted by Vercel on the PR ([WORKFLOW section 7](../WORKFLOW.md)). **Card:** Vercel (planned in #9) · **Level:** beginner  
+**In Tafsila:** Link posted by Vercel on the PR ([WORKFLOW section 7](../WORKFLOW.md)). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
 **Learn:** <https://vercel.com/docs/deployments/environments>
 
 <a id="princess-seam"></a>
@@ -1345,7 +1359,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Property-based test
 
 **Plain words:** A test that states a rule ("every generated pattern has closed outlines") and checks it against many generated inputs.  
-**In Tafsila:** Required for engine validation rules ([CLAUDE.md](../../CLAUDE.md) rule 4). Tool: [fast-check](#fast-check). **Card:** Vitest (planned in #9) · **Level:** advanced  
+**In Tafsila:** Required for engine validation rules ([CLAUDE.md](../../CLAUDE.md) rule 4). Tool: [fast-check](#fast-check). **Card:** [Vitest](tech/vitest.md) · **Level:** advanced  
 **Learn:** <https://fast-check.dev/docs/introduction/>
 
 <a id="pull-request"></a>
@@ -1381,7 +1395,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### React
 
 **Plain words:** A JavaScript library for building screens from components.  
-**In Tafsila:** Used by `apps/web` and `packages/ui` (React 19). **Card:** React (planned in #9) · **Level:** beginner  
+**In Tafsila:** Used by `apps/web` and `packages/ui` (React 19). **Card:** [React](tech/react.md) · **Level:** beginner  
 **Learn:** <https://react.dev/learn>
 
 <a id="react-hook-form"></a>
@@ -1389,7 +1403,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### React Hook Form
 
 **Plain words:** A library for building forms with validation in React.  
-**In Tafsila:** Planned together with Zod schemas ([SRS section 3.1](../SRS.md)). **Card:** Zod (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned together with Zod schemas ([SRS section 3.1](../SRS.md)). **Card:** [Zod](tech/zod.md) · **Level:** intermediate  
 **Learn:** <https://react-hook-form.com/get-started>
 
 <a id="repository"></a>
@@ -1397,7 +1411,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Repository (pattern)
 
 **Plain words:** A port that hides how data is stored, so services ask for "this design" without knowing about SQL.  
-**In Tafsila:** `DesignRepository`, `ClientRepository` (planned). Do not confuse with the Git repository ("repo"). **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `DesignRepository`, `ClientRepository` (planned). Do not confuse with the Git repository ("repo"). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://martinfowler.com/eaaCatalog/repository.html>
 
 <a id="rest"></a>
@@ -1405,7 +1419,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### REST
 
 **Plain words:** A common style for HTTP APIs: addresses name things (`/designs/5`) and methods say what to do (GET, POST, PUT, PATCH, DELETE).  
-**In Tafsila:** Our API follows it ([SRS section 8](../SRS.md)). **Card:** Hono (planned in #9) · **Level:** beginner  
+**In Tafsila:** Our API follows it ([SRS section 8](../SRS.md)). **Card:** [Hono](tech/hono.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/REST>
 
 <a id="rls"></a>
@@ -1413,7 +1427,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### RLS (Row Level Security)
 
 **Plain words:** A Postgres rule that decides which rows each user may read or write, enforced by the database itself.  
-**In Tafsila:** Every user-owned table has RLS; see `supabase/migrations/` (planned, M1) and `.claude/rules/backend/database.md`. **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Every user-owned table has RLS; see `supabase/migrations/` (planned, M1) and `.claude/rules/backend/database.md`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/database/postgres/row-level-security>
 
 <a id="route"></a>
@@ -1421,7 +1435,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Route
 
 **Plain words:** The mapping from an address (and method) to the code that answers it.  
-**In Tafsila:** API routes: `packages/api/src/routes/`; pages: `apps/web/src/app/`. **Card:** Hono (planned in #9) · **Level:** beginner  
+**In Tafsila:** API routes: `packages/api/src/routes/`; pages: `apps/web/src/app/`. **Card:** [Hono](tech/hono.md) · **Level:** beginner  
 **Learn:** <https://hono.dev/docs/api/routing>
 
 <a id="route-handler"></a>
@@ -1429,7 +1443,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Route handler
 
 **Plain words:** A function Next.js runs for a given URL and method.  
-**In Tafsila:** `apps/web/src/app/api/[[...route]]/route.ts` forwards all `/api/*` calls to Hono. **Card:** Next.js (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `apps/web/src/app/api/[[...route]]/route.ts` forwards all `/api/*` calls to Hono. **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/getting-started/route-handlers>
 
 <a id="rtl"></a>
@@ -1437,7 +1451,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### RTL (right-to-left)
 
 **Plain words:** Text and layout direction used by Arabic: reading starts on the right.  
-**In Tafsila:** Arabic is the default; layouts use [logical CSS](#css-logical) ([frontend docs](../frontend/README.md)). **Card:** next-intl (planned in #9) · **Level:** beginner  
+**In Tafsila:** Arabic is the default; layouts use [logical CSS](#css-logical) ([frontend docs](../frontend/README.md)). **Card:** [next-intl](tech/next-intl.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/RTL>
 
 <a id="runtime"></a>
@@ -1457,7 +1471,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### SBOM (software bill of materials)
 
 **Plain words:** A list of every component inside a piece of software, used to spot known vulnerabilities.  
-**In Tafsila:** Attached to container images by the Docker workflow (attestations). **Card:** Docker (planned in #9) · **Level:** advanced  
+**In Tafsila:** Attached to container images by the Docker workflow (attestations). **Card:** [Docker](tech/docker.md) · **Level:** advanced  
 **Learn:** <https://www.cisa.gov/sbom>
 
 <a id="schema"></a>
@@ -1465,7 +1479,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Schema
 
 **Plain words:** A description of the shape valid data must have.  
-**In Tafsila:** Zod schemas in `packages/schemas`. See [schema-first contracts](patterns/schema-first-contracts.md). **Card:** Zod (planned in #9) · **Level:** beginner  
+**In Tafsila:** Zod schemas in `packages/schemas`. See [schema-first contracts](patterns/schema-first-contracts.md). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://zod.dev/>
 
 <a id="seam-allowance"></a>
@@ -1481,7 +1495,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Seed data
 
 **Plain words:** Fake records loaded into non-production databases so you can try the app.  
-**In Tafsila:** `supabase/seed.sql`, documented in `docs/backend/seed-data.md`; never in production. **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** `supabase/seed.sql`, documented in `docs/backend/seed-data.md`; never in production. **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/local-development/seeding-your-database>
 
 <a id="selvedge"></a>
@@ -1505,7 +1519,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Sentry
 
 **Plain words:** A service that collects crash reports from the app.  
-**In Tafsila:** Planned ([SRS NFR-09](../SRS.md)). **Card:** Sentry (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned ([SRS NFR-09](../SRS.md)). **Card:** [Sentry](tech/sentry-posthog.md) · **Level:** intermediate  
 **Learn:** <https://docs.sentry.io/>
 
 <a id="server-component"></a>
@@ -1513,7 +1527,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Server Component
 
 **Plain words:** A React component that runs only on the server and sends HTML to the browser.  
-**In Tafsila:** Pages and data loading ([ARCHITECTURE section 1](../ARCHITECTURE.md)); `page.tsx` today. **Card:** Next.js (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Pages and data loading ([ARCHITECTURE section 1](../ARCHITECTURE.md)); `page.tsx` today. **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/getting-started/server-and-client-components>
 
 <a id="service"></a>
@@ -1553,7 +1567,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### shadcn/ui
 
 **Plain words:** A set of copy-in React components built on Tailwind that a project owns and edits.  
-**In Tafsila:** Base of `packages/ui` ([frontend docs](../frontend/README.md)). **Card:** Tailwind CSS (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Base of `packages/ui` ([frontend docs](../frontend/README.md)). **Card:** [shadcn/ui](tech/shadcn-ui.md) · **Level:** intermediate  
 **Learn:** <https://ui.shadcn.com/docs>
 
 <a id="signed-url"></a>
@@ -1561,7 +1575,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Signed URL
 
 **Plain words:** A temporary web address that grants access to one private file for a short time.  
-**In Tafsila:** Used for photos and exports in private storage ([SRS NFR-04, NFR-05](../SRS.md)). **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Used for photos and exports in private storage ([SRS NFR-04, NFR-05](../SRS.md)). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/storage/serving/downloads>
 
 <a id="sim"></a>
@@ -1569,7 +1583,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Sim service (services/sim)
 
 **Plain words:** A separate Python service for a later release that simulates how cloth hangs.  
-**In Tafsila:** Only a template Dockerfile exists; it talks to the API through a `JobQueue` port ([ARCHITECTURE section 4](../ARCHITECTURE.md)). **Level:** advanced  
+**In Tafsila:** Only a template Dockerfile exists; it talks to the API through a `JobQueue` port ([ARCHITECTURE section 4](../ARCHITECTURE.md)). **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** advanced  
 **Learn:** <https://fastapi.tiangolo.com/>
 
 <a id="skill-agent"></a>
@@ -1609,7 +1623,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Snapshot test
 
 **Plain words:** A test that saves the output once and fails later if the output changes, so you notice unintended changes.  
-**In Tafsila:** Planned: an SVG snapshot per size of each pattern ([SRS section 11](../SRS.md)). **Card:** Vitest (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned: an SVG snapshot per size of each pattern ([SRS section 11](../SRS.md)). **Card:** [Vitest](tech/vitest.md) · **Level:** intermediate  
 **Learn:** <https://vitest.dev/guide/snapshot>
 
 <a id="sql"></a>
@@ -1617,7 +1631,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### SQL
 
 **Plain words:** The language used to ask a relational database for data.  
-**In Tafsila:** Only repositories in `adapters/supabase` write queries ([ARCHITECTURE section 5](../ARCHITECTURE.md)). **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** Only repositories in `adapters/supabase` write queries ([ARCHITECTURE section 5](../ARCHITECTURE.md)). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://www.postgresql.org/docs/current/tutorial-sql.html>
 
 <a id="srs"></a>
@@ -1649,7 +1663,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Storage (Supabase Storage)
 
 **Plain words:** Private file storage for photos and exported PDFs.  
-**In Tafsila:** Accessed through a `FileStorage` port and signed URLs (planned). **Card:** Supabase (planned in #9) · **Level:** beginner  
+**In Tafsila:** Accessed through a `FileStorage` port and signed URLs (planned). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/storage>
 
 <a id="straight-grain"></a>
@@ -1665,7 +1679,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Structured output
 
 **Plain words:** Forcing an AI model to answer in a fixed shape (JSON that matches a schema) instead of free text.  
-**In Tafsila:** The AI must fill a `DesignSpec`; invalid output is retried once ([SRS section 9](../SRS.md)). **Card:** Zod (planned in #9) · **Level:** intermediate  
+**In Tafsila:** The AI must fill a `DesignSpec`; invalid output is retried once ([SRS section 9](../SRS.md)). **Card:** [Zod](tech/zod.md) · **Level:** intermediate  
 **Learn:** <https://ai-sdk.dev/docs>
 
 <a id="supabase"></a>
@@ -1673,7 +1687,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Supabase
 
 **Plain words:** A hosted platform around Postgres that adds login (Auth) and file storage (Storage).  
-**In Tafsila:** Planned for M1 ([ADR-003](../DECISIONS.md)); started locally with `supabase start`. **Card:** Supabase (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned for M1 ([ADR-003](../DECISIONS.md)); started locally with `supabase start`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs>
 
 <a id="svg"></a>
@@ -1693,7 +1707,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Tailwind CSS
 
 **Plain words:** A styling approach that composes small utility classes (`px-5 rounded-lg`) in the markup.  
-**In Tafsila:** `packages/ui/src/button.tsx`; `@tailwindcss/postcss` in `apps/web`. **Card:** Tailwind CSS (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/ui/src/button.tsx`; `@tailwindcss/postcss` in `apps/web`. **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
 **Learn:** <https://tailwindcss.com/docs>
 
 <a id="query-client"></a>
@@ -1701,8 +1715,15 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### TanStack Query
 
 **Plain words:** A library that fetches server data, caches it and keeps screens up to date.  
-**In Tafsila:** Planned for all server data in the web app ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** TanStack Query (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned for all server data in the web app ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** [TanStack Query](tech/tanstack-query.md) · **Level:** intermediate  
 **Learn:** <https://tanstack.com/query/latest/docs/framework/react/overview>
+
+<a id="tech-card"></a>
+
+### Tech card
+
+**Plain words:** A one-page note about one technology: what it is, why we chose it, what we rejected and when we would change our mind.  
+**In Tafsila:** One per technology in `docs/handbook/tech/`; the index is [tech/README.md](tech/README.md). Every direct dependency must be covered by a card's `packages:` list. **Level:** beginner
 
 <a id="three-js"></a>
 
@@ -1717,7 +1738,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Transpile
 
 **Plain words:** Converting code from one form to another that the runtime understands (TypeScript to JavaScript).  
-**In Tafsila:** `transpilePackages` in `apps/web/next.config.ts` compiles the internal packages from source. **Card:** Next.js (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `transpilePackages` in `apps/web/next.config.ts` compiles the internal packages from source. **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages>
 
 <a id="triage"></a>
@@ -1733,7 +1754,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Trivy
 
 **Plain words:** A scanner that looks for known security problems in container images.  
-**In Tafsila:** Runs in the Docker workflow ([WORKFLOW section 5](../WORKFLOW.md)). **Card:** Docker (planned in #9) · **Level:** advanced  
+**In Tafsila:** Runs in the Docker workflow ([WORKFLOW section 5](../WORKFLOW.md)). **Card:** [Docker](tech/docker.md) · **Level:** advanced  
 **Learn:** <https://trivy.dev/latest/docs/>
 
 <a id="turborepo"></a>
@@ -1741,7 +1762,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Turborepo
 
 **Plain words:** A tool that runs tasks across all packages of a monorepo and caches the results.  
-**In Tafsila:** `turbo.json`; `pnpm test`, `pnpm build` and `pnpm typecheck` call it. **Card:** Turborepo (planned in #9) · **Level:** intermediate  
+**In Tafsila:** `turbo.json`; `pnpm test`, `pnpm build` and `pnpm typecheck` call it. **Card:** [Turborepo](tech/turborepo.md) · **Level:** intermediate  
 **Learn:** <https://turborepo.com/docs>
 
 <a id="type"></a>
@@ -1749,7 +1770,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Type
 
 **Plain words:** A label that says what kind of value something is (number, text, `DesignSpec`).  
-**In Tafsila:** Types are inferred from schemas with `z.infer`. **Card:** TypeScript (planned in #9) · **Level:** beginner  
+**In Tafsila:** Types are inferred from schemas with `z.infer`. **Card:** [TypeScript](tech/typescript.md) · **Level:** beginner  
 **Learn:** <https://www.typescriptlang.org/docs/handbook/2/everyday-types.html>
 
 <a id="typecheck"></a>
@@ -1757,7 +1778,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Type checking (tsc)
 
 **Plain words:** Running the TypeScript compiler without producing files, only to find type errors.  
-**In Tafsila:** `pnpm typecheck`. **Card:** TypeScript (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm typecheck`. **Card:** [TypeScript](tech/typescript.md) · **Level:** beginner  
 **Learn:** <https://www.typescriptlang.org/docs/handbook/2/basic-types.html>
 
 <a id="typescript"></a>
@@ -1765,7 +1786,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### TypeScript
 
 **Plain words:** JavaScript with types, so many mistakes are caught before running.  
-**In Tafsila:** Strict mode everywhere ([ADR-001](../DECISIONS.md)); `any` is forbidden. **Card:** TypeScript (planned in #9) · **Level:** beginner  
+**In Tafsila:** Strict mode everywhere ([ADR-001](../DECISIONS.md)); `any` is forbidden. **Card:** [TypeScript](tech/typescript.md) · **Level:** beginner  
 **Learn:** <https://www.typescriptlang.org/docs/>
 
 <a id="letter-u"></a>
@@ -1785,7 +1806,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### uv
 
 **Plain words:** A fast Python package and version manager.  
-**In Tafsila:** Isolates `services/sim` with the version in `.python-version`. **Level:** intermediate  
+**In Tafsila:** Isolates `services/sim` with the version in `.python-version`. **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** intermediate  
 **Learn:** <https://docs.astral.sh/uv/>
 
 <a id="letter-v"></a>
@@ -1805,7 +1826,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Vercel
 
 **Plain words:** The hosting company that runs the Next.js app and builds previews.  
-**In Tafsila:** Primary host ([ADR-003](../DECISIONS.md)); a Docker image is the exit plan ([ADR-004](../DECISIONS.md)). **Card:** Vercel (planned in #9) · **Level:** beginner  
+**In Tafsila:** Primary host ([ADR-003](../DECISIONS.md)); a Docker image is the exit plan ([ADR-004](../DECISIONS.md)). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
 **Learn:** <https://vercel.com/docs>
 
 <a id="sdk"></a>
@@ -1821,7 +1842,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Vitest
 
 **Plain words:** A fast test runner for TypeScript.  
-**In Tafsila:** `pnpm test`; test files sit next to the code. **Card:** Vitest (planned in #9) · **Level:** beginner  
+**In Tafsila:** `pnpm test`; test files sit next to the code. **Card:** [Vitest](tech/vitest.md) · **Level:** beginner  
 **Learn:** <https://vitest.dev/guide/>
 
 <a id="letter-w"></a>
@@ -1857,7 +1878,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Webhook
 
 **Plain words:** A message another service sends to our server when something happens (for example a payment succeeded).  
-**In Tafsila:** Paymob payment webhooks (planned), verified with [HMAC](#hmac) and handled [idempotently](#idempotency). **Card:** Paymob (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Paymob payment webhooks (planned), verified with [HMAC](#hmac) and handled [idempotently](#idempotency). **Card:** [Paymob](tech/paymob-fawry.md) · **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/webhooks/about-webhooks>
 
 <a id="workspace"></a>
@@ -1865,7 +1886,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Workspace
 
 **Plain words:** A package inside a monorepo that pnpm links to the others.  
-**In Tafsila:** `apps/*` and `packages/*` in `pnpm-workspace.yaml`; dependencies like `"@tafsila/ui": "workspace:*"`. **Card:** pnpm (planned in #9) · **Level:** beginner  
+**In Tafsila:** `apps/*` and `packages/*` in `pnpm-workspace.yaml`; dependencies like `"@tafsila/ui": "workspace:*"`. **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://pnpm.io/workspaces>
 
 <a id="woven-knit"></a>
@@ -1897,7 +1918,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Zod
 
 **Plain words:** A TypeScript library to define a schema once and get runtime validation plus a type from it.  
-**In Tafsila:** `packages/schemas`, `packages/config`. See [schema-first contracts](patterns/schema-first-contracts.md). **Card:** Zod (planned in #9) · **Level:** beginner  
+**In Tafsila:** `packages/schemas`, `packages/config`. See [schema-first contracts](patterns/schema-first-contracts.md). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://zod.dev/>
 
 <a id="zustand"></a>
@@ -1905,5 +1926,5 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Zustand
 
 **Plain words:** A small library for sharing state between React components.  
-**In Tafsila:** Planned only for the pattern editor session (selected piece, zoom, layers). **Card:** Zustand (planned in #9) · **Level:** intermediate  
+**In Tafsila:** Planned only for the pattern editor session (selected piece, zoom, layers). **Card:** [Zustand](tech/zustand.md) · **Level:** intermediate  
 **Learn:** <https://zustand.docs.pmnd.rs/>

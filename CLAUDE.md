@@ -48,6 +48,6 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 _Updated at the end of every session._
 
 - Milestone: M0 - Foundation & environments (in progress)
-- Last done: handbook core in `docs/handbook/` (#8); MVP milestone plan v2 in SRS/WORKFLOW/commands + acceptance-criteria ticking with `scripts/gh-ac.sh` (#6); per-area agent config (#3)
-- Next: Supabase init; first issues from SRS M1
+- Last done: 33 technology cards with dated fact checks and ADR-011..014 (#9, stacked on #8); handbook core (#8); MVP milestone plan v2 (#6)
+- Next: handbook CI check (#10); Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval
