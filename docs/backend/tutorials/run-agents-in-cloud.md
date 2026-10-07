@@ -32,7 +32,7 @@ The dispatcher starts nothing when an issue is already `status:in-progress` (`DI
 ## Follow progress
 
 - claude.ai/code: the session page (also on your phone).
-- Action: Actions tab → "Claude agent" run for the issue.
+- Action: Actions tab → "Claude agent" run for the issue. Its **claude-transcript** artifact (kept 7 days) shows what Claude did and why it stopped.
 - The issue card moves on the board and the issue label becomes `status:in-progress`, then `status:in-review` with a PR link.
 
 ## Stop

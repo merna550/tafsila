@@ -47,6 +47,12 @@ describe("claude.yml tool permissions (issue #46)", () => {
     }
   });
 
+  it("keeps Claude's transcript as an artifact even when the job fails (issue #48)", () => {
+    const keep = steps.find((s) => s.uses?.startsWith("actions/upload-artifact@"));
+    expect(keep.if).toBe("always()");
+    expect(keep.with.path).toContain("claude-execution-output.json");
+  });
+
   it("fails the job when Claude was refused a tool", () => {
     const check = steps.at(-1);
     expect(check.env.EXECUTION_FILE).toContain("steps.build.outputs.execution_file");
@@ -80,6 +86,15 @@ describe("dispatch.yml", () => {
       ISSUE: "${{ needs.select.outputs.issue }}",
       MODEL: "${{ needs.select.outputs.model }}",
     });
+  });
+});
+
+describe("/build and /plan wait for their subagent (issue #48)", () => {
+  it("start the subagent in the foreground", () => {
+    for (const name of ["build", "plan"]) {
+      const text = readFileSync(new URL(`../.claude/commands/${name}.md`, import.meta.url), "utf8");
+      expect(text).toContain("`run_in_background: false`");
+    }
   });
 });
 
