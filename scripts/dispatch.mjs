@@ -3,6 +3,7 @@
 import { appendFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { resolveModel } from "./agent-model.mjs";
 
 const MAX_REVIEW_PRS = 3;
 const DEFAULT_DAILY_LIMIT = 4;
@@ -27,11 +28,10 @@ export function parseDependencies(body) {
  * Maps the `build:*` label to a Claude model alias.
  *
  * @param labels Label names of the issue.
- * @returns "opus", "sonnet" or "haiku" (sonnet by default).
+ * @returns "opus", "sonnet" or "haiku" (sonnet when missing or unknown, see agent-model.mjs).
  */
 export function buildModel(labels) {
-  const found = labels.find((l) => l.startsWith("build:"));
-  return found ? found.slice("build:".length) : "sonnet";
+  return resolveModel("build", labels).model;
 }
 
 /**

@@ -1,24 +1,14 @@
 ---
-description: Implement a ready issue from its plan (use the model in its build:* label)
+description: Implement a ready issue from its plan (model picked from its build:* label)
 argument-hint: #<issue>
 ---
 
-Follow docs/WORKFLOW.md and CLAUDE.md. Issue: $ARGUMENTS
+Issue: $ARGUMENTS. You only route the work; a subagent on the label's model does it (issue #40, ADR-019).
 
-1. Require `status:ready` (or `status:changes-requested`). Read the issue and its plan comment; read only the files the plan names and the matching row of `docs/CONTEXT_MAP.md`. Use the `code-search` subagent to locate anything else.
-2. Set `status:in-progress` and move the card: `scripts/gh-project.sh status <issue-url> "In progress"`. Branch from main: `feat|fix|chore/<N>-<slug>`.
-3. Implement in small conventional commits referencing #N. Write tests first for bugs.
-   As soon as an acceptance criterion is met **and verified**, tick it: `scripts/gh-ac.sh check N <n…>` (`scripts/gh-ac.sh list N` shows the numbers; `uncheck` if it regresses).
-4. Run `pnpm lint && pnpm typecheck && pnpm test` (and `pnpm test:e2e` when UI flows change), through the `test-runner` subagent so only failures come back. Fix until green.
-   - Interactive session with Merna: if stuck twice on the same error, comment on the issue and suggest escalating the build:* model.
-   - **Unattended** (`GITHUB_ACTIONS=true` or `CLAUDE_CODE_REMOTE=true`): if the same problem fails twice, stop: comment the problem on the issue (what fails, what you tried, the error), set `status:blocked`, push the branch as it is, and end. Never escalate the model on your own.
-5. Docs in the same branch (Definition of Done, docs/WORKFLOW.md §5):
-   - SRS, DECISIONS.md, CLAUDE.md status, `docs/plans/<N>-<slug>.md`.
-   - Manual test cases file from `docs/test-cases/_TEMPLATE.md`; run `scripts/test-case-index.sh`.
-   - Handbook (every PR): add the glossary entry, tech card (`docs/handbook/tech/_TEMPLATE.md`, `packages:` front matter) or pattern page for each new library, pattern or term; add a row at the top of `docs/handbook/learning-log.md`; fill the PR's "Concepts introduced" section (or write "None"). `pnpm docs:check` (part of `pnpm quality`) fails when a dependency has no card or a relative link is broken.
-   - Backend: `pnpm api:openapi && pnpm api:postman`, `pnpm api:test` green on local, seed data + seed-data.md, tutorial updates.
-6. Run `scripts/gh-ac.sh progress N`; it should be N/N. Any unticked criterion needs a reason in the PR body.
-   Push and open the PR from the template with `Closes #N`, SRS IDs, the "Concepts introduced" section, the `progress` line, test summary, screenshots for visual changes, and the preview URL once Vercel posts it:
-   - same labels as the issue (except status) and the **same milestone**: `gh pr create … --milestone "$(gh issue view N --json milestone --jq .milestone.title)"`
-   - add the PR to the board and move the issue card: `scripts/gh-project.sh add <pr-url> "In review"` and `scripts/gh-project.sh status <issue-url> "In review"`.
-7. Set `status:in-review` on the issue. Tell Merna in Arabic (max 5 lines): PR link, preview link, what to check.
+1. Resolve the model: `node scripts/agent-model.mjs build <N>`. It prints `{"issue","model","agent","note"}`.
+   If `gh` is unavailable, read the issue labels with the GitHub MCP tools and apply the same rule: `build:haiku|sonnet|opus` → `builder-<model>`; missing or unknown → `builder-sonnet` with a note.
+2. If `note` is not empty, tell Merna in one Arabic line (for example: no `build:*` label, building with sonnet).
+3. Start the `agent` subagent with the prompt: `Build issue #<N> following .claude/procedures/build.md.` plus anything Merna added after the issue number. Do not read the issue, the plan or code yourself.
+4. Relay the subagent's final summary to Merna unchanged.
+   - If the Stop hook reports failing checks, send those failures back to the same subagent (or a new one of the same type) to fix; do not fix them yourself.
+   - Interactive session with Merna and the summary ends with `BLOCKED:` → suggest escalating the `build:*` label one tier. Unattended (`GITHUB_ACTIONS=true` or `CLAUDE_CODE_REMOTE=true`) → never escalate.

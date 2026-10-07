@@ -29,6 +29,15 @@ describe("claude.yml", () => {
   });
 });
 
+describe("claude.yml model resolution", () => {
+  it("resolves the model from the issue label, or from the PR's linked issue (issue #40)", () => {
+    const ctx = claude.jobs.claude.steps.find((s) => s.id === "ctx");
+    expect(ctx.run).toContain("node scripts/agent-model.mjs build");
+    expect(ctx.run).toContain('--pr "$EVENT_PR"');
+    expect(ctx.env.EVENT_PR).toContain("github.event.issue.pull_request");
+  });
+});
+
 describe("dispatch.yml", () => {
   it("maps the pick step outputs to the select job outputs", () => {
     expect(dispatch.jobs.select.outputs).toEqual({

@@ -49,26 +49,25 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.AGENT_GITHUB_TOKEN }}
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
       - name: Resolve issue and model
+        # Model from the issue's build:* label (sonnet when missing). A comment on a PR uses the PR's linked
+        # issue (closing reference or "Closes #N"); the dispatcher passes its issue and model (issue #40).
         id: ctx
         env:
           GH_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
           INPUT_ISSUE: ${{ inputs.issue }}
           INPUT_MODEL: ${{ inputs.model }}
           EVENT_ISSUE: ${{ github.event.issue.number }}
+          EVENT_PR: ${{ github.event.pull_request.number || (github.event.issue.pull_request && github.event.issue.number) || '' }}
         run: |
-          issue="${INPUT_ISSUE:-$EVENT_ISSUE}"
-          model="$INPUT_MODEL"
-          if [ -z "$model" ] && [ -n "$issue" ]; then
-            model="$(gh issue view "$issue" --json labels --jq '[.labels[].name | select(startswith("build:")) | sub("build:";"")][0] // "sonnet"' 2>/dev/null || echo sonnet)"
-          fi
-          case "${model:-sonnet}" in opus|sonnet|haiku) ;; *) model=sonnet ;; esac
-          echo "issue=$issue" >> "$GITHUB_OUTPUT"
-          echo "model=${model:-sonnet}" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: .nvmrc
+          if [ -n "$INPUT_ISSUE" ]; then set -- "$INPUT_ISSUE" --model "$INPUT_MODEL"
+          elif [ -n "$EVENT_PR" ]; then set -- --pr "$EVENT_PR"
+          else set -- "$EVENT_ISSUE"; fi
+          node scripts/agent-model.mjs build "$@"
 
       - name: Prepare workspace
         run: bash scripts/agent-setup.sh
