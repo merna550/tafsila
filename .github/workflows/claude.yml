@@ -36,13 +36,15 @@ concurrency:
 jobs:
   claude:
     # Comment triggers: only Merna, only when the comment mentions @claude. workflow_call always runs.
+    # Under workflow_call, github.event_name is the CALLER's event (schedule / workflow_dispatch), never
+    # 'workflow_call', so a dispatcher call is detected by its required `issue` input instead (issue #38).
     if: >-
-      github.event_name == 'workflow_call' ||
+      inputs.issue != '' ||
       (github.actor == 'merna550' && contains(github.event.comment.body, '@claude'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.AGENT_GITHUB_TOKEN }}
@@ -64,7 +66,7 @@ jobs:
           echo "issue=$issue" >> "$GITHUB_OUTPUT"
           echo "model=${model:-sonnet}" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
 
@@ -72,7 +74,7 @@ jobs:
         run: bash scripts/agent-setup.sh
 
       - name: Build issue (dispatcher)
-        if: github.event_name == 'workflow_call'
+        if: inputs.issue != ''
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -81,7 +83,7 @@ jobs:
           claude_args: --model ${{ steps.ctx.outputs.model }} --max-turns 50
 
       - name: Answer @claude comment
-        if: github.event_name != 'workflow_call'
+        if: inputs.issue == ''
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
