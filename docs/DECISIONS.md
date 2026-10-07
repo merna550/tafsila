@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-015 · 2026-10-07 · The handbook is enforced by CI (`docs:check`) and a PR rule
+
+**Decision:** `pnpm docs:check` (`scripts/check-handbook.mjs`) fails when a direct dependency of any workspace `package.json` is not listed in some technology card's `packages:` front matter, or when a relative link or anchor in `docs/` does not resolve. It is part of `pnpm quality` and the Code quality workflow. Card front matter is parsed as real YAML with the `yaml` package (Prettier can reflow the list; a one-line regex would miss it). External links are checked by lychee (`.github/workflows/docs-links.yml`) on PRs touching `docs/**` (non-blocking) and weekly (opens an issue on failure). Every PR has a "Concepts introduced" section and a Definition of Done item.
+**Reason:** Agents add libraries and terms every week; a handbook that depends on reviewers remembering goes stale. Cards may list planned, not-yet-installed packages, so the check only requires installed dependencies to be covered.
+**Alternatives:** Regex front matter parsing (fragile); a docs site with a built-in checker (premature); making external link failures block merges (other sites go down; not our fault).
+
 ## ADR-014 · 2026-10-07 · Vercel Pro and the Node 22 pin must be revisited before launch
 
 **Decision:** Record two dated findings from the tech-card fact check (issue #9): (1) the Vercel Hobby plan is restricted to non-commercial, personal use, so the production project moves to Vercel Pro (about $20 per developer seat per month) before the first paying user (milestone M8 at the latest); development and previews may stay on Hobby while there is no revenue. (2) Node 22 is in Maintenance LTS until 2027-04-30; move `.nvmrc`, `engines` and the Dockerfile to Node 24 (or 26) by mid 2027. Supabase staging/production projects also need Pro (free projects pause after a week of inactivity).
