@@ -22,6 +22,8 @@
 
 ## 1. Frontend — `apps/web` (feature-sliced)
 
+Details: `docs/frontend/README.md` · agent notes: `apps/web/CLAUDE.md`.
+
 ```
 apps/web/src/
 ├─ app/                     # Next.js routes ONLY: thin pages that compose features (no logic)
@@ -53,6 +55,8 @@ Rules
 
 ## 2. Backend — `packages/api` (hexagonal / clean)
 
+Details: `docs/backend/README.md` · agent notes: `packages/api/CLAUDE.md`.
+
 ```
 packages/api/src/
 ├─ routes/          # HTTP adapter (Hono): validate (Zod) → call use case → map result/error to HTTP
@@ -79,6 +83,8 @@ Rules
 - **Swapping a vendor** = new adapter + one line in `container.ts`.
 
 ## 3. Pattern engine — `packages/engine` (functional core + plugin pipeline)
+
+Details: `docs/engine/README.md` · agent notes: `packages/engine/CLAUDE.md`.
 
 ```
 DesignSpec + Measurements + Options

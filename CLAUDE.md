@@ -17,6 +17,10 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 | Architecture of each part (web, api, engine, sim)   | `docs/ARCHITECTURE.md`                                                                              |
 | Clean code rules, where code lives, JSDoc template  | `docs/CODING_STANDARDS.md`                                                                          |
 | Backend docs, tutorials, Docker, environments       | `docs/backend/`                                                                                     |
+| Frontend docs (design system, RTL, state)           | `docs/frontend/README.md`                                                                           |
+| Engine docs (methods, modules, validation, units)   | `docs/engine/README.md`                                                                             |
+| Per-area agent notes (loaded with those files)      | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                         |
+| Path-scoped rules and task skills                   | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)           |
 | Manual test cases                                   | `docs/test-cases/`                                                                                  |
 | Saved prompts                                       | `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`) |
 
@@ -43,6 +47,6 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 _Updated at the end of every session._
 
 - Milestone: M0 — repository setup (in progress)
-- Last done: monorepo foundation: Next.js RTL web, Hono API (/api/health), engine (geometry + sleeve-cap solver), schemas, config, ui, utils, test-fixtures; lint/format/duplication/architecture checks green; 18 tests passing; standalone build verified
-- Next: run scripts/bootstrap.sh on the Mac; create project board; GitHub labels synced from .github/labels.yml (#1); Supabase init; first issues from SRS M1
+- Last done: per-area agent config (#3): nested CLAUDE.md for web/api/engine, `.claude/rules/**`, skills add-page/add-endpoint/add-garment-module, docs/frontend + docs/engine READMEs; board automation (#4); Docker CI fixes (#1)
+- Next: Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval
