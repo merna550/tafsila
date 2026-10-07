@@ -34,6 +34,27 @@ describe("claude.yml", () => {
   });
 });
 
+describe("claude.yml tool permissions (issue #46)", () => {
+  const steps = claude.jobs.claude.steps;
+  const tools = claude.jobs.claude.env.CLAUDE_TOOLS.split(",");
+
+  it("allows the tools /build needs in headless runs", () => {
+    for (const tool of ["Bash", "Edit", "Write", "Agent"]) expect(tools).toContain(tool);
+    for (const id of ["build", "answer"]) {
+      expect(steps.find((s) => s.id === id).with.claude_args).toContain(
+        "--allowedTools ${{ env.CLAUDE_TOOLS }}",
+      );
+    }
+  });
+
+  it("fails the job when Claude was refused a tool", () => {
+    const check = steps.at(-1);
+    expect(check.env.EXECUTION_FILE).toContain("steps.build.outputs.execution_file");
+    expect(check.run).toContain("permission_denials");
+    expect(check.run).toContain("exit 1");
+  });
+});
+
 describe("claude.yml model resolution", () => {
   it("resolves the model from the issue label, or from the PR's linked issue (issue #40)", () => {
     const ctx = claude.jobs.claude.steps.find((s) => s.id === "ctx");
