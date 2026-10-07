@@ -88,6 +88,7 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 - [ ] Docs updated: SRS (behaviour), DECISIONS (choices), CLAUDE.md status.
 - [ ] Manual test cases: `docs/test-cases/<area>/<N>-<slug>.md` (happy path, errors, permissions, edge sizes, RTL, mobile), each marked automated or manual-only.
 - [ ] Plan saved to `docs/plans/<N>-<slug>.md`.
+- [ ] New concepts added to `docs/handbook/` (glossary / tech card / pattern) and listed in `learning-log.md`; the PR has a "Concepts introduced" section; `pnpm docs:check` passes.
 - [ ] Docker: image still builds, passes hadolint/Trivy and the container smoke test (CI `Docker image` workflow). New env vars added to `.env.example`, `.env.docker.example` and `.github/ci.env` (placeholder).
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
 - [ ] Every acceptance criterion is ticked in the issue (`scripts/gh-ac.sh check <issue> <n…>`) as soon as it is met and verified; an issue is not moved to In review with unticked criteria unless the PR explains why. The PR body includes `scripts/gh-ac.sh progress <issue>`.
