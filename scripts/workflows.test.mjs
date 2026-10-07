@@ -57,6 +57,20 @@ describe("dispatch.yml", () => {
   });
 });
 
+describe("setup-node caching", () => {
+  it("is turned off in jobs that do not install pnpm first (issue #42)", () => {
+    for (const name of allWorkflows) {
+      for (const job of Object.values(workflow(name).jobs)) {
+        const steps = job.steps ?? [];
+        const node = steps.findIndex((s) => s.uses?.startsWith("actions/setup-node@"));
+        if (node < 0) continue;
+        const pnpmFirst = steps.slice(0, node).some((s) => s.uses?.startsWith("pnpm/action-setup@"));
+        if (!pnpmFirst) expect(steps[node].with?.["package-manager-cache"], `${name}`).toBe(false);
+      }
+    }
+  });
+});
+
 describe("action versions", () => {
   it("uses checkout and setup-node majors that run on Node 24", () => {
     for (const name of allWorkflows) {

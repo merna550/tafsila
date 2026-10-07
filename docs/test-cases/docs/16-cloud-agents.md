@@ -5,7 +5,7 @@
 | Issue        | #16                        |
 | SRS          | NFR-12                     |
 | Area         | infra                      |
-| Last updated | 2026-10-07 (by PR for #38) |
+| Last updated | 2026-10-07 (by PR for #42) |
 
 ## Test data
 
@@ -28,6 +28,7 @@ Status legend: ⬜ not run · ✅ pass · ❌ fail (link issue)
 | TC-INFRA-16-09 | Pause works                              | Medium   | Variable settable          | Set `DISPATCH_ENABLED=false`; run the dispatcher      | Summary says paused; no build starts                                    | manual only                  | ⬜  | ⬜      |
 | TC-INFRA-16-10 | Dispatcher call is not skipped (#38)     | High     | none                       | Run `pnpm test:docs`                                  | `claude.yml` conditions use `inputs.issue`, not `github.event_name`     | `scripts/workflows.test.mjs` | ⬜  | ⬜      |
 | TC-INFRA-16-11 | Dispatcher dry run (#38)                 | High     | One ready issue            | Actions → Dispatch agent → Run workflow, tick dry_run | `dry-run` job prints issue and model; `build` is skipped; no Claude run | manual only                  | ⬜  | ⬜      |
+| TC-INFRA-16-12 | setup-node works without pnpm (#42)      | High     | none                       | Run `pnpm test:docs`                                  | Jobs without `pnpm/action-setup` set `package-manager-cache: false`     | `scripts/workflows.test.mjs` | ⬜  | ⬜      |
 
 ## Manual run log
 
