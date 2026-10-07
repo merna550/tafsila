@@ -5,9 +5,9 @@ argument-hint: #<issue>
 
 Follow docs/WORKFLOW.md. Issue: $ARGUMENTS
 
-1. Read the issue, CLAUDE.md, the linked SRS sections, and DECISIONS.md entries for the same areas. Read only the code files you need.
+1. Read the issue, CLAUDE.md, the linked SRS sections, and DECISIONS.md entries for the same areas. Read only the code files you need: start from the matching row of `docs/CONTEXT_MAP.md` and use the `code-search` subagent instead of opening many files.
 2. Post ONE plan comment on the issue:
-   - Approach (short), files to create/change, data/schema/migration changes, API contract changes.
+   - Approach (short), files to create/change (the build reads only these and its `docs/CONTEXT_MAP.md` row), data/schema/migration changes, API contract changes.
    - Test plan: unit / property / e2e / visual cases with concrete inputs, plus a draft list of manual test cases (IDs TC-<AREA>-<N>-xx).
    - Docs to update. Risks and how they are handled. Estimated size (adjust label if wrong).
    - Re-check build:* label; change it if the plan shows a different difficulty.

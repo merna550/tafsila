@@ -48,6 +48,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Numbered `ADR-001`... in [DECISIONS.md](../DECISIONS.md), newest first. Agents read it before asking questions. **Level:** beginner  
 **Learn:** <https://adr.github.io/>
 
+<a id="affected-build"></a>
+
+### Affected build (affected-only checks)
+
+**Plain words:** Running checks only for the packages a change touched, plus the packages that depend on them, instead of the whole repo.  
+**In Tafsila:** `turbo run typecheck test --filter=...[origin/main]` in the Stop [hook](#hook) and on pull requests in the Code quality workflow (`scripts/ci-scope.sh`); a change to root config, and every push to `main`, checks everything (ADR-017). **Card:** [Turborepo](tech/turborepo.md) · **Level:** intermediate  
+**Learn:** <https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters>
+
 <a id="agent"></a>
 
 ### Agent (AI agent)
@@ -288,6 +296,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `Container` interface and `createContainer()` in `packages/api/src/container.ts`. **Level:** intermediate  
 **Learn:** <https://martinfowler.com/articles/injection.html>
 
+<a id="context-map"></a>
+
+### Context map
+
+**Plain words:** A table that tells an agent which few files to read for each kind of task, so it does not explore the whole repo.  
+**In Tafsila:** [docs/CONTEXT_MAP.md](../CONTEXT_MAP.md), linked from `CLAUDE.md`, `/plan` and `/build` (ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** beginner  
+**Learn:** <https://docs.claude.com/en/docs/claude-code/memory>
+
 <a id="conventional-commits"></a>
 
 ### Conventional commits
@@ -425,7 +441,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Dispatcher
 
 **Plain words:** A small scheduled robot that looks at the open issues and starts the next one for the cloud agent, following simple rules (priority, dependencies, one at a time, no more than 3 PRs waiting).  
-**In Tafsila:** `.github/workflows/dispatch.yml` runs `scripts/dispatch.mjs` every 2 hours; pause it with the repo variable `DISPATCH_ENABLED=false` ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**In Tafsila:** `.github/workflows/dispatch.yml` runs `scripts/dispatch.mjs` every 2 hours, at most `DISPATCH_DAILY_LIMIT` builds a day (default 4); pause it with the repo variable `DISPATCH_ENABLED=false` ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016, ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/actions/using-workflows/reusing-workflows>
 
 <a id="docker"></a>
@@ -802,6 +818,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A small, fast web framework for writing HTTP APIs in TypeScript.  
 **In Tafsila:** `packages/api` builds a Hono app (`createApp`) that Next.js mounts at `/api` ([ADR-005](../DECISIONS.md)). **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://hono.dev/docs/>
+
+<a id="hook"></a>
+
+### Hook (Claude Code)
+
+**Plain words:** A command Claude Code runs automatically at a fixed moment, such as after every file edit or before the agent finishes; its output can be shown to the agent or stop it.  
+**In Tafsila:** `.claude/settings.json`: [SessionStart](#sessionstart-hook) installs dependencies in the cloud; PostToolUse runs Prettier and `eslint --fix` on the edited file only; Stop runs the [affected](#affected-build) typecheck and tests and sends the agent back when they fail (ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**Learn:** <https://docs.claude.com/en/docs/claude-code/hooks>
 
 <a id="http"></a>
 
@@ -1623,7 +1647,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### SessionStart hook
 
 **Plain words:** A command Claude Code runs automatically when a session starts, configured in `.claude/settings.json`.  
-**In Tafsila:** Runs `scripts/agent-setup.sh`, which exits at once unless `CLAUDE_CODE_REMOTE=true` (a cloud session), so it never runs on a laptop; in the cloud it enables corepack and runs `pnpm install --frozen-lockfile` (ADR-016). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**In Tafsila:** Runs `scripts/agent-setup.sh`, which exits at once unless `CLAUDE_CODE_REMOTE=true` (a cloud session) or `GITHUB_ACTIONS=true`, so it never runs on a laptop; in the cloud (and in GitHub Actions) it enables corepack and runs `pnpm install --frozen-lockfile`, writing everything to a log file and printing one summary line (ADR-016, ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
 **Learn:** <https://docs.claude.com/en/docs/claude-code/hooks>
 
 <a id="skill-agent"></a>
@@ -1721,6 +1745,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Forcing an AI model to answer in a fixed shape (JSON that matches a schema) instead of free text.  
 **In Tafsila:** The AI must fill a `DesignSpec`; invalid output is retried once ([SRS section 9](../SRS.md)). **Card:** [Zod](tech/zod.md) · **Level:** intermediate  
 **Learn:** <https://ai-sdk.dev/docs>
+
+<a id="subagent"></a>
+
+### Subagent
+
+**Plain words:** A helper agent the main agent starts for one small job; it works in its own context and returns only a short answer, so the main session stays small.  
+**In Tafsila:** `.claude/agents/code-search.md` (finds where something lives) and `.claude/agents/test-runner.md` (runs tests, reports only failures), both on the cheap haiku model (ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**Learn:** <https://docs.claude.com/en/docs/claude-code/sub-agents>
 
 <a id="supabase"></a>
 

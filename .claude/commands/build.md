@@ -5,11 +5,13 @@ argument-hint: #<issue>
 
 Follow docs/WORKFLOW.md and CLAUDE.md. Issue: $ARGUMENTS
 
-1. Require `status:ready` (or `status:changes-requested`). Read the issue and its plan comment; read only the files the plan names.
+1. Require `status:ready` (or `status:changes-requested`). Read the issue and its plan comment; read only the files the plan names and the matching row of `docs/CONTEXT_MAP.md`. Use the `code-search` subagent to locate anything else.
 2. Set `status:in-progress` and move the card: `scripts/gh-project.sh status <issue-url> "In progress"`. Branch from main: `feat|fix|chore/<N>-<slug>`.
 3. Implement in small conventional commits referencing #N. Write tests first for bugs.
    As soon as an acceptance criterion is met **and verified**, tick it: `scripts/gh-ac.sh check N <n…>` (`scripts/gh-ac.sh list N` shows the numbers; `uncheck` if it regresses).
-4. Run `pnpm lint && pnpm typecheck && pnpm test` (and `pnpm test:e2e` when UI flows change). Fix until green. If stuck twice on the same error, comment on the issue and suggest escalating the build:* model.
+4. Run `pnpm lint && pnpm typecheck && pnpm test` (and `pnpm test:e2e` when UI flows change), through the `test-runner` subagent so only failures come back. Fix until green.
+   - Interactive session with Merna: if stuck twice on the same error, comment on the issue and suggest escalating the build:* model.
+   - **Unattended** (`GITHUB_ACTIONS=true` or `CLAUDE_CODE_REMOTE=true`): if the same problem fails twice, stop: comment the problem on the issue (what fails, what you tried, the error), set `status:blocked`, push the branch as it is, and end. Never escalate the model on your own.
 5. Docs in the same branch (Definition of Done, docs/WORKFLOW.md §5):
    - SRS, DECISIONS.md, CLAUDE.md status, `docs/plans/<N>-<slug>.md`.
    - Manual test cases file from `docs/test-cases/_TEMPLATE.md`; run `scripts/test-case-index.sh`.

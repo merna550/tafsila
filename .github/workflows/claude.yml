@@ -3,6 +3,7 @@ name: Claude agent
 # - Claude auth: CLAUDE_CODE_OAUTH_TOKEN (subscription, from `claude setup-token`).
 # - GitHub auth: AGENT_GITHUB_TOKEN, a fine-grained PAT limited to this repo (contents, pull requests,
 #   issues: read/write). PRs opened with the default GITHUB_TOKEN do not trigger CI, so this token is required.
+# Cost guard (issue #17): every run stops after 50 agent turns (--max-turns 50).
 on:
   issue_comment:
     types: [created]
@@ -63,6 +64,10 @@ jobs:
           echo "issue=$issue" >> "$GITHUB_OUTPUT"
           echo "model=${model:-sonnet}" >> "$GITHUB_OUTPUT"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
       - name: Prepare workspace
         run: bash scripts/agent-setup.sh
 
@@ -73,7 +78,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.AGENT_GITHUB_TOKEN }}
           prompt: /build #${{ steps.ctx.outputs.issue }}
-          claude_args: --model ${{ steps.ctx.outputs.model }}
+          claude_args: --model ${{ steps.ctx.outputs.model }} --max-turns 50
 
       - name: Answer @claude comment
         if: github.event_name != 'workflow_call'
@@ -81,4 +86,4 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.AGENT_GITHUB_TOKEN }}
-          claude_args: --model ${{ steps.ctx.outputs.model }}
+          claude_args: --model ${{ steps.ctx.outputs.model }} --max-turns 50

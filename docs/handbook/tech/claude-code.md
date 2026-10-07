@@ -30,7 +30,7 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 ## Where it lives in our code
 
 - `CLAUDE.md` (root), `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`, `AGENTS.md`.
-- `.claude/commands/`, `.claude/rules/`, `.claude/skills/`, `.claude/settings.json`.
+- `.claude/commands/`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `scripts/hooks/`.
 - `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-setup.sh`.
 
 ## Running in the cloud
@@ -38,6 +38,15 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 - **claude.ai/code** (web or phone), connected once with `/web-setup`; no GitHub App needed.
 - **GitHub Action** `claude.yml` (`@claude` from Merna, or called by the dispatcher). Auth is the subscription token plus a fine-grained token, not an API key. Auto-fix on PRs needs the GitHub App, so it is not used.
 - A **SessionStart hook** (`.claude/settings.json`) runs `scripts/agent-setup.sh`, which does nothing unless the session is a cloud one (`CLAUDE_CODE_REMOTE=true`). See [tutorial](../../backend/tutorials/run-agents-in-cloud.md) and [ADR-016](../../DECISIONS.md).
+
+## Saving tokens
+
+Agents should spend tokens on the feature, not on formatting, exploring or reading test logs ([ADR-017](../../DECISIONS.md)):
+
+- **Hooks** (`.claude/settings.json`): after each edit, Prettier and `eslint --fix` run on that file only; before the agent finishes, the Stop hook typechecks and tests only the [affected](../glossary.md#affected-build) packages and sends it back when they fail.
+- **Subagents** on haiku (`.claude/agents/`): `code-search` answers "where is X" in three lines; `test-runner` returns only failures.
+- **[Context map](../../CONTEXT_MAP.md):** which files to read for each kind of task.
+- **Cloud guards:** `--max-turns 50`, at most `DISPATCH_DAILY_LIMIT` dispatcher builds a day (default 4), and the unattended rule: the same problem fails twice → stop, comment on the issue, `status:blocked`, never switch to a bigger model alone.
 
 ## The 20% you need
 
@@ -57,4 +66,4 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 ## Learn more
 
 - [Claude Code docs](https://docs.claude.com/en/docs/claude-code/overview) (official)
-- Glossary: [skill](../glossary.md#skill-agent), [slash command](../glossary.md#slash-command), [CLAUDE.md](../glossary.md#claude-md), [triage](../glossary.md#triage)
+- Glossary: [hook](../glossary.md#hook), [subagent](../glossary.md#subagent), [context map](../glossary.md#context-map), [skill](../glossary.md#skill-agent), [slash command](../glossary.md#slash-command), [CLAUDE.md](../glossary.md#claude-md), [triage](../glossary.md#triage)

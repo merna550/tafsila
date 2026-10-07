@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const MAX_REVIEW_PRS = 3;
+const DEFAULT_DAILY_LIMIT = 4;
 const PRIORITY_RANK = { "priority:P0": 0, "priority:P1": 1, "priority:P2": 2, "priority:P3": 3 };
 
 /**
@@ -31,6 +32,28 @@ export function parseDependencies(body) {
 export function buildModel(labels) {
   const found = labels.find((l) => l.startsWith("build:"));
   return found ? found.slice("build:".length) : "sonnet";
+}
+
+/**
+ * Reads the `DISPATCH_DAILY_LIMIT` repo variable (issue #17).
+ *
+ * @param value Raw variable value (may be empty or missing).
+ * @returns A whole number of builds allowed per UTC day; 4 when unset or invalid.
+ */
+export function parseDailyLimit(value) {
+  const n = Number(String(value ?? "").trim() || Number.NaN);
+  return Number.isInteger(n) && n >= 0 ? n : DEFAULT_DAILY_LIMIT;
+}
+
+/**
+ * Counts the dispatcher runs that started a build on the given UTC day.
+ *
+ * @param runs Dispatcher runs as `{ createdAt, built }` (`createdAt` is an ISO timestamp).
+ * @param day UTC day as `YYYY-MM-DD`.
+ * @returns Number of runs on that day whose build job ran.
+ */
+export function countBuildsOn(runs, day) {
+  return runs.filter((r) => r.built && String(r.createdAt).startsWith(day)).length;
 }
 
 /**
@@ -70,12 +93,18 @@ function canStart(candidate, ctx) {
 /**
  * Chooses the next issue to build, or explains why none is chosen.
  *
- * @param input Open issues, closed issue numbers, open review PR count, parallel limit and the pause switch.
+ * @param input Open issues, closed issue numbers, open review PR count, parallel limit, the pause switch,
+ *   and the builds started today with the daily limit.
  * @returns `{ pick, model, reason }`; `pick` is null when nothing should start.
  */
-export function selectIssue({ issues, closed, openReviewPrs, maxParallel, enabled }) {
+export function selectIssue(input) {
+  const { issues, closed, openReviewPrs, maxParallel, enabled } = input;
+  const { buildsToday = 0, dailyLimit = DEFAULT_DAILY_LIMIT } = input;
   const none = (reason) => ({ pick: null, model: null, reason });
   if (!enabled) return none("Dispatcher is paused (DISPATCH_ENABLED=false).");
+  if (buildsToday >= dailyLimit) {
+    return none(`Daily limit reached: ${buildsToday} build(s) today (DISPATCH_DAILY_LIMIT=${dailyLimit}).`);
+  }
   if (openReviewPrs >= MAX_REVIEW_PRS) {
     return none(`${openReviewPrs} pull requests are waiting for review (limit ${MAX_REVIEW_PRS}).`);
   }
@@ -106,6 +135,25 @@ export function selectIssue({ issues, closed, openReviewPrs, maxParallel, enable
 const gh = (args) => JSON.parse(execFileSync("gh", args, { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }));
 
 /**
+ * Counts today's (UTC) dispatcher runs whose build job ran, excluding the current run.
+ *
+ * @returns Number of builds the dispatcher started today.
+ */
+function buildsStartedToday() {
+  const today = new Date().toISOString().slice(0, "YYYY-MM-DD".length);
+  const listArgs = ["run", "list", "--workflow", "dispatch.yml", "--created", `>=${today}`, "--limit", "100"];
+  const runs = gh([...listArgs, "--json", "databaseId,createdAt"])
+    .filter((r) => String(r.databaseId) !== process.env.GITHUB_RUN_ID)
+    .map((r) => ({
+      createdAt: r.createdAt,
+      built: gh(["run", "view", String(r.databaseId), "--json", "jobs"]).jobs.some(
+        (j) => j.name.startsWith("build") && j.conclusion !== "skipped",
+      ),
+    }));
+  return countBuildsOn(runs, today);
+}
+
+/**
  * Collects the repository state, selects an issue and writes the outputs and summary for GitHub Actions.
  *
  * Sets the `issue` and `model` outputs (empty when nothing is picked).
@@ -124,6 +172,8 @@ function main() {
     openReviewPrs: prs.filter((p) => !p.isDraft).length,
     maxParallel: Number(process.env.DISPATCH_MAX_PARALLEL || 1),
     enabled: process.env.DISPATCH_ENABLED !== "false",
+    buildsToday: buildsStartedToday(),
+    dailyLimit: parseDailyLimit(process.env.DISPATCH_DAILY_LIMIT),
   });
   console.log(result.reason);
   if (process.env.GITHUB_STEP_SUMMARY)

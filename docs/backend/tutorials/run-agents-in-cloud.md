@@ -25,7 +25,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 - **Comment:** write `@claude <what to do>` on an issue or PR. Only comments from Merna run.
 - **Automatic:** the dispatcher (`.github/workflows/dispatch.yml`) runs every 2 hours. It builds the highest-priority `status:ready` issue whose "Depends on" issues are closed and that has no `needs:decision`. You can run it now: Actions → Dispatch agent → Run workflow.
 
-The dispatcher starts nothing when an issue is already `status:in-progress` (`DISPATCH_MAX_PARALLEL`, default 1; with 2 the second must be in a different `area:*`) or when 3 or more PRs wait for your review. Its run summary says what it picked and why, or why not.
+The dispatcher starts nothing when an issue is already `status:in-progress` (`DISPATCH_MAX_PARALLEL`, default 1; with 2 the second must be in a different `area:*`) or when 3 or more PRs wait for your review, and it starts at most `DISPATCH_DAILY_LIMIT` builds per UTC day (repo variable, default 4). Its run summary says what it picked and why, or why not (for example "Daily limit reached: 4 build(s) today").
 
 ## Follow progress
 
@@ -39,9 +39,11 @@ The dispatcher starts nothing when an issue is already `status:in-progress` (`DI
 - Action: Actions → the running "Claude agent" run → **Cancel workflow**. Each issue has its own concurrency group, so runs for one issue never overlap. The job times out after 60 minutes.
 - Then put the issue back to `status:ready` (or `status:blocked`).
 
+The agent also stops by itself: every Action run ends after 50 turns (`--max-turns 50`), and an unattended agent that fails twice on the same problem comments the problem on the issue, sets `status:blocked` and stops; it never switches to a bigger model on its own (ADR-017). Read its comment, fix the cause or change the `build:*` label, then set `status:ready` again.
+
 ## Current state: dispatcher is OFF
 
-The repo variable `DISPATCH_ENABLED` is set to `false` until the token-saving issue (#17) is merged, so the dispatcher starts nothing on its own. `@claude` comments and claude.ai/code still work. After #17 is merged, turn it on: set `DISPATCH_ENABLED` to `true` (or delete it), and remove this section.
+The repo variable `DISPATCH_ENABLED` is `false`, so the dispatcher starts nothing on its own. `@claude` comments and claude.ai/code still work. The cost guards it waited for (issue #17) are in place: once that PR is merged, turn it on by setting `DISPATCH_ENABLED` to `true` (or deleting it), optionally set `DISPATCH_DAILY_LIMIT`, and remove this section.
 
 ## Pause the dispatcher
 
@@ -50,7 +52,7 @@ Repo → Settings → Secrets and variables → Actions → Variables → set `D
 ## Cost
 
 - claude.ai/code and the Action both use your Claude subscription limits (the Action uses the OAuth token, not an API key).
-- The Action also uses GitHub Actions minutes; private repos have a limited free quota. Prefer claude.ai/code for long tasks. The one-issue-at-a-time rule keeps minutes low; a run is capped at 60 minutes.
+- The Action also uses GitHub Actions minutes; private repos have a limited free quota. Prefer claude.ai/code for long tasks. The one-issue-at-a-time rule and the daily limit keep minutes low; a run is capped at 60 minutes and 50 turns.
 
 ## Renew the token
 

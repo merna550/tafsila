@@ -1,6 +1,6 @@
 # CLAUDE.md — Tafsila (تفصيلة)
 
-Read this first in every session. Then read only what the task needs.
+Read this first in every session. Then read only what the task needs: [docs/CONTEXT_MAP.md](docs/CONTEXT_MAP.md) lists the files for each task type.
 
 ## What this is
 
@@ -11,6 +11,7 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 | Need                                                                | File                                                                                                                                  |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Which files to read for each task type                              | `docs/CONTEXT_MAP.md`                                                                                                                 |
 | Requirements (IDs like FR-PAT-03)                                   | `docs/SRS.md`                                                                                                                         |
 | Decisions already made — do not re-ask                              | `docs/DECISIONS.md`                                                                                                                   |
 | Lifecycle, labels, model choice, Definition of Done, milestones     | `docs/WORKFLOW.md`                                                                                                                    |
@@ -34,6 +35,8 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 5. Same PR updates: SRS, DECISIONS, plans, test cases, OpenAPI/Postman, seed data, tutorials, and the status below.
 6. Config only via `packages/config/env.ts`; secrets never in code, images or commits.
 7. Talk to Merna in Arabic, short. Code, commits, issues, docs in English.
+8. Save tokens: ask the `code-search` subagent where something lives instead of reading many files; run long test suites through the `test-runner` subagent (`.claude/agents/`). Hooks already format and lint each edited file and check affected packages before you finish; do not run those by hand after every edit.
+9. **Unattended rule** (GitHub Actions `GITHUB_ACTIONS=true`, or a cloud session `CLAUDE_CODE_REMOTE=true`): if the same problem fails twice, stop, comment the problem on the issue and set `status:blocked`. Never switch to a bigger model on your own.
 
 ## Repo map
 
@@ -48,6 +51,6 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 _Updated at the end of every session._
 
 - Milestone: M0 - Foundation & environments (in progress)
-- Last done: cloud agents without the GitHub App: SessionStart hook (cloud-only), `claude.yml`, dispatcher, tutorial, ADR-016 (#16, PR open; the end-to-end cloud test needs Merna); handbook upkeep `pnpm docs:check` (#10); 33 technology cards (#9); handbook core (#8); MVP milestone plan v2 (#6)
+- Last done: token-saving setup: format/lint and affected-only Stop hooks, `code-search` and `test-runner` subagents, affected-only PR CI, `docs/CONTEXT_MAP.md`, cloud cost guards (`--max-turns 50`, `DISPATCH_DAILY_LIMIT`, unattended rule), ADR-017 (#17, PR open; after merge Merna turns the dispatcher on); cloud agents without the GitHub App: SessionStart hook (cloud-only), `claude.yml`, dispatcher, tutorial, ADR-016 (#16); handbook upkeep `pnpm docs:check` (#10); 33 technology cards (#9); handbook core (#8); MVP milestone plan v2 (#6)
 - Next: Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval
