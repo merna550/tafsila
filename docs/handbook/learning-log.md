@@ -4,6 +4,7 @@ Dated list of concepts introduced by pull requests, newest first. Add one line p
 
 | Date       | PR / issue | Concept introduced                                                                                       | Read                                                             |
 | ---------- | ---------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 2026-10-07 | #9         | Technology cards: why each tool was chosen, what was rejected and when to revisit it                     | [tech index](tech/README.md)                                     |
 | 2026-10-07 | #8         | The handbook itself: glossary, architecture map, patterns, code style, troubleshooting                   | [README](README.md)                                              |
 | 2026-10-07 | #6         | Milestones and acceptance-criteria ticking with `scripts/gh-ac.sh` ([ADR-009](../DECISIONS.md))          | [glossary: acceptance criteria](glossary.md#acceptance-criteria) |
 | 2026-10-07 | #3         | Per-area agent configuration: nested `CLAUDE.md`, path-scoped rules, skills ([ADR-008](../DECISIONS.md)) | [glossary: skill](glossary.md#skill-agent)                       |
