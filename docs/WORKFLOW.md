@@ -96,16 +96,17 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 
 ## 6. Documentation map
 
-| Need                      | Where                                         |
-| ------------------------- | --------------------------------------------- |
-| What we build             | `docs/SRS.md`                                 |
-| Why we chose X            | `docs/DECISIONS.md`                           |
-| How a feature was planned | `docs/plans/`                                 |
-| How to test by hand       | `docs/test-cases/` (+ generated `index.md`)   |
-| Backend how-tos           | `docs/backend/` and `docs/backend/tutorials/` |
-| Docker / containers       | `docs/backend/tutorials/docker.md`            |
-| Try the API               | `postman/` (import + Run)                     |
-| API reference             | `/api/docs` (generated)                       |
+| Need                                | Where                                                                                              |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------- |
+| What we build                       | `docs/SRS.md`                                                                                      |
+| Why we chose X                      | `docs/DECISIONS.md`                                                                                |
+| How a feature was planned           | `docs/plans/`                                                                                      |
+| How to test by hand                 | `docs/test-cases/` (+ generated `index.md`)                                                        |
+| Learn a term / technology / pattern | `docs/handbook/` (start at `START_HERE.md`; glossary, maps, patterns, tech cards, troubleshooting) |
+| Backend how-tos                     | `docs/backend/` and `docs/backend/tutorials/`                                                      |
+| Docker / containers                 | `docs/backend/tutorials/docker.md`                                                                 |
+| Try the API                         | `postman/` (import + Run)                                                                          |
+| API reference                       | `/api/docs` (generated)                                                                            |
 
 ## 7. Environments
 
