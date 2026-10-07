@@ -99,6 +99,17 @@ jobs:
           github_token: ${{ secrets.AGENT_GITHUB_TOKEN }}
           claude_args: --model ${{ steps.ctx.outputs.model }} --max-turns 50 --allowedTools ${{ env.CLAUDE_TOOLS }}
 
+      - name: Keep Claude's transcript
+        # The action hides Claude's output; the transcript shows what it did and why it stopped (issue #48).
+        # Private repo, 7 days. It can contain command output, so never print secrets in agent commands.
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: claude-transcript
+          path: ${{ runner.temp }}/claude-execution-output.json
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Fail when Claude was refused a tool
         # The action reports success even when every tool call was refused (issue #46), so check the transcript.
         env:

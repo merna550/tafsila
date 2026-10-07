@@ -8,7 +8,7 @@ Issue: $ARGUMENTS. You only route the work; a subagent on the label's model does
 1. Resolve the model: `node scripts/agent-model.mjs build <N>`. It prints `{"issue","model","agent","note"}`.
    If `gh` is unavailable, read the issue labels with the GitHub MCP tools and apply the same rule: `build:haiku|sonnet|opus` → `builder-<model>`; missing or unknown → `builder-sonnet` with a note.
 2. If `note` is not empty, tell Merna in one Arabic line (for example: no `build:*` label, building with sonnet).
-3. Start the `agent` subagent with the prompt: `Build issue #<N> following .claude/procedures/build.md.` plus anything Merna added after the issue number. Do not read the issue, the plan or code yourself.
+3. Start the `agent` subagent with the prompt: `Build issue #<N> following .claude/procedures/build.md.` plus anything Merna added after the issue number. Do not read the issue, the plan or code yourself. Run it in the **foreground** (`run_in_background: false`) and wait for its final summary; never end your turn while it is still running: in headless runs (GitHub Actions) the run stops when your turn ends and cuts the subagent off (issue #48).
 4. Relay the subagent's final summary to Merna unchanged.
    - If the Stop hook reports failing checks, send those failures back to the same subagent (or a new one of the same type) to fix; do not fix them yourself.
    - Interactive session with Merna and the summary ends with `BLOCKED:` → suggest escalating the `build:*` label one tier. Unattended (`GITHUB_ACTIONS=true` or `CLAUDE_CODE_REMOTE=true`) → never escalate.
