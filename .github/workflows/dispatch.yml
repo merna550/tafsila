@@ -35,6 +35,9 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
+          # v5 auto-caches the package manager named in package.json (pnpm), which is not installed in
+          # this job, and fails with "Unable to locate executable file: pnpm" (issue #42).
+          package-manager-cache: false
       - id: pick
         env:
           GH_TOKEN: ${{ github.token }}
