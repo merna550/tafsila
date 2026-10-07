@@ -28,11 +28,11 @@ In scope:
 - Outputs: on-screen viewer, **projector mode** (1:1 calibrated), **direct-to-fabric mode** (numbered measured steps), PDF export (A4 tiled, A0).
 - Fabric yardage calculation (nesting on chosen fabric width) and fabric-type recommendations.
 - Chat-based design edits with version history.
-- Simplified 3D assembly preview (step-by-step, non-physical).
 - Free trial (3 patterns), pay-per-pattern, monthly subscriptions (Paymob).
 - Arabic (RTL, Egyptian dialect) and English UI.
 
 Out of scope for v1 (planned later):
+- Simplified 3D assembly preview (step-by-step, non-physical): **post-launch** (ADR-009, milestone `Post-launch`).
 - Abaya, isdal, trousers (v2); stretch fabrics, jackets, children's wear (v3).
 - Physics-based cloth simulation (v2, Python service).
 - Native mobile apps.
@@ -282,11 +282,14 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | FR-CHAT-06 | Chat message quota per pattern (default 10 on pay-per-pattern; plan-defined on subscriptions) | M |
 
 ### 4.13 3D Assembly Preview (3D)
+
+> **Post-launch** (ADR-009): FR-3D-01…04 are not required to launch and are planned in the `Post-launch` milestone. Priority is "Should"; the engine's sewing order (FR-PAT-06) stays in v1 so 3D can be added without engine changes.
+
 | ID | Requirement | Pri |
 |---|---|---|
-| FR-3D-01 | Parametric avatar scaled from measurements (base mesh morphed by bust/waist/hip/height) | M |
-| FR-3D-02 | Step-by-step animation following the engine's sewing order: pieces move from flat layout to approximate body positions, seams highlighted as they "join" | M |
-| FR-3D-03 | Each step shows the matching sewing instruction text (ar/en) | M |
+| FR-3D-01 | Parametric avatar scaled from measurements (base mesh morphed by bust/waist/hip/height) | S |
+| FR-3D-02 | Step-by-step animation following the engine's sewing order: pieces move from flat layout to approximate body positions, seams highlighted as they "join" | S |
+| FR-3D-03 | Each step shows the matching sewing instruction text (ar/en) | S |
 | FR-3D-04 | Final approximate garment view, rotatable | S |
 | FR-3D-05 | Physics-based drape via Python sim service (v2) | C |
 
@@ -522,15 +525,21 @@ Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal
 
 ## 12. Delivery Plan (v1)
 
+Milestone titles match the GitHub milestones exactly. Durations live on the milestones, not here. The product is fully usable before M6 through the manual design picker (FR-DES-06).
+
 | Milestone | Content | Exit criteria |
 |---|---|---|
-| M0 – Setup (wk 1) | Monorepo, Next.js, Supabase, auth, i18n/RTL, CI, Sentry | Deployed hello-world with Arabic RTL login |
-| M1 – Engine core (wk 2–5) | Schemas, measurements, bodice/skirt/sleeve blocks, SA, notches, grain, labels, validation | Skirt + basic dress + blouse pass all FR-VAL across size matrix |
-| M2 – Viewer & outputs (wk 6–8) | SVG viewer, projector mode + calibration, direct-cut steps, PDF A4/A0 | Toile sewn from projector + from PDF fits |
-| M3 – AI layer (wk 9–10) — the product is fully usable before this via the manual picker (FR-DES-06) | Photo upload, analysis, confirmation UI, chat edits, versions | ≥ 80% feature accuracy on eval set |
-| M4 – Fabric (wk 11–12) | Nesting/yardage, fabric catalogue + rules, recommendations | Yardage within ±10 cm of manual layout on 5 test garments |
-| M5 – 3D & billing (wk 13–16) | 3D assembly preview, credits, Paymob, plans, admin dashboard | Paid flow works in Paymob sandbox and live test |
-| M6 – Closed beta (month 6) | 20–30 sewists, feedback loop, fixes | Satisfaction ≥ 80%, no open "fail"-class fit bugs |
+| M0 - Foundation & environments | Repo, tooling, CI/CD, agent config, dev/staging/prod environments, domain, Sentry, PostHog | Staging deployed from `main`; prod project exists; error + analytics events visible |
+| M1 - Accounts & data | Auth + phone OTP, profiles, client profiles, measurements UI with guide, Egyptian size chart, DB schema + RLS, seed data | A user signs up, verifies phone, saves a client with measurements; RLS tests pass |
+| M2 - Engine core | Schemas, blocks, dress/skirt/blouse modules, seam allowance, notches, grain, labels, validation | All FR-VAL checks pass across the size matrix; toiles sewn in 3 sizes per garment |
+| M3 - Design & pattern UI | Manual design picker (FR-DES-06), pattern viewer, validation report UI, versions | A user builds a design by hand and sees a validated pattern for a saved client |
+| M4 - Outputs | Projector + calibration, direct-cut steps, PDF A4/A0 | Toile sewn from projector and from PDF fits |
+| M5 - Fabric | Yardage/nesting, fabric catalogue and rules, recommendations | Yardage within ±10 cm of a manual layout on 5 garments |
+| M6 - AI layer | Photo analysis, confirmation UI, chat edits | ≥ 80% feature accuracy on the 50-photo eval set |
+| M7 - Billing & admin | Credits, free trial, Paymob, plans, receipts, admin dashboard | Paid flow works in Paymob sandbox and one live test payment |
+| M8 - Beta & launch readiness | Closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
+| M9 - Public launch | Production release, monitoring, launch marketing | Public sign-ups open; on-call checklist done |
+| Post-launch | 3D assembly preview (FR-3D-01…04), abaya/isdal/trousers, stretch fabrics | — |
 
 ---
 

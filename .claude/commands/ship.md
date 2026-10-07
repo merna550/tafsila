@@ -3,7 +3,7 @@ description: After Merna approves a PR, merge it and verify staging
 argument-hint: #<pr or issue>
 ---
 
-Only if the PR is approved by Merna and CI is green.
+Only if the PR is approved by Merna, CI is green, and `scripts/gh-ac.sh progress <issue>` is N/N (or the PR body explains every unticked criterion and Merna accepted it).
 
 1. Squash-merge with a conventional title. Delete the branch.
 2. Wait for the staging deploy; run the smoke tests against staging.

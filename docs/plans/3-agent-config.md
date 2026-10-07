@@ -1,6 +1,6 @@
 # Plan #3: per-area agent configuration
 
-Issue: #3 · plan:sonnet · build:sonnet · Milestone: M0 - Setup
+Issue: #3 · plan:sonnet · build:sonnet · Milestone: M0 - Foundation & environments
 
 ## Goal
 
