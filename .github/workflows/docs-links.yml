@@ -1,0 +1,44 @@
+name: Docs links
+# External link check with lychee (relative links are checked by `pnpm docs:check` in the Code quality workflow).
+# - Pull requests touching docs/**: report broken links but never block the merge (other sites go down).
+# - Weekly: open (or update) an issue when links are broken.
+on:
+  pull_request:
+    paths: ["docs/**", ".github/workflows/docs-links.yml"]
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check links in docs
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --max-retries 2 --timeout 20 --accept "200..=299,403,429"
+            --exclude "^https?://localhost" --exclude "^https?://127\.0\.0\.1"
+            --format markdown --output ./lychee-report.md
+            "docs/**/*.md"
+          fail: false
+      - name: Show result on pull requests (non-blocking)
+        if: github.event_name == 'pull_request' && steps.lychee.outputs.exit_code != 0
+        run: |
+          echo "::warning::Some external links in docs/ look broken. See the report below; this does not block the PR."
+          cat ./lychee-report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Open an issue on weekly failure
+        if: github.event_name != 'pull_request' && steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        with:
+          title: "docs: broken external links (weekly check)"
+          content-filepath: ./lychee-report.md
+          labels: type:docs, area:docs
