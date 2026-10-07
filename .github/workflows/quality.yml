@@ -1,25 +1,43 @@
 name: Code quality
-on: [pull_request]
+# Pull requests lint, typecheck and test only what changed since the base branch (plus the packages that
+# depend on it); a change to root config checks everything. Pushes to main check everything (issue #17).
+on:
+  pull_request:
+  push:
+    branches: [main]
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the affected-only filter compares against the base branch
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
       - run: pnpm install --frozen-lockfile
+      - name: Scope (PR = affected only, main = everything)
+        id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: bash scripts/ci-scope.sh "$EVENT" "$BASE_REF" >> "$GITHUB_OUTPUT"
       - name: Format
         run: pnpm prettier --check .
       - name: Lint (complexity, JSDoc on every function, no any, cycles)
-        run: pnpm eslint . --max-warnings 0
-      - name: Types
-        run: pnpm turbo run typecheck
+        env:
+          LINT_FILES: ${{ steps.scope.outputs.lint_files }}
+        run: |
+          if [ "$LINT_FILES" = "all" ]; then pnpm eslint . --max-warnings 0
+          elif [ -n "$LINT_FILES" ]; then xargs -a "$LINT_FILES" pnpm eslint --max-warnings 0 --no-warn-ignored
+          else echo "No changed source files to lint."; fi
+      - name: Types and tests
+        run: pnpm turbo run typecheck test ${{ steps.scope.outputs.filter }}
       - name: Duplicate code
         run: pnpm jscpd .
       - name: Architecture rules
         run: pnpm depcruise apps packages --config .dependency-cruiser.cjs
       - name: Handbook (every dependency has a tech card, relative links resolve)
         run: pnpm docs:check
-      - name: Handbook check tests
+      - name: Scripts and handbook check tests
         run: pnpm test:docs
