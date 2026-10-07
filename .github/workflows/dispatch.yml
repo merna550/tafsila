@@ -1,6 +1,7 @@
 name: Dispatch agent
 # Light orchestrator (issue #16): every 2 hours picks the next ready issue and calls claude.yml.
 # Pause with the repo variable DISPATCH_ENABLED=false. Parallel builds: DISPATCH_MAX_PARALLEL (default 1).
+# At most DISPATCH_DAILY_LIMIT builds per UTC day (default 4, issue #17).
 on:
   schedule:
     - cron: "0 */2 * * *"
@@ -34,6 +35,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           DISPATCH_ENABLED: ${{ vars.DISPATCH_ENABLED }}
           DISPATCH_MAX_PARALLEL: ${{ vars.DISPATCH_MAX_PARALLEL }}
+          DISPATCH_DAILY_LIMIT: ${{ vars.DISPATCH_DAILY_LIMIT }}
         run: node scripts/dispatch.mjs
 
   build:

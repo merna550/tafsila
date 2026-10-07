@@ -1,6 +1,6 @@
 // Tests for scripts/dispatch.mjs: pure selection logic with fake issue lists.
 import { describe, expect, it } from "vitest";
-import { parseDependencies, buildModel, selectIssue } from "./dispatch.mjs";
+import { parseDependencies, buildModel, selectIssue, parseDailyLimit, countBuildsOn } from "./dispatch.mjs";
 
 /**
  * Builds a fake open issue.
@@ -95,5 +95,40 @@ describe("selectIssue", () => {
     const result = selectIssue({ ...base, issues: [ready(7, ["build:haiku"])] });
     expect(result.model).toBe("haiku");
     expect(result.reason).toMatch(/#7/);
+  });
+});
+
+describe("daily limit (DISPATCH_DAILY_LIMIT)", () => {
+  it("defaults to 4 when unset or invalid", () => {
+    expect(parseDailyLimit(undefined)).toBe(4);
+    expect(parseDailyLimit("")).toBe(4);
+    expect(parseDailyLimit("two")).toBe(4);
+    expect(parseDailyLimit("-1")).toBe(4);
+    expect(parseDailyLimit("1.5")).toBe(4);
+    expect(parseDailyLimit("6")).toBe(6);
+    expect(parseDailyLimit("0")).toBe(0);
+  });
+
+  it("counts only today's runs that started a build", () => {
+    const runs = [
+      { createdAt: "2026-10-07T01:00:00Z", built: true },
+      { createdAt: "2026-10-07T03:00:00Z", built: false },
+      { createdAt: "2026-10-07T23:59:00Z", built: true },
+      { createdAt: "2026-10-06T23:00:00Z", built: true },
+    ];
+    expect(countBuildsOn(runs, "2026-10-07")).toBe(2);
+  });
+
+  it("stops after the limit and says so", () => {
+    const issues = [ready(1)];
+    const atLimit = selectIssue({ ...base, issues, buildsToday: 4, dailyLimit: 4 });
+    expect(atLimit.pick).toBeNull();
+    expect(atLimit.reason).toMatch(/daily limit reached: 4 build\(s\) today \(DISPATCH_DAILY_LIMIT=4\)/i);
+    expect(selectIssue({ ...base, issues, buildsToday: 3, dailyLimit: 4 }).pick.number).toBe(1);
+  });
+
+  it("uses 4 as the default limit and 0 stops all builds", () => {
+    expect(selectIssue({ ...base, issues: [ready(1)], buildsToday: 4 }).pick).toBeNull();
+    expect(selectIssue({ ...base, issues: [ready(1)], buildsToday: 0, dailyLimit: 0 }).pick).toBeNull();
   });
 });
