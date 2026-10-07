@@ -9,20 +9,20 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Where to look
 
-| Need                                                | File                                                                                                |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Requirements (IDs like FR-PAT-03)                   | `docs/SRS.md`                                                                                       |
-| Decisions already made — do not re-ask              | `docs/DECISIONS.md`                                                                                 |
-| Lifecycle, labels, model choice, Definition of Done | `docs/WORKFLOW.md`                                                                                  |
-| Architecture of each part (web, api, engine, sim)   | `docs/ARCHITECTURE.md`                                                                              |
-| Clean code rules, where code lives, JSDoc template  | `docs/CODING_STANDARDS.md`                                                                          |
-| Backend docs, tutorials, Docker, environments       | `docs/backend/`                                                                                     |
-| Frontend docs (design system, RTL, state)           | `docs/frontend/README.md`                                                                           |
-| Engine docs (methods, modules, validation, units)   | `docs/engine/README.md`                                                                             |
-| Per-area agent notes (loaded with those files)      | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                         |
-| Path-scoped rules and task skills                   | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)           |
-| Manual test cases                                   | `docs/test-cases/`                                                                                  |
-| Saved prompts                                       | `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`) |
+| Need                                                            | File                                                                                                |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Requirements (IDs like FR-PAT-03)                               | `docs/SRS.md`                                                                                       |
+| Decisions already made — do not re-ask                          | `docs/DECISIONS.md`                                                                                 |
+| Lifecycle, labels, model choice, Definition of Done, milestones | `docs/WORKFLOW.md`                                                                                  |
+| Architecture of each part (web, api, engine, sim)               | `docs/ARCHITECTURE.md`                                                                              |
+| Clean code rules, where code lives, JSDoc template              | `docs/CODING_STANDARDS.md`                                                                          |
+| Backend docs, tutorials, Docker, environments                   | `docs/backend/`                                                                                     |
+| Frontend docs (design system, RTL, state)                       | `docs/frontend/README.md`                                                                           |
+| Engine docs (methods, modules, validation, units)               | `docs/engine/README.md`                                                                             |
+| Per-area agent notes (loaded with those files)                  | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                         |
+| Path-scoped rules and task skills                               | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)           |
+| Manual test cases                                               | `docs/test-cases/`                                                                                  |
+| Saved prompts                                                   | `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`) |
 
 ## Non-negotiable rules
 
@@ -46,7 +46,7 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 _Updated at the end of every session._
 
-- Milestone: M0 — repository setup (in progress)
-- Last done: per-area agent config (#3): nested CLAUDE.md for web/api/engine, `.claude/rules/**`, skills add-page/add-endpoint/add-garment-module, docs/frontend + docs/engine READMEs; board automation (#4); Docker CI fixes (#1)
+- Milestone: M0 - Foundation & environments (in progress)
+- Last done: MVP milestone plan v2 in SRS/WORKFLOW/commands + acceptance-criteria ticking with `scripts/gh-ac.sh` (#6); per-area agent config (#3)
 - Next: Supabase init; first issues from SRS M1
 - Open decisions: final product name/domain; AI provider after eval

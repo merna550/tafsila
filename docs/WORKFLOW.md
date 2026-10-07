@@ -90,6 +90,7 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 - [ ] Plan saved to `docs/plans/<N>-<slug>.md`.
 - [ ] Docker: image still builds, passes hadolint/Trivy and the container smoke test (CI `Docker image` workflow). New env vars added to `.env.example`, `.env.docker.example` and `.github/ci.env` (placeholder).
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
+- [ ] Every acceptance criterion is ticked in the issue (`scripts/gh-ac.sh check <issue> <n…>`) as soon as it is met and verified; an issue is not moved to In review with unticked criteria unless the PR explains why. The PR body includes `scripts/gh-ac.sh progress <issue>`.
 - [ ] Conventional commits referencing the issue; PR body has `Closes #N`.
 - [ ] `needs:sew-test` issues: note what was physically tested, or keep the flag open.
 
@@ -121,6 +122,7 @@ All config goes through `packages/config/env.ts` (Zod-validated); the app refuse
 
 Board: **Tafsila** project (`merna550`, project #4). Columns: Backlog → Ready → In progress → In review → Done.
 Helper: `scripts/gh-project.sh add <url> [column]` and `scripts/gh-project.sh status <url> <column>` (needs `gh auth refresh -s project` once).
+Acceptance criteria: `scripts/gh-ac.sh list|check|uncheck|progress <issue> [n…]` reads and ticks the `## Acceptance criteria` checkboxes in the issue body. `/build` ticks, `/review` and `/ship` require N/N, `/status` shows `x/y criteria`.
 
 | Status label                                               | Board column | Set by                     |
 | ---------------------------------------------------------- | ------------ | -------------------------- |
@@ -130,14 +132,18 @@ Helper: `scripts/gh-project.sh add <url> [column]` and `scripts/gh-project.sh st
 | `status:in-review` (issue) and its PR                      | In review    | `/build`                   |
 | closed / merged                                            | Done         | board workflow (automatic) |
 
-Every issue and its PR carry the same milestone. Milestone map (SRS §12):
+Every issue and its PR carry the same milestone. Milestone map (SRS §12; titles match GitHub exactly):
 
-| Milestone             | Work that belongs there                                           |
-| --------------------- | ----------------------------------------------------------------- |
-| M0 - Setup            | repo, tooling, CI/CD, environments, docs/process, AI agent config |
-| M1 - Engine core      | schemas, measurements, blocks, garment modules, validation        |
-| M2 - Viewer & outputs | SVG viewer, projector, direct-cut, PDF export                     |
-| M3 - AI layer         | photo analysis, confirmation UI, chat edits, versions             |
-| M4 - Fabric           | yardage/nesting, fabric catalogue and recommendations             |
-| M5 - 3D & billing     | 3D preview, credits, Paymob, plans, admin                         |
-| M6 - Closed beta      | beta feedback fixes, release readiness                            |
+| Milestone                      | Work that belongs there                                                                                                 |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| M0 - Foundation & environments | repo, tooling, CI/CD, agent config, docs/process, dev/staging/prod environments, domain, Sentry, PostHog                |
+| M1 - Accounts & data           | auth + phone OTP, profiles, client profiles, measurements UI and guide, Egyptian size chart, DB schema + RLS, seed data |
+| M2 - Engine core               | schemas, blocks, dress/skirt/blouse modules, seam allowance, notches, grain, labels, validation                         |
+| M3 - Design & pattern UI       | manual design picker, pattern viewer, validation report UI, versions                                                    |
+| M4 - Outputs                   | projector + calibration, direct-cut steps, PDF A4/A0                                                                    |
+| M5 - Fabric                    | yardage/nesting, fabric catalogue and rules, recommendations                                                            |
+| M6 - AI layer                  | photo analysis, confirmation UI, chat edits                                                                             |
+| M7 - Billing & admin           | credits, free trial, Paymob, plans, receipts, admin dashboard                                                           |
+| M8 - Beta & launch readiness   | closed beta, feedback loop, privacy policy/terms, landing page, onboarding, FAQ                                         |
+| M9 - Public launch             | production release, monitoring, launch marketing                                                                        |
+| Post-launch                    | 3D assembly preview, abaya/isdal/trousers, stretch fabrics                                                              |

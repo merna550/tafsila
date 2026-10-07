@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-009 · 2026-10-07 · MVP milestone plan v2; 3D deferred to post-launch
+
+**Decision:** Delivery is planned in 10 milestones, `M0 - Foundation & environments` … `M9 - Public launch`, plus `Post-launch` (SRS §12, WORKFLOW §8; titles identical to GitHub). The simplified 3D assembly preview (FR-3D-01…04, priority "Should") moves to `Post-launch`; the engine still outputs the sewing order (FR-PAT-06). Acceptance-criteria progress is tracked by ticking the issue checkboxes with `scripts/gh-ac.sh`.
+**Reason:** Smaller milestones with checkable exit criteria; accounts/data and the manual design UI come before AI so the product is usable early; 3D is not needed to launch and was the largest risk in the old M5. Ticked criteria make progress visible on the issue and the board.
+**Alternatives:** Keep the 7-milestone plan (milestones too large, 3D on the critical path); track progress only by open/closed issues (no view inside an issue).
+
 ## ADR-008 · 2026-10-07 · Per-area agent configuration
 
 **Decision:** Agent instructions are split by area: root `CLAUDE.md` for project-wide rules, nested `CLAUDE.md` in `apps/web`, `packages/api` and `packages/engine` (loaded only when those files are touched), path-scoped rules in `.claude/rules/**` (`paths:` frontmatter), and task skills in `.claude/skills/` that link to the existing tutorials instead of repeating them.
