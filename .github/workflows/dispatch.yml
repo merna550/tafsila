@@ -1,11 +1,17 @@
 name: Dispatch agent
-# Light orchestrator (issue #16): every 2 hours picks the next ready issue and calls claude.yml.
+# Light orchestrator (issue #16): picks the next ready issue and calls claude.yml. It starts when there may be
+# room for work (issue #50): an issue gets status:ready / status:in-review / status:blocked or is closed, or a PR
+# is closed; every 6 hours as a safety net; or by hand. Bursts of events collapse into one pending run (concurrency).
 # Pause with the repo variable DISPATCH_ENABLED=false. Parallel builds: DISPATCH_MAX_PARALLEL (default 1).
 # At most DISPATCH_DAILY_LIMIT builds per UTC day (default 4, issue #17).
 # Manual runs can set dry_run to print the pick without calling Claude (issue #38).
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */6 * * *"
+  issues:
+    types: [labeled, closed]
+  pull_request:
+    types: [closed]
   workflow_dispatch:
     inputs:
       dry_run:
@@ -25,6 +31,10 @@ concurrency:
 
 jobs:
   select:
+    # Other label events are skipped here, so they never reach Claude.
+    if: >-
+      github.event_name != 'issues' || github.event.action == 'closed' ||
+      contains(fromJSON('["status:ready", "status:in-review", "status:blocked"]'), github.event.label.name)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
