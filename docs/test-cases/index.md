@@ -23,6 +23,7 @@
 | docs/16-cloud-agents.md    | TC-INFRA-16-10 | Dispatcher call is not skipped (#38)          | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-11 | Dispatcher dry run (#38)                      | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-12 | setup-node works without pnpm (#42)           | High     | ⬜  | ⬜      |
+| docs/16-cloud-agents.md    | TC-INFRA-16-13 | Dispatcher prompt has the issue (#44)         | High     | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-01 | Format hook fixes a badly formatted file      | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-02 | Format hook reports remaining lint errors     | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-03 | Stop hook checks affected packages only       | High     | ✅  | ⬜      |
