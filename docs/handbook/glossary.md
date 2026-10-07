@@ -1046,6 +1046,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## M
 
+<a id="mail-catcher"></a>
+
+### Mail catcher
+
+**Plain words:** A fake inbox that catches every email the app sends while you develop, so nothing real is ever sent.  
+**In Tafsila:** Mailpit, started with local Supabase at http://127.0.0.1:54324; sign-up confirmation and password-reset emails appear there ([run locally](../backend/tutorials/run-locally.md)). **Level:** beginner  
+**Learn:** <https://mailpit.axllent.org/>
+
 <a id="magic-number"></a>
 
 ### Magic number
@@ -1053,6 +1061,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A number in code with no explanation of what it is.  
 **In Tafsila:** Forbidden: use a named constant with a unit, such as `MIN_CAP_HEIGHT_MM`. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Magic_number_(programming)>
+
+<a id="test-otp"></a>
+
+### Test OTP
+
+**Plain words:** A phone number with a fixed login code, so you can test phone sign-in without sending a real SMS.  
+**In Tafsila:** `[auth.sms.test_otp]` in `supabase/config.toml`: `+201000000001`, `+201000000002`, `+201000000003`, code `123456`; works only locally and in non-production environments. **Level:** beginner  
+**Learn:** <https://supabase.com/docs/guides/auth/phone-login>
 
 <a id="test-case"></a>
 

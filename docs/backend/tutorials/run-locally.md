@@ -32,3 +32,28 @@ pnpm quality             # format, lint, typecheck, duplication, architecture
 
 - Supabase Studio: http://127.0.0.1:54323 · API health: http://localhost:3000/api/health
 - Reset database: `pnpm db:reset` · Stop services: `pnpm dev:stop`
+
+## Local Supabase (no accounts, no cost)
+
+```bash
+pnpm db:start     # Postgres, Auth, Storage, Studio, mail catcher (needs Docker)
+pnpm db:reset     # re-apply all migrations + supabase/seed.sql on a clean database
+pnpm db:types     # regenerate packages/api/src/adapters/supabase/database.types.ts
+pnpm db:stop
+```
+
+`pnpm exec supabase status` prints the anon and service-role keys for `.env.local` (see `.env.example`).
+
+| Service            | URL                                                       |
+| ------------------ | --------------------------------------------------------- |
+| API (Auth/Storage) | http://127.0.0.1:54321                                    |
+| Studio             | http://127.0.0.1:54323                                    |
+| Mail catcher       | http://127.0.0.1:54324 (every email lands here)           |
+| Postgres           | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
+
+- **Test phone numbers** (no SMS is ever sent locally): `+201000000001`, `+201000000002`, `+201000000003`, each with the code `123456`.
+- Email sign-up needs confirmation: open the mail catcher and click the link.
+- Google sign-in is declared in `supabase/config.toml` but disabled locally; enable it per environment with `SUPABASE_AUTH_EXTERNAL_GOOGLE_*`.
+- The private storage bucket `design-photos` is created by `supabase/config.toml` (used from M6).
+- The app starts without the AI and Paymob variables; they are required only when `APP_ENV=production`.
+- Reset everything: `pnpm db:stop && pnpm db:start && pnpm db:reset`.

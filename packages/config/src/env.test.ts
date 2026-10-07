@@ -5,9 +5,9 @@ const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
   SUPABASE_ANON_KEY: "anon",
   SUPABASE_SERVICE_ROLE_KEY: "service",
-  AI_MODEL_ANALYZE: "model",
-  AI_API_KEY: "key",
 };
+
+const aiAndPaymob = { AI_MODEL_ANALYZE: "model", AI_API_KEY: "key", PAYMOB_API_KEY: "pay" };
 
 describe("loadServerEnv", () => {
   it("applies defaults for optional variables", () => {
@@ -22,5 +22,18 @@ describe("loadServerEnv", () => {
 
   it("rejects an unknown environment name", () => {
     expect(() => loadServerEnv({ ...valid, APP_ENV: "qa" })).toThrow(/APP_ENV/);
+  });
+
+  it("starts without AI and Paymob variables outside production", () => {
+    for (const APP_ENV of ["local", "ci", "preview", "staging"]) {
+      expect(() => loadServerEnv({ ...valid, APP_ENV })).not.toThrow();
+    }
+  });
+
+  it("requires AI and Paymob variables in production", () => {
+    expect(() => loadServerEnv({ ...valid, APP_ENV: "production" })).toThrow(
+      /AI_MODEL_ANALYZE, AI_API_KEY, PAYMOB_API_KEY/,
+    );
+    expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, APP_ENV: "production" })).not.toThrow();
   });
 });
