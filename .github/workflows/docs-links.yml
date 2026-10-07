@@ -27,8 +27,9 @@ jobs:
           args: >-
             --no-progress --max-retries 2 --timeout 20 --accept "200..=299,403,429"
             --exclude "^https?://localhost" --exclude "^https?://127\.0\.0\.1"
-            --format markdown --output ./lychee-report.md
             "docs/**/*.md"
+          format: markdown
+          output: ./lychee-report.md
           fail: false
       - name: Show result on pull requests (non-blocking)
         if: github.event_name == 'pull_request' && steps.lychee.outputs.exit_code != 0
