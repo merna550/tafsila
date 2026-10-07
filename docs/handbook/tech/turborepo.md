@@ -32,6 +32,7 @@ If we need remote cache across CI and developers (Turborepo supports it, a free 
 
 - `turbo.json` (task graph), root `package.json` scripts (`dev`, `build`, `test`, `typecheck`).
 - `apps/web/Dockerfile` (the `pruner` stage runs `turbo prune web --docker`).
+- Affected-only checks (ADR-017): `--filter=...[origin/main]` in the Stop hook (`scripts/hooks/verify-affected.sh`) and on PRs (`scripts/ci-scope.sh`). `globalDependencies` in `turbo.json` makes a change to `tsconfig.base.json` or `.nvmrc` count for every package. Turbo remote cache is not used yet; it is optional and would make repeated CI runs faster.
 
 ## The 20% you need
 

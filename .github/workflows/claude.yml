@@ -64,6 +64,10 @@ jobs:
           echo "issue=$issue" >> "$GITHUB_OUTPUT"
           echo "model=${model:-sonnet}" >> "$GITHUB_OUTPUT"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
       - name: Prepare workspace
         run: bash scripts/agent-setup.sh
 

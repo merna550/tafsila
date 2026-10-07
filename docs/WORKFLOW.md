@@ -43,7 +43,7 @@ Plan with a strong model **once**; build with the cheapest model that can follow
 | Bug with known cause, small refactor                                                           | `plan:none`            | `build:sonnet`                                                 |
 | Docs, copy/translation, config, label/CI tweaks, adding test cases to existing suites          | `plan:none`            | `build:haiku`                                                  |
 
-Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the build fails twice on the same problem; record it in the issue.
+Defaults when unsure: `plan:sonnet` + `build:sonnet`. In a session with Merna, escalate one tier if the build fails twice on the same problem; record it in the issue. **Unattended runs** (GitHub Actions or a cloud session) never escalate on their own: the same problem failing twice means stop, comment the problem on the issue and set `status:blocked` (ADR-017).
 
 ### Token-saving rules
 
@@ -53,12 +53,15 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 4. **Split big work.** `size:L` should be split; `size:XL` must be split before planning.
 5. **No re-asking.** If the answer is in `CLAUDE.md`, `docs/SRS.md`, `docs/DECISIONS.md` or the issue, use it. Ask only for decisions that are costly or irreversible (money, prices, production data, deleting, new paid service); log the answer in `DECISIONS.md`.
 6. **Short outputs.** Status updates are 3–5 lines. Long reasoning goes in the plan comment once.
+7. **Read from the [context map](CONTEXT_MAP.md).** Each task type lists the few files to read.
+8. **Delegate cheap work.** The `code-search` and `test-runner` subagents (haiku) find code and run tests, returning only paths or failures.
+9. **Let hooks do the chores.** After each edit a hook runs Prettier and `eslint --fix` on that file; before the agent finishes, a hook typechecks and tests only the affected packages. CI does the same on PRs and checks everything on `main` (ADR-017).
 
 ### How to run each model
 
 - **Claude Code (local):** `claude --model opus` for planning, `claude --model sonnet` / `haiku` for building; or switch inside a session with `/model`. Use plan mode for `/plan`.
 - **Claude Code on the web (claude.ai/code, also from the phone):** connect GitHub once with `/web-setup`, then run `/build #N`. It runs in Anthropic's cloud with the laptop off, pushes a branch and opens a PR. Uses the Claude subscription. Best for long tasks.
-- **GitHub Action (unattended):** `.github/workflows/claude.yml` runs on an `@claude` comment from Merna or on a call from the dispatcher (`.github/workflows/dispatch.yml`, every 2 hours, one issue at a time, paused when 3 PRs wait or `DISPATCH_ENABLED=false`). The model comes from the issue's `build:*` label. No Claude GitHub App is installed, so auto-fix on PRs is not used. Setup, cost and stopping: [run-agents-in-cloud](backend/tutorials/run-agents-in-cloud.md) (ADR-016).
+- **GitHub Action (unattended):** `.github/workflows/claude.yml` runs on an `@claude` comment from Merna or on a call from the dispatcher (`.github/workflows/dispatch.yml`, every 2 hours, one issue at a time, at most `DISPATCH_DAILY_LIMIT` builds a day (default 4), paused when 3 PRs wait or `DISPATCH_ENABLED=false`). Every run stops after 50 turns (`--max-turns 50`). The model comes from the issue's `build:*` label. No Claude GitHub App is installed, so auto-fix on PRs is not used. Setup, cost and stopping: [run-agents-in-cloud](backend/tutorials/run-agents-in-cloud.md) (ADR-016).
 - Model tiers map to the current versions of Opus / Sonnet / Haiku; update this line if the team pins exact model IDs.
 
 ## 3. Labels (full list in `.github/labels.yml`)
