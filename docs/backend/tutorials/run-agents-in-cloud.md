@@ -39,6 +39,10 @@ The dispatcher starts nothing when an issue is already `status:in-progress` (`DI
 - Action: Actions → the running "Claude agent" run → **Cancel workflow**. Each issue has its own concurrency group, so runs for one issue never overlap. The job times out after 60 minutes.
 - Then put the issue back to `status:ready` (or `status:blocked`).
 
+## Current state: dispatcher is OFF
+
+The repo variable `DISPATCH_ENABLED` is set to `false` until the token-saving issue (#17) is merged, so the dispatcher starts nothing on its own. `@claude` comments and claude.ai/code still work. After #17 is merged, turn it on: set `DISPATCH_ENABLED` to `true` (or delete it), and remove this section.
+
 ## Pause the dispatcher
 
 Repo → Settings → Secrets and variables → Actions → Variables → set `DISPATCH_ENABLED` to `false`. Set it to `true` (or delete it) to resume.
