@@ -30,8 +30,12 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 ## Where it lives in our code
 
 - `CLAUDE.md` (root), `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`, `AGENTS.md`.
-- `.claude/commands/`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `scripts/hooks/`.
-- `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-setup.sh`.
+- `.claude/commands/`, `.claude/procedures/`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `scripts/hooks/`.
+- `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-model.mjs`, `scripts/agent-setup.sh`.
+
+## Model per label
+
+`/build` and `/plan` read the issue's `build:*` / `plan:*` label (`scripts/agent-model.mjs`) and delegate the whole job to a [subagent](../glossary.md#subagent) pinned to that model: `builder-haiku`, `builder-sonnet`, `builder-opus`, `planner-sonnet`, `planner-opus`. The steps they follow are in `.claude/procedures/`. No label → sonnet, and the agent says so; `plan:none` → no plan. The same works locally, on claude.ai/code and in the GitHub Action, where an `@claude` comment on a PR uses the label of the PR's linked issue. The project default model is `sonnet` ([WORKFLOW section 2](../../WORKFLOW.md#how-to-run-each-model), [ADR-019](../../DECISIONS.md)).
 
 ## Running in the cloud
 
@@ -61,6 +65,7 @@ Agents should spend tokens on the feature, not on formatting, exploring or readi
 ## Common mistakes
 
 - Starting from an idea instead of an issue.
+- Running `/build` on opus by hand to "be safe": the label decides, so change the label instead.
 - Carrying one long chat across issues (start fresh per issue to save tokens).
 
 ## Learn more

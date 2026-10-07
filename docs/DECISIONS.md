@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-019 · 2026-10-07 · `/build` and `/plan` delegate to a subagent pinned to the label's model
+
+**Context:** The model came from whoever started the session (`--model`, `/model`), so a `build:haiku` issue could run on opus and the reverse (issue #40).
+**Decision:** `scripts/agent-model.mjs` maps `build:*` / `plan:*` to a model and a subagent (`builder-haiku|sonnet|opus`, `planner-sonnet|opus`); missing or unknown label → sonnet with a note; `plan:none` → skip. `/build` and `/plan` only resolve the label, start that subagent and relay its summary; the steps moved to `.claude/procedures/build.md` and `plan.md`. Subagent files omit `tools`, so they inherit every tool including the GitHub MCP tools that cloud sessions use when `gh` is missing, and set `maxTurns: 50` because the CLI's `--max-turns` caps only the main session. `claude.yml` resolves the model with the same script; an `@claude` comment on a PR uses the PR's linked issue (closing reference, else `Closes|Fixes|Resolves #N` in the body). The project default model is `sonnet` in `.claude/settings.json`. `dispatch.mjs` reuses the same resolver.
+**Alternatives:** Keep choosing `--model` per session (error-prone, the bug this fixes); one subagent with a model passed at call time (the Agent tool's model override is not available in every surface, and the label rule would live only in prose).
+
 ## ADR-018 · 2026-10-07 · Reusable workflows detect the caller by inputs, not `github.event_name`
 
 **Context:** The dispatcher picked #18 but `build / claude` was skipped (issue #38): `claude.yml` checked `github.event_name == 'workflow_call'`, but in a called workflow `github.event_name` is the caller's event (`schedule`, `workflow_dispatch`).

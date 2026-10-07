@@ -20,6 +20,8 @@
 | docs/16-cloud-agents.md    | TC-INFRA-16-07 | `@claude` from someone else is ignored        | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-08 | Dispatcher end to end, laptop closed          | High     | ⬜  | ⬜      |
 | docs/16-cloud-agents.md    | TC-INFRA-16-09 | Pause works                                   | Medium   | ⬜  | ⬜      |
+| docs/16-cloud-agents.md    | TC-INFRA-16-10 | Dispatcher call is not skipped (#38)          | High     | ⬜  | ⬜      |
+| docs/16-cloud-agents.md    | TC-INFRA-16-11 | Dispatcher dry run (#38)                      | High     | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-01 | Format hook fixes a badly formatted file      | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-02 | Format hook reports remaining lint errors     | High     | ✅  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-03 | Stop hook checks affected packages only       | High     | ✅  | ⬜      |
@@ -32,6 +34,14 @@
 | docs/17-token-saving.md    | TC-INFRA-17-10 | Action stops after 50 turns                   | Medium   | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-11 | Unattended agent stops after two failures     | Medium   | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-12 | agent-setup prints one line and logs the rest | High     | ✅  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-01 | Label maps to model and subagent              | High     | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-02 | Missing label falls back to sonnet            | High     | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-03 | PR comment uses the linked issue              | High     | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-04 | Subagent files match the resolver             | High     | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-05 | /build delegates to the label's builder       | High     | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-06 | /build without a label says so                | Medium   | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-07 | /plan skips plan:none                         | Medium   | ⬜  | ⬜      |
+| docs/40-model-routing.md   | TC-INFRA-40-08 | `@claude` on a PR uses the issue's model      | High     | ⬜  | ⬜      |
 | docs/8-handbook-core.md    | TC-DOCS-8-01   | Reading paths work                            | Medium   | ⬜  | ⬜      |
 | docs/8-handbook-core.md    | TC-DOCS-8-02   | Mermaid diagrams render                       | Medium   | ⬜  | ⬜      |
 | docs/8-handbook-core.md    | TC-DOCS-8-03   | Glossary anchors resolve                      | Medium   | ⬜  | ⬜      |
