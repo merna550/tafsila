@@ -30,7 +30,14 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 ## Where it lives in our code
 
 - `CLAUDE.md` (root), `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`, `AGENTS.md`.
-- `.claude/commands/`, `.claude/rules/`, `.claude/skills/`.
+- `.claude/commands/`, `.claude/rules/`, `.claude/skills/`, `.claude/settings.json`.
+- `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-setup.sh`.
+
+## Running in the cloud
+
+- **claude.ai/code** (web or phone), connected once with `/web-setup`; no GitHub App needed.
+- **GitHub Action** `claude.yml` (`@claude` from Merna, or called by the dispatcher). Auth is the subscription token plus a fine-grained token, not an API key. Auto-fix on PRs needs the GitHub App, so it is not used.
+- A **SessionStart hook** (`.claude/settings.json`) runs `scripts/agent-setup.sh`, which does nothing unless the session is a cloud one (`CLAUDE_CODE_REMOTE=true`). See [tutorial](../../backend/tutorials/run-agents-in-cloud.md) and [ADR-016](../../DECISIONS.md).
 
 ## The 20% you need
 

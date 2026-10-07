@@ -57,7 +57,8 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. Escalate one tier if the b
 ### How to run each model
 
 - **Claude Code (local):** `claude --model opus` for planning, `claude --model sonnet` / `haiku` for building; or switch inside a session with `/model`. Use plan mode for `/plan`.
-- **Claude Code GitHub Action (unattended, optional):** issues labelled `agent:auto` + `status:ready` are built by the action; the workflow reads the `build:*` label and passes the matching model.
+- **Claude Code on the web (claude.ai/code, also from the phone):** connect GitHub once with `/web-setup`, then run `/build #N`. It runs in Anthropic's cloud with the laptop off, pushes a branch and opens a PR. Uses the Claude subscription. Best for long tasks.
+- **GitHub Action (unattended):** `.github/workflows/claude.yml` runs on an `@claude` comment from Merna or on a call from the dispatcher (`.github/workflows/dispatch.yml`, every 2 hours, one issue at a time, paused when 3 PRs wait or `DISPATCH_ENABLED=false`). The model comes from the issue's `build:*` label. No Claude GitHub App is installed, so auto-fix on PRs is not used. Setup, cost and stopping: [run-agents-in-cloud](backend/tutorials/run-agents-in-cloud.md) (ADR-016).
 - Model tiers map to the current versions of Opus / Sonnet / Haiku; update this line if the team pins exact model IDs.
 
 ## 3. Labels (full list in `.github/labels.yml`)
