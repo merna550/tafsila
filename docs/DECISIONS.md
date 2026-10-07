@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-021 · 2026-10-07 · Local Supabase: test OTP, dummy SMS provider, AI and Paymob optional until their milestone
+
+**Context:** Every developer and cloud agent needs a full local backend with no accounts (issue #18).
+**Decision:** `supabase/config.toml` is committed. Phone auth is on with three test numbers (`+201000000001..3`, code `123456`); GoTrue refuses phone sign-in with no provider, so a dummy Twilio entry is enabled (never called; real credentials come from env vars per environment). Email confirmations are on and land in the local mail catcher. Google is declared but disabled. Private bucket `design-photos`. `AI_*` and `PAYMOB_API_KEY` are optional in `packages/config/env.ts` and required only when `APP_ENV=production`. `db:types` writes `database.types.ts`. CI job `supabase.yml` runs `db:reset` on a fresh stack, skipping studio, edge runtime and analytics.
+**Alternatives:** A remote dev project (cost, accounts, not offline); requiring AI keys everywhere (blocks CI and staging until M6).
+
 ## ADR-020 · 2026-10-07 · The dispatcher starts on events, with a 6-hour cron as a safety net
 
 **Context:** A 2-hour cron left ready work waiting up to 2 hours and mostly ran with nothing to do (issue #50).

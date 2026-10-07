@@ -1,0 +1,24 @@
+name: Supabase
+# Proves the migrations + seed apply cleanly on a fresh local Supabase (issue #18).
+on:
+  pull_request:
+    paths: ["supabase/**", "package.json", ".github/workflows/supabase.yml"]
+  push:
+    branches: [main]
+    paths: ["supabase/**"]
+jobs:
+  db-reset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Start Supabase (no Studio, mail catcher or edge runtime needed)
+        run: pnpm exec supabase start -x studio,edge-runtime,logflare,vector,imgproxy
+      - name: Apply migrations and seed on a fresh database
+        run: pnpm db:reset
+      - name: Stop
+        if: always()
+        run: pnpm db:stop

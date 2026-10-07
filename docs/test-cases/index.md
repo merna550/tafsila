@@ -41,6 +41,10 @@
 | docs/17-token-saving.md    | TC-INFRA-17-10 | Action stops after 50 turns                         | Medium   | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-11 | Unattended agent stops after two failures           | Medium   | ⬜  | ⬜      |
 | docs/17-token-saving.md    | TC-INFRA-17-12 | agent-setup prints one line and logs the rest       | High     | ✅  | ⬜      |
+| docs/18-supabase-local.md  | TC-INFRA-18-01 | Start and reset on a clean stack                    | High     | ✅  | ⬜      |
+| docs/18-supabase-local.md  | TC-INFRA-18-02 | Test OTP login                                      | High     | ✅  | ⬜      |
+| docs/18-supabase-local.md  | TC-INFRA-18-03 | Emails reach the mail catcher                       | High     | ✅  | ⬜      |
+| docs/18-supabase-local.md  | TC-INFRA-18-04 | App starts without AI/Paymob keys                   | High     | ✅  | ⬜      |
 | docs/40-model-routing.md   | TC-INFRA-40-01 | Label maps to model and subagent                    | High     | ⬜  | ⬜      |
 | docs/40-model-routing.md   | TC-INFRA-40-02 | Missing label falls back to sonnet                  | High     | ⬜  | ⬜      |
 | docs/40-model-routing.md   | TC-INFRA-40-03 | PR comment uses the linked issue                    | High     | ⬜  | ⬜      |
