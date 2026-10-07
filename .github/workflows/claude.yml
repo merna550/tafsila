@@ -81,7 +81,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.AGENT_GITHUB_TOKEN }}
-          prompt: /build #${{ steps.ctx.outputs.issue }}
+          # Quoted: unquoted, YAML reads " #..." as a comment and Claude gets a bare "/build" (issue #44).
+          prompt: "/build #${{ steps.ctx.outputs.issue }}"
           claude_args: --model ${{ steps.ctx.outputs.model }} --max-turns 50
 
       - name: Answer @claude comment

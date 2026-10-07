@@ -27,6 +27,11 @@ describe("claude.yml", () => {
     const build = claude.jobs.claude.steps.find((s) => s.name === "Build issue (dispatcher)");
     expect(build.if).toBe("inputs.issue != ''");
   });
+
+  it("passes the issue number in the /build prompt (an unquoted ' #' is a YAML comment, issue #44)", () => {
+    const build = claude.jobs.claude.steps.find((s) => s.name === "Build issue (dispatcher)");
+    expect(build.with.prompt).toBe("/build #${{ steps.ctx.outputs.issue }}");
+  });
 });
 
 describe("claude.yml model resolution", () => {
