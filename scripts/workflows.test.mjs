@@ -181,3 +181,19 @@ describe("staging.yml (issue #19)", () => {
     expect(smoke).toContain('"$GITHUB_SHA" staging');
   });
 });
+
+describe("agent settings deny production commands (issue #58)", () => {
+  const settings = JSON.parse(readFileSync(new URL("../.claude/settings.json", import.meta.url), "utf8"));
+  const deny = settings.permissions.deny;
+
+  it.each([
+    "Bash(gh workflow run deploy*)",
+    "Bash(gh workflow run *production*)",
+    "Bash(gh release create*)",
+    "Bash(*vercel*--prod*)",
+    "Bash(*vercel*promote*)",
+    "Bash(*vercel*rollback*)",
+  ])("denies %s", (rule) => {
+    expect(deny).toContain(rule);
+  });
+});

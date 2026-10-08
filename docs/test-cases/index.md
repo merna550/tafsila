@@ -2,6 +2,8 @@
 
 | File                            | ID             | Title                                               | Priority | dev | staging |
 | ------------------------------- | -------------- | --------------------------------------------------- | -------- | --- | ------- |
+| agent-deny-rules.md             | TC-INFRA-58-01 | Deny rules present in settings                      | High     | ⬜  | ⬜      |
+| agent-deny-rules.md             | TC-INFRA-58-02 | Token has no Actions permission                     | High     | ⬜  | ⬜      |
 | docs/10-handbook-upkeep.md      | TC-DOCS-10-01  | docs:check passes on the branch                     | High     | ⬜  | ⬜      |
 | docs/10-handbook-upkeep.md      | TC-DOCS-10-02  | Missing card is reported by name                    | High     | ⬜  | ⬜      |
 | docs/10-handbook-upkeep.md      | TC-DOCS-10-03  | Broken relative link is reported                    | High     | ⬜  | ⬜      |

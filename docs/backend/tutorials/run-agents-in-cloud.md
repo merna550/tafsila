@@ -13,7 +13,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 2. **Create the claude.ai/code environment.** Open claude.ai/code → environments → new environment for `merna550/tafsila` with network access set to **Trusted**. Cloud sessions set `CLAUDE_CODE_REMOTE=true`, which makes the SessionStart hook install dependencies (`scripts/agent-setup.sh`: corepack + `pnpm install --frozen-lockfile`; on your laptop it does nothing).
 3. **Create `AGENT_GITHUB_TOKEN`** (GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens**):
    - Resource owner: you. Repository access: **Only select repositories** → `tafsila`.
-   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else.
+   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else. In particular **Actions must stay at No access** (not read, not write), so agents cannot dispatch workflows or release to production (issue #58). `.claude/settings.json` also denies `gh workflow run` on deploy/production workflows, `gh release create` and `vercel --prod`/`promote`/`rollback`.
    - Expiration: **90 days**. Add a calendar reminder for day 80.
    - Save it: repo → Settings → Secrets and variables → Actions → New repository secret `AGENT_GITHUB_TOKEN`.
    - Why not the default token: PRs opened with `GITHUB_TOKEN` do not start CI, so quality checks would never run on agent PRs.
