@@ -12,7 +12,7 @@
 
 | Data             | Content                                                                                   |
 | ---------------- | ----------------------------------------------------------------------------------------- |
-| Size charts      | Egyptian/EU XS–XXXL                                                                       |
+| Size charts      | Egyptian/EU S–XXL                                                                         |
 | Measurement sets | Size S, M, L, XL + 3 custom real-body sets                                                |
 | Designs          | V-neck half-circle dress, A-line skirt, basic blouse (+ photos in local storage)          |
 | Fabrics & rules  | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle) |

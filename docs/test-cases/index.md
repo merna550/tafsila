@@ -45,6 +45,11 @@
 | docs/18-supabase-local.md       | TC-INFRA-18-02 | Test OTP login                                      | High     | ✅  | ⬜      |
 | docs/18-supabase-local.md       | TC-INFRA-18-03 | Emails reach the mail catcher                       | High     | ✅  | ⬜      |
 | docs/18-supabase-local.md       | TC-INFRA-18-04 | App starts without AI/Paymob keys                   | High     | ✅  | ⬜      |
+| docs/22-milestone-briefs.md     | TC-DOCS-22-01  | Briefs link every M0 and M1 issue                   | High     | ⬜  | ⬜      |
+| docs/22-milestone-briefs.md     | TC-DOCS-22-02  | Docs check passes                                   | High     | ⬜  | ⬜      |
+| docs/22-milestone-briefs.md     | TC-DOCS-22-03  | `/plan-wave` skips issues with open dependency      | High     | ⬜  | ⬜      |
+| docs/22-milestone-briefs.md     | TC-DOCS-22-04  | `/plan-wave` does not approve by itself             | High     | ⬜  | ⬜      |
+| docs/22-milestone-briefs.md     | TC-DOCS-22-05  | `/plan-milestone` drafts issues in Backlog          | Medium   | ⬜  | ⬜      |
 | docs/40-model-routing.md        | TC-INFRA-40-01 | Label maps to model and subagent                    | High     | ⬜  | ⬜      |
 | docs/40-model-routing.md        | TC-INFRA-40-02 | Missing label falls back to sonnet                  | High     | ⬜  | ⬜      |
 | docs/40-model-routing.md        | TC-INFRA-40-03 | PR comment uses the linked issue                    | High     | ⬜  | ⬜      |

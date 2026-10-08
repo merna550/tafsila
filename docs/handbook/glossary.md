@@ -1094,6 +1094,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `packages/api/src/adapters/memory/` (planned); today tests use a fixed clock. **Level:** intermediate  
 **Learn:** <https://martinfowler.com/bliki/TestDouble.html>
 
+<a id="milestone-brief"></a>
+
+### Milestone brief and wave
+
+**Plain words:** A one-page plan for a milestone (goal, scope, deliverables, exit criteria, risks, issue list). A wave is the group of its issues whose dependencies are all closed, so they can be planned and built next.  
+**In Tafsila:** `docs/milestones/`, written with `/plan-milestone`; the next wave is planned with `/plan-wave` ([WORKFLOW section 8](../WORKFLOW.md#8-github-board-and-milestones), [ADR-024](../DECISIONS.md)). **Level:** beginner  
+**Learn:** <https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones>
+
 <a id="mermaid"></a>
 
 ### Mermaid
@@ -1693,7 +1701,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Slash command
 
 **Plain words:** A saved prompt you run by typing `/name`.  
-**In Tafsila:** `.claude/commands/` (`/triage`, `/plan`, `/build`, `/review`, `/ship`, `/status`, `/release-check`). **Level:** beginner  
+**In Tafsila:** `.claude/commands/` (`/triage`, `/plan`, `/plan-milestone`, `/plan-wave`, `/build`, `/review`, `/ship`, `/status`, `/release-check`). **Level:** beginner  
 **Learn:** <https://docs.claude.com/en/docs/claude-code/slash-commands>
 
 <a id="sleeve-cap"></a>

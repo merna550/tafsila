@@ -168,7 +168,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-AUTH-01 | Sign up / sign in with email + password and Google OAuth | M |
-| FR-AUTH-02 | Phone number verification by SMS OTP is required before using the free trial | M |
+| FR-AUTH-02 | Phone number verification by OTP is required before using the free trial. The production channel (SMS or WhatsApp) is chosen at M8 by price (ADR-024); dev/staging use test numbers | M |
 | FR-AUTH-03 | One free trial per verified phone number (prevent multi-account abuse) | M |
 | FR-AUTH-04 | Password reset, sign out, delete account (deletes images and personal data) | M |
 | FR-AUTH-05 | User chooses language (ar/en) and unit display (cm; inches later) | M |
@@ -176,12 +176,12 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 ### 4.2 Measurements & Client Profiles (MEAS)
 | ID | Requirement | Pri |
 |---|---|---|
-| FR-MEAS-01 | Select a standard size (XS–XXXL) from a size chart (Egyptian/EU default; chart editable by admin) | M |
+| FR-MEAS-01 | Select a standard size (S–XXL) from a size chart (Egyptian/EU default; chart editable by admin). Anyone outside S–XXL uses custom measurements; more sizes later are data only (ADR-024) | M |
 | FR-MEAS-02 | Enter custom measurements (list in §6.2) with an illustrated guide per measurement (image + short Arabic text) | M |
 | FR-MEAS-03 | Validate measurements: ranges, and cross-checks (e.g. waist < hip for most bodies → warn, not block; high bust ≤ bust) | M |
 | FR-MEAS-04 | Save measurement sets as named client profiles; a workshop user can store unlimited profiles (plan-limited) | M |
 | FR-MEAS-05 | Start from a standard size and override individual measurements | S |
-| FR-MEAS-06 | Ease preference per pattern: fitted / regular / loose (maps to ease tables) | M |
+| FR-MEAS-06 | Ease preference per pattern: fitted / regular / loose (maps to ease tables). Delivered in M3 because it is chosen per pattern (ADR-024) | M |
 
 ### 4.3 Photo Upload & AI Design Analysis (DES)
 | ID | Requirement | Pri |
@@ -515,7 +515,7 @@ Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal
 
 | Level | What | Tool |
 |---|---|---|
-| Engine unit | Every block and feature; measurements matrix (sizes XS–XXXL + 20 real custom sets) | Vitest |
+| Engine unit | Every block and feature; measurements matrix (sizes S–XXL + 20 real custom sets) | Vitest |
 | Geometry property tests | All FR-VAL checks pass for every catalogue combination × size matrix | Vitest (+ fast-check) |
 | Snapshot | SVG snapshots per (spec, size) to catch unintended geometry changes | Vitest |
 | AI evals | Feature accuracy on labelled photo set; run before model/prompt changes | Script in `ai-evals/` |
@@ -531,15 +531,15 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 
 | Milestone | Content | Exit criteria |
 |---|---|---|
-| M0 - Foundation & environments | Repo, tooling, CI/CD, agent config, dev/staging/prod environments, domain, Sentry, PostHog | Staging deployed from `main`; prod project exists; error + analytics events visible |
-| M1 - Accounts & data | Auth + phone OTP, profiles, client profiles, measurements UI with guide, Egyptian size chart, DB schema + RLS, seed data | A user signs up, verifies phone, saves a client with measurements; RLS tests pass |
+| M0 - Foundation & environments | Repo, tooling, CI/CD, agent config, dev/staging/prod environments (Vercel URLs), Sentry, PostHog | Staging deployed from `main`; prod project exists; error + analytics events visible |
+| M1 - Accounts & data | Auth + phone OTP (test numbers), profiles, client profiles, measurements UI with guide, Egyptian size chart S–XXL, mini admin (users list, size-chart editor), DB schema + RLS, seed data | A user signs up, verifies phone, saves a client with measurements; RLS tests pass |
 | M2 - Engine core | Schemas, blocks, dress/skirt/blouse modules, seam allowance, notches, grain, labels, validation | All FR-VAL checks pass across the size matrix; toiles sewn in 3 sizes per garment |
-| M3 - Design & pattern UI | Manual design picker (FR-DES-06), pattern viewer, validation report UI, versions | A user builds a design by hand and sees a validated pattern for a saved client |
+| M3 - Design & pattern UI | Manual design picker (FR-DES-06), ease preference (FR-MEAS-06), pattern viewer, validation report UI, versions | A user builds a design by hand and sees a validated pattern for a saved client |
 | M4 - Outputs | Projector + calibration, direct-cut steps, PDF A4/A0 | Toile sewn from projector and from PDF fits |
 | M5 - Fabric | Yardage/nesting, fabric catalogue and rules, recommendations | Yardage within ±10 cm of a manual layout on 5 garments |
 | M6 - AI layer | Photo analysis, confirmation UI, chat edits | ≥ 80% feature accuracy on the 50-photo eval set |
 | M7 - Billing & admin | Credits, free trial, Paymob, plans, receipts, admin dashboard | Paid flow works in Paymob sandbox and one live test payment |
-| M8 - Beta & launch readiness | Closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
+| M8 - Beta & launch readiness | Domain, production OTP channel (SMS vs WhatsApp), closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
 | M9 - Public launch | Production release, monitoring, launch marketing | Public sign-ups open; on-call checklist done |
 | Post-launch | 3D assembly preview (FR-3D-01…04), abaya/isdal/trousers, stretch fabrics | — |
 
@@ -549,13 +549,15 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 
 | # | Question | Status |
 |---|---|---|
-| 1 | Final product name and domain (Qassa / Tafsila / Batrony / other) | Open |
+| 1 | Product name and domain | Name decided: Tafsila / تفصيلة. Domain bought at M8; staging and early prod use Vercel URLs (ADR-024) |
 | 2 | Verify FreeSewing licence for commercial SaaS; decide fork vs dependency | Open |
 | 3 | AI provider for v1 (Claude vs Gemini) after eval on 50 photos | Open |
 | 4 | Default Egyptian size chart source and values | Open — founder to compile |
 | 5 | Paymob fees, merchant onboarding requirements, recurring payments support | Open |
 | 6 | Base avatar mesh source and licence for 3D (avoid restricted-licence body models) | Open |
 | 7 | Credit rule for heavy chat edits that change garment category | Proposed: counts as a new pattern |
+| 8 | Production OTP channel: SMS (Twilio/Vonage/MessageBird) or WhatsApp | Deferred to M8; compare per-message prices then (ADR-024) |
+| 9 | Standard size range | Decided: S–XXL (ADR-024) |
 
 ---
 
