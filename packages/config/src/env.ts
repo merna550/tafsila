@@ -18,10 +18,19 @@ const baseServerEnvSchema = z.object({
   AI_API_KEY: z.string().min(1).optional(),
   PAYMOB_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
   PAYMOB_API_KEY: z.string().min(1).optional(),
+  SENTRY_DSN: z.url().optional(),
+  POSTHOG_KEY: z.string().min(1).optional(),
+  POSTHOG_HOST: z.url().default("https://us.i.posthog.com"),
 });
 
-/** Variables that are optional until their milestone (AI in M6, Paymob in M7) but mandatory in production. */
-export const PRODUCTION_REQUIRED_KEYS = ["AI_MODEL_ANALYZE", "AI_API_KEY", "PAYMOB_API_KEY"] as const;
+/** Variables that are optional until their milestone (AI in M6, Paymob in M7) or locally (observability) but mandatory in production. */
+export const PRODUCTION_REQUIRED_KEYS = [
+  "AI_MODEL_ANALYZE",
+  "AI_API_KEY",
+  "PAYMOB_API_KEY",
+  "SENTRY_DSN",
+  "POSTHOG_KEY",
+] as const;
 
 /** Schema of all server-side environment variables; AI and Paymob keys are required only when APP_ENV is production. */
 export const serverEnvSchema = baseServerEnvSchema.superRefine((env, ctx) => {
@@ -79,5 +88,38 @@ export function loadBuildInfo(source: Record<string, string | undefined> = proce
     environment: source.APP_ENV || "local",
     version: source.APP_VERSION || "dev",
     gitSha: source.GIT_SHA || source.VERCEL_GIT_COMMIT_SHA || "unknown",
+  };
+}
+
+/** Browser-safe configuration handed to client components at request time (the DSN and project key are public by design). */
+export interface PublicConfig {
+  /** Sentry DSN, or undefined when error reporting is off. */
+  readonly sentryDsn: string | undefined;
+  /** PostHog project key, or undefined when analytics is off. */
+  readonly posthogKey: string | undefined;
+  /** PostHog ingestion host. */
+  readonly posthogHost: string;
+  /** Deployment environment name. */
+  readonly appEnv: string;
+  /** Release identifier (git SHA) so events map to a deploy. */
+  readonly release: string;
+}
+
+/**
+ * Reads only the browser-safe subset of the configuration at runtime (not inlined at build time,
+ * so one build runs in every environment, ADR-004). Never returns secrets.
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns Public configuration for the browser SDKs.
+ * @example
+ * loadPublicConfig({ APP_ENV: "staging", POSTHOG_KEY: "phc_x" }).posthogKey; // "phc_x"
+ */
+export function loadPublicConfig(source: Record<string, string | undefined> = process.env): PublicConfig {
+  return {
+    sentryDsn: source.SENTRY_DSN || undefined,
+    posthogKey: source.POSTHOG_KEY || undefined,
+    posthogHost: source.POSTHOG_HOST || "https://us.i.posthog.com",
+    appEnv: source.APP_ENV || "local",
+    release: loadBuildInfo(source).gitSha,
   };
 }

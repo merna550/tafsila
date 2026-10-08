@@ -7,13 +7,18 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@sentry/nextjs": "11.6.0",
     "@tafsila/api": "workspace:*",
     "@tafsila/config": "workspace:*",
+    "@tafsila/schemas": "workspace:*",
     "@tafsila/ui": "workspace:*",
+    "@tafsila/utils": "workspace:*",
     "next": "^16.4.0",
+    "posthog-js": "^1.438.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },

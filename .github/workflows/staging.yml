@@ -58,7 +58,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Pull the Production target settings of the staging project
         run: pnpm exec vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-      - name: Build
+      - name: Build (uploads source maps to Sentry; the token never reaches Vercel)
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+          SENTRY_RELEASE: ${{ github.sha }}
         run: pnpm exec vercel build --prod --token="$VERCEL_TOKEN"
       - name: Deploy the prebuilt output
         run: pnpm exec vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"

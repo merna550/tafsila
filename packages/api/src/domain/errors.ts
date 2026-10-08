@@ -1,7 +1,13 @@
 /** Domain errors: business failures with bilingual messages, mapped to HTTP in one place (error-handler). */
 
 /** HTTP status codes used by domain errors. */
-export const HTTP_STATUS = { badRequest: 400, unauthorized: 401, notFound: 404, internal: 500 } as const;
+export const HTTP_STATUS = {
+  badRequest: 400,
+  unauthorized: 401,
+  notFound: 404,
+  tooManyRequests: 429,
+  internal: 500,
+} as const;
 
 /** Base class for expected business errors that the API reports to users. */
 export class AppError extends Error {

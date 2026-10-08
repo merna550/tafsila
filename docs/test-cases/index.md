@@ -78,3 +78,11 @@
 | infra/19-staging-environment.md | TC-INF-19-04   | Test OTP sign-in on staging                         | Medium   | ⬜  | ⬜      |
 | infra/19-staging-environment.md | TC-INF-19-05   | Paused project recovery                             | Low      | ⬜  | ⬜      |
 | infra/19-staging-environment.md | TC-INF-19-06   | Workflow order and no secret in logs                | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-01   | Test error on staging reaches Sentry                | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-02   | `app_opened` reaches PostHog                        | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-03   | Debug route unavailable in production               | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-04   | Debug route is throttled                            | Medium   | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-05   | Events cannot carry personal data                   | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-06   | Sentry events contain no personal data              | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-07   | App starts without DSN or key                       | High     | ⬜  | ⬜      |
+| infra/21-sentry-posthog.md      | TC-OBS-21-08   | Direct PostHog import fails the architecture check  | Medium   | ⬜  | ⬜      |

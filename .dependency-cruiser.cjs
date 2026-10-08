@@ -53,6 +53,29 @@ module.exports = {
       to: { path: "^apps/" },
     },
     {
+      name: "analytics-via-wrapper",
+      severity: "error",
+      comment:
+        "PostHog is imported only through the analytics wrapper (web) or its adapter (API), so events stay typed and PII-free (NFR-05).",
+      from: { pathNot: ["^apps/web/src/shared/analytics/", "^packages/api/src/adapters/posthog/"] },
+      to: { path: "node_modules/(posthog-js|posthog-node)" },
+    },
+    {
+      name: "sentry-via-wrappers",
+      severity: "error",
+      comment:
+        "Sentry is imported only by the monitoring wrapper, Next instrumentation/config and the API Sentry adapter.",
+      from: {
+        pathNot: [
+          "^apps/web/src/shared/monitoring/",
+          "^apps/web/src/instrumentation\\.ts$",
+          "^apps/web/next\\.config\\.ts$",
+          "^packages/api/src/adapters/sentry/",
+        ],
+      },
+      to: { path: "node_modules/@sentry/" },
+    },
+    {
       name: "features-through-index",
       severity: "warn",
       comment: "Import another feature only through its index.ts.",
@@ -64,6 +87,6 @@ module.exports = {
     doNotFollow: { path: "node_modules" },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: "tsconfig.json" },
-    exclude: { path: ["\\.test\\.tsx?$", "dist", "\\.next"] },
+    exclude: { path: ["\\.test\\.tsx?$", "^(apps|packages)/.*/(dist|\\.next)/"] },
   },
 };

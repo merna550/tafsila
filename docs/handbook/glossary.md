@@ -648,7 +648,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Feature flag
 
 **Plain words:** A switch that turns a feature on or off without redeploying.  
-**In Tafsila:** PostHog on the frontend and a `FeatureFlags` port on the backend (planned, [ARCHITECTURE section 6](../ARCHITECTURE.md)). **Card:** [PostHog](tech/sentry-posthog.md) · **Level:** intermediate  
+**In Tafsila:** PostHog flags read through `useFeatureFlag` in `apps/web/src/shared/analytics` (first flag: `signups_open`, not gating anything until M1). **Card:** [PostHog](tech/sentry-posthog.md) · **Level:** intermediate  
 **Learn:** <https://posthog.com/docs/feature-flags>
 
 <a id="feature-module"></a>
@@ -1462,6 +1462,22 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## R
 
+<a id="release"></a>
+
+### Release
+
+**Plain words:** The identifier of one deployed version, so an error can be traced to the code that produced it.  
+**In Tafsila:** The git SHA, sent to Sentry as `release` (from `loadPublicConfig`). **Card:** [Sentry and PostHog](tech/sentry-posthog.md) · **Level:** beginner  
+**Learn:** <https://docs.sentry.io/product/releases/>
+
+<a id="request-id"></a>
+
+### Request id
+
+**Plain words:** A short unique code given to every request so one failure can be followed through logs and error reports.  
+**In Tafsila:** The `x-request-id` header, the `request_id` field of the error body and the Sentry tag. See [find a bug from a report](find-a-bug-from-a-report.md). **Card:** [Sentry and PostHog](tech/sentry-posthog.md) · **Level:** beginner  
+**Learn:** <https://docs.sentry.io/platforms/javascript/enriching-events/tags/>
+
 <a id="rate-limiting"></a>
 
 ### Rate limiting
@@ -1551,6 +1567,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 <a id="letter-s"></a>
 
 ## S
+
+<a id="source-map"></a>
+
+### Source map
+
+**Plain words:** A file that maps minified production code back to the original lines, so an error stack is readable.  
+**In Tafsila:** Uploaded to Sentry by the staging CI build only, then deleted from the build output (ADR-025). **Card:** [Sentry and PostHog](tech/sentry-posthog.md) · **Level:** intermediate  
+**Learn:** <https://docs.sentry.io/platforms/javascript/sourcemaps/>
 
 <a id="sbom"></a>
 
