@@ -16,16 +16,17 @@ status:in-review ─► (Merna: approve) ─► merge ─► status:on-staging �
 any step ─► status:blocked (+ reason)          any open question ─► needs:decision
 ```
 
-| Step          | Command                                | Who                          | Output                                                                          |
-| ------------- | -------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------- |
-| Triage        | `/triage <idea or #issue>`             | Agent                        | Issue with all labels, size, model recommendation, SRS IDs, acceptance criteria |
-| Plan          | `/plan #N`                             | Agent (model from `plan:*`)  | Plan comment: files, steps, tests, risks, docs to update                        |
-| Approve plan  | comment "approved"                     | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved                       |
-| Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link                                 |
-| Review        | PR review                              | Merna                        | Approve or request changes                                                      |
-| Ship          | `/ship #N` (merge)                     | Agent after approval         | Merge → staging deploy → smoke tests                                            |
-| Release check | `/release-check`                       | Agent                        | List of High manual cases to run on staging + automated results                 |
-| Release       | GitHub "Deploy to production" workflow | Merna (one click)            | Prod deploy + migrations + changelog                                            |
+| Step          | Command                                | Who                          | Output                                                                                                          |
+| ------------- | -------------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Triage        | `/triage <idea or #issue>`             | Agent                        | Issue with all labels, size, model recommendation, SRS IDs, acceptance criteria                                 |
+| Plan wave     | `/plan-wave [M<n>]`                    | Agent (Opus, Merna present)  | Plans every needs-plan issue whose dependencies are closed; one Arabic summary; `status:ready` after "approved" |
+| Plan          | `/plan #N`                             | Agent (model from `plan:*`)  | Plan comment: files, steps, tests, risks, docs to update                                                        |
+| Approve plan  | comment "approved"                     | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved                                                       |
+| Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link                                                                 |
+| Review        | PR review                              | Merna                        | Approve or request changes                                                                                      |
+| Ship          | `/ship #N` (merge)                     | Agent after approval         | Merge → staging deploy → smoke tests                                                                            |
+| Release check | `/release-check`                       | Agent                        | List of High manual cases to run on staging + automated results                                                 |
+| Release       | GitHub "Deploy to production" workflow | Merna (one click)            | Prod deploy + migrations + changelog                                                                            |
 
 ## 2. Choosing the model (save tokens)
 
@@ -140,7 +141,7 @@ Acceptance criteria: `scripts/gh-ac.sh list|check|uncheck|progress <issue> [n…
 | `status:in-review` (issue) and its PR                      | In review    | `/build`                   |
 | closed / merged                                            | Done         | board workflow (automatic) |
 
-Every issue and its PR carry the same milestone. Milestone map (SRS §12; titles match GitHub exactly):
+Every issue and its PR carry the same milestone. Each active milestone has a one-page brief in [docs/milestones/](milestones/README.md). Rule: write the next milestone's brief when the current one is about 70% done. `/plan-milestone M<n>` (Opus, once per milestone) writes the brief and drafts its issues as `status:plan-review` in Backlog; `/plan-wave` (Opus, with Merna present) then plans every `needs-plan` issue whose dependencies are all closed, in one session, posts each plan on its issue, gives Merna one short Arabic summary of the decisions, and after she replies "approved" (or "approved except #N") sets them to `status:ready`. Milestone map (SRS §12; titles match GitHub exactly):
 
 | Milestone                      | Work that belongs there                                                                                                 |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
