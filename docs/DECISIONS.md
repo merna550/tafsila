@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-022 · 2026-10-08 · Free tiers only until the beta (M8)
+
+**Decision:** No paid plan and no payment method on any service until the beta (milestone M8). Everything stays on free tiers: Vercel Hobby, Supabase Free, GitHub Free (Actions free minutes). Spending limits stay at $0 where a service has them, so a quota overrun fails instead of billing. If any step would need a paid plan, a paid add-on or a payment method, the agent stops, adds `needs:decision` and asks Merna one question; a free alternative that is cheap to reverse is chosen and logged instead of stopping. First consequence (issue #19): staging secrets are repository-level Actions secrets with a `_STAGING` suffix, because environment secrets in private repositories need GitHub Pro or Team. The Vercel GitHub integration (free) is allowed for preview deployments.
+**Reason:** Pre-revenue project; costs are only worth paying once users pay. A hard rule avoids surprise bills from agents choosing a convenient paid feature.
+**Alternatives:** Pay as needed (no control over agent choices); Vercel Pro and Supabase Pro now (about $45 per month with no users); GitHub Pro for environment secrets (paid, and repository secrets are enough for one remote environment). ADR-014 still applies at M8.
+
 ## ADR-021 · 2026-10-07 · Local Supabase: test OTP, dummy SMS provider, AI and Paymob optional until their milestone
 
 **Context:** Every developer and cloud agent needs a full local backend with no accounts (issue #18).
