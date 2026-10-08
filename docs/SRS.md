@@ -531,7 +531,7 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 
 | Milestone | Content | Exit criteria |
 |---|---|---|
-| M0 - Foundation & environments | Repo, tooling, CI/CD, agent config, dev/staging/prod environments (Vercel URLs), Sentry, PostHog | Staging deployed from `main`; prod project exists; error + analytics events visible |
+| M0 - Foundation & environments | Repo, tooling, CI/CD, agent config, dev/staging environments (Vercel URLs), Sentry, PostHog | Staging deployed from `main`; errors and analytics from staging visible |
 | M1 - Accounts & data | Auth + phone OTP (test numbers), profiles, client profiles, measurements UI with guide, Egyptian size chart S–XXL, mini admin (users list, size-chart editor), DB schema + RLS, seed data | A user signs up, verifies phone, saves a client with measurements; RLS tests pass |
 | M2 - Engine core | Schemas, blocks, dress/skirt/blouse modules, seam allowance, notches, grain, labels, validation | All FR-VAL checks pass across the size matrix; toiles sewn in 3 sizes per garment |
 | M3 - Design & pattern UI | Manual design picker (FR-DES-06), ease preference (FR-MEAS-06), pattern viewer, validation report UI, versions | A user builds a design by hand and sees a validated pattern for a saved client |
@@ -539,7 +539,7 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 | M5 - Fabric | Yardage/nesting, fabric catalogue and rules, recommendations | Yardage within ±10 cm of a manual layout on 5 garments |
 | M6 - AI layer | Photo analysis, confirmation UI, chat edits | ≥ 80% feature accuracy on the 50-photo eval set |
 | M7 - Billing & admin | Credits, free trial, Paymob, plans, receipts, admin dashboard | Paid flow works in Paymob sandbox and one live test payment |
-| M8 - Beta & launch readiness | Domain, production OTP channel (SMS vs WhatsApp), closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
+| M8 - Beta & launch readiness | Production project + "Deploy to production" workflow (ADR-026), domain, production OTP channel (SMS vs WhatsApp), closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
 | M9 - Public launch | Production release, monitoring, launch marketing | Public sign-ups open; on-call checklist done |
 | Post-launch | 3D assembly preview (FR-3D-01…04), abaya/isdal/trousers, stretch fabrics | — |
 
