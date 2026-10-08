@@ -1,5 +1,5 @@
 ---
-packages: []
+packages: [vercel]
 level: beginner
 adr: ADR-003
 ---
@@ -26,11 +26,12 @@ Vercel builds the repo on every push and serves it worldwide. A pull request get
 
 ## When we would change it
 
-**Important, checked on 2026-10-07 at [vercel.com/docs/plans/hobby](https://vercel.com/docs/plans/hobby):** the free Hobby plan is for non-commercial, personal use only. Tafsila charges customers, so **the production project needs the Pro plan (currently $20 per developer seat per month) before the first paying user**; the free tier is fine for development and early previews while there is no revenue. This was not in the original reasoning and is recorded in [ADR-014](../../DECISIONS.md) for Merna's confirmation. If hosting cost or limits become a problem, run the Docker image on another host.
+Staging runs on Hobby until the beta ([ADR-022](../../DECISIONS.md), [ADR-023](../../DECISIONS.md)). **Important, checked on 2026-10-07 at [vercel.com/docs/plans/hobby](https://vercel.com/docs/plans/hobby):** the free Hobby plan is for non-commercial, personal use only. Tafsila charges customers, so **the production project needs the Pro plan (currently $20 per developer seat per month) before the first paying user**; the free tier is fine for development and early previews while there is no revenue. This was not in the original reasoning and is recorded in [ADR-014](../../DECISIONS.md) for Merna's confirmation. If hosting cost or limits become a problem, run the Docker image on another host.
 
 ## Where it lives in our code
 
-- Git integration is configured in the Vercel dashboard, not in code.
+- Git integration (previews on PRs) is configured in the Vercel dashboard. `main` is deployed by `.github/workflows/staging.yml` with the CLI (pinned as the root devDependency `vercel`), because `vercel.json` turns off the Git deploy of `main` so the database migration runs first ([ADR-023](../../DECISIONS.md)).
+- `vercel.json` (install and build commands). The project `tafsila` is the **staging** project; its Production target is staging.
 - `apps/web/next.config.ts` (standalone output), `apps/web/Dockerfile` (the alternative host).
 - Environments: [WORKFLOW section 7](../../WORKFLOW.md).
 
@@ -41,7 +42,7 @@ Vercel builds the repo on every push and serves it worldwide. A pull request get
 
 ## Commands you'll use
 
-None locally; everything is triggered by Git. The CLI (`vercel`) is optional.
+`pnpm exec vercel env pull` (copy the variables of a target to a local file). Deploys are triggered by Git and by the staging workflow.
 
 ## Common mistakes
 

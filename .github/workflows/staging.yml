@@ -1,0 +1,75 @@
+name: Staging
+# Every merge to main: migrate the staging database, deploy to the staging Vercel project, then smoke-check (issue #19).
+# Vercel's own Git deploy is off for main (vercel.json), so the order migrate -> deploy -> smoke is guaranteed.
+# Secrets and variables are repository-level (ADR-022, ADR-023). Values only reach steps through `env:`.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: staging
+  cancel-in-progress: false
+permissions:
+  contents: read
+env:
+  VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_STAGING }}
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_STAGING }}
+      SUPABASE_PROJECT_REF_STAGING: ${{ vars.SUPABASE_PROJECT_REF_STAGING }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Link the staging project
+        run: pnpm exec supabase link --project-ref "$SUPABASE_PROJECT_REF_STAGING"
+      - name: Apply migrations (never the seed)
+        run: pnpm exec supabase db push
+      - name: Add the staging remote (never committed, the CLI validates its project_id on every command)
+        run: |
+          cat >> supabase/config.toml <<EOF
+
+          [remotes.staging]
+          project_id = "$SUPABASE_PROJECT_REF_STAGING"
+
+          [remotes.staging.auth.sms.test_otp]
+          201000000001 = "123456"
+          201000000002 = "123456"
+          201000000003 = "123456"
+          EOF
+      - name: Push auth config (test OTP numbers)
+        run: pnpm exec supabase config push --yes
+  deploy:
+    needs: migrate
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Pull the Production target settings of the staging project
+        run: pnpm exec vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Build
+        run: pnpm exec vercel build --prod --token="$VERCEL_TOKEN"
+      - name: Deploy the prebuilt output
+        run: pnpm exec vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      STAGING_URL: ${{ vars.STAGING_URL }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, package-manager-cache: false }
+      - name: Health reports staging and this commit
+        run: node scripts/smoke-health.mjs "$STAGING_URL" "$GITHUB_SHA" staging

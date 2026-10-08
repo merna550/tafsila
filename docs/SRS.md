@@ -507,6 +507,7 @@ Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal
 | NFR-10 | Maintainability | TypeScript strict; ESLint + Prettier; CI runs tests on every PR; engine coverage ≥ 85% |
 | NFR-11 | Cost | Infra ≤ ~2,500 EGP/month until 200 paying users (excluding AI and marketing) |
 | NFR-12 | Agent delivery | Ready issues can be built by a cloud agent while the founder's laptop is off: one issue at a time, no new work when 3 PRs await review, pausable with one variable, no secrets in the repo (ADR-016); at most `DISPATCH_DAILY_LIMIT` builds a day (default 4), 50 turns per run, and a stuck unattended agent stops and marks the issue `status:blocked` (ADR-017) |
+| NFR-13 | Environments | Every PR gets a preview URL; every merge to `main` migrates the staging database, deploys staging and smoke-checks `/api/health` (environment and git SHA); migrations are applied by CI only; staging uses test OTP numbers; free tiers until the beta (ADR-022, ADR-023) |
 
 ---
 

@@ -1,14 +1,10 @@
 /** Composition root: the only place that chooses which adapter implements each port (ADR-006). */
+import { loadBuildInfo, type BuildInfo } from "@tafsila/config";
 import { createSystemClock } from "./adapters/system/system-clock";
 import type { Clock } from "./ports/clock";
 
 /** Build information reported by the health endpoint. */
-export interface AppInfo {
-  /** Deployment environment name (local, staging, production...). */
-  readonly environment: string;
-  /** Release version of the running build. */
-  readonly version: string;
-}
+export type AppInfo = BuildInfo;
 
 /** Everything the routes and services need, wired once per process. */
 export interface Container {
@@ -27,7 +23,7 @@ export interface Container {
 export function createContainer(overrides: Partial<Container> = {}): Container {
   return {
     clock: createSystemClock(),
-    appInfo: { environment: process.env.APP_ENV ?? "local", version: process.env.APP_VERSION ?? "dev" },
+    appInfo: loadBuildInfo(),
     ...overrides,
   };
 }

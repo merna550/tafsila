@@ -28,8 +28,8 @@ Pro; the issue corrects that (Free is fine until the beta).
 5. **Repository-level secrets, not a GitHub environment.** Environment secrets in private repositories need GitHub
    Pro/Team (paid; ADR-022). Staging-only names end in `_STAGING`. The job uses `concurrency: staging` instead of an
    environment lock.
-6. **Test OTP on staging** through `supabase/config.toml` `[remotes.staging]` + `supabase config push` in the same
-   workflow, reusing the three numbers of ADR-021. Fallback if the hosted project refuses it with the dummy SMS
+6. **Test OTP on staging** through a `[remotes.staging]` block that the `migrate` job appends to `supabase/config.toml` at runtime
+   (the CLI validates `project_id` on every command, so the block cannot live in git) + `supabase config push`, reusing the three numbers of ADR-021. Fallback if the hosted project refuses it with the dummy SMS
    provider: Merna sets the same numbers in the dashboard (Authentication → Sign In / Providers → Phone), documented
    in the tutorial.
 
@@ -63,7 +63,7 @@ Vercel project → Settings → Environment Variables: `APP_ENV` (`staging` for 
 - `apps/web/src/instrumentation.ts`: `register()` calls `loadServerEnv()` on the Node runtime, so a missing Vercel
   variable fails the smoke check loudly.
 - `vercel.json` (location per Vercel monorepo docs): install `pnpm install --frozen-lockfile`, build
-  `turbo run build --filter=@tafsila/web`, `git.deploymentEnabled.main: false`. Root directory `apps/web` and
+  `turbo run build --filter=web`, `git.deploymentEnabled.main: false`. Root directory `apps/web` and
   Node 22 are project settings (documented in the tutorial).
 
 **CI** — new `.github/workflows/staging.yml` (push to `main` + `workflow_dispatch`, `concurrency: staging`, no cancel,
@@ -81,8 +81,9 @@ Secrets only through `env:`; nothing echoed.
 
 **Config / data**
 
-- `supabase/config.toml`: `[remotes.staging]` with `project_id = "env(SUPABASE_PROJECT_REF_STAGING)"` and the same
-  test OTP numbers.
+- `.github/workflows/staging.yml` (`migrate` job): appends `[remotes.staging]` with the real ref from
+  `vars.SUPABASE_PROJECT_REF_STAGING` and the same three test OTP numbers to `supabase/config.toml` before
+  `supabase config push`. Not in git: the CLI fails with `InvalidRemoteProjectIdError` when the ref is unset.
 - `.env.example`: `GIT_SHA` / `VERCEL_GIT_COMMIT_SHA` note.
 - `postman/environments/staging.postman_environment.json`: real staging `baseUrl` (no keys).
 

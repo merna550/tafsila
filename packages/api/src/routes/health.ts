@@ -14,6 +14,7 @@ export function healthRoutes(container: Container): Hono {
       status: "ok",
       environment: container.appInfo.environment,
       version: container.appInfo.version,
+      gitSha: container.appInfo.gitSha,
       time: container.clock.now().toISOString(),
     }),
   );
