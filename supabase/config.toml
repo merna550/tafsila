@@ -427,3 +427,13 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Remote staging project (issue #19): `supabase config push` applies this block over the base config in CI.
+# The project ref comes from the repository variable SUPABASE_PROJECT_REF_STAGING, never from git.
+[remotes.staging]
+project_id = "env(SUPABASE_PROJECT_REF_STAGING)"
+
+[remotes.staging.auth.sms.test_otp]
+201000000001 = "123456"
+201000000002 = "123456"
+201000000003 = "123456"

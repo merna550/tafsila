@@ -4,17 +4,21 @@ import { createContainer } from "./container";
 
 const fixedClock = { now: () => new Date("2026-10-07T10:00:00.000Z") };
 const app = createApp(
-  createContainer({ clock: fixedClock, appInfo: { environment: "test", version: "1.2.3" } }),
+  createContainer({
+    clock: fixedClock,
+    appInfo: { environment: "test", version: "1.2.3", gitSha: "abc123" },
+  }),
 );
 
 describe("API", () => {
-  it("GET /api/health reports status, environment, version and time", async () => {
+  it("GET /api/health reports status, environment, version, git SHA and time", async () => {
     const res = await app.request("/api/health");
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
       status: "ok",
       environment: "test",
       version: "1.2.3",
+      gitSha: "abc123",
       time: "2026-10-07T10:00:00.000Z",
     });
   });

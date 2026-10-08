@@ -1407,7 +1407,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Preview deployment
 
 **Plain words:** A temporary copy of the app built for one pull request so it can be tried before merging.  
-**In Tafsila:** Link posted by Vercel on the PR ([WORKFLOW section 7](../WORKFLOW.md)). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
+**In Tafsila:** Link posted by Vercel on the PR ([WORKFLOW section 7](../WORKFLOW.md)); it reports `environment: preview` on `/api/health` and shares the staging database. **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
 **Learn:** <https://vercel.com/docs/deployments/environments>
 
 <a id="princess-seam"></a>
@@ -1479,6 +1479,12 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Learn:** <https://react-hook-form.com/get-started>
 
 <a id="repository"></a>
+
+### Repository secret
+
+**Plain words:** A value stored once in GitHub (Settings, Secrets and variables, Actions) that workflows read but nobody can see again.  
+**In Tafsila:** Staging names end in `_STAGING`; they reach steps only through `env:` ([switch environment](../backend/tutorials/switch-environment.md), [ADR-023](../DECISIONS.md)). **Card:** [Vercel](tech/vercel.md) · **Level:** beginner  
+**Learn:** <https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions>
 
 ### Repository (pattern)
 
@@ -1771,6 +1777,12 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Learn:** <https://docs.claude.com/en/docs/claude-code/sub-agents>
 
 <a id="supabase"></a>
+
+### Supabase db push
+
+**Plain words:** The command that applies the new migration files to a remote Supabase database, in order, once each.  
+**In Tafsila:** Run only by `.github/workflows/staging.yml` on merge to `main`, never by hand and never with the seed ([ADR-023](../DECISIONS.md)). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/reference/cli/supabase-db-push>
 
 ### Supabase
 

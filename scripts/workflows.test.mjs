@@ -14,7 +14,14 @@ const workflow = (name) =>
 
 const claude = workflow("claude.yml");
 const dispatch = workflow("dispatch.yml");
-const allWorkflows = ["claude.yml", "dispatch.yml", "quality.yml", "docker.yml", "docs-links.yml"];
+const allWorkflows = [
+  "staging.yml",
+  "claude.yml",
+  "dispatch.yml",
+  "quality.yml",
+  "docker.yml",
+  "docs-links.yml",
+];
 
 describe("claude.yml", () => {
   it("never tests github.event_name for workflow_call (it holds the caller's event)", () => {
@@ -135,5 +142,32 @@ describe("action versions", () => {
       const text = readFileSync(new URL(`../.github/workflows/${name}`, import.meta.url), "utf8");
       expect(text).not.toMatch(/actions\/(checkout|setup-node)@v[1-4]\b/);
     }
+  });
+});
+
+describe("staging.yml (issue #19)", () => {
+  const staging = workflow("staging.yml");
+  const steps = Object.values(staging.jobs).flatMap((job) => job.steps);
+
+  it("runs migrate, then deploy, then smoke, one run at a time", () => {
+    expect(staging.jobs.deploy.needs).toBe("migrate");
+    expect(staging.jobs.smoke.needs).toBe("deploy");
+    expect(staging.concurrency["cancel-in-progress"]).toBe(false);
+  });
+
+  it("starts on every push to main", () => {
+    expect(staging.on.push.branches).toEqual(["main"]);
+  });
+
+  it("never pushes the seed and never writes a secret inside a run line", () => {
+    for (const step of steps) {
+      expect(step.run ?? "").not.toContain("--include-seed");
+      expect(step.run ?? "").not.toContain("secrets.");
+    }
+  });
+
+  it("checks the merged commit on the staging environment", () => {
+    const smoke = staging.jobs.smoke.steps.at(-1).run;
+    expect(smoke).toContain('"$GITHUB_SHA" staging');
   });
 });

@@ -9,6 +9,7 @@ const baseServerEnvSchema = z.object({
   APP_ENV: z.enum(APP_ENVIRONMENTS).default("local"),
   APP_VERSION: z.string().default("dev"),
   GIT_SHA: z.string().default("unknown"),
+  VERCEL_GIT_COMMIT_SHA: z.string().min(1).optional(),
   SUPABASE_URL: z.url(),
   SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
@@ -52,4 +53,31 @@ export function loadServerEnv(source: Record<string, string | undefined> = proce
     throw new Error(`Invalid environment configuration: ${keys}`);
   }
   return result.data;
+}
+
+/** Build information reported by the health endpoint; it never depends on required variables. */
+export interface BuildInfo {
+  /** Deployment environment name (local, preview, staging, production...). */
+  readonly environment: string;
+  /** Release version of the running build. */
+  readonly version: string;
+  /** Git commit the build was made from, or "unknown". */
+  readonly gitSha: string;
+}
+
+/**
+ * Reads the build information without validating the rest of the configuration, so a liveness check
+ * still answers when a secret is missing. The SHA comes from GIT_SHA, then Vercel's VERCEL_GIT_COMMIT_SHA.
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns Environment, version and git SHA with their defaults.
+ * @example
+ * loadBuildInfo({ APP_ENV: "staging", VERCEL_GIT_COMMIT_SHA: "abc123" }).gitSha; // "abc123"
+ */
+export function loadBuildInfo(source: Record<string, string | undefined> = process.env): BuildInfo {
+  return {
+    environment: source.APP_ENV || "local",
+    version: source.APP_VERSION || "dev",
+    gitSha: source.GIT_SHA || source.VERCEL_GIT_COMMIT_SHA || "unknown",
+  };
 }

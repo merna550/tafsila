@@ -28,7 +28,7 @@ Supabase bundles open-source pieces behind one dashboard: a [Postgres](postgres.
 
 ## When we would change it
 
-Checked on 2026-10-07 at [supabase.com/pricing](https://supabase.com/pricing): the Free plan has 500 MB database, 1 GB storage, 50,000 monthly active users, **pauses projects after one week of inactivity** and allows 2 active projects; Pro starts at $25 per month with 8 GB disk. Free is fine for dev/preview; **staging and production need Pro** (no pausing, daily backups). Revisit if costs or limits no longer fit; move by exporting Postgres and swapping Auth and Storage adapters.
+Checked on 2026-10-07 at [supabase.com/pricing](https://supabase.com/pricing): the Free plan has 500 MB database, 1 GB storage, 50,000 monthly active users, **pauses projects after one week of inactivity** and allows 2 active projects; Pro starts at $25 per month with 8 GB disk. Free is fine for dev, preview and **staging until the beta** ([ADR-023](../../DECISIONS.md), [ADR-022](../../DECISIONS.md)); **production needs Pro** (no pausing, daily backups). A paused staging project is woken from the dashboard. Revisit if costs or limits no longer fit; move by exporting Postgres and swapping Auth and Storage adapters.
 
 ## Where it lives in our code
 
