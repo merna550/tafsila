@@ -166,6 +166,16 @@ describe("staging.yml (issue #19)", () => {
     }
   });
 
+  it("adds [remotes.staging] at runtime, before config push, and not in git", () => {
+    const run = staging.jobs.migrate.steps.map((s) => s.run ?? "");
+    const append = run.findIndex((r) => r.includes("[remotes.staging]"));
+    const push = run.findIndex((r) => r.includes("supabase config push"));
+    expect(append).toBeGreaterThan(-1);
+    expect(append).toBeLessThan(push);
+    expect(run[append]).toContain("$SUPABASE_PROJECT_REF_STAGING");
+    expect(readFileSync("supabase/config.toml", "utf8")).not.toContain("[remotes.staging]");
+  });
+
   it("checks the merged commit on the staging environment", () => {
     const smoke = staging.jobs.smoke.steps.at(-1).run;
     expect(smoke).toContain('"$GITHUB_SHA" staging');

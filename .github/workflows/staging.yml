@@ -31,6 +31,18 @@ jobs:
         run: pnpm exec supabase link --project-ref "$SUPABASE_PROJECT_REF_STAGING"
       - name: Apply migrations (never the seed)
         run: pnpm exec supabase db push
+      - name: Add the staging remote (never committed, the CLI validates its project_id on every command)
+        run: |
+          cat >> supabase/config.toml <<EOF
+
+          [remotes.staging]
+          project_id = "$SUPABASE_PROJECT_REF_STAGING"
+
+          [remotes.staging.auth.sms.test_otp]
+          201000000001 = "123456"
+          201000000002 = "123456"
+          201000000003 = "123456"
+          EOF
       - name: Push auth config (test OTP numbers)
         run: pnpm exec supabase config push --yes
   deploy:
