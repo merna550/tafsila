@@ -116,3 +116,13 @@ claude --version
 ```
 
 **How to avoid:** after installing any command-line tool, open a new terminal and run `<tool> --version` once. Official docs: [Claude Code setup](https://docs.claude.com/en/docs/claude-code/setup).
+
+## A user reports an error and I do not know where to start
+
+**Symptom:** "something went wrong" with no detail.
+
+**Cause:** the failure is in Sentry and the logs, not on your screen.
+
+**Fix:** ask for the request id shown in the error (or the `x-request-id` header), then follow [find a bug from a report](find-a-bug-from-a-report.md).
+
+**How to avoid:** always include `request_id` when reporting an API problem.

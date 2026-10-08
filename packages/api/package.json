@@ -11,8 +11,12 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@sentry/node": "11.6.0",
     "@tafsila/config": "workspace:*",
+    "@tafsila/schemas": "workspace:*",
+    "@tafsila/utils": "workspace:*",
     "hono": "^4.13.13",
+    "posthog-node": "^5.55.1",
     "zod": "^4.6.5"
   }
 }

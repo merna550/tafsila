@@ -130,13 +130,13 @@ Input/output = `PatternResult` JSON Schema generated from `packages/schemas` (si
 
 ## 6. Cross-cutting
 
-| Concern                   | Where                                                                                     |
-| ------------------------- | ----------------------------------------------------------------------------------------- |
-| Config per environment    | `packages/config/env.ts` (Zod), runtime only (same image everywhere)                      |
-| Logging & tracing         | request-id middleware → structured logs; Sentry for errors                                |
-| Analytics & feature flags | PostHog, wrapped in `shared/analytics` (frontend) and a `FeatureFlags` port (backend)     |
-| i18n                      | `messages/{ar,en}.json` (UI), bilingual error messages from domain errors                 |
-| Security                  | Supabase auth, RLS, rate limiting, webhook HMAC, signed storage URLs, secrets only in env |
+| Concern                   | Where                                                                                                           |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Config per environment    | `packages/config/env.ts` (Zod), runtime only (same image everywhere)                                            |
+| Logging & tracing         | request-id middleware → structured logs; Sentry for errors                                                      |
+| Analytics & feature flags | PostHog, wrapped in `shared/analytics` (frontend) and an `Analytics` port (backend); errors via `ErrorReporter` |
+| i18n                      | `messages/{ar,en}.json` (UI), bilingual error messages from domain errors                                       |
+| Security                  | Supabase auth, RLS, rate limiting, webhook HMAC, signed storage URLs, secrets only in env                       |
 
 ## 7. Evolution path
 

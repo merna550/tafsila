@@ -2,7 +2,9 @@
 import { Hono } from "hono";
 import { createContainer, type Container } from "./container";
 import { NotFoundError } from "./domain/errors";
-import { handleError } from "./middleware/error-handler";
+import { createErrorHandler } from "./middleware/error-handler";
+import { requestId, type AppEnv } from "./middleware/request-id";
+import { debugRoutes } from "./routes/debug";
 import { healthRoutes } from "./routes/health";
 
 /**
@@ -11,12 +13,14 @@ import { healthRoutes } from "./routes/health";
  * @param container - Dependencies; defaults to the real adapters for this environment.
  * @returns The Hono app with base path /api.
  */
-export function createApp(container: Container = createContainer()): Hono {
-  const app = new Hono().basePath("/api");
+export function createApp(container: Container = createContainer()): Hono<AppEnv> {
+  const app = new Hono<AppEnv>().basePath("/api");
+  app.use(requestId());
   app.route("/", healthRoutes(container));
+  if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));
   app.notFound(() => {
     throw new NotFoundError("route");
   });
-  app.onError(handleError);
+  app.onError(createErrorHandler(container.errorReporter));
   return app;
 }

@@ -44,4 +44,4 @@ Pick the path that matches you. Each path is an ordered list; the time is an est
 2. [WORKFLOW.md](../WORKFLOW.md): lifecycle, labels, Definition of Done (10 min)
 3. [CODING_STANDARDS.md](../CODING_STANDARDS.md) when you write code (read by section)
 4. [Glossary](glossary.md) for any term you do not know; do not guess, look it up and keep new terms consistent with it
-5. [troubleshooting.md](troubleshooting.md) when a command fails
+5. [troubleshooting.md](troubleshooting.md) when a command fails; [find a bug from a report](find-a-bug-from-a-report.md) when a user reports a problem

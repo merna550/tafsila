@@ -27,17 +27,20 @@ Vercel's own Git deploy of `main` is turned off in `vercel.json`, so the databas
 
 GitHub → Settings → Secrets and variables → Actions (repository level, ADR-022):
 
-| Kind     | Name                           | Used by                          |
-| -------- | ------------------------------ | -------------------------------- |
-| Secret   | `SUPABASE_ACCESS_TOKEN`        | `supabase link`, `db push`       |
-| Secret   | `SUPABASE_DB_PASSWORD_STAGING` | `supabase db push`               |
-| Secret   | `VERCEL_TOKEN`                 | `vercel pull/build/deploy`       |
-| Variable | `SUPABASE_PROJECT_REF_STAGING` | `supabase link`, `config push`   |
-| Variable | `VERCEL_ORG_ID`                | Vercel CLI (team ID, `team_...`) |
-| Variable | `VERCEL_PROJECT_ID_STAGING`    | Vercel CLI (`prj_...`)           |
-| Variable | `STAGING_URL`                  | smoke check, no trailing slash   |
+| Kind     | Name                           | Used by                           |
+| -------- | ------------------------------ | --------------------------------- |
+| Secret   | `SUPABASE_ACCESS_TOKEN`        | `supabase link`, `db push`        |
+| Secret   | `SUPABASE_DB_PASSWORD_STAGING` | `supabase db push`                |
+| Secret   | `VERCEL_TOKEN`                 | `vercel pull/build/deploy`        |
+| Variable | `SUPABASE_PROJECT_REF_STAGING` | `supabase link`, `config push`    |
+| Variable | `VERCEL_ORG_ID`                | Vercel CLI (team ID, `team_...`)  |
+| Variable | `VERCEL_PROJECT_ID_STAGING`    | Vercel CLI (`prj_...`)            |
+| Variable | `STAGING_URL`                  | smoke check, no trailing slash    |
+| Secret   | `SENTRY_AUTH_TOKEN`            | source map upload (staging build) |
+| Variable | `SENTRY_ORG`                   | source map upload                 |
+| Variable | `SENTRY_PROJECT`               | source map upload                 |
 
-Vercel project → Settings → Environment Variables: `APP_ENV` (`staging` for Production, `preview` for Preview), `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (sensitive). Project settings: Root Directory `apps/web`, Node.js 22.x, domain added in Settings → Domains.
+Vercel project → Settings → Environment Variables: `APP_ENV` (`staging` for Production, `preview` for Preview), `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (sensitive), `SENTRY_DSN`, `POSTHOG_KEY`, `POSTHOG_HOST` (`https://us.i.posthog.com`; the DSN and project key are public by design). `SENTRY_AUTH_TOKEN` is never added to Vercel. Project settings: Root Directory `apps/web`, Node.js 22.x, domain added in Settings → Domains.
 
 ## Troubleshooting
 

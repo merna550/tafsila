@@ -1,7 +1,13 @@
 /** Composition root: the only place that chooses which adapter implements each port (ADR-006). */
-import { loadBuildInfo, type BuildInfo } from "@tafsila/config";
+import { loadBuildInfo, loadPublicConfig, type BuildInfo } from "@tafsila/config";
+import { createNoopAnalytics } from "./adapters/noop/noop-analytics";
+import { createNoopErrorReporter } from "./adapters/noop/noop-error-reporter";
+import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
+import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
+import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
+import type { ErrorReporter } from "./ports/error-reporter";
 
 /** Build information reported by the health endpoint. */
 export type AppInfo = BuildInfo;
@@ -12,6 +18,34 @@ export interface Container {
   readonly clock: Clock;
   /** Build information. */
   readonly appInfo: AppInfo;
+  /** Where unexpected errors are reported. */
+  readonly errorReporter: ErrorReporter;
+  /** Where server-side product events go. */
+  readonly analytics: Analytics;
+}
+
+/**
+ * Chooses the real or no-op observability adapters from the configuration keys.
+ *
+ * @param source - Environment variables to read (defaults to process.env).
+ * @returns The error reporter and analytics for this environment.
+ */
+export function createObservability(
+  source: Record<string, string | undefined> = process.env,
+): Pick<Container, "errorReporter" | "analytics"> {
+  const config = loadPublicConfig(source);
+  return {
+    errorReporter: config.sentryDsn
+      ? createSentryErrorReporter({
+          dsn: config.sentryDsn,
+          environment: config.appEnv,
+          release: config.release,
+        })
+      : createNoopErrorReporter(),
+    analytics: config.posthogKey
+      ? createPosthogAnalytics(config.posthogKey, config.posthogHost)
+      : createNoopAnalytics(),
+  };
 }
 
 /**
@@ -24,6 +58,7 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
   return {
     clock: createSystemClock(),
     appInfo: loadBuildInfo(),
+    ...createObservability(),
     ...overrides,
   };
 }

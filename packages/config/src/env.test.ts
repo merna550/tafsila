@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadBuildInfo, loadServerEnv } from "./env";
+import { loadBuildInfo, loadPublicConfig, loadServerEnv } from "./env";
 
 const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
@@ -7,7 +7,8 @@ const valid = {
   SUPABASE_SERVICE_ROLE_KEY: "service",
 };
 
-const aiAndPaymob = { AI_MODEL_ANALYZE: "model", AI_API_KEY: "key", PAYMOB_API_KEY: "pay" };
+const observability = { SENTRY_DSN: "https://key@o1.ingest.sentry.io/1", POSTHOG_KEY: "phc_test" };
+const aiAndPaymob = { AI_MODEL_ANALYZE: "model", AI_API_KEY: "key", PAYMOB_API_KEY: "pay", ...observability };
 
 describe("loadServerEnv", () => {
   it("applies defaults for optional variables", () => {
@@ -32,7 +33,7 @@ describe("loadServerEnv", () => {
 
   it("requires AI and Paymob variables in production", () => {
     expect(() => loadServerEnv({ ...valid, APP_ENV: "production" })).toThrow(
-      /AI_MODEL_ANALYZE, AI_API_KEY, PAYMOB_API_KEY/,
+      /AI_MODEL_ANALYZE, AI_API_KEY, PAYMOB_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
     );
     expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, APP_ENV: "production" })).not.toThrow();
   });
@@ -50,5 +51,51 @@ describe("loadBuildInfo", () => {
   it("falls back to the Vercel commit SHA", () => {
     const info = loadBuildInfo({ APP_ENV: "staging", VERCEL_GIT_COMMIT_SHA: "vercel" });
     expect(info).toMatchObject({ environment: "staging", gitSha: "vercel" });
+  });
+});
+
+describe("observability variables", () => {
+  it("are optional locally and default the PostHog host to the US region", () => {
+    const env = loadServerEnv(valid);
+    expect(env.SENTRY_DSN).toBeUndefined();
+    expect(env.POSTHOG_KEY).toBeUndefined();
+    expect(env.POSTHOG_HOST).toBe("https://us.i.posthog.com");
+  });
+
+  it("are required in production", () => {
+    expect(() =>
+      loadServerEnv({ ...valid, ...aiAndPaymob, SENTRY_DSN: undefined, APP_ENV: "production" }),
+    ).toThrow(/SENTRY_DSN/);
+  });
+});
+
+describe("loadPublicConfig", () => {
+  it("returns the browser-safe subset with release from the git SHA", () => {
+    const config = loadPublicConfig({ ...observability, APP_ENV: "staging", GIT_SHA: "abc" });
+    expect(config).toEqual({
+      sentryDsn: observability.SENTRY_DSN,
+      posthogKey: "phc_test",
+      posthogHost: "https://us.i.posthog.com",
+      appEnv: "staging",
+      release: "abc",
+    });
+  });
+
+  it("never returns secrets", () => {
+    const config = loadPublicConfig({ ...valid, ...aiAndPaymob, AI_API_KEY: "SECRET-AI" });
+    expect(JSON.stringify(config)).not.toMatch(/SECRET-AI|service|pay/);
+    expect(Object.keys(config).sort((a, b) => a.localeCompare(b))).toEqual([
+      "appEnv",
+      "posthogHost",
+      "posthogKey",
+      "release",
+      "sentryDsn",
+    ]);
+  });
+
+  it("is empty-safe when nothing is configured", () => {
+    const config = loadPublicConfig({});
+    expect(config.sentryDsn).toBeUndefined();
+    expect(config.appEnv).toBe("local");
   });
 });

@@ -41,20 +41,20 @@ None outside the repo. Staging (#19) is done and is the base for #20 and #21.
 
 ## Issues
 
-| Issue                        | Title                                  | State  |
-| ---------------------------- | -------------------------------------- | ------ |
-| #3                           | Per-area agent config                  | closed |
-| #6                           | MVP milestone plan v2                  | closed |
-| #8                           | Handbook core                          | closed |
-| #9                           | Tech cards                             | closed |
-| #10                          | Handbook upkeep                        | closed |
-| #14                          | Docker workflow attest fix             | closed |
-| #16                          | Cloud agents                           | closed |
-| #17                          | Token-saving setup                     | closed |
-| #18                          | Local Supabase                         | closed |
-| #19                          | Staging environment                    | closed |
-| #20                          | Production project + deploy workflow   | open   |
-| #21                          | Sentry + PostHog                       | open   |
-| #22                          | Milestone briefs and planning commands | open   |
-| #36                          | Agent usage metrics + weekly report    | open   |
-| #38, #42, #44, #46, #48, #50 | Dispatcher fixes                       | closed |
+| Issue                        | Title                                  | State     |
+| ---------------------------- | -------------------------------------- | --------- |
+| #3                           | Per-area agent config                  | closed    |
+| #6                           | MVP milestone plan v2                  | closed    |
+| #8                           | Handbook core                          | closed    |
+| #9                           | Tech cards                             | closed    |
+| #10                          | Handbook upkeep                        | closed    |
+| #14                          | Docker workflow attest fix             | closed    |
+| #16                          | Cloud agents                           | closed    |
+| #17                          | Token-saving setup                     | closed    |
+| #18                          | Local Supabase                         | closed    |
+| #19                          | Staging environment                    | closed    |
+| #20                          | Production project + deploy workflow   | open      |
+| #21                          | Sentry + PostHog                       | in review |
+| #22                          | Milestone briefs and planning commands | open      |
+| #36                          | Agent usage metrics + weekly report    | open      |
+| #38, #42, #44, #46, #48, #50 | Dispatcher fixes                       | closed    |
