@@ -2,8 +2,9 @@
   "model": "sonnet",
   "permissions": {
     "deny": [
-      "Bash(gh workflow run deploy*)",
-      "Bash(gh workflow run *production*)",
+      "Bash(gh workflow run *deploy*)",
+      "Bash(gh workflow run *prod*)",
+      "Bash(gh api *dispatches*)",
       "Bash(gh release create*)",
       "Bash(*vercel*--prod*)",
       "Bash(*vercel*promote*)",
