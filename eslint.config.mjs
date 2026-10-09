@@ -6,6 +6,7 @@ import sonarjs from "eslint-plugin-sonarjs";
 import importPlugin from "eslint-plugin-import-x";
 import prettier from "eslint-config-prettier";
 import globals from "globals";
+import { FETCH_MESSAGE, textRules, tokenRules } from "./eslint-rules/frontend.mjs";
 
 export default tseslint.config(
   { ignores: ["**/dist/**", "**/.next/**", "**/coverage/**", "**/*.gen.ts", "postman/**", "supabase/**"] },
@@ -87,6 +88,30 @@ export default tseslint.config(
     },
   },
   {
+    // Frontend (ADR-029): tokens only, logical direction only, strings from messages, fetch only in shared/api.
+    files: ["apps/web/src/**/*.{ts,tsx}", "packages/ui/src/**/*.{ts,tsx}"],
+    ignores: ["**/*.test.{ts,tsx}", "**/*.stories.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": ["error", ...tokenRules, ...textRules],
+      "no-restricted-globals": ["error", { name: "fetch", message: FETCH_MESSAGE }],
+      "no-restricted-properties": [
+        "error",
+        { object: "window", property: "fetch", message: FETCH_MESSAGE },
+        { object: "globalThis", property: "fetch", message: FETCH_MESSAGE },
+      ],
+    },
+  },
+  {
+    // The API client is the one place allowed to call fetch.
+    files: ["apps/web/src/shared/api/**/*.ts"],
+    rules: { "no-restricted-globals": "off", "no-restricted-properties": "off" },
+  },
+  {
+    // M0 placeholder screens keep Arabic text inline until M1 wave 3 adds next-intl and messages/{ar,en}.json (#66).
+    files: ["apps/web/src/app/page.tsx", "apps/web/src/app/layout.tsx", "apps/web/src/features/home/**"],
+    rules: { "no-restricted-syntax": ["error", ...tokenRules] },
+  },
+  {
     // Config and script files (JS or outside a tsconfig): lint without type information.
     files: ["**/*.mjs", "**/*.cjs", "**/*.config.ts", "**/*.config.mjs"],
     extends: [tseslint.configs.disableTypeChecked],
@@ -95,7 +120,7 @@ export default tseslint.config(
   },
   {
     // Plain-JS scripts keep their types in JSDoc (no TypeScript annotations), so the TS-flavoured JSDoc rules are relaxed.
-    files: ["scripts/**/*.mjs"],
+    files: ["scripts/**/*.mjs", "eslint-rules/**/*.mjs"],
     rules: {
       "jsdoc/no-types": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
