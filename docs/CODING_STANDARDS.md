@@ -7,7 +7,7 @@ Clean, readable, reusable code. Every rule marked **[enforced]** is checked by t
 1. **One responsibility per unit.** A function does one thing; a file has one purpose; a package owns one area.
 2. **No duplication [enforced: jscpd].** Logic used in two places lives in one shared place and is imported. The second time you would copy code, extract it instead.
 3. **Readable first.** Names explain intent; small functions; early returns instead of nested `if`s.
-4. **Layers point inward [enforced: dependency-cruiser].** UI → API routes → services → engine/schemas. Services depend on adapter _interfaces_, never on Supabase/Paymob/AI SDKs directly.
+4. **Layers point inward [enforced: dependency-cruiser].** Backend: route → use case (`services/`) → domain → port → adapter. Frontend, per feature: UI (`components/`) → application (`hooks/`) → domain (`model/`) → data (`shared/api`). Use cases depend on port _interfaces_, never on Supabase/Paymob/AI SDKs; components never fetch (ADR-029).
 5. **Explicit over clever.** No magic numbers (named constants with units), no hidden side effects, no `any` **[enforced]**.
 
 ## 2. Where code lives (decide before writing)
@@ -46,6 +46,9 @@ apps/web/src/features/measurements/
 
 - Presentational components receive data via props and render; container hooks fetch and mutate. No `fetch`/Supabase calls inside components.
 - Build screens from `packages/ui` components; if a pattern appears twice, it becomes a `packages/ui` component.
+- Style only with design tokens (`packages/ui/src/tokens.css`) **[enforced: ESLint + `pnpm tokens:check`]**: no raw colours, no arbitrary Tailwind values (`bg-[...]`), no physical direction classes (`ml-*`, `left-*`), no hard-coded user-facing text in JSX.
+- Errors reach the user through one path: `shared/api` throws `ApiError`, `placementFor` picks the place (field, toast, ErrorState, redirect, banner). See `docs/errors.md`.
+- Per-area rules with right/wrong examples: `.claude/rules/frontend/`, `.claude/rules/backend/`, `.claude/rules/engine/`.
 - Props are typed interfaces with JSDoc; no prop drilling deeper than 2 levels (use a hook or context).
 - Every user-facing string comes from the messages files; layout uses logical CSS (`ms-*`/`me-*`, `start`/`end`) so RTL works.
 
@@ -108,13 +111,15 @@ Tests sit next to the code (`sleeve-cap.test.ts`) and follow Arrange–Act–Ass
 
 ## 8. Enforcement
 
-| Check                                                              | Tool                                           | Where           |
-| ------------------------------------------------------------------ | ---------------------------------------------- | --------------- |
-| Formatting                                                         | Prettier                                       | pre-commit + CI |
-| Lint, complexity, JSDoc on every function, no `any`, import cycles | ESLint (`eslint.config.mjs`)                   | pre-commit + CI |
-| Duplicate code (≥ 50 tokens)                                       | jscpd (`.jscpd.json`)                          | CI              |
-| Layer rules (who may import whom)                                  | dependency-cruiser (`.dependency-cruiser.cjs`) | CI              |
-| Types                                                              | `tsc --noEmit` strict                          | CI              |
-| Review checklist                                                   | `/review` command                              | before every PR |
+| Check                                                                            | Tool                                                               | Where           |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------ | --------------- |
+| Formatting                                                                       | Prettier                                                           | pre-commit + CI |
+| Lint, complexity, JSDoc on every function, no `any`, import cycles               | ESLint (`eslint.config.mjs`)                                       | pre-commit + CI |
+| Duplicate code (≥ 50 tokens)                                                     | jscpd (`.jscpd.json`)                                              | CI              |
+| Layer rules (who may import whom, frontend and backend)                          | dependency-cruiser (`.dependency-cruiser.cjs`)                     | CI              |
+| Tokens only, logical direction, no literal UI text, `fetch` only in `shared/api` | ESLint (`eslint-rules/frontend.mjs`) and `pnpm tokens:check` (CSS) | pre-commit + CI |
+| Every thrown error code is in the catalogue with an Arabic message               | `packages/api/src/domain/errors.test.ts`                           | CI              |
+| Types                                                                            | `tsc --noEmit` strict                                              | CI              |
+| Review checklist                                                                 | `/review` command                                                  | before every PR |
 
-Run all locally: `pnpm quality` (= format check + lint + typecheck + duplication + architecture).
+Run all locally: `pnpm quality` (= format check + lint + typecheck + duplication + architecture + tokens + docs).
