@@ -1,5 +1,5 @@
 // Decides whether an issue needs the `needs:interactive` label (issue #58): work on Claude's own configuration
-// (.claude/ settings, agents, commands, hooks) needs approvals that an unattended dispatcher build cannot give.
+// (.claude/ settings, agents, commands, hooks) is a safety boundary built with Merna present, never by the dispatcher.
 // Used by /triage and /plan with the files the work will touch.
 import { pathToFileURL } from "node:url";
 

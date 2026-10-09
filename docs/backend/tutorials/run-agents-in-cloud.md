@@ -13,7 +13,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 2. **Create the claude.ai/code environment.** Open claude.ai/code → environments → new environment for `merna550/tafsila` with network access set to **Trusted**. Cloud sessions set `CLAUDE_CODE_REMOTE=true`, which makes the SessionStart hook install dependencies (`scripts/agent-setup.sh`: corepack + `pnpm install --frozen-lockfile`; on your laptop it does nothing).
 3. **Create `AGENT_GITHUB_TOKEN`** (GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens**):
    - Resource owner: you. Repository access: **Only select repositories** → `tafsila`.
-   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else. In particular **Actions: No access**: with it, an agent could start workflows such as a future production deploy (issue #58, ADR-026).
+   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else. In particular **Actions must stay at No access** (not read, not write), so agents cannot dispatch workflows or release to production (issue #58). `.claude/settings.json` also denies `gh workflow run` on deploy/production workflows, `gh release create` and `vercel --prod`/`promote`/`rollback`.
    - Expiration: **90 days**. Add a calendar reminder for day 80.
    - Save it: repo → Settings → Secrets and variables → Actions → New repository secret `AGENT_GITHUB_TOKEN`.
    - Why not the default token: PRs opened with `GITHUB_TOKEN` do not start CI, so quality checks would never run on agent PRs.
@@ -27,7 +27,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 
 To check what it would pick without spending a Claude run, tick **dry_run** in the Run workflow form: the `dry-run` job prints the issue and model and Claude is not called.
 
-The dispatcher never picks an issue labelled `needs:decision` or `needs:interactive`. `needs:interactive` marks work on Claude's own configuration (`.claude/` settings, agents, commands, hooks, and `scripts/hooks/`): Claude Code asks before changing it, and an unattended run cannot answer, so the build would be refused. `/triage` and `/plan` add the label with `node scripts/needs-interactive.mjs <paths…>`; build such issues in claude.ai/code or a laptop session.
+The dispatcher never picks an issue labelled `needs:decision` or `needs:interactive`. `needs:interactive` marks work on Claude's own configuration (`.claude/` settings, agents, commands, hooks, and `scripts/hooks/`): it is a safety boundary, so it is built with Merna present, where any approval Claude Code asks for can be given. `/triage` and `/plan` add the label with `node scripts/needs-interactive.mjs <paths…>`; build such issues in claude.ai/code or a laptop session.
 
 The dispatcher starts nothing when an issue is already `status:in-progress` (`DISPATCH_MAX_PARALLEL`, default 1; with 2 the second must be in a different `area:*`) or when 3 or more PRs wait for your review, and it starts at most `DISPATCH_DAILY_LIMIT` builds per UTC day (repo variable, default 4). Its run summary says what it picked and why, or why not (for example "Daily limit reached: 4 build(s) today").
 
@@ -66,7 +66,7 @@ Repo → Settings → Secrets and variables → Actions → Variables → set `D
 
 ## Safety
 
-The agent never pushes to `main`, never deploys to production and never reads secrets (CLAUDE.md rule 1 and 6). The token is limited to this repo with three permissions and no Actions permission. `.claude/settings.json` also denies `gh workflow run` on deploy or production workflows, `gh release create` and `vercel --prod`, `vercel promote` and `vercel rollback` in every agent session. Auto-fix on PRs needs the GitHub App, so it is not used.
+The agent never pushes to `main`, never deploys to production and never reads secrets (CLAUDE.md rule 1 and 6). The token is limited to this repo with three permissions and no Actions permission, and `.claude/settings.json` denies production deploy, release and workflow-dispatch commands in every agent session (see step 3 above). Auto-fix on PRs needs the GitHub App, so it is not used.
 
 ## Troubleshooting
 

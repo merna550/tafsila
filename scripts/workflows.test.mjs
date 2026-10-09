@@ -191,22 +191,20 @@ describe("staging.yml (issue #19)", () => {
   });
 });
 
-describe(".claude/settings.json production guard (issue #58)", () => {
+describe("agent settings deny production commands (issue #58)", () => {
   const settings = JSON.parse(readFileSync(new URL("../.claude/settings.json", import.meta.url), "utf8"));
-  const deny = settings.permissions?.deny ?? [];
+  const deny = settings.permissions.deny;
 
-  it("denies production deploy, release and dispatch commands to every agent session", () => {
-    for (const rule of [
-      "Bash(gh workflow run *deploy*)",
-      "Bash(gh workflow run *prod*)",
-      "Bash(gh api *dispatches*)",
-      "Bash(gh release create*)",
-      "Bash(*vercel *--prod*)",
-      "Bash(*vercel promote*)",
-      "Bash(*vercel rollback*)",
-    ]) {
-      expect(deny).toContain(rule);
-    }
+  it.each([
+    "Bash(gh workflow run *deploy*)",
+    "Bash(gh workflow run *prod*)",
+    "Bash(gh api *dispatches*)",
+    "Bash(gh release create*)",
+    "Bash(*vercel*--prod*)",
+    "Bash(*vercel*promote*)",
+    "Bash(*vercel*rollback*)",
+  ])("denies %s", (rule) => {
+    expect(deny).toContain(rule);
   });
 
   it("keeps the hooks next to the deny rules", () => {

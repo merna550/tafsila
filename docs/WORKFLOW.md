@@ -85,7 +85,7 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. In a session with Merna, e
 - SRS requirement IDs linked (or a new requirement added to SRS in the same PR).
 - Plan comment exists, or `plan:none`.
 - No `needs:decision`.
-- Work that touches `.claude/` (settings, agents, commands, hooks, and `scripts/hooks/`) carries `needs:interactive`: approvals for Claude's own configuration cannot be given in an unattended run, so the dispatcher never picks it; build it in an interactive session (issue #58).
+- Work that touches `.claude/` (settings, agents, commands, hooks, and `scripts/hooks/`) carries `needs:interactive`: Claude's own configuration is a safety boundary built with Merna present, so the dispatcher never picks it; build it in an interactive session (issue #58).
 
 ## 5. Definition of Done (before status:in-review)
 
