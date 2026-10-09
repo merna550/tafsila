@@ -13,7 +13,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 2. **Create the claude.ai/code environment.** Open claude.ai/code → environments → new environment for `merna550/tafsila` with network access set to **Trusted**. Cloud sessions set `CLAUDE_CODE_REMOTE=true`, which makes the SessionStart hook install dependencies (`scripts/agent-setup.sh`: corepack + `pnpm install --frozen-lockfile`; on your laptop it does nothing).
 3. **Create `AGENT_GITHUB_TOKEN`** (GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens**):
    - Resource owner: you. Repository access: **Only select repositories** → `tafsila`.
-   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else.
+   - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else. In particular **Actions: No access**: with it, an agent could start workflows such as a future production deploy (issue #58, ADR-026).
    - Expiration: **90 days**. Add a calendar reminder for day 80.
    - Save it: repo → Settings → Secrets and variables → Actions → New repository secret `AGENT_GITHUB_TOKEN`.
    - Why not the default token: PRs opened with `GITHUB_TOKEN` do not start CI, so quality checks would never run on agent PRs.
@@ -26,6 +26,8 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 - **Automatic:** the dispatcher (`.github/workflows/dispatch.yml`) starts as soon as an issue gets `status:ready`, an issue moves to `status:in-review` or `status:blocked` or is closed, or a PR is closed; it also runs every 6 hours in case an event was missed (ADR-020). It builds the highest-priority `status:ready` issue whose "Depends on" issues are closed and that has no `needs:decision`. You can run it now: Actions → Dispatch agent → Run workflow.
 
 To check what it would pick without spending a Claude run, tick **dry_run** in the Run workflow form: the `dry-run` job prints the issue and model and Claude is not called.
+
+The dispatcher never picks an issue labelled `needs:decision` or `needs:interactive`. `needs:interactive` marks work on Claude's own configuration (`.claude/` settings, agents, commands, hooks, and `scripts/hooks/`): Claude Code asks before changing it, and an unattended run cannot answer, so the build would be refused. `/triage` and `/plan` add the label with `node scripts/needs-interactive.mjs <paths…>`; build such issues in claude.ai/code or a laptop session.
 
 The dispatcher starts nothing when an issue is already `status:in-progress` (`DISPATCH_MAX_PARALLEL`, default 1; with 2 the second must be in a different `area:*`) or when 3 or more PRs wait for your review, and it starts at most `DISPATCH_DAILY_LIMIT` builds per UTC day (repo variable, default 4). Its run summary says what it picked and why, or why not (for example "Daily limit reached: 4 build(s) today").
 
@@ -42,6 +44,8 @@ The dispatcher starts nothing when an issue is already `status:in-progress` (`DI
 - Then put the issue back to `status:ready` (or `status:blocked`).
 
 The agent also stops by itself: every Action run ends after 50 turns (`--max-turns 50`), and an unattended agent that fails twice on the same problem comments the problem on the issue, sets `status:blocked` and stops; it never switches to a bigger model on its own (ADR-017). Read its comment, fix the cause or change the `build:*` label, then set `status:ready` again.
+
+When a dispatcher build fails for any other reason (a refused tool, the turn limit, an error, a failed step), the last step of `claude.yml` moves the issue to `status:blocked` and comments the reason, the run link and every refused command (`scripts/claude-run.mjs`), so the same issue is never picked again in a loop. The "Fail when Claude was refused a tool" step also prints each refused command in the log.
 
 ## Current state: dispatcher is OFF
 
@@ -62,10 +66,11 @@ Repo → Settings → Secrets and variables → Actions → Variables → set `D
 
 ## Safety
 
-The agent never pushes to `main`, never deploys to production and never reads secrets (CLAUDE.md rule 1 and 6). The token is limited to this repo with three permissions. Auto-fix on PRs needs the GitHub App, so it is not used.
+The agent never pushes to `main`, never deploys to production and never reads secrets (CLAUDE.md rule 1 and 6). The token is limited to this repo with three permissions and no Actions permission. `.claude/settings.json` also denies `gh workflow run` on deploy or production workflows, `gh release create` and `vercel --prod`, `vercel promote` and `vercel rollback` in every agent session. Auto-fix on PRs needs the GitHub App, so it is not used.
 
 ## Troubleshooting
 
 - Run does nothing on `@claude`: the comment must come from `merna550` and contain `@claude`.
 - CI does not run on the agent's PR: `AGENT_GITHUB_TOKEN` is missing or the default token was used.
+- Issue moved to `status:blocked` by "Block the issue after a failed dispatcher build": its comment lists the refused commands. A refusal on `.claude/` files means the issue needs `needs:interactive`.
 - Dependencies missing in a cloud session: check the environment network is "Trusted" and that `CLAUDE_CODE_REMOTE=true` is set by the session.

@@ -8,7 +8,7 @@ Follow docs/WORKFLOW.md. Input: $ARGUMENTS
 1. Read CLAUDE.md and only the SRS sections relevant to the idea (search by keyword / requirement ID). Check open issues for duplicates (`gh issue list --search`).
 2. Write or update the issue (English) with the matching template:
    - Problem / goal (2–4 lines), user story, acceptance criteria as checkboxes, SRS IDs (add new IDs if missing), out of scope.
-3. Apply labels with `gh issue edit`: one each of status (`status:needs-plan`, or `status:ready` if `plan:none`), type, priority, size, plan:_, build:_; one or more area:*; flags if relevant (`needs:sew-test` for any new garment geometry).
+3. Apply labels with `gh issue edit`: one each of status (`status:needs-plan`, or `status:ready` if `plan:none`), type, priority, size, plan:_, build:_; one or more area:*; flags if relevant (`needs:sew-test` for any new garment geometry; `needs:interactive` when the work touches `.claude/` or `scripts/hooks/`: check the files you expect with `node scripts/needs-interactive.mjs <paths…>`).
 4. Choose plan:* and build:* with the rubric in docs/WORKFLOW.md §2. If size is XL, split into child issues and link them.
 5. Milestone: pick the one the work belongs to using docs/WORKFLOW.md §8 (milestone map) and pass it on creation
    (`gh issue create … --milestone "M2 - Engine core"`) or later (`gh issue edit N --milestone "…"`).

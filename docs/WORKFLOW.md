@@ -69,15 +69,15 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. In a session with Merna, e
 
 ## 3. Labels (full list in `.github/labels.yml`)
 
-| Group    | Labels                                                         | Rule                               |
-| -------- | -------------------------------------------------------------- | ---------------------------------- |
-| Status   | `status:triage` … `status:released`                            | Exactly one; automation updates it |
-| Model    | `plan:opus/sonnet/none`, `build:opus/sonnet/haiku`             | Exactly one of each                |
-| Size     | `size:XS … XL`                                                 | Exactly one; XL must be split      |
-| Type     | `type:feature/bug/chore/docs/test/spike`                       | Exactly one                        |
-| Priority | `priority:P0 … P3`                                             | Exactly one                        |
-| Area     | `area:engine/ui/api/db/ai/payments/3d/infra/docs`              | One or more                        |
-| Flags    | `needs:decision`, `needs:sew-test`, `agent:auto`, `good-first` | Optional                           |
+| Group    | Labels                                                                              | Rule                               |
+| -------- | ----------------------------------------------------------------------------------- | ---------------------------------- |
+| Status   | `status:triage` … `status:released`                                                 | Exactly one; automation updates it |
+| Model    | `plan:opus/sonnet/none`, `build:opus/sonnet/haiku`                                  | Exactly one of each                |
+| Size     | `size:XS … XL`                                                                      | Exactly one; XL must be split      |
+| Type     | `type:feature/bug/chore/docs/test/spike`                                            | Exactly one                        |
+| Priority | `priority:P0 … P3`                                                                  | Exactly one                        |
+| Area     | `area:engine/ui/api/db/ai/payments/3d/infra/docs`                                   | One or more                        |
+| Flags    | `needs:decision`, `needs:interactive`, `needs:sew-test`, `agent:auto`, `good-first` | Optional                           |
 
 ## 4. Definition of Ready (before /build)
 
@@ -85,6 +85,7 @@ Defaults when unsure: `plan:sonnet` + `build:sonnet`. In a session with Merna, e
 - SRS requirement IDs linked (or a new requirement added to SRS in the same PR).
 - Plan comment exists, or `plan:none`.
 - No `needs:decision`.
+- Work that touches `.claude/` (settings, agents, commands, hooks, and `scripts/hooks/`) carries `needs:interactive`: approvals for Claude's own configuration cannot be given in an unattended run, so the dispatcher never picks it; build it in an interactive session (issue #58).
 
 ## 5. Definition of Done (before status:in-review)
 

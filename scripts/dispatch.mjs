@@ -7,6 +7,8 @@ import { resolveModel } from "./agent-model.mjs";
 
 const MAX_REVIEW_PRS = 3;
 const DEFAULT_DAILY_LIMIT = 4;
+/** Labels that keep an issue away from unattended builds: a pending decision, or work that needs approvals (issue #58). */
+const UNATTENDED_BLOCKERS = ["needs:decision", "needs:interactive"];
 const PRIORITY_RANK = { "priority:P0": 0, "priority:P1": 1, "priority:P2": 2, "priority:P3": 3 };
 
 /**
@@ -81,10 +83,10 @@ function byPriority(a, b) {
  *
  * @param candidate A `status:ready` issue.
  * @param ctx Closed issue numbers and the issues already in progress.
- * @returns True when dependencies are closed, no decision is pending and its area is free.
+ * @returns True when dependencies are closed, no decision is pending, it may run unattended and its area is free.
  */
 function canStart(candidate, ctx) {
-  if (candidate.labels.includes("needs:decision")) return false;
+  if (UNATTENDED_BLOCKERS.some((label) => candidate.labels.includes(label))) return false;
   if (!parseDependencies(candidate.body).every((n) => ctx.closed.has(n))) return false;
   const busy = new Set(ctx.inProgress.flatMap((i) => areasOf(i.labels)));
   return !areasOf(candidate.labels).some((a) => busy.has(a));
