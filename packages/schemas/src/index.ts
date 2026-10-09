@@ -2,3 +2,4 @@
 export * from "./design-spec";
 export * from "./measurements";
 export * from "./analytics-events";
+export * from "./api-error";

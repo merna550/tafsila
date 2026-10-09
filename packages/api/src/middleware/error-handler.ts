@@ -1,21 +1,10 @@
-/** Maps any thrown error to the standard API error body { code, message_ar, message_en, request_id }. */
+/** Maps any thrown error to the standard API error body { code, message_ar, message_en, details?, request_id } (ADR-030). */
+import type { ApiErrorBody } from "@tafsila/schemas";
 import type { Context } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { AppError, HTTP_STATUS } from "../domain/errors";
+import { AppError, ERROR_CATALOGUE } from "../domain/errors";
 import type { ErrorReporter } from "../ports/error-reporter";
 import type { AppEnv } from "./request-id";
-
-/** Standard error response body returned by every endpoint. */
-export interface ApiErrorBody {
-  /** Stable machine-readable code. */
-  readonly code: string;
-  /** Message for Arabic users. */
-  readonly message_ar: string;
-  /** Message for English users. */
-  readonly message_en: string;
-  /** Id of the failing request; users can read it out to support. */
-  readonly request_id: string;
-}
 
 /**
  * Builds the Hono onError handler: known AppErrors keep their status and messages; anything else is
@@ -32,18 +21,20 @@ export function createErrorHandler(reporter: ErrorReporter): (error: Error, c: C
         code: error.code,
         message_ar: error.messageAr,
         message_en: error.messageEn,
+        ...(error.details ? { details: { fields: { ...error.details.fields } } } : {}),
         request_id: requestId,
       };
       return c.json(body, error.status as ContentfulStatusCode);
     }
     console.error(JSON.stringify({ level: "error", request_id: requestId, message: error.message }));
     reporter.captureException(error, { requestId });
+    const { status, messageAr, messageEn } = ERROR_CATALOGUE.INTERNAL_ERROR;
     const body: ApiErrorBody = {
       code: "INTERNAL_ERROR",
-      message_ar: "حدث خطأ غير متوقع، حاولي مرة أخرى",
-      message_en: "Unexpected error, please try again",
+      message_ar: messageAr,
+      message_en: messageEn,
       request_id: requestId,
     };
-    return c.json(body, HTTP_STATUS.internal);
+    return c.json(body, status);
   };
 }

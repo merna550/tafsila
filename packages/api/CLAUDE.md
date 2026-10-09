@@ -22,8 +22,8 @@ container.ts composition root: wires ports → adapters per environment
 ## Contracts and errors
 
 - Request/response schemas live in `packages/schemas` with `.openapi({ example })`. Never redeclare a type here.
-- Throw only domain errors from `src/domain/errors.ts`; `middleware/error-handler.ts` maps them to HTTP.
-- Error body is always `{ code, message_ar, message_en, details? }`.
+- Throw only `AppError` subclasses from `src/domain/errors.ts` using a catalogue code; `middleware/error-handler.ts` maps them to HTTP.
+- Error body is always `{ code, message_ar, message_en, details?, request_id }`. Every code is in `ERROR_CATALOGUE` and `docs/errors.md` (a test enforces it). Rules: `.claude/rules/backend/`.
 
 ## Data rules
 
