@@ -41,6 +41,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hooks/verify-affected.sh\"",
             "timeout": 600
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/agent-usage.mjs\" local || true",
+            "timeout": 30
           }
         ]
       }

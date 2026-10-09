@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-027 · 2026-10-09 · Agent usage metrics: numbers-only records on a `metrics` branch, weekly report issue
+
+**Decision:** Each agent run produces one record (tokens, turns, duration, API-equivalent cost, outcome, issue/PR, size/area/type labels). Action runs are read from the action's execution file by `claude.yml`; claude.ai/code and laptop sessions are read from the session transcript by a Stop hook into the git-ignored `.agent-usage.json`, which `/build` pastes into the PR body. Records are appended as JSON lines to `agent-runs.jsonl` on the `metrics` branch with git plumbing (no checkout, retry on conflict), never on `main`. `agent-report.yml` opens or updates one weekly issue with totals, medians, top 3, flags and suggestions. Records copy a fixed field list, so prompts, code and secrets cannot enter them.
+**Reason:** Token waste cannot be fixed without per-issue data; a separate branch avoids PR noise; the cost is an estimate because Merna is on a subscription.
+**Alternatives:** A database or dashboard (more to run; deferred); committing to `main` (noise, protected branch); comment-only storage (hard to aggregate).
+
 ## ADR-026 · 2026-10-08 · Production deferred to M8; M0 ends with staging and monitoring
 
 **Decision:** (1) The production environment (#20: Supabase and Vercel production projects, the "Deploy to production" workflow, releases, rollback, the sign-ups flag) moves from M0 to "M8 - Beta & launch readiness" and is re-planned there (`status:needs-plan`). Its first plan is kept for reference in `docs/plans/20-production-deploy.md`, marked "Deferred to M8". (2) The M0 exit criteria become "Staging deployed from `main`; errors and analytics from staging visible" (SRS §12, M0 brief). (3) One part stays in M0 (#58): `.claude/settings.json` deny rules so no agent session can run `gh workflow run` on production or deploy workflows, `gh release create` or `vercel --prod`, and a note in the cloud-agents tutorial that `AGENT_GITHUB_TOKEN` has no Actions permission.

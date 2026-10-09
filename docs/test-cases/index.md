@@ -88,3 +88,10 @@
 | infra/21-sentry-posthog.md      | TC-OBS-21-06   | Sentry events contain no personal data              | High     | ⬜  | ⬜      |
 | infra/21-sentry-posthog.md      | TC-OBS-21-07   | App starts without DSN or key                       | High     | ⬜  | ⬜      |
 | infra/21-sentry-posthog.md      | TC-OBS-21-08   | Direct PostHog import fails the architecture check  | Medium   | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-01   | Action run writes a record and comments             | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-02   | Push conflict is retried                            | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-03   | Session writes `.agent-usage.json`                  | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-04   | Missing or broken input does not crash              | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-05   | No prompt text, code or secrets in a record         | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-06   | Weekly report has all sections                      | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-07   | Report workflow is weekly and least-privilege       | Medium   | ⬜  | ⬜      |

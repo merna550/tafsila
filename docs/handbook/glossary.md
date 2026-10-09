@@ -80,6 +80,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `packages/api` (Hono), served at `/api/*`. Today: `GET /api/health`. See [request journey](map/request-journey.md). **Card:** [Hono](tech/hono.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/API>
 
+<a id="api-equivalent-cost"></a>
+
+### API-equivalent cost
+
+**Plain words:** What a run would cost at the public per-token API prices. Merna pays a subscription, so this is not a bill; it is a common yardstick to compare runs, models and weeks.  
+**In Tafsila:** `est_cost_usd` in each agent usage record, from the price table in `scripts/agent-usage.mjs`; shown in the weekly report ([tutorial](../backend/tutorials/agent-usage.md)). **Card:** [Claude Code](tech/claude-code.md#measuring-agent-usage) · **Level:** beginner  
+**Learn:** <https://www.anthropic.com/pricing>
+
 <a id="app-router"></a>
 
 ### App Router
@@ -1434,6 +1442,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** FR-PROJ-01 to FR-PROJ-06 ([SRS section 4.7](../SRS.md)); needs [calibration](#calibration). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
+<a id="prompt-cache"></a>
+
+### Prompt cache (cache hit ratio)
+
+**Plain words:** Claude re-reads the same conversation on every turn; the parts it has already seen are served from a cache that is much cheaper and faster. The cache hit ratio is the share of input tokens that came from that cache.  
+**In Tafsila:** `cache_hit_ratio` in each usage record; the weekly report flags runs below 50%, which usually means many short runs or a context that keeps changing. **Card:** [Claude Code](tech/claude-code.md#measuring-agent-usage) · **Level:** intermediate  
+**Learn:** <https://docs.claude.com/en/docs/build-with-claude/prompt-caching>
+
 <a id="property-based-test"></a>
 
 ### Property-based test
@@ -1896,6 +1912,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A tool that runs tasks across all packages of a monorepo and caches the results.  
 **In Tafsila:** `turbo.json`; `pnpm test`, `pnpm build` and `pnpm typecheck` call it. **Card:** [Turborepo](tech/turborepo.md) · **Level:** intermediate  
 **Learn:** <https://turborepo.com/docs>
+
+<a id="turn"></a>
+
+### Turn
+
+**Plain words:** One round in an agent run: the model answers, possibly calling a tool, and gets the result back. Every turn re-sends the conversation, so more turns means more tokens.  
+**In Tafsila:** `--max-turns 50` caps cloud runs ([ADR-017](../DECISIONS.md)); `num_turns` is recorded per run and the weekly report flags runs above 60. **Card:** [Claude Code](tech/claude-code.md#measuring-agent-usage) · **Level:** beginner  
+**Learn:** <https://docs.claude.com/en/docs/claude-code/costs>
 
 <a id="type"></a>
 

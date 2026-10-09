@@ -31,7 +31,7 @@ If another agent tool becomes clearly better or cheaper, the project docs (`CLAU
 
 - `CLAUDE.md` (root), `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`, `AGENTS.md`.
 - `.claude/commands/`, `.claude/procedures/`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `scripts/hooks/`.
-- `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-model.mjs`, `scripts/agent-setup.sh`.
+- `.github/workflows/claude.yml`, `.github/workflows/dispatch.yml`, `scripts/dispatch.mjs`, `scripts/agent-model.mjs`, `scripts/agent-setup.sh`, `scripts/agent-usage.mjs`, `scripts/agent-report.mjs`, `.github/workflows/agent-report.yml`.
 
 ## Model per label
 
@@ -51,6 +51,10 @@ Agents should spend tokens on the feature, not on formatting, exploring or readi
 - **Subagents** on haiku (`.claude/agents/`): `code-search` answers "where is X" in three lines; `test-runner` returns only failures.
 - **[Context map](../../CONTEXT_MAP.md):** which files to read for each kind of task.
 - **Cloud guards:** `--max-turns 50`, at most `DISPATCH_DAILY_LIMIT` dispatcher builds a day (default 4), and the unattended rule: the same problem fails twice → stop, comment on the issue, `status:blocked`, never switch to a bigger model alone.
+
+## Measuring agent usage
+
+Every cloud run writes one numbers-only record (tokens, [turns](../glossary.md#turn), [cache ratio](../glossary.md#prompt-cache), [API-equivalent cost](../glossary.md#api-equivalent-cost)) to `agent-runs.jsonl` on the `metrics` branch and comments a one-line summary on the issue; `agent-report.yml` turns the records into a weekly issue ([ADR-027](../../DECISIONS.md), [tutorial](../../backend/tutorials/agent-usage.md)). For your own laptop usage, run the community tool [`ccusage`](https://github.com/ryoppippi/ccusage) (`npx ccusage`), which reads the local Claude Code logs.
 
 ## The 20% you need
 

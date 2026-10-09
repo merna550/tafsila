@@ -16,6 +16,7 @@ You are a subagent and cannot ask questions mid-run. Use the `code-search` subag
    - Backend: `pnpm api:openapi && pnpm api:postman`, `pnpm api:test` green on local, seed data + seed-data.md, tutorial updates.
 6. Run `scripts/gh-ac.sh progress N`; it should be N/N. Any unticked criterion needs a reason in the PR body.
    Push and open the PR from the template with `Closes #N`, SRS IDs, the "Concepts introduced" section, the `progress` line, test summary, screenshots for visual changes, and the preview URL once Vercel posts it:
+   - append the collapsed "Agent usage" block when `.agent-usage.json` exists (written by the Stop hook; skip silently when it does not): `node scripts/agent-usage.mjs block`
    - same labels as the issue (except status) and the **same milestone**: `gh pr create … --milestone "$(gh issue view N --json milestone --jq .milestone.title)"`
    - add the PR to the board and move the issue card: `scripts/gh-project.sh add <pr-url> "In review"` and `scripts/gh-project.sh status <issue-url> "In review"`.
 7. Set `status:in-review` on the issue. Return a summary for Merna in Arabic (max 5 lines): PR link, preview link, what to check.
