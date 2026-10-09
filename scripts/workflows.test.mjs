@@ -21,6 +21,7 @@ const allWorkflows = [
   "quality.yml",
   "docker.yml",
   "docs-links.yml",
+  "agent-report.yml",
 ];
 
 describe("claude.yml", () => {
@@ -209,5 +210,22 @@ describe("agent settings deny production commands (issue #58)", () => {
 
   it("keeps the hooks next to the deny rules", () => {
     expect(Object.keys(settings.hooks)).toEqual(["SessionStart", "PostToolUse", "Stop"]);
+  });
+});
+
+describe("agent usage metrics (issue #36)", () => {
+  const record = claude.jobs.claude.steps.find((s) => s.name === "Record agent usage");
+  const report = workflow("agent-report.yml");
+
+  it("records usage after every run without failing the job", () => {
+    expect(record.if).toBe("always()");
+    expect(record["continue-on-error"]).toBe(true);
+    expect(record.run).toContain("agent-usage.mjs append");
+  });
+
+  it("runs the weekly report on Sundays and by hand with issue-write access only", () => {
+    expect(report.on.schedule[0].cron).toMatch(/ \* \* 0$/);
+    expect(report.on).toHaveProperty("workflow_dispatch");
+    expect(report.permissions).toEqual({ contents: "read", issues: "write" });
   });
 });

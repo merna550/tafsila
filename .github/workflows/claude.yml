@@ -110,6 +110,30 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Record agent usage
+        # One numbers-only record on the `metrics` branch and a one-line comment on the issue (issue #36).
+        # Never fails the job: metrics must not hide the real result of the run.
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          EXECUTION_FILE: ${{ steps.build.outputs.execution_file || steps.answer.outputs.execution_file }}
+          ISSUE: ${{ steps.ctx.outputs.issue }}
+          MODEL: ${{ steps.ctx.outputs.model }}
+          GIT_AUTHOR_NAME: claude[bot]
+          GIT_AUTHOR_EMAIL: noreply@anthropic.com
+          GIT_COMMITTER_NAME: claude[bot]
+          GIT_COMMITTER_EMAIL: noreply@anthropic.com
+        run: |
+          [ -f "$EXECUTION_FILE" ] && [ -n "$ISSUE" ] || { echo "No execution file or issue; skipping."; exit 0; }
+          labels="$(gh issue view "$ISSUE" --json labels --jq '[.labels[].name] | join(",")')"
+          pr="$(gh pr list --state all --search "Closes #$ISSUE in:body" --json number --jq '.[0].number // empty')"
+          node scripts/agent-usage.mjs record --execution "$EXECUTION_FILE" --issue "$ISSUE" --pr "$pr" \
+            --model "$MODEL" --labels "$labels" --sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" >"$RUNNER_TEMP/record.json"
+          [ -s "$RUNNER_TEMP/record.json" ] || exit 0
+          node scripts/agent-usage.mjs append --file "$RUNNER_TEMP/record.json"
+          gh issue comment "$ISSUE" --body "$(node scripts/agent-usage.mjs line --file "$RUNNER_TEMP/record.json")"
+
       - name: Fail when Claude was refused a tool
         # The action reports success even when every tool call was refused (issue #46), so check the transcript.
         # Prints each refused command or path (issue #58), so the cause is in the log without the artifact.

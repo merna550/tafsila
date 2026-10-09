@@ -46,6 +46,10 @@ Plan with a strong model **once**; build with the cheapest model that can follow
 
 Defaults when unsure: `plan:sonnet` + `build:sonnet`. In a session with Merna, escalate one tier if the build fails twice on the same problem; record it in the issue. **Unattended runs** (GitHub Actions or a cloud session) never escalate on their own: the same problem failing twice means stop, comment the problem on the issue and set `status:blocked` (ADR-017).
 
+### Review the weekly agent report
+
+Every Sunday `agent-report.yml` opens or updates the issue "Agent usage report — week N". Read its flags and suggestions, then adjust model labels, issue sizes and the `CLAUDE.md` / `docs/CONTEXT_MAP.md` files from it ([tutorial](backend/tutorials/agent-usage.md), ADR-028).
+
 ### Token-saving rules
 
 1. **One plan, many builds.** The plan comment is the only context the build step needs, plus the files it names.

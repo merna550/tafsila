@@ -16,3 +16,4 @@ __pycache__
 *.log
 supabase/.branches
 supabase/.temp
+.agent-usage.json

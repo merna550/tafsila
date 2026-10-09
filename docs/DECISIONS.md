@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-028 · 2026-10-09 · Agent usage metrics: numbers-only records on a `metrics` branch, weekly report issue
+
+**Decision:** Each agent run produces one record (tokens, turns, duration, API-equivalent cost, outcome, issue/PR, size/area/type labels). Action runs are read from the action's execution file by `claude.yml`; claude.ai/code and laptop sessions are read from the session transcript by a Stop hook into the git-ignored `.agent-usage.json`, which `/build` pastes into the PR body. Records are appended as JSON lines to `agent-runs.jsonl` on the `metrics` branch with git plumbing (no checkout, retry on conflict), never on `main`. `agent-report.yml` opens or updates one weekly issue with totals, medians, top 3, flags and suggestions. Records copy a fixed field list, so prompts, code and secrets cannot enter them.
+**Reason:** Token waste cannot be fixed without per-issue data; a separate branch avoids PR noise; the cost is an estimate because Merna is on a subscription.
+**Alternatives:** A database or dashboard (more to run; deferred); committing to `main` (noise, protected branch); comment-only storage (hard to aggregate).
+
 ## ADR-027 · 2026-10-09 · Agent guards: production commands denied, `needs:interactive`, failed dispatcher builds blocked
 
 **Decision:** (1) `.claude/settings.json` denies (PR #60, widened by PR #61), in every agent session, `gh workflow run` on deploy or production workflows, `gh api` workflow dispatches, `gh release create`, and `vercel --prod`, `vercel promote` and `vercel rollback`; `AGENT_GITHUB_TOKEN` has no Actions permission (tutorial). (2) New label `needs:interactive` for work that touches Claude's own configuration (`.claude/` settings, agents, commands, hooks, and `scripts/hooks/`): it is a safety boundary, so it is built with Merna present. The dispatcher never picks such issues; `/triage` and `/plan` add the label with `scripts/needs-interactive.mjs`. (3) When a dispatcher build fails for any reason, the last step of `claude.yml` (`scripts/claude-run.mjs block`) removes `status:ready`, `status:in-progress` and `status:changes-requested`, adds `status:blocked` and comments the reason, the run link and the refused commands (token-shaped values redacted, 200 characters at most). The refusal check prints each refused command in the log.

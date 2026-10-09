@@ -1,0 +1,42 @@
+name: Agent usage report
+# Weekly report of agent cost per issue (issue #36). Reads agent-runs.jsonl from the `metrics` branch and opens or
+# updates one issue "Agent usage report — week N". Needs only issues: write; the branch is read through checkout.
+on:
+  schedule:
+    - cron: "0 7 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: agent-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Build and post the report
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch -q origin metrics || { echo "No metrics branch yet; nothing to report."; exit 0; }
+          git show FETCH_HEAD:agent-runs.jsonl >"$RUNNER_TEMP/agent-runs.jsonl"
+          node scripts/agent-report.mjs "$RUNNER_TEMP/agent-runs.jsonl" >"$RUNNER_TEMP/report.json"
+          title="$(jq -r .title "$RUNNER_TEMP/report.json")"
+          jq -r .body "$RUNNER_TEMP/report.json" >"$RUNNER_TEMP/report.md"
+          number="$(gh issue list --state all --search "\"$title\" in:title" --json number,title --jq "map(select(.title == \"$title\")) | .[0].number // empty")"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$RUNNER_TEMP/report.md"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/report.md" --label type:chore --label area:infra
+          fi

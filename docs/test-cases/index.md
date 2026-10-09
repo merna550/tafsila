@@ -92,3 +92,10 @@
 | infra/58-agent-guards.md        | TC-INF-58-02   | Dispatcher skips `needs:interactive`                | High     | ⬜  | ⬜      |
 | infra/58-agent-guards.md        | TC-INF-58-03   | Failed dispatcher build blocks the issue            | High     | ⬜  | ⬜      |
 | infra/58-agent-guards.md        | TC-INF-58-04   | Refused commands appear in the run log              | Medium   | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-01   | Action run writes a record and comments             | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-02   | Push conflict is retried                            | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-03   | Session writes `.agent-usage.json`                  | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-04   | Missing or broken input does not crash              | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-05   | No prompt text, code or secrets in a record         | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-06   | Weekly report has all sections                      | High     | ⬜  | ⬜      |
+| infra/36-agent-usage.md         | TC-AGU-36-07   | Report workflow is weekly and least-privilege       | Medium   | ⬜  | ⬜      |
