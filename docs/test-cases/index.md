@@ -88,6 +88,10 @@
 | infra/21-sentry-posthog.md      | TC-OBS-21-06   | Sentry events contain no personal data              | High     | ⬜  | ⬜      |
 | infra/21-sentry-posthog.md      | TC-OBS-21-07   | App starts without DSN or key                       | High     | ⬜  | ⬜      |
 | infra/21-sentry-posthog.md      | TC-OBS-21-08   | Direct PostHog import fails the architecture check  | Medium   | ⬜  | ⬜      |
+| infra/58-agent-guards.md        | TC-INF-58-01   | Agent cannot run production commands                | High     | ✅  | ⬜      |
+| infra/58-agent-guards.md        | TC-INF-58-02   | Dispatcher skips `needs:interactive`                | High     | ⬜  | ⬜      |
+| infra/58-agent-guards.md        | TC-INF-58-03   | Failed dispatcher build blocks the issue            | High     | ⬜  | ⬜      |
+| infra/58-agent-guards.md        | TC-INF-58-04   | Refused commands appear in the run log              | Medium   | ⬜  | ⬜      |
 | infra/36-agent-usage.md         | TC-AGU-36-01   | Action run writes a record and comments             | High     | ⬜  | ⬜      |
 | infra/36-agent-usage.md         | TC-AGU-36-02   | Push conflict is retried                            | High     | ⬜  | ⬜      |
 | infra/36-agent-usage.md         | TC-AGU-36-03   | Session writes `.agent-usage.json`                  | High     | ⬜  | ⬜      |

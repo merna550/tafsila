@@ -45,6 +45,12 @@ describe("selectIssue", () => {
     expect(selectIssue({ ...base, issues, closed: new Set([9]) }).pick.number).toBe(1);
   });
 
+  it("never picks needs:interactive issues, even at a higher priority (issue #58)", () => {
+    const interactive = issue(2, ["status:ready", "priority:P0", "area:infra", "needs:interactive"]);
+    expect(selectIssue({ ...base, issues: [interactive, ready(3)] }).pick.number).toBe(3);
+    expect(selectIssue({ ...base, issues: [interactive] }).pick).toBeNull();
+  });
+
   it("only considers status:ready issues", () => {
     const issues = [issue(1, ["status:plan-review", "priority:P0"])];
     const result = selectIssue({ ...base, issues });

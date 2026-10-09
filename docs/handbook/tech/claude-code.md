@@ -54,7 +54,7 @@ Agents should spend tokens on the feature, not on formatting, exploring or readi
 
 ## Measuring agent usage
 
-Every cloud run writes one numbers-only record (tokens, [turns](../glossary.md#turn), [cache ratio](../glossary.md#prompt-cache), [API-equivalent cost](../glossary.md#api-equivalent-cost)) to `agent-runs.jsonl` on the `metrics` branch and comments a one-line summary on the issue; `agent-report.yml` turns the records into a weekly issue ([ADR-027](../../DECISIONS.md), [tutorial](../../backend/tutorials/agent-usage.md)). For your own laptop usage, run the community tool [`ccusage`](https://github.com/ryoppippi/ccusage) (`npx ccusage`), which reads the local Claude Code logs.
+Every cloud run writes one numbers-only record (tokens, [turns](../glossary.md#turn), [cache ratio](../glossary.md#prompt-cache), [API-equivalent cost](../glossary.md#api-equivalent-cost)) to `agent-runs.jsonl` on the `metrics` branch and comments a one-line summary on the issue; `agent-report.yml` turns the records into a weekly issue ([ADR-028](../../DECISIONS.md), [tutorial](../../backend/tutorials/agent-usage.md)). For your own laptop usage, run the community tool [`ccusage`](https://github.com/ryoppippi/ccusage) (`npx ccusage`), which reads the local Claude Code logs.
 
 ## The 20% you need
 

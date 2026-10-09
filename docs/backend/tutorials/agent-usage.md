@@ -1,6 +1,6 @@
 # Agent usage metrics
 
-What each agent run costs, per issue, so model labels, issue sizes and `CLAUDE.md` files are tuned with data ([ADR-027](../../DECISIONS.md), issue #36).
+What each agent run costs, per issue, so model labels, issue sizes and `CLAUDE.md` files are tuned with data ([ADR-028](../../DECISIONS.md), issue #36).
 
 ## What is measured
 

@@ -61,11 +61,20 @@ describe("claude.yml tool permissions (issue #46)", () => {
     expect(keep.with.path).toContain("claude-execution-output.json");
   });
 
-  it("fails the job when Claude was refused a tool", () => {
-    const check = steps.at(-1);
+  it("fails the job when Claude was refused a tool, printing what was refused (issue #58)", () => {
+    const check = steps.find((s) => s.name === "Fail when Claude was refused a tool");
     expect(check.env.EXECUTION_FILE).toContain("steps.build.outputs.execution_file");
-    expect(check.run).toContain("permission_denials");
-    expect(check.run).toContain("exit 1");
+    expect(check.run).toBe('node scripts/claude-run.mjs check "$EXECUTION_FILE"');
+  });
+
+  it("blocks the issue after any failed dispatcher build (issue #58)", () => {
+    const block = steps.at(-1);
+    expect(block.name).toBe("Block the issue after a failed dispatcher build");
+    expect(block.if).toBe("failure() && inputs.issue != ''");
+    expect(block.env.GH_TOKEN).toBe("${{ secrets.AGENT_GITHUB_TOKEN }}");
+    expect(block.env.ISSUE).toBe("${{ inputs.issue }}");
+    expect(block.env.EXECUTION_FILE).toContain("claude-execution-output.json");
+    expect(block.run).toBe('node scripts/claude-run.mjs block "$ISSUE" "$EXECUTION_FILE" "$RUN_URL"');
   });
 });
 
@@ -188,14 +197,19 @@ describe("agent settings deny production commands (issue #58)", () => {
   const deny = settings.permissions.deny;
 
   it.each([
-    "Bash(gh workflow run deploy*)",
-    "Bash(gh workflow run *production*)",
+    "Bash(gh workflow run *deploy*)",
+    "Bash(gh workflow run *prod*)",
+    "Bash(gh api *dispatches*)",
     "Bash(gh release create*)",
     "Bash(*vercel*--prod*)",
     "Bash(*vercel*promote*)",
     "Bash(*vercel*rollback*)",
   ])("denies %s", (rule) => {
     expect(deny).toContain(rule);
+  });
+
+  it("keeps the hooks next to the deny rules", () => {
+    expect(Object.keys(settings.hooks)).toEqual(["SessionStart", "PostToolUse", "Stop"]);
   });
 });
 

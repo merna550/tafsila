@@ -136,14 +136,19 @@ jobs:
 
       - name: Fail when Claude was refused a tool
         # The action reports success even when every tool call was refused (issue #46), so check the transcript.
+        # Prints each refused command or path (issue #58), so the cause is in the log without the artifact.
         env:
           EXECUTION_FILE: ${{ steps.build.outputs.execution_file || steps.answer.outputs.execution_file }}
-        run: |
-          [ -f "$EXECUTION_FILE" ] || { echo "No execution file; skipping."; exit 0; }
-          denied="$(jq '[.[] | select(.type == "result")] | last | .permission_denials_count // (.permission_denials | length) // 0' "$EXECUTION_FILE" 2>/dev/null)" ||
-            { echo "::warning::Could not read the execution file; refused tools not checked."; exit 0; }
-          echo "Permission denials: $denied"
-          if [ "${denied:-0}" -gt 0 ]; then
-            jq -r '[.[] | select(.type == "result")] | last | .permission_denials[]? | "::error::Refused tool: \(.tool_name)"' "$EXECUTION_FILE"
-            exit 1
-          fi
+        run: node scripts/claude-run.mjs check "$EXECUTION_FILE"
+
+      - name: Block the issue after a failed dispatcher build
+        # Any failure of a dispatcher build moves the issue to status:blocked with the reason and the refused
+        # commands, so the dispatcher can never pick it again in a loop (issue #58).
+        if: failure() && inputs.issue != ''
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue }}
+          # The action writes this file even when its step fails; the output is only set on success.
+          EXECUTION_FILE: ${{ steps.build.outputs.execution_file || format('{0}/claude-execution-output.json', runner.temp) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/claude-run.mjs block "$ISSUE" "$EXECUTION_FILE" "$RUN_URL"
