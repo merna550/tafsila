@@ -71,3 +71,22 @@ describe("e2e job", () => {
     ["scripts/dispatch.mjs"],
   ])("is skipped for %s", (file) => expect(needsJob("e2e", [file])).toBe(false));
 });
+
+describe("api checks (issue #94)", () => {
+  it.each([
+    ["packages/api/src/routes/me.ts"],
+    ["packages/api/openapi.json"],
+    ["postman/err-cases.json"],
+    ["packages/schemas/src/me.ts"],
+    ["scripts/gen-postman.mjs"],
+    [".github/workflows/quality.yml"],
+  ])("runs for %s", (file) => expect(needsJob("api", [file])).toBe(true));
+
+  it.each([
+    ["packages/api/src/app.test.ts"],
+    ["docs/x.md"],
+    ["postman/README.md"],
+    ["apps/web/src/x.tsx"],
+    ["packages/ui/src/Button.tsx"],
+  ])("is skipped for %s", (file) => expect(needsJob("api", [file])).toBe(false));
+});
