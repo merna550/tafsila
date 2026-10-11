@@ -56,7 +56,7 @@ Every Sunday `agent-report.yml` opens or updates the issue "Agent usage report â
 2. **Read by reference.** Read SRS sections by requirement ID, not the whole file. Read files named in the plan, not the whole repo.
 3. **Fresh context per issue.** Start each issue in a new session (or `/clear`). Never carry a long chat into the next issue.
 4. **Split big work.** `size:L` should be split; `size:XL` must be split before planning.
-5. **No re-asking.** If the answer is in `CLAUDE.md`, `docs/SRS.md`, `docs/DECISIONS.md` or the issue, use it. Ask only for decisions that are costly or irreversible (money, prices, production data, deleting, new paid service); log the answer in `DECISIONS.md`.
+5. **No re-asking.** If the answer is in `CLAUDE.md`, `docs/SRS.md`, `docs/DECISIONS.md`, `docs/decisions/` or the issue, use it. Ask only for decisions that are costly or irreversible (money, prices, production data, deleting, new paid service); log the answer in `DECISIONS.md`.
 6. **Short outputs.** Status updates are 3â€“5 lines. Long reasoning goes in the plan comment once.
 7. **Read from the [context map](CONTEXT_MAP.md).** Each task type lists the few files to read.
 8. **Delegate cheap work.** The `code-search` and `test-runner` subagents (haiku) find code and run tests, returning only paths or failures.
@@ -97,7 +97,7 @@ Every Sunday `agent-report.yml` opens or updates the issue "Agent usage report â
 - [ ] Code + tests (unit; property tests for engine; e2e for user flows; visual snapshot for pattern output).
 - [ ] `pnpm lint && pnpm typecheck && pnpm test` pass locally and in CI; coverage thresholds met.
 - [ ] Preview deployment link in the PR, with screenshots for visual changes.
-- [ ] Docs updated: SRS (behaviour), DECISIONS (choices), CLAUDE.md status.
+- [ ] Docs updated: SRS (behaviour), a decision file in `docs/decisions/` (choices), CLAUDE.md status when the milestone, next step or an open decision changed.
 - [ ] Manual test cases: `docs/test-cases/<area>/<N>-<slug>.md` (happy path, errors, permissions, edge sizes, RTL, mobile), each marked automated or manual-only.
 - [ ] Plan saved to `docs/plans/<N>-<slug>.md`.
 - [ ] New concepts added to `docs/handbook/` (glossary / tech card / pattern) and listed in `learning-log.md`; the PR has a "Concepts introduced" section; `pnpm docs:check` passes.

@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/super-linear-regex -- the regexes only scan our own Markdown files, never untrusted input */
 // Handbook guard (issue #10): every direct dependency has a technology card,
-// and every relative link (and anchor) in docs/ resolves.
+// every relative link (and anchor) in docs/ resolves, and no two ADRs share a number (issue #76).
 // Run: pnpm docs:check   (part of pnpm quality and the Code quality workflow)
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
@@ -243,13 +243,82 @@ export function checkRelativeLinks(root) {
 }
 
 /**
+ * Lists the decisions of the closed log (`docs/DECISIONS.md`, ADR-001 to ADR-035) by number.
+ *
+ * @param {string} root Repo root.
+ * @returns {{ key: string, label: string }[]} One entry per `## ADR-n` heading; the key has no leading zeros.
+ */
+function legacyDecisions(root) {
+  const file = join(root, "docs/DECISIONS.md");
+  if (!existsSync(file)) return [];
+  return [...readFileSync(file, "utf8").matchAll(/^## ADR-(\d+)\b.*$/gm)].map((m) => ({
+    key: String(Number(m[1])),
+    label: `DECISIONS.md "${m[0].slice(3, 60)}"`,
+  }));
+}
+
+/**
+ * Lists the decision files in `docs/decisions/` by issue number and reports files that break the naming rules.
+ *
+ * @param {string} root Repo root.
+ * @returns {{ decisions: { key: string, label: string }[], errors: string[] }} Decisions found and naming errors.
+ */
+function fileDecisions(root) {
+  const dir = join(root, "docs/decisions");
+  const decisions = [];
+  const errors = [];
+  for (const file of listFiles(dir, ".md").filter((f) => !f.endsWith("README.md"))) {
+    const name = relative(root, file);
+    const prefix = /^(\d+)([a-z]?)-/.exec(file.slice(dir.length + 1));
+    if (!prefix) {
+      errors.push(`Decision file ${name} must be named <issue>-<slug>.md (see docs/decisions/README.md).`);
+      continue;
+    }
+    const key = String(Number(prefix[1])) + prefix[2];
+    const heading = /^# ADR-(\d+)([a-z]?)\b/.exec(readFileSync(file, "utf8"));
+    if (!heading || String(Number(heading[1])) + heading[2] !== key) {
+      errors.push(
+        `Decision file ${name} must start with "# ADR-${key} · <date> · <title>" to match its file name.`,
+      );
+    }
+    decisions.push({ key, label: name });
+  }
+  return { decisions, errors };
+}
+
+/**
+ * Checks decision numbers: unique across the closed log and `docs/decisions/`, and decision files named by issue.
+ *
+ * Parallel PRs each took "the next free number", so two of them could pick the same one and a clean-looking
+ * merge hid it (issue #76). New decisions are numbered by their issue, which is unique; this check keeps it so.
+ *
+ * @param {string} root Repo root.
+ * @returns {string[]} One error per duplicated number or badly named decision file.
+ */
+export function checkAdrNumbers(root) {
+  const { decisions, errors } = fileDecisions(root);
+  const byKey = new Map();
+  for (const { key, label } of [...legacyDecisions(root), ...decisions]) {
+    byKey.set(key, [...(byKey.get(key) ?? []), label]);
+  }
+  for (const [key, labels] of byKey) {
+    if (labels.length < 2) continue;
+    errors.push(
+      `Duplicate ADR number: ADR-${key} is used ${labels.length} times (${labels.join("; ")}). ` +
+        "Decisions are numbered by the issue that makes them (docs/decisions/README.md).",
+    );
+  }
+  return errors;
+}
+
+/**
  * Runs all handbook checks.
  *
  * @param {string} root Repo root.
  * @returns {string[]} All error messages (empty when everything passes).
  */
 export function checkHandbook(root) {
-  return [...checkDependencyCards(root), ...checkRelativeLinks(root)];
+  return [...checkDependencyCards(root), ...checkRelativeLinks(root), ...checkAdrNumbers(root)];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -259,5 +328,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     for (const message of errors) console.error(`  - ${message}`);
     process.exit(1);
   }
-  console.log("docs:check OK (every dependency has a card; every relative link resolves)");
+  console.log(
+    "docs:check OK (every dependency has a card; every relative link resolves; ADR numbers are unique)",
+  );
 }

@@ -11,7 +11,7 @@ You are a subagent and cannot ask questions mid-run. Use the `code-search` subag
 4. Run `pnpm lint && pnpm typecheck && pnpm test` (and `pnpm test:e2e` when UI flows change) through `test-runner`. Fix until green.
    - If the same problem fails twice: stop, comment the problem on the issue (what fails, what you tried, the error), set `status:blocked`, push the branch as it is, and end your summary with `BLOCKED: <one line>`. Never switch model yourself; in a session with Merna the main session suggests escalating the `build:*` label.
 5. Docs in the same branch (Definition of Done, docs/WORKFLOW.md §5):
-   - SRS, DECISIONS.md, CLAUDE.md status, `docs/plans/<N>-<slug>.md`.
+   - SRS, the decision file `docs/decisions/<issue>-<slug>.md` (only if the issue makes a decision; never edit `docs/DECISIONS.md`, it is closed), CLAUDE.md status only if the milestone, next step or an open decision changed, `docs/plans/<N>-<slug>.md`.
    - Manual test cases file from `docs/test-cases/_TEMPLATE.md`; run `scripts/test-case-index.sh`.
    - Handbook (every PR): add the glossary entry, tech card (`docs/handbook/tech/_TEMPLATE.md`, `packages:` front matter) or pattern page for each new library, pattern or term; add a row at the top of `docs/handbook/learning-log.md`; fill the PR's "Concepts introduced" section (or write "None"). `pnpm docs:check` (part of `pnpm quality`) fails when a dependency has no card or a relative link is broken.
    - Backend: `pnpm api:openapi && pnpm api:postman`, `pnpm api:test` green on local, seed data + seed-data.md, tutorial updates.

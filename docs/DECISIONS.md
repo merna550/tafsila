@@ -2,6 +2,8 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+**This log is closed at ADR-035.** Later decisions are one file each in [`docs/decisions/`](decisions/README.md), named by the issue that decides them, so two PRs never edit the same lines or pick the same number (#76).
+
 ## ADR-035 · 2026-10-11 · Data access: keep Drizzle, only through `withUser`, `prepare: false` (confirms ADR-012)
 
 **Decision:** Repositories in `packages/api/src/adapters/supabase/` use Drizzle (postgres-js driver). (1) The only way to reach the database is `withUser(ctx, fn)`: it verifies the caller's JWT against the Supabase JWKS endpoint (`jose`), opens a transaction, runs `set_config('role', 'authenticated', true)` and `set_config('request.jwt.claims', <verified payload>, true)`, then calls `fn(tx)`. The raw Drizzle client is never exported. (2) The API connects with its own login role (`nobypassrls`, no table privileges, member of `authenticated`), so a query that skips `withUser` fails with `permission denied` instead of bypassing RLS. (3) The driver runs with `prepare: false` because the Supabase pooler uses transaction mode, which has no prepared statements. (4) SQL files in `supabase/migrations/` stay the only schema source; the Drizzle schema is a hand-written mirror (`drizzle-kit pull` is allowed to compare, `push` is never used). (5) A write that spans tables (credits + version) is one Drizzle transaction inside `withUser`. `supabase-js` stays for Auth and Storage, not for table access in the API. The rule agreed in the wave-1 plan was: keep Drizzle only if its RLS suite passes through `withUser` and it adds under 300 kB to the API function bundle; both held.
