@@ -118,6 +118,6 @@
 - {
     name: "agent:auto",
     color: "000000",
-    description: "Allowed to be implemented unattended by the Claude GitHub Action",
+    description: "Merna opted this issue in: the dispatcher may build it unattended. Without it the dispatcher builds nothing (ADR-86)",
   }
 - { name: "good-first", color: "7057ff", description: "Small and self-contained" }

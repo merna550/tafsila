@@ -107,7 +107,7 @@ describe("dispatch.yml triggers (issue #50)", () => {
 
   it("selects only for status labels that change what can start", () => {
     const condition = dispatch.jobs.select.if;
-    for (const label of ["status:ready", "status:in-review", "status:blocked"])
+    for (const label of ["status:ready", "status:in-review", "status:blocked", "agent:auto"])
       expect(condition).toContain(`"${label}"`);
     expect(condition).toContain("github.event_name != 'issues'");
     expect(condition).toContain("github.event.action == 'closed'");
@@ -237,5 +237,44 @@ describe("agent usage metrics (issue #36)", () => {
     expect(report.on.schedule[0].cron).toMatch(/ \* \* 0$/);
     expect(report.on).toHaveProperty("workflow_dispatch");
     expect(report.permissions).toEqual({ contents: "read", issues: "write" });
+  });
+});
+
+describe("expensive checks run only when needed (issue #86)", () => {
+  const quality = workflow("quality.yml");
+  const docker = workflow("docker.yml");
+
+  it("gates storybook and the docker jobs with a job-level if on the scope job, never on.paths", () => {
+    expect(quality.jobs.storybook.needs).toBe("scope-storybook");
+    expect(quality.jobs.storybook.if).toBe("needs.scope-storybook.outputs.run == 'true'");
+    for (const job of ["lint", "build"]) {
+      expect(docker.jobs[job].if).toBe("needs.scope-docker.outputs.run == 'true'");
+      expect([docker.jobs[job].needs].flat()).toContain("scope-docker");
+    }
+    expect(docker.on.pull_request).toBeNull();
+    expect(quality.on.pull_request).toBeNull();
+  });
+
+  it("asks scripts/ci-paths.mjs, which runs on a full history", () => {
+    for (const [wf, job, target] of [
+      [quality, "scope-storybook", "storybook"],
+      [docker, "scope-docker", "docker"],
+    ]) {
+      const steps = wf.jobs[job].steps;
+      expect(steps[0].with["fetch-depth"]).toBe(0);
+      expect(steps.at(-1).run).toContain(`node scripts/ci-paths.mjs ${target} `);
+    }
+  });
+
+  it("keeps the checks that stay: quality is not path-filtered and docker still pushes from main", () => {
+    expect(quality.jobs.quality.if).toBeUndefined();
+    expect(docker.on.push.branches).toEqual(["main"]);
+  });
+
+  it("cancels superseded pull request runs but never a run on main", () => {
+    for (const wf of [quality, docker]) {
+      expect(wf.concurrency["cancel-in-progress"]).toBe("${{ github.event_name == 'pull_request' }}");
+      expect(wf.concurrency.group).toContain("github.event.pull_request.number");
+    }
   });
 });
