@@ -100,6 +100,21 @@ A failed action (save, delete) is a toast, not an `ErrorState`:
 
 The full placement table (field, toast, ErrorState, redirect on 401, 403 message, offline banner) is in [README: Error display](README.md#error-display) and the message catalogue in [docs/errors.md](../errors.md).
 
+## Visual snapshots
+
+Every story gets four snapshots (RTL/LTR, desktop/mobile) in `packages/ui/e2e/__snapshots__`. They must come from Linux with the same browser as CI: a Mac or Windows machine renders fonts differently and the `storybook` CI job then fails.
+
+Regenerate them on any machine with Docker (Docker Desktop on a Mac):
+
+```bash
+pnpm --filter @tafsila/ui test:visual:update:docker
+```
+
+- Add `--check` (`pnpm --filter @tafsila/ui test:visual:update:docker -- --check`) to only compare, `--dry-run` to print the `docker run` command without running it.
+- The script `scripts/ui-snapshots-docker.mjs` reads the Playwright version of `packages/ui` from `pnpm-lock.yaml` and runs the official image `mcr.microsoft.com/playwright:v<version>-noble` (Ubuntu 24.04, like CI's `ubuntu-latest`), so the browser build follows the lockfile.
+- The repo is mounted read-only and copied inside the container (your `node_modules` is untouched); only `packages/ui/e2e/__snapshots__/` is written back.
+- Without Docker it stops with a clear message. Then review the changed images (`git diff --stat`) and commit them.
+
 ## Icons
 
 Outline, 1.5px stroke, 20 to 24px, drawn in `currentColor` so they follow `text-text`, `text-primary` or a state colour. The shared set lives in `packages/ui/src/icons.tsx` (`CheckIcon`, `ChevronDownIcon`, `CloseIcon`); add new ones there. Directional icons (arrows, chevrons, back) take `rtl:-scale-x-100`. An icon never carries meaning alone: pair it with text or an `aria-label` from messages.
