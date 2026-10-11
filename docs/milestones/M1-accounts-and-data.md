@@ -26,7 +26,7 @@ A user signs up, verifies phone, saves a client with measurements; RLS tests pas
 
 ## Dependencies
 
-M0 staging (#19) and local Supabase (#18) are closed. Inside M1: #23 spike then #24 schema, then #25, #26, #27, #29; #28 is independent; #30, #31 need #29; #32 needs #24; #34 needs all of them.
+M0 staging (#19) and local Supabase (#18) are closed. Inside M1: #23 spike then #24 schema, then #90 → #91 → #25 (the auth split), then #26, #27, #29; #28 is independent; #30, #31 need #29; #32 needs #24; #34 needs all of them.
 
 ## Brand
 
@@ -52,7 +52,9 @@ The brand step (palette, font, feel) is done: Merna approved it and it is applie
 | #24   | M1 schema with RLS and seed users                      | 1    |
 | #28   | Measurement validation, standard sizes, size+override  | 1    |
 | #33   | Code generators (endpoint, feature, garment module)    | 1    |
-| #25   | Sign up / sign in, Google, reset, sign out             | 2    |
+| #90   | i18n foundation and web e2e harness (part A of #25)    | 2    |
+| #91   | Session, route guard and API auth (part B of #25)      | 2    |
+| #25   | Sign up / sign in, Google, reset, sign out (part C)    | 2    |
 | #26   | Phone OTP + one free trial per phone                   | 2    |
 | #27   | Settings (language, units) and delete account          | 2    |
 | #29   | Clients and measurement sets API                       | 2    |
