@@ -9,7 +9,7 @@ import { SignupButton } from "../features/home";
  */
 export default function HomePage(): ReactElement {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col items-start gap-6 px-6 py-24">
+    <div className="mx-auto flex max-w-2xl flex-col items-start gap-6 px-6 py-24">
       <h1 className="text-4xl font-bold">تفصيلة</h1>
       <p className="text-lg leading-8">
         ارفعي صورة الموديل، دخّلي المقاسات، وخدي باترون دقيق جاهز للقص، على البروجكتور أو مباشرة على القماش.
@@ -20,6 +20,6 @@ export default function HomePage(): ReactElement {
           حالة النظام
         </a>
       </div>
-    </main>
+    </div>
   );
 }

@@ -17,3 +17,13 @@ export function initMonitoring(config: Pick<PublicConfig, "sentryDsn" | "appEnv"
     ...SENTRY_PRIVACY_OPTIONS,
   });
 }
+
+/**
+ * Reports an unexpected error to Sentry with the request id so support can find the matching server log.
+ *
+ * @param error - The thrown value.
+ * @param requestId - Request id from the failing API call, when there is one.
+ */
+export function reportError(error: unknown, requestId?: string): void {
+  Sentry.captureException(error, requestId ? { tags: { request_id: requestId } } : undefined);
+}

@@ -1,4 +1,4 @@
-/** Vitest config for `web`: logic tests only (no DOM), React's automatic JSX runtime is the default. */
+/** Vitest config for `web`: logic and server-render tests (no DOM); JSX uses React's automatic runtime. */
 import { defineConfig } from "vitest/config";
 
-export default defineConfig({});
+export default defineConfig({ oxc: { jsx: { runtime: "automatic" } } });
