@@ -1,5 +1,5 @@
 ---
-packages: ["storybook", "@storybook/react-vite"]
+packages: ["storybook", "@storybook/react-vite", "@fontsource/ibm-plex-sans-arabic"]
 level: intermediate
 adr: ADR-031
 ---

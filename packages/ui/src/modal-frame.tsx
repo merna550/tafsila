@@ -60,7 +60,7 @@ export function ModalFrame({
           dir={dir}
           {...(description ? {} : { "aria-describedby": undefined })}
           className={cx(
-            "fixed z-modal flex flex-col gap-4 overflow-y-auto bg-surface p-5 shadow-lg",
+            "fixed z-modal flex flex-col gap-4 overflow-y-auto bg-surface p-5 shadow-overlay",
             panelClassName,
           )}
         >

@@ -31,7 +31,7 @@ export function Tooltip({ content, children, dir, defaultOpen }: Readonly<Toolti
           <RadixTooltip.Content
             dir={dir}
             sideOffset={6}
-            className="z-overlay max-w-64 rounded-md bg-text px-3 py-1.5 text-sm text-surface shadow-md"
+            className="z-overlay max-w-64 rounded-md bg-text px-3 py-1.5 text-sm text-surface shadow-overlay"
           >
             {content}
           </RadixTooltip.Content>

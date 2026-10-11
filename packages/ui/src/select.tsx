@@ -44,7 +44,7 @@ export interface SelectProps {
 
 /** Classes of the open list. */
 const CONTENT_CLASSES =
-  "z-dropdown max-h-72 min-w-(--radix-select-trigger-width) overflow-hidden rounded-md border border-border bg-surface shadow-md";
+  "z-dropdown max-h-72 min-w-(--radix-select-trigger-width) overflow-hidden rounded-md border border-border bg-surface shadow-overlay";
 
 /** Classes of one option. */
 const ITEM_CLASSES =

@@ -14,7 +14,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 /** Tailwind classes per variant; logical properties keep RTL and LTR correct. */
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: "bg-primary text-on-primary hover:bg-primary-hover",
-  secondary: "border border-primary text-primary hover:bg-surface-hover",
+  secondary: "border border-border bg-surface text-text hover:bg-surface-hover",
   ghost: "text-primary hover:bg-surface-hover",
   danger: "bg-danger text-on-primary hover:opacity-90",
 };

@@ -22,7 +22,7 @@ export function Card({ title, footer, className, children, ...rest }: Readonly<C
   return (
     <div
       className={cx(
-        "flex flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-sm",
+        "flex flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-card",
         className,
       )}
       {...rest}

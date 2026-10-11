@@ -96,7 +96,7 @@ export function ToastProvider({
             dir={dir}
             onOpenChange={(open) => (open ? undefined : remove(toast.id))}
             className={cx(
-              "flex items-start gap-3 rounded-lg border-2 bg-surface p-4 shadow-lg",
+              "flex items-start gap-3 rounded-lg border-2 bg-surface p-4 shadow-overlay",
               TOAST_TONE_CLASSES[toast.tone ?? "info"],
             )}
           >

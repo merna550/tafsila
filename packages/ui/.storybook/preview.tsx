@@ -1,5 +1,8 @@
 /** Storybook preview: every story renders in a direction (Arabic RTL / English LTR) and width (mobile / desktop) chosen in the toolbar or the `globals` URL param. */
 import type { Decorator, Preview } from "@storybook/react-vite";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./preview.css";
 
 /** Widths a story can be shown at. */

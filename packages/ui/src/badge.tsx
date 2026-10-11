@@ -32,7 +32,7 @@ export function Badge({ tone = "neutral", className, ...rest }: Readonly<BadgePr
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-full border bg-surface px-2.5 text-sm font-semibold",
+        "inline-flex items-center rounded-full border bg-surface px-2.5 text-xs font-medium",
         BADGE_TONE_CLASSES[tone],
         className,
       )}
