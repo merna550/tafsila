@@ -28,6 +28,10 @@ A user signs up, verifies phone, saves a client with measurements; RLS tests pas
 
 M0 staging (#19) and local Supabase (#18) are closed. Inside M1: #23 spike then #24 schema, then #25, #26, #27, #29; #28 is independent; #30, #31 need #29; #32 needs #24; #34 needs all of them.
 
+## Brand
+
+The brand step (palette, font, feel) is done: Merna approved it and it is applied in `docs/design-system/tokens.json` and `packages/ui/src/tokens.css` (#80, [ADR-80](../decisions/80-brand-tokens.md)). M1 screens only use those tokens and components ([how to use them](../frontend/design-system.md)); no brand work remains in this milestone.
+
 ## Merna's tasks
 
 - Compile the Egyptian size chart values S-XXL (SRS §13 item 4).
