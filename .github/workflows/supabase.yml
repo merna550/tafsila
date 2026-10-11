@@ -1,14 +1,37 @@
 name: Supabase
 # Proves the migrations + seed apply cleanly on a fresh local Supabase (issue #18).
+# Like the Storybook, Docker and e2e jobs (issues #86, #83), a scope job decides with scripts/ci-paths.mjs and the db-reset job
+# is skipped by its `if` when no database file changed; a skipped job counts as passed, so it can be required.
 on:
   pull_request:
-    paths: ["supabase/**", "package.json", ".github/workflows/supabase.yml"]
   push:
     branches: [main]
-    paths: ["supabase/**"]
+# A new push to a pull request cancels the older run of the same workflow; main never cancels.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
-  db-reset:
+  scope-db:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.paths.outputs.run }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the path filter compares against the base branch / previous commit
+      - id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: node scripts/ci-paths.mjs supabase "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
+  db-reset:
+    needs: scope-db
+    if: needs.scope-db.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4

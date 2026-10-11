@@ -1,5 +1,5 @@
 // Decides whether an expensive CI job is needed for a change (issue #86).
-// Usage: node scripts/ci-paths.mjs <storybook|docker|e2e|api> <event_name> <base_ref> <before_sha> <sha>
+// Usage: node scripts/ci-paths.mjs <storybook|docker|e2e|api|supabase> <event_name> <base_ref> <before_sha> <sha>
 // Prints `run=true` or `run=false` for $GITHUB_OUTPUT. A job that is skipped by its `if` still reports success,
 // so a required check never blocks a merge. Anything unclear (tags, first push, git errors) runs the job.
 import { execFileSync } from "node:child_process";
@@ -46,6 +46,11 @@ const RULES = {
       /\.mdx?$/,
     ],
   },
+  // The fresh-database proof (migrations, seed, pgTAP) only depends on the database files and the install (issue #83).
+  supabase: {
+    include: [SHARED, /^supabase\//, /^\.github\/workflows\/supabase\.yml$/],
+    exclude: [/\.mdx?$/],
+  },
   // The OpenAPI staleness check and the Newman run depend on the API routes, their schemas, the Postman files and the
   // scripts that generate or run them; they run as `if`-gated steps of the quality job (issue #94).
   api: {
@@ -63,7 +68,7 @@ const RULES = {
 /**
  * Tells whether a job is needed for a list of changed files.
  *
- * @param target Job name: "storybook", "docker", "e2e" or "api".
+ * @param target Job name: "storybook", "docker", "e2e", "api" or "supabase".
  * @param files Changed file paths.
  * @returns True when at least one file can change what the job checks.
  */

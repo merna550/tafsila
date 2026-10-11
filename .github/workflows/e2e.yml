@@ -44,6 +44,12 @@ jobs:
         run: pnpm exec supabase start -x studio,edge-runtime,logflare,vector,imgproxy
       - name: Non-secret app config (same placeholders as the Docker smoke test)
         run: grep -Ev '^\s*(#|$)' .github/ci.env >> "$GITHUB_ENV"
+      - name: Playwright browser cache
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm --filter web exec playwright install --with-deps chromium
       - name: Build and run the e2e flows
         run: pnpm --filter web test:e2e
