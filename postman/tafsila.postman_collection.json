@@ -32,7 +32,20 @@
             "method": "GET"
           },
           "response": [],
-          "event": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"userId\",\"role\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           }
@@ -143,7 +156,20 @@
             "method": "GET"
           },
           "response": [],
-          "event": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"status\",\"environment\",\"version\",\"gitSha\",\"time\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           }

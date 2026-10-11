@@ -32,18 +32,51 @@ function stripIds(node) {
 }
 
 /**
+ * Lists the documented 200 response fields of each GET route, keyed by URL path.
+ *
+ * @param spec - Parsed OpenAPI document.
+ * @returns A map from "/api/x" to the property names of its 200 JSON schema.
+ */
+function responseFields(spec) {
+  const fields = {};
+  for (const [path, methods] of Object.entries(spec.paths)) {
+    const schema = methods.get?.responses?.["200"]?.content?.["application/json"]?.schema;
+    if (schema?.properties) fields[path] = Object.keys(schema.properties);
+  }
+  return fields;
+}
+
+/**
+ * Builds a test event asserting that the 200 body has every documented field.
+ *
+ * @param keys - Documented property names.
+ * @returns A Postman event.
+ */
+function fieldsEvent(keys) {
+  const exec = [
+    `pm.test("response has the documented fields", () => {`,
+    `  const body = pm.response.json();`,
+    `  for (const key of ${JSON.stringify(keys)}) pm.expect(body).to.have.property(key);`,
+    `});`,
+  ];
+  return { listen: "test", script: { type: "text/javascript", exec } };
+}
+
+/**
  * Makes generated requests inherit the collection auth and drops the converter's random example
  * responses (their content changes between runs).
  *
  * @param items - Postman items (folders or requests).
+ * @param fields - Documented 200 fields by URL path.
  * @returns A cleaned copy.
  */
-function normalizeItems(items) {
+function normalizeItems(items, fields) {
   return items.map((item) => {
-    if (item.item) return { ...item, item: normalizeItems(item.item) };
+    if (item.item) return { ...item, item: normalizeItems(item.item, fields) };
     const request = { ...item.request };
     delete request.auth;
-    return { ...item, request, response: [] };
+    const keys = fields[`/${request.url.path.join("/")}`];
+    return { ...item, request, response: [], event: keys ? [fieldsEvent(keys)] : [] };
   });
 }
 
@@ -100,7 +133,10 @@ export function buildCollection(specText) {
         const col = stripIds(out.output[0].data);
         col.info.name = "Tafsila API";
         col.info._postman_id = createHash("sha256").update(specText).digest("hex");
-        col.item = normalizeItems(col.item.filter((item) => !SKIPPED_FOLDERS.has(item.name)));
+        col.item = normalizeItems(
+          col.item.filter((item) => !SKIPPED_FOLDERS.has(item.name)),
+          responseFields(JSON.parse(specText)),
+        );
         const errCases = JSON.parse(readFileSync("postman/err-cases.json", "utf8"));
         col.item.push({ name: "Errors", item: errCases.map(errItem) });
         col.item = sortItems(col.item);
