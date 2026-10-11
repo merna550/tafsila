@@ -6,7 +6,7 @@ adr: ADR-012
 
 # Drizzle ORM
 
-**In one line:** A type-safe way to query Postgres from TypeScript without hiding SQL. Planned for M1; not installed yet.
+**In one line:** A type-safe way to query Postgres from TypeScript without hiding SQL. Confirmed in M1 by a spike (ADR-035); installed with the first repository (#24).
 
 ## What it is (plain words)
 
@@ -27,20 +27,21 @@ An ORM maps tables to code. Drizzle lets you declare tables in TypeScript and wr
 
 ## When we would change it
 
-When we implement the first repository (M1) we confirm the choice with a spike; if the Supabase generated types plus plain SQL are simpler, we drop Drizzle. The decision is recorded in [ADR-012](../../DECISIONS.md).
+The #23 spike compared Drizzle with `supabase-js` on a real local table with RLS. Drizzle stays because it passed the same RLS suite through `withUser`, added about 137 kB to the bundle (limit 300 kB), and does multi-table transactions natively. We would revisit it if the bundle grows past the limit or `withUser` cannot keep up with a Supabase auth change. See [ADR-035](../../DECISIONS.md).
 
 ## Where it lives in our code
 
-Not installed yet. Planned: repository adapters under packages/api/src/adapters/supabase/, behind ports in `packages/api/src/ports/` (existing example of a port: `packages/api/src/ports/clock.ts`).
+Not installed yet (arrives with #24). Repository adapters go under packages/api/src/adapters/supabase/, reached only through `withUser`, behind ports in `packages/api/src/ports/` (existing example of a port: `packages/api/src/ports/clock.ts`).
 
 ## The 20% you need
 
 - Tables are declared in TypeScript; migrations are still SQL files in `supabase/migrations/` (one place for the schema).
 - Repositories return domain objects validated by [Zod](zod.md), not raw rows.
+- The database client is never exported. `withUser` verifies the user's token, then runs the query as the `authenticated` role so [RLS](../glossary.md#rls-row-level-security) applies; the driver uses `prepare: false` because the pooler is in transaction mode.
 
 ## Commands you'll use
 
-Planned: `drizzle-kit` is not used to apply migrations; Supabase migrations stay authoritative.
+`drizzle-kit pull` can compare the live schema with ours; it is never used to apply migrations (`push` is forbidden). Supabase migrations stay authoritative.
 
 ## Common mistakes
 
