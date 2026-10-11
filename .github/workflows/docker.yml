@@ -1,11 +1,11 @@
 name: Docker image
-# Lints, builds, scans and smoke-tests the web image on every PR.
+# Lints, builds, scans and smoke-tests the web image on a PR or push that can change the image (issue #86:
+# scripts/ci-paths.mjs decides; a skipped job counts as passed, so the checks stay required on every PR).
 # On main and on version tags: multi-arch build (amd64 + arm64) and push to GHCR with SBOM + provenance.
 # "Attest image" runs only on public repos: GitHub artifact attestations need a public repo
 # or GitHub Enterprise Cloud (ADR-016). Provenance + SBOM are still attached by the push step.
 on:
   pull_request:
-    paths: ["apps/web/**", "packages/**", "pnpm-lock.yaml", ".dockerignore", ".github/workflows/docker.yml"]
   push:
     branches: [main]
     tags: ["v*.*.*"]
@@ -16,11 +16,35 @@ permissions:
   id-token: write
   attestations: write
 
+# A new push to a pull request cancels the older run of the same workflow (issue #86); main and tags never cancel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/tafsila-web
 
 jobs:
+  # Decides whether the image can change (issue #86).
+  scope-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.paths.outputs.run }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the path filter compares against the base branch / previous commit
+      - id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: node scripts/ci-paths.mjs docker "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
   lint:
+    needs: scope-docker
+    if: needs.scope-docker.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -28,7 +52,8 @@ jobs:
         with: { dockerfile: apps/web/Dockerfile, failure-threshold: warning }
 
   build:
-    needs: lint
+    needs: [scope-docker, lint]
+    if: needs.scope-docker.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

@@ -5,6 +5,10 @@ on:
   pull_request:
   push:
     branches: [main]
+# A new push to a pull request cancels the older run of the same workflow (issue #86); main and tags never cancel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   quality:
     runs-on: ubuntu-latest
@@ -44,8 +48,28 @@ jobs:
       - name: Scripts and handbook check tests
         run: pnpm test:docs
 
+  # Decides whether Storybook is needed (issue #86). A skipped `storybook` job counts as passed for a required check.
+  scope-storybook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.paths.outputs.run }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the path filter compares against the base branch / previous commit
+      - id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: node scripts/ci-paths.mjs storybook "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
   # Storybook static build + visual snapshots of every story (issue #68). Free and open source only (ADR-022).
+  # Runs only when packages/ui, the root toolchain files or this workflow change (issue #86).
   storybook:
+    needs: scope-storybook
+    if: needs.scope-storybook.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

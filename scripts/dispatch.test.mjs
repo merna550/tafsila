@@ -13,7 +13,7 @@ import { parseDependencies, buildModel, selectIssue, parseDailyLimit, countBuild
 const issue = (number, labels = [], body = "") => ({ number, labels, body });
 
 const ready = (n, extra = [], body = "") =>
-  issue(n, ["status:ready", "priority:P2", "area:ui", ...extra], body);
+  issue(n, ["status:ready", "agent:auto", "priority:P2", "area:ui", ...extra], body);
 const base = { issues: [], closed: new Set(), openReviewPrs: 0, maxParallel: 1, enabled: true };
 
 describe("parseDependencies", () => {
@@ -34,7 +34,7 @@ describe("buildModel", () => {
 
 describe("selectIssue", () => {
   it("picks the highest priority ready issue, then the lowest number", () => {
-    const issues = [ready(5), issue(6, ["status:ready", "priority:P0", "area:api"]), ready(4)];
+    const issues = [ready(5), issue(6, ["status:ready", "agent:auto", "priority:P0", "area:api"]), ready(4)];
     expect(selectIssue({ ...base, issues }).pick.number).toBe(6);
     expect(selectIssue({ ...base, issues: [ready(5), ready(4)] }).pick.number).toBe(4);
   });
@@ -46,9 +46,32 @@ describe("selectIssue", () => {
   });
 
   it("never picks needs:interactive issues, even at a higher priority (issue #58)", () => {
-    const interactive = issue(2, ["status:ready", "priority:P0", "area:infra", "needs:interactive"]);
+    const interactive = issue(2, [
+      "status:ready",
+      "agent:auto",
+      "priority:P0",
+      "area:infra",
+      "needs:interactive",
+    ]);
     expect(selectIssue({ ...base, issues: [interactive, ready(3)] }).pick.number).toBe(3);
     expect(selectIssue({ ...base, issues: [interactive] }).pick).toBeNull();
+  });
+
+  it("starts nothing for a ready issue without agent:auto, and says why (issue #86)", () => {
+    const plain = issue(1, ["status:ready", "priority:P0", "area:api"]);
+    const result = selectIssue({ ...base, issues: [plain] });
+    expect(result.pick).toBeNull();
+    expect(result.reason).toContain("none has the label agent:auto");
+  });
+
+  it("builds an issue that has agent:auto and skips the ones that do not", () => {
+    const plain = issue(1, ["status:ready", "priority:P0", "area:api"]);
+    expect(selectIssue({ ...base, issues: [plain, ready(2)] }).pick.number).toBe(2);
+  });
+
+  it("keeps every other guard for an opted-in issue", () => {
+    expect(selectIssue({ ...base, issues: [ready(1, ["needs:decision"])] }).pick).toBeNull();
+    expect(selectIssue({ ...base, issues: [ready(1)], buildsToday: 4 }).pick).toBeNull();
   });
 
   it("only considers status:ready issues", () => {
@@ -68,7 +91,7 @@ describe("selectIssue", () => {
   it("allows a second issue only in a different area when maxParallel is 2", () => {
     const inProgress = issue(1, ["status:in-progress", "area:ui"]);
     const sameArea = ready(2);
-    const otherArea = issue(3, ["status:ready", "priority:P3", "area:api"]);
+    const otherArea = issue(3, ["status:ready", "agent:auto", "priority:P3", "area:api"]);
     const opts = { ...base, maxParallel: 2 };
     expect(selectIssue({ ...opts, issues: [inProgress, sameArea, otherArea] }).pick.number).toBe(3);
     expect(selectIssue({ ...opts, issues: [inProgress, sameArea] }).pick).toBeNull();
@@ -79,7 +102,7 @@ describe("selectIssue", () => {
     const result = selectIssue({
       ...base,
       maxParallel: 2,
-      issues: [...busy, issue(3, ["status:ready", "area:db"])],
+      issues: [...busy, issue(3, ["status:ready", "agent:auto", "area:db"])],
     });
     expect(result.pick).toBeNull();
   });

@@ -9,6 +9,8 @@ const MAX_REVIEW_PRS = 3;
 const DEFAULT_DAILY_LIMIT = 4;
 /** Labels that keep an issue away from unattended builds: a pending decision, or work that needs approvals (issue #58). */
 const UNATTENDED_BLOCKERS = ["needs:decision", "needs:interactive"];
+/** The dispatcher builds only issues that carry this label: Merna opts each issue in (issue #86). */
+export const AUTO_LABEL = "agent:auto";
 const PRIORITY_RANK = { "priority:P0": 0, "priority:P1": 1, "priority:P2": 2, "priority:P3": 3 };
 
 /**
@@ -84,6 +86,7 @@ function byPriority(a, b) {
  * @param candidate A `status:ready` issue.
  * @param ctx Closed issue numbers and the issues already in progress.
  * @returns True when dependencies are closed, no decision is pending, it may run unattended and its area is free.
+ *   (The `agent:auto` opt-in is checked before, in `selectIssue`.)
  */
 function canStart(candidate, ctx) {
   if (UNATTENDED_BLOCKERS.some((label) => candidate.labels.includes(label))) return false;
@@ -115,10 +118,17 @@ export function selectIssue(input) {
     return none(`${inProgress.length} issue(s) in progress (limit ${maxParallel}).`);
   }
   const ready = issues.filter((i) => i.labels.includes("status:ready"));
-  const pick = ready.filter((i) => canStart(i, { closed, inProgress })).sort(byPriority)[0];
+  const optedIn = ready.filter((i) => i.labels.includes(AUTO_LABEL));
+  if (ready.length > 0 && optedIn.length === 0) {
+    return none(
+      `Nothing started: ${ready.length} ready issue(s), none has the label ${AUTO_LABEL}. ` +
+        `Add ${AUTO_LABEL} to an issue to let the dispatcher build it (issue #86).`,
+    );
+  }
+  const pick = optedIn.filter((i) => canStart(i, { closed, inProgress })).sort(byPriority)[0];
   if (!pick)
     return none(
-      `No ready issue can start (${ready.length} ready, blocked by dependencies, decisions or area).`,
+      `No ready issue can start (${optedIn.length} with ${AUTO_LABEL}, blocked by dependencies, decisions or area).`,
     );
   return {
     pick,
