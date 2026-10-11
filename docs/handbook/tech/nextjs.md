@@ -35,7 +35,7 @@ If Next.js releases keep breaking our setup faster than we can follow, or hostin
 
 ## Where it lives in our code
 
-- `apps/web/src/app/` (pages and layout), `apps/web/src/app/layout.tsx`, `apps/web/src/app/page.tsx`.
+- `apps/web/src/app/` (pages and layout), `apps/web/src/app/[locale]/layout.tsx`, `apps/web/src/app/[locale]/page.tsx`, `apps/web/src/proxy.ts` (locale routing).
 - `apps/web/src/app/api/[[...route]]/route.ts` (forwards `/api/*` to Hono).
 - `apps/web/next.config.ts` (standalone output, internal packages compiled from source).
 

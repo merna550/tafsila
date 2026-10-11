@@ -1,7 +1,7 @@
-import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { ApiError, clientApiError } from "../api";
 import { DataState } from "../data-state";
+import { renderWithIntl, renderWithIntl as renderToStaticMarkup } from "../i18n/testing";
 import { ApiErrorView } from "./ApiErrorView";
 import { AppErrorBoundary, ErrorBoundaryFallback } from "./AppErrorBoundary";
 import { ConnectionBannerView } from "./ConnectionBanner";
@@ -95,6 +95,17 @@ describe("ApiErrorView", () => {
     const html = renderToStaticMarkup(<ApiErrorView route={route} onRetry={() => undefined} />);
     expect(html).toContain("ليس لديك صلاحية");
     expect(html).not.toContain("حاولي تاني");
+  });
+});
+
+describe("error display in English", () => {
+  it("reads its texts from messages/en.json", () => {
+    const route = routeError(apiError(500, "server", { requestId: "req-7" }), "load", "en");
+    const html = renderWithIntl(<ApiErrorView route={route} onRetry={() => undefined} />, "en");
+    expect(html).toContain("english");
+    expect(html).toContain("Copy reference");
+    expect(html).toContain("Try again");
+    expect(renderWithIntl(<ConnectionBannerView offline />, "en")).toContain("No internet connection");
   });
 });
 

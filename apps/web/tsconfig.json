@@ -3,8 +3,8 @@
   "compilerOptions": {
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
-    "paths": { "@/*": ["./src/*"] }
+    "paths": { "@/*": ["./src/*"], "@messages/*": ["./messages/*"] }
   },
-  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts", "next.config.ts"],
+  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts", "next.config.ts", "playwright.config.ts", "e2e"],
   "exclude": ["node_modules"]
 }

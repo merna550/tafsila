@@ -6,7 +6,7 @@ adr: ADR-011
 
 # next-intl
 
-**In one line:** Translations and locale-aware routing for Arabic (default, right-to-left) and English. Planned for M1.
+**In one line:** Translations and locale-aware routing for Arabic (default, right-to-left) and English. Installed with #90.
 
 ## What it is (plain words)
 
@@ -29,7 +29,7 @@ If we add many languages with a translation service, the message format may need
 
 ## Where it lives in our code
 
-Not installed yet. Planned: apps/web/messages/ar.json, apps/web/messages/en.json, routing under `apps/web/src/app/`. Today the one page in `apps/web/src/app/page.tsx` is not yet translated.
+`apps/web/messages/{ar,en}.json` (texts), `apps/web/src/shared/i18n/` (routing, request config, navigation, `LocaleSwitch`), `apps/web/src/proxy.ts` (locale negotiation), `apps/web/src/app/[locale]/` (layout sets `lang` and `dir`). Arabic has no URL prefix, English lives under `/en` (`localePrefix: "as-needed"`).
 
 ## The 20% you need
 
@@ -38,7 +38,7 @@ Not installed yet. Planned: apps/web/messages/ar.json, apps/web/messages/en.json
 
 ## Commands you'll use
 
-None; a missing key fails the planned i18n test.
+None; a key present in only one of the two files fails `shared/i18n/messages.test.ts`.
 
 ## Common mistakes
 

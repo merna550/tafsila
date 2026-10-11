@@ -18,6 +18,15 @@ Kept current in the same PR as every UI change (Definition of Done). Architectur
 | Directional icons flip in RTL                                                  | Arrows point the reading direction        |
 | Western digits by default, Arabic-Indic as a setting (NFR-06)                  | Measurements stay readable                |
 
+### How i18n works (next-intl, issue #90)
+
+- **URLs:** Arabic has no prefix (`/`, `/sign-in`), English lives under `/en` (`/en/sign-in`). `src/proxy.ts` negotiates the locale; `shared/i18n/routing.ts` is the single definition (decision 25a-2).
+- **Texts:** `messages/ar.json` and `messages/en.json`, grouped by feature (`home`, `errors`, `common`). A test fails when a key exists in only one file; `global.d.ts` types the keys, so `t("typo")` does not compile.
+- **Use them:** in a component `const t = useTranslations("home")`; in an async server component `await getTranslations("home")`. Never write text or `aria-label`/`placeholder`/`title`/`alt` literals in JSX (ESLint fails).
+- **Links and redirects:** import `Link`, `redirect`, `usePathname`, `useRouter` from `shared/i18n`, not from `next/link` or `next/navigation`, so the prefix is kept. `LocaleSwitch` (in the app header) opens the same page in the other language.
+- **Direction:** `app/[locale]/layout.tsx` sets `lang` and `dir` on `<html>`; `DIRECTION` in `shared/i18n/routing.ts` maps locale to direction.
+- **Tests:** unit tests render with `renderWithIntl(element, "ar" | "en")` from `shared/i18n/testing`. Flows run in Playwright (`pnpm --filter web test:e2e`) in both languages at mobile and desktop width.
+
 ## Page structure
 
 ```

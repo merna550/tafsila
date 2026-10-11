@@ -49,3 +49,25 @@ describe("docker job", () => {
     expect(() => needsJob("nope", [])).toThrow("Unknown target");
   });
 });
+
+describe("e2e job", () => {
+  it.each([
+    ["apps/web/src/app/[locale]/page.tsx"],
+    ["apps/web/messages/ar.json"],
+    ["apps/web/e2e/home.spec.ts"],
+    ["packages/ui/src/Button.tsx"],
+    ["packages/api/src/app.ts"],
+    ["supabase/migrations/1_x.sql"],
+    ["pnpm-lock.yaml"],
+    [".github/workflows/e2e.yml"],
+  ])("runs for %s", (file) => expect(needsJob("e2e", [file])).toBe(true));
+
+  it.each([
+    ["docs/SRS.md"],
+    ["apps/web/CLAUDE.md"],
+    ["apps/web/src/shared/i18n/messages.test.ts"],
+    ["packages/ui/src/Button.stories.tsx"],
+    ["packages/engine/src/a.ts"],
+    ["scripts/dispatch.mjs"],
+  ])("is skipped for %s", (file) => expect(needsJob("e2e", [file])).toBe(false));
+});
