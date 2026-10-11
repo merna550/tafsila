@@ -9,7 +9,18 @@ import globals from "globals";
 import { FETCH_MESSAGE, textRules, tokenRules } from "./eslint-rules/frontend.mjs";
 
 export default tseslint.config(
-  { ignores: ["**/dist/**", "**/.next/**", "**/coverage/**", "**/*.gen.ts", "postman/**", "supabase/**"] },
+  {
+    ignores: [
+      "**/dist/**",
+      "**/storybook-static/**",
+      "**/test-results/**",
+      "**/.next/**",
+      "**/coverage/**",
+      "**/*.gen.ts",
+      "postman/**",
+      "supabase/**",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   sonarjs.configs.recommended,
@@ -126,6 +137,16 @@ export default tseslint.config(
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "max-lines-per-function": ["error", { max: 60, skipBlankLines: true, skipComments: true }],
     },
+  },
+  {
+    // Storybook config imports ESM-only Vite plugins that the cycle resolver cannot load.
+    files: ["packages/ui/.storybook/**"],
+    rules: { "import-x/no-cycle": "off" },
+  },
+  {
+    // Stories are examples: the story name is its documentation.
+    files: ["**/*.stories.tsx"],
+    rules: { "jsdoc/require-jsdoc": "off", "max-lines-per-function": "off" },
   },
   {
     // Tests: allow longer blocks and anonymous callbacks without JSDoc.

@@ -9,7 +9,15 @@ describe("Button", () => {
     expect(html).toContain("ابدئي");
   });
 
-  it("applies the requested variant", () => {
-    expect(renderToStaticMarkup(<Button variant="secondary">x</Button>)).toContain("border-rose-700");
+  it("applies the requested variant with token classes", () => {
+    const html = renderToStaticMarkup(<Button variant="secondary">x</Button>);
+    expect(html).toContain("border-primary");
+    expect(html).not.toContain("rose-");
+  });
+
+  it("keeps a 44px touch target and merges extra classes", () => {
+    const html = renderToStaticMarkup(<Button className="ms-4">x</Button>);
+    expect(html).toContain("min-h-11");
+    expect(html).toContain("ms-4");
   });
 });

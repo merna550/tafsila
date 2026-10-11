@@ -17,3 +17,6 @@ __pycache__
 supabase/.branches
 supabase/.temp
 .agent-usage.json
+storybook-static
+test-results
+playwright-report

@@ -1,4 +1,4 @@
-/** Vitest config for `@tafsila/ui`: React's automatic JSX runtime is Vitest's default, so no transform options are needed. */
+/** Vitest config for `@tafsila/ui`: unit tests only; Playwright visual specs in `e2e/` run with `pnpm test:visual`. */
 import { defineConfig } from "vitest/config";
 
-export default defineConfig({});
+export default defineConfig({ test: { include: ["src/**/*.test.{ts,tsx}"] } });

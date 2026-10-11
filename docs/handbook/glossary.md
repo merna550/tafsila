@@ -516,6 +516,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Optional export, priority "could" (FR-EXP-04). **Level:** advanced  
 **Learn:** <https://en.wikipedia.org/wiki/AutoCAD_DXF>
 
+<a id="design-tokens"></a>
+
+### Design tokens
+
+**Plain words:** Named values for colours, sizes, fonts and shadows kept in one file, so the whole look changes by editing that file.  
+**In Tafsila:** `packages/ui/src/tokens.css`; brand values are marked `PLACEHOLDER` until Merna picks the brand. **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
+**Learn:** <https://tailwindcss.com/docs/theme>
+
 <a id="letter-e"></a>
 
 ## E
@@ -1580,6 +1588,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `apps/web/src/app/api/[[...route]]/route.ts` forwards all `/api/*` calls to Hono. **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/getting-started/route-handlers>
 
+<a id="radix-ui"></a>
+
+### Radix UI
+
+**Plain words:** Unstyled React building blocks (select, checkbox, switch) that already handle keyboard use and screen readers.  
+**In Tafsila:** The base of the form components in `packages/ui`. **Card:** [Radix UI primitives](tech/radix-ui.md) · **Level:** intermediate  
+**Learn:** <https://www.radix-ui.com/primitives/docs/overview/introduction>
+
 <a id="rtl"></a>
 
 ### RTL (right-to-left)
@@ -1815,6 +1831,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Private file storage for photos and exported PDFs.  
 **In Tafsila:** Accessed through a `FileStorage` port and signed URLs (planned). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/storage>
+
+<a id="storybook"></a>
+
+### Storybook
+
+**Plain words:** A workshop page that shows each UI component on its own, in every state, so it can be seen and tested without the app.  
+**In Tafsila:** `packages/ui/.storybook/` and `*.stories.tsx`; every story is shown in Arabic RTL and English LTR. **Card:** [Storybook](tech/storybook.md) · **Level:** intermediate  
+**Learn:** <https://storybook.js.org/docs>
 
 <a id="straight-grain"></a>
 
