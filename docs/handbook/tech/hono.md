@@ -1,5 +1,5 @@
 ---
-packages: [hono]
+packages: [hono, "@hono/zod-openapi", "@hono/node-server"]
 level: beginner
 adr: ADR-005
 ---
@@ -18,6 +18,10 @@ Hono defines HTTP routes (`GET /health`, `POST /designs`) as functions that rece
 - **Typed RPC client.** The frontend can call routes with types inferred from the server, so a renamed field fails typecheck in the UI.
 - **Tiny and fast,** with built-in middleware (CORS, validation hooks) and first-class [Zod](zod.md) integration, which also feeds the generated OpenAPI and [Postman](postman-newman.md) collection.
 - **Fits hexagonal layering.** Routes only validate, call a service and map the result ([CODING_STANDARDS section 2](../../CODING_STANDARDS.md)).
+
+## OpenAPI with `@hono/zod-openapi` (#94)
+
+Routes are declared with `createRoute({ method, path, security, request, responses })` and `.openapi(route, handler)` on an `OpenAPIHono`. The same Zod schemas validate requests and become the OpenAPI document (`pnpm api:openapi` writes `packages/api/openapi.json`), which feeds the [Postman collection](postman-newman.md). `@hono/node-server` is used only by the throwaway test API behind `pnpm api:test`; it is never shipped.
 
 ## Alternatives we considered (and why not)
 

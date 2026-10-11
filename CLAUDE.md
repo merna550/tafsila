@@ -46,7 +46,7 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Commands
 
-`pnpm dev:all` start everything · `pnpm test` · `pnpm test:e2e` · `pnpm quality` · `pnpm api:postman` · `pnpm api:test` · `pnpm docs:check` · `pnpm db:reset` · `pnpm docker:build`
+`pnpm dev:all` start everything · `pnpm test` · `pnpm test:e2e` · `pnpm quality` · `pnpm api:openapi` · `pnpm api:postman` · `pnpm api:check` · `pnpm api:test` · `pnpm docs:check` · `pnpm db:reset` · `pnpm docker:build`
 
 ## Current status
 

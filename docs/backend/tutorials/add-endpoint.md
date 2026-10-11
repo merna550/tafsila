@@ -5,7 +5,7 @@
 3. **Adapter:** DB/storage/payment/AI calls in `packages/api/src/adapters/<vendor>/` (plus a `memory/` fake), wired in `container.ts`; never call Supabase or Paymob from services directly. For a database table, follow the repository pattern below.
 4. **Route:** `packages/api/src/routes/<area>.ts` validates with the schema, checks auth, calls the service; mount it in `app.ts`. Protect a route with `requireAuth(container.tokenVerifier)` (and `requireRole("admin")` after it for admin-only routes); read the caller with `c.get("auth")` (`{ userId, role, claims }`). See `routes/me.ts` and "Protect a route" below.
 5. **Tests:** service unit tests with fake adapters; integration test against local Supabase; permission test (another user's data → 404).
-6. **Docs:** `pnpm api:openapi && pnpm api:postman` (regenerates OpenAPI + Postman); add seed rows if needed; add test cases file; update SRS §8 table.
+6. **Docs:** declare the route with `createRoute` + `.openapi(...)` (`@hono/zod-openapi`), then `pnpm api:openapi && pnpm api:postman` (regenerates OpenAPI + Postman) and `pnpm api:test` (Newman, local, no Docker); add seed rows if needed; add test cases file; update SRS §8 table.
 7. **Postman check:** run the collection on local; add an `ERR …` example for the main failure case.
 
 ## Repository pattern (ADR-035)
