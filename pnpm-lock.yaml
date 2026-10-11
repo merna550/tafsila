@@ -141,6 +141,9 @@ importers:
       hono:
         specifier: ^4.13.13
         version: 4.13.13
+      jose:
+        specifier: 6.2.12
+        version: 6.2.12
       posthog-node:
         specifier: ^5.55.1
         version: 5.55.1

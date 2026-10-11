@@ -13,6 +13,7 @@ const baseServerEnvSchema = z.object({
   SUPABASE_URL: z.url(),
   SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  AUTH_GOOGLE_ENABLED: z.stringbool().default(false),
   AI_PROVIDER: z.enum(["anthropic", "google"]).default("anthropic"),
   AI_MODEL_ANALYZE: z.string().min(1).optional(),
   AI_API_KEY: z.string().min(1).optional(),
@@ -99,6 +100,12 @@ export interface PublicConfig {
   readonly posthogKey: string | undefined;
   /** PostHog ingestion host. */
   readonly posthogHost: string;
+  /** Supabase project URL for the browser auth client, or undefined when not configured (public by design). */
+  readonly supabaseUrl: string | undefined;
+  /** Supabase anon key for the browser auth client (public by design; RLS protects the data, ADR-025). */
+  readonly supabaseAnonKey: string | undefined;
+  /** Whether the Google sign-in button is shown (AUTH_GOOGLE_ENABLED, default false). */
+  readonly authGoogleEnabled: boolean;
   /** Deployment environment name. */
   readonly appEnv: string;
   /** Release identifier (git SHA) so events map to a deploy. */
@@ -119,6 +126,9 @@ export function loadPublicConfig(source: Record<string, string | undefined> = pr
     sentryDsn: source.SENTRY_DSN || undefined,
     posthogKey: source.POSTHOG_KEY || undefined,
     posthogHost: source.POSTHOG_HOST || "https://us.i.posthog.com",
+    supabaseUrl: source.SUPABASE_URL || undefined,
+    supabaseAnonKey: source.SUPABASE_ANON_KEY || undefined,
+    authGoogleEnabled: source.AUTH_GOOGLE_ENABLED === "true",
     appEnv: source.APP_ENV || "local",
     release: loadBuildInfo(source).gitSha,
   };
