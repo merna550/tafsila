@@ -1,7 +1,9 @@
 /** The three-states pattern: loading (Skeleton), empty (EmptyState) or error (ErrorState) instead of the data screen. */
 import { EmptyState, Skeleton } from "@tafsila/ui";
 import type { ReactElement, ReactNode } from "react";
-import { ApiErrorView, DEFAULT_LOCALE, ERROR_DISPLAY_MESSAGES, routeError } from "../error-display";
+import { useLocale, useTranslations } from "next-intl";
+import { ApiErrorView, routeError } from "../error-display";
+import type { Locale } from "../api";
 
 /** Props for {@link DataState}. */
 export interface DataStateProps {
@@ -13,7 +15,7 @@ export interface DataStateProps {
   readonly isEmpty: boolean;
   /** Retries the load; passed to the "Try again" button. */
   readonly onRetry?: () => void;
-  /** Heading of the empty state; defaults to a generic Arabic text. */
+  /** Heading of the empty state; defaults to a generic text in the page language. */
   readonly emptyTitle?: string;
   /** Optional action of the empty state, for example "Add the first client". */
   readonly emptyAction?: ReactNode;
@@ -38,15 +40,12 @@ export function DataState({
   emptyAction,
   children,
 }: Readonly<DataStateProps>): ReactElement {
-  if (error) return <ApiErrorView route={routeError(error, "load")} onRetry={onRetry} />;
+  const t = useTranslations("errors");
+  const locale = useLocale() as Locale;
+  if (error) return <ApiErrorView route={routeError(error, "load", locale)} onRetry={onRetry} />;
   if (isPending) return <Skeleton variant="table" />;
   if (isEmpty) {
-    return (
-      <EmptyState
-        title={emptyTitle ?? ERROR_DISPLAY_MESSAGES[DEFAULT_LOCALE].emptyTitle}
-        action={emptyAction}
-      />
-    );
+    return <EmptyState title={emptyTitle ?? t("emptyTitle")} action={emptyAction} />;
   }
   return <>{children}</>;
 }

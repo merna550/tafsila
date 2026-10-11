@@ -9,7 +9,7 @@ import {
   type ErrorPlacement,
   type Locale,
 } from "../api";
-import { DEFAULT_LOCALE } from "./messages";
+import { routing } from "../i18n/routing";
 
 /** Where and how one error is shown. */
 export interface ErrorRoute {
@@ -48,7 +48,7 @@ export function toApiError(error: unknown): ApiError {
 export function routeError(
   error: unknown,
   context: ErrorContext,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = routing.defaultLocale,
 ): ErrorRoute {
   const apiError = toApiError(error);
   return {

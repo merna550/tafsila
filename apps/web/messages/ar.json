@@ -1,0 +1,31 @@
+{
+  "common": {
+    "appName": "تفصيلة",
+    "switchLanguage": "English"
+  },
+  "metadata": {
+    "title": "تفصيلة | Tafsila",
+    "description": "حوّلي صورة أي موديل لباترون جاهز للقص على مقاسك"
+  },
+  "home": {
+    "title": "تفصيلة",
+    "intro": "ارفعي صورة الموديل، دخّلي المقاسات، وخدي باترون دقيق جاهز للقص، على البروجكتور أو مباشرة على القماش.",
+    "start": "ابدئي الآن",
+    "health": "حالة النظام"
+  },
+  "errors": {
+    "retry": "حاولي تاني",
+    "pageErrorTitle": "مقدرناش نحمّل البيانات",
+    "noPermissionTitle": "ليس لديك صلاحية",
+    "referenceLabel": "رقم المرجع",
+    "copyReference": "نسخ رقم المرجع",
+    "copied": "تم النسخ",
+    "signInRedirect": "انتهت الجلسة، جاري تحويلك لتسجيل الدخول",
+    "offlineBanner": "مفيش اتصال بالإنترنت، اتأكدي من الشبكة",
+    "fallbackTitle": "حصلت مشكلة غير متوقعة",
+    "fallbackDescription": "جرّبي تحمّلي الصفحة تاني. لو المشكلة استمرت ابعتي لنا رقم المرجع.",
+    "emptyTitle": "لسه مفيش حاجة هنا",
+    "toastRegion": "الإشعارات",
+    "toastClose": "إغلاق"
+  }
+}

@@ -1,10 +1,10 @@
 "use client";
 /** Top-level React error boundary: an unexpected render error shows ErrorState and is reported to Sentry. */
 import { ErrorState } from "@tafsila/ui";
+import { useTranslations } from "next-intl";
 import { Component, type ReactElement, type ReactNode } from "react";
 import { ApiError } from "../api";
 import { reportError } from "../monitoring";
-import { DEFAULT_LOCALE, ERROR_DISPLAY_MESSAGES } from "./messages";
 
 /** Props for {@link AppErrorBoundary}. */
 export interface AppErrorBoundaryProps {
@@ -21,18 +21,18 @@ interface AppErrorBoundaryState {
 }
 
 /**
- * Fallback screen: generic Arabic text and a reload button; never a stack or an error name.
+ * Fallback screen: generic text in the page language and a reload button; never a stack or an error name.
  *
  * @returns The ErrorState element.
  */
 export function ErrorBoundaryFallback(): ReactElement {
-  const text = ERROR_DISPLAY_MESSAGES[DEFAULT_LOCALE];
+  const t = useTranslations("errors");
   return (
     <ErrorState
-      title={text.fallbackTitle}
-      description={text.fallbackDescription}
+      title={t("fallbackTitle")}
+      description={t("fallbackDescription")}
       onRetry={() => window.location.reload()}
-      retryLabel={text.retry}
+      retryLabel={t("retry")}
     />
   );
 }
