@@ -7,14 +7,20 @@ import { serve } from "@hono/node-server";
 import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
+import { createMemoryClientRepository } from "../adapters/memory/client-repository";
+import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
+import { createMemoryStore } from "../adapters/memory/memory-store";
 import { createJwksTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createTestAuthKeys, TEST_SUPABASE_URL } from "../test-support/auth-keys";
 
 const HTTP_SERVER_ERROR = 500;
 const keys = await createTestAuthKeys();
+const store = createMemoryStore();
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
+    clients: createMemoryClientRepository(store),
+    measurementSets: createMemoryMeasurementSetRepository(store),
     tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
   }),
 );

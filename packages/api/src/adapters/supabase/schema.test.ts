@@ -1,0 +1,47 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { getTableColumns } from "drizzle-orm";
+import type { PgTable } from "drizzle-orm/pg-core";
+import { describe, expect, it } from "vitest";
+import { clients, measurementSets } from "./schema";
+
+const TYPES = readFileSync(join(__dirname, "./database.types.ts"), "utf8");
+
+/**
+ * Reads the column names of a table's Row type from the generated Supabase types.
+ *
+ * @param table - Table name in the `public` schema.
+ * @returns Column names in file order.
+ */
+function generatedColumns(table: string): string[] {
+  const start = TYPES.indexOf(`${table}: {`);
+  const row = TYPES.slice(start, TYPES.indexOf("Insert:", start));
+  return row
+    .split(/[;{\n]/)
+    .map((part) => (part.split(":")[0] ?? "").trim().replace("?", ""))
+    .filter((name) => /^[a-z_]+$/.test(name) && name !== "Row" && name !== table);
+}
+
+/**
+ * Reads the SQL column names of a Drizzle table.
+ *
+ * @param table - Drizzle table.
+ * @returns Column names.
+ */
+function drizzleColumns(table: PgTable): string[] {
+  return Object.values(getTableColumns(table)).map((column) => column.name);
+}
+
+describe("Drizzle schema mirror", () => {
+  it("has the same columns as the generated Supabase types (clients)", () => {
+    expect(drizzleColumns(clients).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("clients").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (measurement_sets)", () => {
+    expect(drizzleColumns(measurementSets).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("measurement_sets").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+});

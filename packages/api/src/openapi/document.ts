@@ -2,6 +2,8 @@
 import { createNoopAnalytics } from "../adapters/noop/noop-analytics";
 import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
 import { createRejectingTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
+import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
+import { createRejectingRepositories } from "../adapters/supabase/rejecting-repositories";
 import { createApp } from "../app";
 import type { Container } from "../container";
 import { OPENAPI_DOCUMENT_CONFIG } from "./document-config";
@@ -13,6 +15,8 @@ const DOCUMENT_CONTAINER: Container = {
   errorReporter: createNoopErrorReporter(),
   analytics: createNoopAnalytics(),
   tokenVerifier: createRejectingTokenVerifier(),
+  ...createRejectingRepositories(),
+  planLimits: createUnlimitedPlanLimits(),
 };
 
 /**

@@ -179,7 +179,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | FR-MEAS-01 | Select a standard size (S–XXL) from a size chart (Egyptian/EU default; chart editable by admin). Anyone outside S–XXL uses custom measurements; more sizes later are data only (ADR-024) | M |
 | FR-MEAS-02 | Enter custom measurements (list in §6.2) with an illustrated guide per measurement (image + short Arabic text) | M |
 | FR-MEAS-03 | Validate measurements: a hard range per measurement (error), and cross-checks. Errors (block): high bust > bust, under bust ≥ bust, waist-to-knee ≥ waist-to-floor. Warnings (never block): waist ≥ hip, bust point distance > bust/2, front length < back length, waist-to-floor outside 50-70% of height. Each result has a stable code and an Arabic and English message (ADR-28a) | M |
-| FR-MEAS-04 | Save measurement sets as named client profiles; a workshop user can store unlimited profiles (plan-limited) | M |
+| FR-MEAS-04 | Save measurement sets as named client profiles; a workshop user can store unlimited profiles (plan-limited). API: `/api/clients` and `/api/measurements`, paging by `limit` + `offset` (ADR-29a), impossible measurements rejected with bilingual errors, warnings returned | M |
 | FR-MEAS-05 | Start from a standard size and override individual measurements | S |
 | FR-MEAS-06 | Ease preference per pattern: fitted / regular / loose (maps to ease tables). Delivered in M3 because it is chosen per pattern (ADR-024) | M |
 
@@ -471,7 +471,10 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | POST | `/api/versions/:id/exports` | Enqueue PDF export |
 | POST | `/api/versions/:id/fabric` | Save fabric calc result |
 | GET | `/api/fabrics/recommend?versionId=` | Fabric recommendations |
-| CRUD | `/api/clients`, `/api/measurements` | Client profiles and measurement sets |
+| POST, GET | `/api/clients` | Create a client; list with `q` (name search), `limit` (1-100, default 20), `offset`; returns `{ items, total, limit, offset }` |
+| GET, PATCH, DELETE | `/api/clients/:id` | Read, change name/notes, delete (its measurement sets go with it) |
+| POST, GET | `/api/measurements` | Save a measurement set (errors block with 422 `MEASUREMENTS_INVALID`, warnings are returned); list with `clientId`, `limit`, `offset` |
+| GET, PUT, DELETE | `/api/measurements/:id` | Read (fresh warnings), replace label/size label/measurements, delete |
 | POST | `/api/billing/checkout` | Create Paymob payment intention for a product |
 | POST | `/api/billing/webhook` | Paymob callback (HMAC verified, idempotent) |
 | GET | `/api/me/credits` | Balance + plan |

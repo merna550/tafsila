@@ -81,7 +81,7 @@ OpenAPI and Postman: `document.test.ts` lists the ten new operations and the `ME
 
 E2E and visual snapshots: none (no UI in this issue; the screens come in #30 and #31).
 
-Draft manual test cases (`docs/test-cases/api/29-clients-measurements-api.md`):
+Draft manual test cases (`docs/test-cases/api/29a-clients-measurements-api.md`):
 
 - TC-API-29-01 create, read, update, delete a client with Postman against local (seed user `trial@`)
 - TC-API-29-02 list clients with paging and name search (`pro@` has 5)
@@ -96,9 +96,9 @@ Draft manual test cases (`docs/test-cases/api/29-clients-measurements-api.md`):
 
 ## Docs to update
 
-SRS section 8 table and FR-MEAS-04 note (limit/offset, the ten routes), `docs/errors.md` (`MEASUREMENTS_INVALID` row), `docs/DECISIONS.md` index row, `docs/decisions/29-clients-measurements-api.md`, `docs/backend/tutorials/add-endpoint.md` and `.claude/skills/add-endpoint/SKILL.md` (real example links, `withUser` takes the already verified `AuthContext`, the rejecting-adapter fallback), `docs/backend/README.md` env table (`DATABASE_URL` with `api_app`), `docs/backend/seed-data.md` (only if the seed changes), `docs/milestones/M1-accounts-and-data.md` (follow-up done), `postman/README.md`, test cases file + `scripts/test-case-index.sh`, `docs/handbook` learning log row, CLAUDE.md "Current status".
+SRS section 8 table and FR-MEAS-04 note (limit/offset, the ten routes), `docs/errors.md` (`MEASUREMENTS_INVALID` row), `docs/DECISIONS.md` index row, `docs/decisions/29a-clients-measurements-api.md`, `docs/backend/tutorials/add-endpoint.md` and `.claude/skills/add-endpoint/SKILL.md` (real example links, `withUser` takes the already verified `AuthContext`, the rejecting-adapter fallback), `docs/backend/README.md` env table (`DATABASE_URL` with `api_app`), `docs/backend/seed-data.md` (only if the seed changes), `docs/milestones/M1-accounts-and-data.md` (follow-up done), `postman/README.md`, test cases file + `scripts/test-case-index.sh`, `docs/handbook` learning log row, CLAUDE.md "Current status".
 
-## Decisions (the build writes them as `docs/decisions/29-clients-measurements-api.md`)
+## Decisions (the build writes them as `docs/decisions/29a-clients-measurements-api.md`)
 
 1. Paging is `limit` + `offset` with `total` (small lists, cheap to change to cursors later).
 2. `MEASUREMENTS_INVALID` is a new 422 code, separate from `VALIDATION_FAILED` (shape errors), with `details.issues` carrying both languages; `details.fields` carries the English text, like the Zod errors.

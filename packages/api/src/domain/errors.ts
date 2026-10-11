@@ -1,5 +1,7 @@
 /** Domain errors: every code lives in ERROR_CATALOGUE with bilingual messages; the error handler maps them to HTTP (ADR-030). */
 
+import type { MeasurementIssueDto } from "@tafsila/schemas";
+
 /** One entry of the error catalogue: what the user sees and what the team needs to fix it. */
 export interface ErrorDefinition {
   /** HTTP status the error maps to. */
@@ -30,6 +32,11 @@ export const ERROR_CATALOGUE = {
     messageAr: "ليس لديك صلاحية لهذا الإجراء",
     messageEn: "You do not have permission for this action",
   },
+  MEASUREMENTS_INVALID: {
+    status: 422,
+    messageAr: "القياسات غير منطقية، راجعي القياسات المحددة وحاولي مرة أخرى",
+    messageEn: "The measurements are impossible, check the highlighted values",
+  },
   NOT_FOUND: {
     status: 404,
     messageAr: "العنصر المطلوب غير موجود",
@@ -54,6 +61,8 @@ export type ErrorCode = keyof typeof ERROR_CATALOGUE;
 export interface ErrorDetails {
   /** Field path (e.g. "chest_mm") to the message to show under that field. */
   readonly fields?: Readonly<Record<string, string>>;
+  /** Bilingual measurement problems from the engine (MEASUREMENTS_INVALID), so the UI picks the language. */
+  readonly issues?: readonly MeasurementIssueDto[];
 }
 
 /** Optional overrides when throwing an error. */
@@ -118,5 +127,19 @@ export class ValidationError extends AppError {
    */
   constructor(fields: Readonly<Record<string, string>>) {
     super("VALIDATION_FAILED", { details: { fields } });
+  }
+}
+
+/** Raised when measurements are impossible (engine errors); the set is not saved. */
+export class MeasurementsInvalidError extends AppError {
+  /**
+   * Creates the error from the engine's blocking issues.
+   *
+   * @param issues - Blocking issues, both languages.
+   */
+  constructor(issues: readonly MeasurementIssueDto[]) {
+    const fields: Record<string, string> = {};
+    for (const issue of issues) for (const field of issue.fields) fields[field] ??= issue.message_en;
+    super("MEASUREMENTS_INVALID", { details: { fields, issues } });
   }
 }

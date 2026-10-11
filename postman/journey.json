@@ -1,0 +1,170 @@
+[
+  {
+    "name": "01 Create a client",
+    "method": "POST",
+    "path": "/api/clients",
+    "body": {
+      "name": "Postman client",
+      "notes": "made by the journey"
+    },
+    "status": 201,
+    "capture": {
+      "clientId": "id"
+    }
+  },
+  {
+    "name": "02 List clients with a name search",
+    "method": "GET",
+    "path": "/api/clients?q=postman&limit=5",
+    "status": 200,
+    "has": ["items", "total", "limit", "offset"]
+  },
+  {
+    "name": "03 Read the client",
+    "method": "GET",
+    "path": "/api/clients/{{clientId}}",
+    "status": 200,
+    "has": ["id", "name", "notes", "createdAt"]
+  },
+  {
+    "name": "04 Change the client",
+    "method": "PATCH",
+    "path": "/api/clients/{{clientId}}",
+    "body": {
+      "notes": null
+    },
+    "status": 200
+  },
+  {
+    "name": "05 Save valid measurements for the client",
+    "method": "POST",
+    "path": "/api/measurements",
+    "body": {
+      "clientId": "{{clientId}}",
+      "label": "Postman set",
+      "sizeLabel": "M",
+      "measurements": {
+        "unit": "mm",
+        "height": 1650,
+        "bust": 920,
+        "highBust": 860,
+        "underBust": 780,
+        "waist": 740,
+        "hip": 1000,
+        "hipDepth": 200,
+        "neck": 360,
+        "shoulderWidth": 380,
+        "backLength": 400,
+        "frontLength": 430,
+        "bustPointDistance": 190,
+        "bustHeight": 250,
+        "armLength": 590,
+        "upperArm": 290,
+        "wrist": 160,
+        "waistToKnee": 580,
+        "waistToFloor": 1050
+      }
+    },
+    "status": 201,
+    "capture": {
+      "measurementSetId": "id"
+    },
+    "has": ["warnings"]
+  },
+  {
+    "name": "06 Save measurements with a warning (waist above hip)",
+    "method": "POST",
+    "path": "/api/measurements",
+    "body": {
+      "label": "Postman warning set",
+      "measurements": {
+        "unit": "mm",
+        "height": 1650,
+        "bust": 920,
+        "highBust": 860,
+        "underBust": 780,
+        "waist": 1100,
+        "hip": 1000,
+        "hipDepth": 200,
+        "neck": 360,
+        "shoulderWidth": 380,
+        "backLength": 400,
+        "frontLength": 430,
+        "bustPointDistance": 190,
+        "bustHeight": 250,
+        "armLength": 590,
+        "upperArm": 290,
+        "wrist": 160,
+        "waistToKnee": 580,
+        "waistToFloor": 1050
+      }
+    },
+    "status": 201,
+    "capture": {
+      "warningSetId": "id"
+    },
+    "has": ["warnings"]
+  },
+  {
+    "name": "07 List the client's measurement sets",
+    "method": "GET",
+    "path": "/api/measurements?clientId={{clientId}}",
+    "status": 200,
+    "has": ["items", "total"]
+  },
+  {
+    "name": "08 Read the measurement set",
+    "method": "GET",
+    "path": "/api/measurements/{{measurementSetId}}",
+    "status": 200,
+    "has": ["measurements", "warnings"]
+  },
+  {
+    "name": "09 Replace the measurement set",
+    "method": "PUT",
+    "path": "/api/measurements/{{measurementSetId}}",
+    "body": {
+      "label": "Postman set v2",
+      "measurements": {
+        "unit": "mm",
+        "height": 1650,
+        "bust": 920,
+        "highBust": 860,
+        "underBust": 780,
+        "waist": 740,
+        "hip": 1000,
+        "hipDepth": 200,
+        "neck": 360,
+        "shoulderWidth": 380,
+        "backLength": 400,
+        "frontLength": 430,
+        "bustPointDistance": 190,
+        "bustHeight": 250,
+        "armLength": 590,
+        "upperArm": 290,
+        "wrist": 160,
+        "waistToKnee": 580,
+        "waistToFloor": 1050
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "10 Delete the warning set",
+    "method": "DELETE",
+    "path": "/api/measurements/{{warningSetId}}",
+    "status": 204
+  },
+  {
+    "name": "11 Delete the measurement set",
+    "method": "DELETE",
+    "path": "/api/measurements/{{measurementSetId}}",
+    "status": 204
+  },
+  {
+    "name": "12 Delete the client",
+    "method": "DELETE",
+    "path": "/api/clients/{{clientId}}",
+    "status": 204
+  }
+]

@@ -1,5 +1,5 @@
 ---
-packages: [pg]
+packages: [pg, postgres]
 level: intermediate
 adr: ADR-003
 ---

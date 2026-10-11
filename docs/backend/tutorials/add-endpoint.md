@@ -65,3 +65,16 @@ export function adminRoutes(container: Container): Hono<AuthedEnv> {
 - Test with a local key pair: `createTestAuthKeys()` in `src/test-support/auth-keys.ts` signs tokens and gives the key source for `createJwksTokenVerifier({ supabaseUrl, keys })`. No network.
 - The role comes from the `user_role` claim added by the access token hook, so a role change shows up at the next token refresh (1 hour at most).
 - Services that need the database receive `auth` and use `withUser` (#29); they do not verify the token again.
+
+## Worked example (#29)
+
+The clients and measurement sets API is the first full example; copy its shape:
+
+- Schemas: `packages/schemas/src/clients.ts`, `measurement-sets.ts`, `pagination.ts`.
+- Ports and use cases: `ports/client-repository.ts`, `services/create-client.ts` (a service receives `{ clients, planLimits }`, the verified `AuthContext` and the validated input).
+- Adapters: `adapters/supabase/client-repository.ts` (Drizzle through `withUser`), `adapters/memory/client-repository.ts` (tests and `pnpm api:test`).
+- Routes: `routes/clients.ts` (one function per route definition, then a short chain of `.openapi(...)`).
+- `withUser(ctx, fn)` takes the `AuthContext` that `requireAuth` already verified; it only refuses a context without a matching `sub`.
+- Without `DATABASE_URL` the container wires rejecting repositories (INTERNAL_ERROR), never memory ones.
+- Postman: routes whose requests need ids from earlier steps get a scripted journey in `postman/journey.json` instead of the generated folder.
+- Adapter tests live in `*.db.test.ts` and run with `pnpm --filter @tafsila/api test:db` against local Supabase.

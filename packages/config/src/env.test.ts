@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadBuildInfo, loadPublicConfig, loadServerEnv } from "./env";
+import { loadBuildInfo, loadDatabaseUrl, loadPublicConfig, loadServerEnv } from "./env";
 
 const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
@@ -118,5 +118,20 @@ describe("loadPublicConfig", () => {
     const config = loadPublicConfig({});
     expect(config.sentryDsn).toBeUndefined();
     expect(config.appEnv).toBe("local");
+  });
+});
+
+describe("loadDatabaseUrl", () => {
+  it("returns the URL when set and undefined when empty or missing", () => {
+    expect(loadDatabaseUrl({ DATABASE_URL: "postgresql://api_app:pw@127.0.0.1:54322/postgres" })).toContain(
+      "api_app",
+    );
+    expect(loadDatabaseUrl({ DATABASE_URL: "" })).toBeUndefined();
+    expect(loadDatabaseUrl({})).toBeUndefined();
+  });
+
+  it("is optional in the validated server env", () => {
+    expect(loadServerEnv(valid).DATABASE_URL).toBeUndefined();
+    expect(loadServerEnv({ ...valid, DATABASE_URL: "postgresql://x" }).DATABASE_URL).toBe("postgresql://x");
   });
 });

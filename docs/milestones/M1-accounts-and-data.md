@@ -42,7 +42,7 @@ The brand step (palette, font, feel) is done: Merna approved it and it is applie
 
 - RLS mistakes leak client data: every table gets a permission test for another user's data.
 - Size-chart values are founder-supplied; seed placeholders are marked as such until she provides them.
-- Drizzle vs supabase-js (#23) is decided (ADR-035): Drizzle through `withUser`; #24 adds the `api_app` login role; `DATABASE_URL`, the Drizzle schema mirror and the first repository come with #29 (ADR-24a).
+- Drizzle vs supabase-js (#23) is decided (ADR-035): Drizzle through `withUser`; #24 adds the `api_app` login role; `DATABASE_URL`, the Drizzle schema mirror and the first repository come with #29 (ADR-24a). Done in #29 (see [ADR-29a](../decisions/29a-clients-measurements-api.md)).
 
 ## Issues
 

@@ -14,5 +14,53 @@
     "auth": false,
     "status": 404,
     "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR POST /api/measurements with highBust above bust returns 422",
+    "method": "POST",
+    "path": "/api/measurements",
+    "auth": true,
+    "body": {
+      "label": "Impossible",
+      "measurements": {
+        "unit": "mm",
+        "height": 1650,
+        "bust": 900,
+        "highBust": 1000,
+        "underBust": 780,
+        "waist": 740,
+        "hip": 1000,
+        "hipDepth": 200,
+        "neck": 360,
+        "shoulderWidth": 380,
+        "backLength": 400,
+        "frontLength": 430,
+        "bustPointDistance": 190,
+        "bustHeight": 250,
+        "armLength": 590,
+        "upperArm": 290,
+        "wrist": 160,
+        "waistToKnee": 580,
+        "waistToFloor": 1050
+      }
+    },
+    "status": 422,
+    "code": "MEASUREMENTS_INVALID"
+  },
+  {
+    "name": "ERR GET /api/clients/{unknown id} returns 404",
+    "method": "GET",
+    "path": "/api/clients/00000000-0000-4000-8000-00000000dead",
+    "auth": true,
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/clients without a token returns 401",
+    "method": "GET",
+    "path": "/api/clients",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
   }
 ]

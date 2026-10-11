@@ -19,6 +19,10 @@ Ready to run: import, pick an environment, press **Run**. No manual tokens, no m
 
 The collection is generated from the OpenAPI document `packages/api/openapi.json` (`pnpm api:openapi && pnpm api:postman`). Never edit it by hand: change the route's Zod schema and `.meta({ example })`, or add an `ERR` case to `postman/err-cases.json`, then regenerate. `pnpm api:check` (part of `pnpm quality`, and a CI step when the API changes) fails if either file is out of date. The `debug` route is left out of the collection on purpose.
 
+## Journeys
+
+Routes that need ids from earlier steps (clients and measurements) are not generated one by one: `postman/journey.json` lists the steps (request, expected status, ids to save), and `pnpm api:postman` turns them into the "Clients and measurements" folder. ERR cases (with an optional `body`) stay in `err-cases.json`.
+
 ## Test data
 
 Seed accounts and records: `docs/backend/seed-data.md`.

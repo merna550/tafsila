@@ -54,8 +54,535 @@
       "event": []
     },
     {
+      "name": "Clients and measurements",
+      "item": [
+        {
+          "name": "01 Create a client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set(\"clientId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman client\",\n  \"notes\": \"made by the journey\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 List clients with a name search",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has total\", () => pm.expect(pm.response.json()).to.have.property(\"total\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));",
+                  "pm.test(\"has offset\", () => pm.expect(pm.response.json()).to.have.property(\"offset\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clients?q=postman&limit=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "postman"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 Read the client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));",
+                  "pm.test(\"has name\", () => pm.expect(pm.response.json()).to.have.property(\"name\"));",
+                  "pm.test(\"has notes\", () => pm.expect(pm.response.json()).to.have.property(\"notes\"));",
+                  "pm.test(\"has createdAt\", () => pm.expect(pm.response.json()).to.have.property(\"createdAt\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/{{clientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "{{clientId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 Change the client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/{{clientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "{{clientId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 Save valid measurements for the client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has warnings\", () => pm.expect(pm.response.json()).to.have.property(\"warnings\"));",
+                  "pm.environment.set(\"measurementSetId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": \"{{clientId}}\",\n  \"label\": \"Postman set\",\n  \"sizeLabel\": \"M\",\n  \"measurements\": {\n    \"unit\": \"mm\",\n    \"height\": 1650,\n    \"bust\": 920,\n    \"highBust\": 860,\n    \"underBust\": 780,\n    \"waist\": 740,\n    \"hip\": 1000,\n    \"hipDepth\": 200,\n    \"neck\": 360,\n    \"shoulderWidth\": 380,\n    \"backLength\": 400,\n    \"frontLength\": 430,\n    \"bustPointDistance\": 190,\n    \"bustHeight\": 250,\n    \"armLength\": 590,\n    \"upperArm\": 290,\n    \"wrist\": 160,\n    \"waistToKnee\": 580,\n    \"waistToFloor\": 1050\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06 Save measurements with a warning (waist above hip)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has warnings\", () => pm.expect(pm.response.json()).to.have.property(\"warnings\"));",
+                  "pm.environment.set(\"warningSetId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Postman warning set\",\n  \"measurements\": {\n    \"unit\": \"mm\",\n    \"height\": 1650,\n    \"bust\": 920,\n    \"highBust\": 860,\n    \"underBust\": 780,\n    \"waist\": 1100,\n    \"hip\": 1000,\n    \"hipDepth\": 200,\n    \"neck\": 360,\n    \"shoulderWidth\": 380,\n    \"backLength\": 400,\n    \"frontLength\": 430,\n    \"bustPointDistance\": 190,\n    \"bustHeight\": 250,\n    \"armLength\": 590,\n    \"upperArm\": 290,\n    \"wrist\": 160,\n    \"waistToKnee\": 580,\n    \"waistToFloor\": 1050\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "07 List the client's measurement sets",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has total\", () => pm.expect(pm.response.json()).to.have.property(\"total\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements?clientId={{clientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements"
+              ],
+              "query": [
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "08 Read the measurement set",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has measurements\", () => pm.expect(pm.response.json()).to.have.property(\"measurements\"));",
+                  "pm.test(\"has warnings\", () => pm.expect(pm.response.json()).to.have.property(\"warnings\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements/{{measurementSetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements",
+                "{{measurementSetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "09 Replace the measurement set",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Postman set v2\",\n  \"measurements\": {\n    \"unit\": \"mm\",\n    \"height\": 1650,\n    \"bust\": 920,\n    \"highBust\": 860,\n    \"underBust\": 780,\n    \"waist\": 740,\n    \"hip\": 1000,\n    \"hipDepth\": 200,\n    \"neck\": 360,\n    \"shoulderWidth\": 380,\n    \"backLength\": 400,\n    \"frontLength\": 430,\n    \"bustPointDistance\": 190,\n    \"bustHeight\": 250,\n    \"armLength\": 590,\n    \"upperArm\": 290,\n    \"wrist\": 160,\n    \"waistToKnee\": 580,\n    \"waistToFloor\": 1050\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements/{{measurementSetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements",
+                "{{measurementSetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "10 Delete the warning set",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements/{{warningSetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements",
+                "{{warningSetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "11 Delete the measurement set",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements/{{measurementSetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements",
+                "{{measurementSetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "12 Delete the client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/{{clientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "{{clientId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Errors",
       "item": [
+        {
+          "name": "ERR GET /api/clients without a token returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error code is UNAUTHENTICATED\", () => pm.expect(pm.response.json().code).to.eql(\"UNAUTHENTICATED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR GET /api/clients/{unknown id} returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/00000000-0000-4000-8000-00000000dead",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "00000000-0000-4000-8000-00000000dead"
+              ]
+            }
+          },
+          "response": []
+        },
         {
           "name": "ERR GET /api/does-not-exist returns 404",
           "event": [
@@ -117,6 +644,50 @@
               "path": [
                 "api",
                 "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR POST /api/measurements with highBust above bust returns 422",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 422\", () => pm.response.to.have.status(422));",
+                  "pm.test(\"error code is MEASUREMENTS_INVALID\", () => pm.expect(pm.response.json().code).to.eql(\"MEASUREMENTS_INVALID\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Impossible\",\n  \"measurements\": {\n    \"unit\": \"mm\",\n    \"height\": 1650,\n    \"bust\": 900,\n    \"highBust\": 1000,\n    \"underBust\": 780,\n    \"waist\": 740,\n    \"hip\": 1000,\n    \"hipDepth\": 200,\n    \"neck\": 360,\n    \"shoulderWidth\": 380,\n    \"backLength\": 400,\n    \"frontLength\": 430,\n    \"bustPointDistance\": 190,\n    \"bustHeight\": 250,\n    \"armLength\": 590,\n    \"upperArm\": 290,\n    \"wrist\": 160,\n    \"waistToKnee\": 580,\n    \"waistToFloor\": 1050\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements"
               ]
             }
           },
@@ -260,7 +831,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "8f75d8c68157ca5d37a175ffe929f0758500647a38a63b6b4e17b5a82ab07801"
+    "_postman_id": "4817de32a9a906fd5325856b6191a4a6ffa52123464b426686f26c4b3a39df0b"
   },
   "auth": {
     "type": "bearer",
