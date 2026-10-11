@@ -27,5 +27,12 @@
     "emptyTitle": "لسه مفيش حاجة هنا",
     "toastRegion": "الإشعارات",
     "toastClose": "إغلاق"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "welcome": "أهلاً بيكِ في تفصيلة"
+  },
+  "auth": {
+    "signOut": "تسجيل الخروج"
   }
 }
