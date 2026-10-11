@@ -4,7 +4,7 @@ Kept current in the same PR as every UI change (Definition of Done). Architectur
 
 ## Design system
 
-- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `packages/ui/src/tokens.css` (the only file with raw colours; placeholder palette until the brand is chosen, ADR-031).
+- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `packages/ui/src/tokens.css` (the only file with raw colours). The brand is approved: values are generated from `docs/design-system/tokens.json` with `pnpm tokens` (ADR-80); read [the design system](../design-system/README.md). A fuller `docs/frontend/design-system.md` arrives with #70 and will link there.
 - Features compose primitives and never restyle them ad hoc. JSX repeated twice is promoted to `packages/ui` with a test.
 - Every component has a JSDoc purpose comment and typed props (`docs/CODING_STANDARDS.md` §4–5).
 

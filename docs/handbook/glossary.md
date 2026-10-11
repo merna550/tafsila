@@ -521,7 +521,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Design tokens
 
 **Plain words:** Named values for colours, sizes, fonts and shadows kept in one file, so the whole look changes by editing that file.  
-**In Tafsila:** `packages/ui/src/tokens.css`; brand values are marked `PLACEHOLDER` until Merna picks the brand. **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
+**In Tafsila:** `packages/ui/src/tokens.css`; brand values are generated from `docs/design-system/tokens.json` by `pnpm tokens` (never edit the generated block by hand). **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
 **Learn:** <https://tailwindcss.com/docs/theme>
 
 <a id="letter-e"></a>
