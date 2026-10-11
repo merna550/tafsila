@@ -11,6 +11,7 @@ paths:
 - Style only with design tokens (`packages/ui/src/tokens.css`): no `#hex`, `rgb()`, `bg-[...]` or Tailwind palette colours in features. ESLint fails on them.
 - Compose, do not configure: prefer `children` and slots over many boolean props. More than 2 levels of prop drilling means a hook or context.
 - Every data screen shows three states from shared components: loading `Skeleton`, empty `EmptyState`, error `ErrorState`.
+- Visual snapshots are generated on Linux only, never on macOS or Windows (fonts differ and CI fails). Use `pnpm --filter @tafsila/ui test:visual:update:docker`; see `docs/frontend/design-system.md#visual-snapshots`.
 - Accessibility: every control has a visible label or `aria-label` (from messages); focus is visible and never removed; text contrast meets WCAG AA with the token pairs; dialogs trap focus and close on Escape; click targets are at least 44px on touch.
 - Performance: pages and data loading are Server Components; `"use client"` only on interactive leaves; heavy work in a Web Worker; images through `next/image`.
 

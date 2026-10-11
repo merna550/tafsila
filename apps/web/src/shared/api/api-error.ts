@@ -1,5 +1,7 @@
 /** The one error type the web app sees: every failed API call becomes an ApiError (ADR-030). */
 import type { ApiErrorBody } from "@tafsila/schemas";
+import ar from "@messages/ar.json";
+import en from "@messages/en.json";
 
 /** UI language of a message. */
 export type Locale = "ar" | "en";
@@ -16,17 +18,13 @@ export type ApiErrorKind =
   | "server"
   | "unknown";
 
-/** Arabic text for failures that never reach the server, so no technical text is shown. */
+/** Bilingual text for failures that never reach the server, read from `messages/` so no technical text is shown. */
 export const CLIENT_ERROR_MESSAGES = {
-  network: {
-    ar: "مفيش اتصال بالإنترنت، اتأكدي من الشبكة وحاولي تاني",
-    en: "No internet connection, check your network",
-  },
-  timeout: {
-    ar: "الطلب أخد وقت أطول من المتوقع، حاولي مرة أخرى",
-    en: "The request took too long, please try again",
-  },
-  unknown: { ar: "حدث خطأ غير متوقع، حاولي مرة أخرى", en: "Unexpected error, please try again" },
+  network: { ar: ar.clientErrors.network, en: en.clientErrors.network },
+  timeout: { ar: ar.clientErrors.timeout, en: en.clientErrors.timeout },
+  unknown: { ar: ar.clientErrors.unknown, en: en.clientErrors.unknown },
+  rateLimited: { ar: ar.clientErrors.rateLimited, en: en.clientErrors.rateLimited },
+  sessionExpired: { ar: ar.clientErrors.sessionExpired, en: en.clientErrors.sessionExpired },
 } as const;
 
 /** Fields of an ApiError. */

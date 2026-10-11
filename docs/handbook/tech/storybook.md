@@ -38,11 +38,12 @@ If Storybook builds get slow or break with a React/Vite major, move to Ladle; st
 
 ## Commands you'll use
 
-`pnpm --filter @tafsila/ui storybook` (dev), `build-storybook`, `test:visual`, `test:visual:update`.
+`pnpm --filter @tafsila/ui storybook` (dev), `build-storybook`, `test:visual`, `test:visual:update` (Linux only) and `test:visual:update:docker` (any machine with Docker).
 
 ## Common mistakes
 
-- Forgetting to update snapshots after an intended change (`test:visual:update`, then review the images).
+- Forgetting to update snapshots after an intended change (`test:visual:update:docker`, then review the images).
+- Generating snapshots on a Mac or Windows machine: fonts differ and the CI job fails. Always use the Docker command.
 - Hard-coding one language in a story.
 
 ## Learn more
