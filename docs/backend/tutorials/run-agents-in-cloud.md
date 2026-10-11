@@ -23,7 +23,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 
 - **claude.ai/code (web or phone):** pick the repo and the environment, type `/build #<issue>`. The issue must be `status:ready`.
 - **Comment:** write `@claude <what to do>` on an issue or PR. Only comments from Merna run.
-- **Automatic:** the dispatcher (`.github/workflows/dispatch.yml`) starts as soon as an issue gets `status:ready`, an issue moves to `status:in-review` or `status:blocked` or is closed, or a PR is closed; it also runs every 6 hours in case an event was missed (ADR-020). It builds the highest-priority `status:ready` issue whose "Depends on" issues are closed and that has no `needs:decision`. You can run it now: Actions → Dispatch agent → Run workflow.
+- **Automatic (opt-in per issue):** add the label `agent:auto` to a `status:ready` issue to let the dispatcher build it. An issue without that label is never built by the dispatcher; if no ready issue has it, the run summary says "Nothing started: N ready issue(s), none has the label agent:auto" (ADR-86). The dispatcher (`.github/workflows/dispatch.yml`) starts as soon as an issue gets `status:ready`, an issue moves to `status:in-review` or `status:blocked` or is closed, or a PR is closed; it also runs every 6 hours in case an event was missed (ADR-020). Adding `agent:auto` also starts it. It builds the highest-priority `status:ready` issue with `agent:auto` whose "Depends on" issues are closed and that has no `needs:decision`. You can run it now: Actions → Dispatch agent → Run workflow.
 
 To check what it would pick without spending a Claude run, tick **dry_run** in the Run workflow form: the `dry-run` job prints the issue and model and Claude is not called.
 
@@ -58,6 +58,7 @@ Repo → Settings → Secrets and variables → Actions → Variables → set `D
 ## Cost
 
 - claude.ai/code and the Action both use your Claude subscription limits (the Action uses the OAuth token, not an API key).
+- Measure minutes with `node scripts/actions-usage.mjs --days 30` (REST only; `--jobs` for billed minutes; needs a token that can read Actions runs). A dispatcher build is about 16 minutes, so it is opt-in (`agent:auto`).
 - The Action also uses GitHub Actions minutes; private repos have a limited free quota. Prefer claude.ai/code for long tasks. The one-issue-at-a-time rule and the daily limit keep minutes low; a run is capped at 60 minutes and 50 turns.
 
 ## Renew the token
