@@ -44,6 +44,10 @@ jobs:
         run: pnpm exec supabase start -x studio,edge-runtime,logflare,vector,imgproxy
       - name: Non-secret app config (same placeholders as the Docker smoke test)
         run: grep -Ev '^\s*(#|$)' .github/ci.env >> "$GITHUB_ENV"
+      - name: Point the app at the local Supabase (the sign-in flows need its real address and anon key)
+        run: |
+          echo "SUPABASE_URL=http://127.0.0.1:54321" >> "$GITHUB_ENV"
+          pnpm exec supabase status -o env | grep '^ANON_KEY=' | sed 's/^ANON_KEY=/SUPABASE_ANON_KEY=/; s/"//g' >> "$GITHUB_ENV"
       - name: Playwright browser cache
         id: pw-cache
         uses: actions/cache@v4
