@@ -27,10 +27,8 @@
   --color-danger: #b42318;
   --color-focus: #0e6b65;
   --color-info: #0e6b65;
-  --font-sans:
-    var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
-  --font-latin:
-    var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --font-sans: var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --font-latin: var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
   --text-*: initial;
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.25rem;
