@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة: المستخدمون</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FBF7F1; color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl;">
+  <header style="background: #2A2220; color: #FBF7F1;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;">
+      <span style="font-size: 20px; font-weight: 600;">تفصيلة</span>
+      <span style="background: #EBA83F; color: #2A2220; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: 600;">لوحة الإدارة</span>
+      <a href="Clients.dc.html" style="margin-inline-start: auto; min-height: 44px; display: flex; align-items: center; color: #FBF7F1; font-size: 15px; font-weight: 500;">العودة إلى الموقع</a>
+    </div>
+  </header>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+    <nav aria-label="أقسام لوحة الإدارة" style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 4px; background: #FFFFFF; border-radius: 16px; padding: 8px; box-shadow: 0 1px 2px rgba(42,34,32,.06);">
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">نظرة عامة</a>
+      <a href="AdminUsers.dc.html" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; background: #E1F0ED; color: #0E6B65; font-size: 15px; font-weight: 600; text-decoration: none;">المستخدمون</a>
+      <a href="AdminSizes.dc.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">جدول المقاسات</a>
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">سجل التعديلات</a>
+    </nav>
+
+    <main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+      <h1 style="margin: 0; font-size: 24px; line-height: 36px; font-weight: 600;">المستخدمون</h1>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+        <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+          <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); padding: 16px;">
+            <div style="font-size: 15px; color: #625650;">{{s.label}}</div>
+            <div style="font-size: 32px; line-height: 44px; font-weight: 600;">{{s.value}}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+        <div style="position: relative; flex: 1 1 260px; max-width: 420px;">
+          <label for="uq" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">بحث</label>
+          <input id="uq" type="search" placeholder="البحث بالاسم أو البريد الإلكتروني أو الرقم" style="width: 100%; height: 44px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; padding: 0 14px; font: inherit; font-size: 15px; color: #2A2220; background: #FFFFFF;">
+        </div>
+        <div role="group" aria-label="فلتر" style="display: flex; background: #F3ECE2; border-radius: 10px; padding: 4px; gap: 4px;">
+          <button type="button" aria-pressed="true" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: #FFFFFF; color: #2A2220; font: inherit; font-size: 15px; font-weight: 600;">الكل</button>
+          <button type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: #625650; font: inherit; font-size: 15px; font-weight: 600;">الرقم مؤكَّد</button>
+          <button type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: #625650; font: inherit; font-size: 15px; font-weight: 600;">غير مؤكَّد</button>
+        </div>
+      </div>
+
+      <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); overflow-x: auto;">
+        <table style="width: 100%; min-width: 680px; border-collapse: collapse; font-size: 15px;">
+          <thead>
+            <tr style="background: #F3ECE2;">
+              <th scope="col" style="text-align: start; padding: 12px 16px; font-weight: 600;">الاسم</th>
+              <th scope="col" style="text-align: start; padding: 12px 8px; font-weight: 600;">الهاتف</th>
+              <th scope="col" style="text-align: start; padding: 12px 8px; font-weight: 600;">التسجيل</th>
+              <th scope="col" style="text-align: start; padding: 12px 8px; font-weight: 600;">العميلات</th>
+              <th scope="col" style="text-align: start; padding: 12px 8px; font-weight: 600;">آخر تسجيل دخول</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{users}}" as="u" hint-placeholder-count="6">
+              <tr style="border-top: 1px solid #D9CCBC;">
+                <td style="padding: 10px 16px;">
+                  <div style="font-weight: 600;">{{u.name}}</div>
+                  <div style="font-size: 13px; color: #625650;" dir="ltr">{{u.email}}</div>
+                </td>
+                <td style="padding: 10px 8px;">
+                  <span dir="ltr">{{u.phone}}</span>
+                  <span style="{{u.badgeStyle}}">{{u.badge}}</span>
+                </td>
+                <td style="padding: 10px 8px; color: #625650;">{{u.joined}}</td>
+                <td style="padding: 10px 8px;">{{u.clients}}</td>
+                <td style="padding: 10px 8px; color: #625650;">{{u.last}}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size: 13px; color: #625650;">تعرض لوحة الإدارة الأعداد فقط، ولا تعرض مقاسات العميلات أو ملاحظاتهن.</div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() {
+const ok = 'display: inline-block; margin-inline-start: 6px; padding: 0 8px; border-radius: 6px; background: #E1F0ED; color: #2B7547; font-size: 13px; font-weight: 600;';
+const no = 'display: inline-block; margin-inline-start: 6px; padding: 0 8px; border-radius: 6px; background: #F9E6DA; color: #8A5A00; font-size: 13px; font-weight: 600;';
+const raw = [
+['منى إبراهيم','mona.tailor@example.com','+20 10 1234 5678',true,'3 أكتوبر',5,'اليوم'],
+['هالة سعيد','hala.s@example.com','+20 11 2233 4455',true,'1 أكتوبر',12,'أمس'],
+['سارة محمود','sara.m@example.com','—',false,'30 سبتمبر',0,'30 سبتمبر'],
+['نادية فؤاد','nadia.f@example.com','+20 12 8899 0011',true,'28 سبتمبر',3,'قبل 4 أيام'],
+['ريم عادل','reem.adel@example.com','—',false,'27 سبتمبر',0,'27 سبتمبر'],
+['أمل حسن','amal.h@example.com','+20 15 4455 6677',true,'25 سبتمبر',8,'قبل أسبوع']
+];
+const users = raw.map(([name,email,phone,v,joined,clients,last]) => ({name,email,phone,joined,clients:String(clients),last,badge:v?'مؤكَّد':'غير مؤكَّد',badgeStyle:v?ok:no}));
+const stats = [{label:'جميع المستخدمين',value:'42'},{label:'الرقم مؤكَّد',value:'31'},{label:'سجّلوا هذا الأسبوع',value:'7'},{label:'جميع العميلات',value:'186'}];
+return { users, stats };
+}
+}
+</script>
+</body>
+</html>

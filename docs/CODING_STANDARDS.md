@@ -52,6 +52,14 @@ apps/web/src/features/measurements/
 - Props are typed interfaces with JSDoc; no prop drilling deeper than 2 levels (use a hook or context).
 - Every user-facing string comes from the messages files; layout uses logical CSS (`ms-*`/`me-*`, `start`/`end`) so RTL works.
 
+### Screens from a design (`docs/design/`)
+
+- A screen issue must match its file in `docs/design/screens/` (layout, spacing, states, copy).
+- Values come from tokens and `packages/ui` components, never raw hex or px from the design files.
+- Arabic copy from the design goes to `ar.json`; the English equivalent to `en.json`, following `docs/design/copy.md`.
+- Logical CSS only; the LTR exceptions (phone, email, OTP) and icon flipping are listed in `docs/design/screens/README.md`.
+- The PR for a screen includes screenshots of the built screen in **both** `ar` and `en`, at 1280 px and 360 px.
+
 ## 5. Comments and documentation [enforced: eslint-plugin-jsdoc]
 
 Every function, React component, class, exported type and interface has a JSDoc block that states **its purpose** (what it is for and why it exists), then params/returns/throws, and an example when the use is not obvious. Comments inside a function explain _why_, never repeat _what_ the code says. `TODO` must reference an issue: `// TODO(#42): …`.

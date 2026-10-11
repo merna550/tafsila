@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>دليل قياس محيط الصدر</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: rgba(42,34,32,.45); color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl; display: flex; align-items: center; justify-content: center; padding: 24px 16px;">
+  <div role="dialog" aria-modal="true" aria-labelledby="g-title" style="width: 100%; max-width: 620px; background: #FFFFFF; border-radius: 16px; box-shadow: 0 8px 32px rgba(42,34,32,.18); display: flex; flex-direction: column; overflow: hidden;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #D9CCBC;">
+      <h2 id="g-title" style="margin: 0; font-size: 20px; line-height: 30px; font-weight: 600;">كيف أقيس محيط الصدر؟</h2>
+      <a href="Measurements.dc.html" aria-label="إغلاق" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2A2220; border-radius: 10px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </a>
+    </div>
+
+    <div style="padding: 20px; display: flex; flex-wrap: wrap; gap: 20px;">
+      <div style="flex: 1 1 200px; min-width: 0; min-height: 220px; border-radius: 10px; background: #F3ECE2; display: flex; align-items: center; justify-content: center;">
+        <svg width="140" height="200" viewBox="0 0 140 200" role="img" aria-label="رسم توضيحي: الشريط حول أعرض نقطة في الصدر">
+          <path d="M45 20 Q70 5 95 20 L100 60 Q120 70 118 110 L110 190 H30 L22 110 Q20 70 40 60 Z" fill="#FBF7F1" stroke="#8C7D72" stroke-width="2"></path>
+          <ellipse cx="70" cy="88" rx="47" ry="9" fill="none" stroke="#0E6B65" stroke-width="3" stroke-dasharray="8 5"></ellipse>
+          <circle cx="118" cy="88" r="5" fill="#EBA83F"></circle>
+        </svg>
+      </div>
+      <div style="flex: 2 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+        <ol style="margin: 0; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 17px; line-height: 28px;">
+          <li>تقف العميلة بارتياح، والذراعان إلى الأسفل.</li>
+          <li>يُلَفّ الشريط حول <strong>أعرض نقطة</strong> في الصدر.</li>
+          <li>يكون الشريط <strong>موازياً للأرض</strong> من الأمام والخلف.</li>
+          <li>يُقرأ القياس والعميلة تتنفّس بشكل طبيعي.</li>
+        </ol>
+        <div style="background: #F9E6DA; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 24px;">
+          <strong style="color: #A84A22;">تنبيه:</strong> الشريط المشدود بقوة يُصغّر المقاس، فيخرج الباترون ضيّقاً.
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 16px 20px; border-top: 1px solid #D9CCBC; background: #FBF7F1;">
+      <a href="Measurements.dc.html" style="flex: 1 1 200px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #0E6B65; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none;">فهمت</a>
+      <a href="#" style="flex: 1 1 160px; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #8C7D72; border-radius: 10px; background: #FFFFFF; color: #2A2220; font-size: 15px; font-weight: 600; text-decoration: none;">القياس التالي</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
