@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   checkDependencyCards,
+  checkAdrNumbers,
   checkHandbook,
   checkRelativeLinks,
   collectAnchors,
@@ -126,5 +127,29 @@ describe("anchors and front matter", () => {
   it("passes on the whole fixture when both checks are clean", () => {
     const root = fixture({ "package.json": manifest({}), "docs/a.md": "# A\n" });
     expect(checkHandbook(root)).toEqual([]);
+  });
+});
+
+describe("ADR numbers (issue #76)", () => {
+  it("accepts a log where every number appears once", () => {
+    const root = fixture({ "docs/DECISIONS.md": "# Log\n\n## ADR-002 · b\n\ntext\n\n## ADR-001 · a\n" });
+    expect(checkAdrNumbers(root)).toEqual([]);
+  });
+
+  it("names a number used twice and both headings", () => {
+    const root = fixture({
+      "docs/DECISIONS.md":
+        "## ADR-032 · Outcome check\n\n## ADR-031 · Design\n\n## ADR-032 · Layout components\n",
+    });
+    const errors = checkAdrNumbers(root);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("ADR-032 is used 2 times");
+    expect(errors[0]).toContain("Outcome check");
+    expect(errors[0]).toContain("Layout components");
+    expect(checkHandbook(root)).toEqual(errors);
+  });
+
+  it("passes when there is no decision log", () => {
+    expect(checkAdrNumbers(fixture({}))).toEqual([]);
   });
 });

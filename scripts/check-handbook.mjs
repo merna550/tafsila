@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/super-linear-regex -- the regexes only scan our own Markdown files, never untrusted input */
 // Handbook guard (issue #10): every direct dependency has a technology card,
-// and every relative link (and anchor) in docs/ resolves.
+// every relative link (and anchor) in docs/ resolves, and no two ADRs share a number (issue #76).
 // Run: pnpm docs:check   (part of pnpm quality and the Code quality workflow)
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
@@ -243,13 +243,42 @@ export function checkRelativeLinks(root) {
 }
 
 /**
+ * Finds ADR numbers used by more than one heading in the decision log.
+ *
+ * Parallel PRs each take "the next free number", so two of them can pick the same one; the second to merge
+ * would otherwise slip through a clean-looking merge.
+ *
+ * @param {string} root Repo root.
+ * @returns {string[]} One error per duplicated number, naming the headings.
+ */
+export function checkAdrNumbers(root) {
+  const file = join(root, "docs/DECISIONS.md");
+  if (!existsSync(file)) return [];
+  const headings = new Map();
+  for (const [heading, number] of readFileSync(file, "utf8")
+    .matchAll(/^## ADR-(\d+)\b.*$/gm)
+    .map((m) => [m[0], m[1]])) {
+    headings.set(number, [...(headings.get(number) ?? []), heading]);
+  }
+  return [...headings]
+    .filter(([, list]) => list.length > 1)
+    .map(([number, list]) => {
+      const names = list.map((h) => h.slice(3, 60)).join('"; "');
+      return (
+        `Duplicate ADR number: ADR-${number} is used ${list.length} times in docs/DECISIONS.md ` +
+        `("${names}"). Renumber the newer one to the next free number.`
+      );
+    });
+}
+
+/**
  * Runs all handbook checks.
  *
  * @param {string} root Repo root.
  * @returns {string[]} All error messages (empty when everything passes).
  */
 export function checkHandbook(root) {
-  return [...checkDependencyCards(root), ...checkRelativeLinks(root)];
+  return [...checkDependencyCards(root), ...checkRelativeLinks(root), ...checkAdrNumbers(root)];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -259,5 +288,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     for (const message of errors) console.error(`  - ${message}`);
     process.exit(1);
   }
-  console.log("docs:check OK (every dependency has a card; every relative link resolves)");
+  console.log(
+    "docs:check OK (every dependency has a card; every relative link resolves; ADR numbers are unique)",
+  );
 }

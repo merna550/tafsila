@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-034 · 2026-10-11 · Shared files that every PR touches: no generated files in git, duplicate ADR numbers fail CI
+
+**Context:** Parallel PRs conflicted on the same files after each merge (#52, #75, issue #76): the generated `docs/test-cases/index.md` (every PR regenerates it), `docs/DECISIONS.md` (two PRs took the same ADR number, ADR-020 and ADR-032), and the one-line "Last done" in `CLAUDE.md`.
+**Decision:** (1) `docs/test-cases/index.md` is generated and no longer committed (`.gitignore`); `/release-check` runs the script first. (2) `pnpm docs:check` fails when two headings in `docs/DECISIONS.md` share an ADR number. (3) Two further changes are proposed to Merna, not applied: drop the per-PR "Last done" log from `CLAUDE.md` (it repeats merged PRs, the learning log and the board), and number ADRs by issue number so two PRs can never pick the same one.
+**Alternatives:** `merge=union` in `.gitattributes` (GitHub's merge ignores it, so PRs would still show as conflicted); a merge queue (not on the free plan for private repos); rebasing every open PR automatically (rewrites other people's branches).
+
 ## ADR-032 · 2026-10-11 · A dispatcher build must leave a result: outcome check and checkpoints
 
 **Context:** Run 38148350825 built #69 for 16 minutes and ended with `success`, no refused tool, no branch and no PR. The "Block" step runs only on `failure()`, so #69 stayed `status:in-progress` and the dispatcher started nothing else (issue #73). The builder had most likely hit its own 50-turn cap, and a cut-off run keeps only what was pushed.
