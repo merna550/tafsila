@@ -28,6 +28,13 @@
     "toastRegion": "Notifications",
     "toastClose": "Close"
   },
+  "clientErrors": {
+    "network": "No internet connection, check your network",
+    "timeout": "The request took too long, please try again",
+    "unknown": "Unexpected error, please try again",
+    "rateLimited": "Too many requests, retry later",
+    "sessionExpired": "Sign-in required or session expired"
+  },
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome to Tafsila"

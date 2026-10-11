@@ -1,5 +1,5 @@
 /** Maps Supabase Auth errors to the app's ApiError by `error.code`, so components never see a raw Supabase error (ADR-030). */
-import { ApiError, clientApiError } from "../api";
+import { ApiError, CLIENT_ERROR_MESSAGES, clientApiError } from "../api";
 
 /** The part of a Supabase auth error that we read (AuthError has more). */
 export interface SupabaseAuthErrorLike {
@@ -34,11 +34,11 @@ const KIND = {
   UNAUTHENTICATED: "unauthenticated",
   INTERNAL_ERROR: "server",
 } as const;
-/** Same texts as the API catalogue (packages/api domain/errors.ts); the web cannot import the API package. */
+/** Texts of the mapped catalogue codes, from `messages/`. */
 const TEXT = {
-  RATE_LIMITED: { ar: "طلبات كتير، حاولي مرة أخرى بعد شوية", en: "Too many requests, retry later" },
-  UNAUTHENTICATED: { ar: "انتهت الجلسة، سجّلي الدخول مرة أخرى", en: "Sign-in required or session expired" },
-  INTERNAL_ERROR: { ar: "حدث خطأ غير متوقع، حاولي مرة أخرى", en: "Unexpected error, please try again" },
+  RATE_LIMITED: CLIENT_ERROR_MESSAGES.rateLimited,
+  UNAUTHENTICATED: CLIENT_ERROR_MESSAGES.sessionExpired,
+  INTERNAL_ERROR: CLIENT_ERROR_MESSAGES.unknown,
 } as const;
 
 /**
