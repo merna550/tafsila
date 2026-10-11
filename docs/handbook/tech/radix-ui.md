@@ -1,12 +1,17 @@
 ---
 packages:
   [
+    "@radix-ui/react-avatar",
     "@radix-ui/react-checkbox",
+    "@radix-ui/react-dialog",
     "@radix-ui/react-label",
     "@radix-ui/react-radio-group",
     "@radix-ui/react-select",
     "@radix-ui/react-slot",
     "@radix-ui/react-switch",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-toast",
+    "@radix-ui/react-tooltip",
   ]
 level: intermediate
 adr: ADR-031

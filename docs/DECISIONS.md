@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-033 · 2026-10-11 · Layout, overlay and feedback components on Radix (foundations 2b)
+
+**Decision:** Dialog and Sheet share one `ModalFrame` on Radix Dialog; Tabs, Avatar, Tooltip and Toast use the matching Radix primitives (all free, ADR-022). Dialog is centred with `inset-0 m-auto` and Sheet attaches to `start`, `end` or `bottom`, so RTL mirrors with no translate tricks. Components take already-translated strings (close labels, captions) as props; none holds literal text. `ToastProvider` + `useToast()` is the only toast API (failed actions show a toast, ADR-030). `AppShell` has a `banner` slot above the header for the connection banner (#72). Unit tests use static markup; portal-based parts (open dialog, toasts) are covered by the visual snapshots because no DOM test library is added.
+**Reason:** Focus trapping, Escape, ARIA and RTL come from Radix instead of hand-written code; a single frame avoids duplicating the dialog structure.
+**Alternatives:** Hand-built dialog (accessibility to test by hand); adding jsdom and Testing Library only for portals (a new dependency for little gain now); a separate toast library such as sonner (Radix Toast is already in the family).
+
 ## ADR-032 · 2026-10-11 · A dispatcher build must leave a result: outcome check and checkpoints
 
 **Context:** Run 38148350825 built #69 for 16 minutes and ended with `success`, no refused tool, no branch and no PR. The "Block" step runs only on `failure()`, so #69 stayed `status:in-progress` and the dispatcher started nothing else (issue #73). The builder had most likely hit its own 50-turn cap, and a cut-off run keeps only what was pushed.
