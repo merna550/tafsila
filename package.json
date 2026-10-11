@@ -1,7 +1,7 @@
 {
   "name": "tafsila",
   "private": true,
-  "description": "Tafsila (تفصيلة): photo-to-sewing-pattern web app",
+  "description": "Tafsila (\u062a\u0641\u0635\u064a\u0644\u0629): photo-to-sewing-pattern web app",
   "packageManager": "pnpm@10.34.6",
   "engines": {
     "node": ">=22.22.2 <23",
@@ -20,7 +20,7 @@
     "format:check": "prettier --check .",
     "jscpd": "jscpd .",
     "depcruise": "depcruise apps packages --config .dependency-cruiser.cjs",
-    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm tokens:check && pnpm docs:check",
+    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm tokens:check && pnpm docs:check && pnpm api:check",
     "docs:check": "node scripts/check-handbook.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
@@ -32,7 +32,11 @@
     "test-cases:index": "bash scripts/test-case-index.sh",
     "prepare": "husky || true",
     "tokens": "node scripts/gen-tokens.mjs",
-    "tokens:check": "node scripts/check-design-tokens.mjs && node scripts/gen-tokens.mjs --check"
+    "tokens:check": "node scripts/check-design-tokens.mjs && node scripts/gen-tokens.mjs --check",
+    "api:openapi": "pnpm --filter @tafsila/api openapi",
+    "api:postman": "node scripts/gen-postman.mjs",
+    "api:check": "node scripts/api-check.mjs",
+    "api:test": "node scripts/api-test.mjs"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,cjs}": [
@@ -56,6 +60,8 @@
     "husky": "^9.1.7",
     "jscpd": "^5.4.0",
     "lint-staged": "^16.4.0",
+    "newman": "^6.2.3",
+    "openapi-to-postmanv2": "^6.4.0",
     "prettier": "^3.9.9",
     "supabase": "^2.120.0",
     "turbo": "^2.11.7",

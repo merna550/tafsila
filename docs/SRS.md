@@ -458,6 +458,9 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 
 | Method | Path | Purpose |
 |---|---|---|
+| GET | `/api/health` | Liveness: `{ status, environment, version, gitSha, time }` |
+| GET | `/api/openapi.json` | OpenAPI 3.1 document generated from the routes (`pnpm api:openapi`) |
+| GET | `/api/docs` | Scalar API viewer (not served in production) |
 | GET | `/api/me` | Current user `{ userId, role }` from the verified access token (401 without a valid token) |
 | POST | `/api/designs` | Create design, get signed upload URLs |
 | POST | `/api/designs/:id/analyze` | Enqueue AI analysis job (consumes credit on first generation, not here) |

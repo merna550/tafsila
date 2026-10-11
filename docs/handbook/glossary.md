@@ -1306,7 +1306,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### OpenAPI
 
 **Plain words:** A standard file format describing every endpoint of an API.  
-**In Tafsila:** Generated from the routes (`pnpm api:openapi`, planned) and shown at `/api/docs`; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
+**In Tafsila:** Generated from the routes (`pnpm api:openapi` writes `packages/api/openapi.json`), served at `/api/openapi.json` and shown at `/api/docs` outside production; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://spec.openapis.org/oas/latest.html>
 
 <a id="orm"></a>
