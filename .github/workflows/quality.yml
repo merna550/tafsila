@@ -39,6 +39,8 @@ jobs:
         run: pnpm depcruise apps packages --config .dependency-cruiser.cjs
       - name: Handbook (every dependency has a tech card, relative links resolve)
         run: pnpm docs:check
+      - name: Design tokens (no raw colours, tokens.css matches docs/design-system/tokens.json)
+        run: pnpm tokens:check
       - name: Scripts and handbook check tests
         run: pnpm test:docs
 

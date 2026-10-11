@@ -1,63 +1,64 @@
 /*
  * Design tokens: the ONLY file that may contain raw colours, font names and arbitrary values (ADR-031).
- * Pages and features use the Tailwind classes these tokens generate (bg-primary, text-muted, p-4, rounded-md, shadow-md, z-modal ...).
- * PLACEHOLDER: every brand value below (palette, fonts) is a neutral stand-in until Merna picks the brand.
- * Changing the brand means editing this file only.
+ * Pages and features use the Tailwind classes these tokens generate (bg-primary, text-muted, p-4, rounded-md, shadow-card, z-modal ...).
+ * Brand values are generated from docs/design-system/tokens.json (`pnpm tokens`); change the brand there, never by hand here.
  */
 @theme {
-  /* Colour roles. The default Tailwind palette is removed so only roles can be used. */
+  /* Brand: colours, fonts, type scale, radii and shadows come from docs/design-system/tokens.json. */
+  /* BEGIN GENERATED */
   --color-*: initial;
-  --color-primary: #be123c; /* PLACEHOLDER */
-  --color-primary-hover: #9f1239; /* PLACEHOLDER */
-  --color-on-primary: #ffffff; /* PLACEHOLDER */
-  --color-secondary: #475569; /* PLACEHOLDER */
-  --color-secondary-hover: #334155; /* PLACEHOLDER */
-  --color-on-secondary: #ffffff; /* PLACEHOLDER */
-  --color-background: #fffaf9; /* PLACEHOLDER */
-  --color-surface: #ffffff; /* PLACEHOLDER */
-  --color-surface-hover: #fff1f2; /* PLACEHOLDER */
-  --color-text: #2b1d21; /* PLACEHOLDER */
-  --color-muted: #6b5b60; /* PLACEHOLDER */
-  --color-border: #d9c9cd; /* PLACEHOLDER */
-  --color-focus: #1d4ed8; /* PLACEHOLDER */
-  --color-success: #15803d; /* PLACEHOLDER */
-  --color-warning: #b45309; /* PLACEHOLDER */
-  --color-danger: #b91c1c; /* PLACEHOLDER */
-  --color-info: #0369a1; /* PLACEHOLDER */
-
-  /* Typography: Arabic first, Latin fallback. */
-  --font-sans: "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif; /* PLACEHOLDER */
-  --font-latin: "Inter", "Segoe UI", system-ui, sans-serif; /* PLACEHOLDER */
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --text-xs: 0.75rem;
+  --color-background: #fbf7f1;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f3ece2;
+  --color-line: #d9ccbc;
+  --color-border: #8c7d72;
+  --color-text: #2a2220;
+  --color-muted: #625650;
+  --color-primary: #0e6b65;
+  --color-primary-hover: #0a5651;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #e1f0ed;
+  --color-accent: #a84a22;
+  --color-on-accent: #ffffff;
+  --color-accent-soft: #f9e6da;
+  --color-saffron: #eba83f;
+  --color-success: #2b7547;
+  --color-warning: #8a5a00;
+  --color-danger: #b42318;
+  --color-focus: #0e6b65;
+  --color-info: #0e6b65;
+  --font-sans:
+    var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --font-latin:
+    var(--font-plex, "IBM Plex Sans Arabic"), "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --text-*: initial;
+  --text-xs: 0.8125rem;
   --text-xs--line-height: 1.25rem;
-  --text-sm: 0.875rem;
+  --text-sm: 0.9375rem;
   --text-sm--line-height: 1.5rem;
-  --text-base: 1rem;
+  --text-base: 1.0625rem;
   --text-base--line-height: 1.75rem;
-  --text-lg: 1.125rem;
+  --text-lg: 1.25rem;
   --text-lg--line-height: 1.875rem;
-  --text-xl: 1.25rem;
-  --text-xl--line-height: 2rem;
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2.25rem;
-  --text-3xl: 1.875rem;
-  --text-3xl--line-height: 2.5rem;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 2.25rem;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 2.75rem;
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-*: initial;
+  --shadow-card: 0 1px 2px rgba(42, 34, 32, 0.06), 0 2px 8px rgba(42, 34, 32, 0.06);
+  --shadow-overlay: 0 8px 32px rgba(42, 34, 32, 0.18);
+  /* END GENERATED */
+
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* Spacing scale: p-1 = 0.25rem, p-4 = 1rem, h-11 = 2.75rem (44px touch target). */
   --spacing: 0.25rem;
 
-  /* Radii */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
   --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(43 29 33 / 0.08); /* PLACEHOLDER */
-  --shadow-md: 0 4px 12px -2px rgb(43 29 33 / 0.12); /* PLACEHOLDER */
-  --shadow-lg: 0 12px 28px -6px rgb(43 29 33 / 0.18); /* PLACEHOLDER */
 
   /* Motion */
   --duration-fast: 120ms;
