@@ -23,5 +23,5 @@ export function IconButton({
   variant = "ghost",
   ...rest
 }: Readonly<IconButtonProps>): ReactElement {
-  return <Button aria-label={label} variant={variant} className={cx("w-11 px-0", className)} {...rest} />;
+  return <Button aria-label={label} variant={variant} className={cx("w-11 px-0!", className)} {...rest} />;
 }

@@ -2,11 +2,13 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
-## ADR-034 · 2026-10-11 · Shared files that every PR touches: no generated files in git, duplicate ADR numbers fail CI
+**This log is closed at ADR-035.** Later decisions are one file each in [`docs/decisions/`](decisions/README.md), named by the issue that decides them, so two PRs never edit the same lines or pick the same number (#76).
 
-**Context:** Parallel PRs conflicted on the same files after each merge (#52, #75, issue #76): the generated `docs/test-cases/index.md` (every PR regenerates it), `docs/DECISIONS.md` (two PRs took the same ADR number, ADR-020 and ADR-032), and the one-line "Last done" in `CLAUDE.md`.
-**Decision:** (1) `docs/test-cases/index.md` is generated and no longer committed (`.gitignore`); `/release-check` runs the script first. (2) `pnpm docs:check` fails when two headings in `docs/DECISIONS.md` share an ADR number. (3) Two further changes are proposed to Merna, not applied: drop the per-PR "Last done" log from `CLAUDE.md` (it repeats merged PRs, the learning log and the board), and number ADRs by issue number so two PRs can never pick the same one.
-**Alternatives:** `merge=union` in `.gitattributes` (GitHub's merge ignores it, so PRs would still show as conflicted); a merge queue (not on the free plan for private repos); rebasing every open PR automatically (rewrites other people's branches).
+## ADR-033 · 2026-10-11 · Layout, overlay and feedback components on Radix (foundations 2b)
+
+**Decision:** Dialog and Sheet share one `ModalFrame` on Radix Dialog; Tabs, Avatar, Tooltip and Toast use the matching Radix primitives (all free, ADR-022). Dialog is centred with `inset-0 m-auto` and Sheet attaches to `start`, `end` or `bottom`, so RTL mirrors with no translate tricks. Components take already-translated strings (close labels, captions) as props; none holds literal text. `ToastProvider` + `useToast()` is the only toast API (failed actions show a toast, ADR-030). `AppShell` has a `banner` slot above the header for the connection banner (#72). Unit tests use static markup; portal-based parts (open dialog, toasts) are covered by the visual snapshots because no DOM test library is added.
+**Reason:** Focus trapping, Escape, ARIA and RTL come from Radix instead of hand-written code; a single frame avoids duplicating the dialog structure.
+**Alternatives:** Hand-built dialog (accessibility to test by hand); adding jsdom and Testing Library only for portals (a new dependency for little gain now); a separate toast library such as sonner (Radix Toast is already in the family).
 
 ## ADR-032 · 2026-10-11 · A dispatcher build must leave a result: outcome check and checkpoints
 
