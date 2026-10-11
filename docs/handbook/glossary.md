@@ -136,6 +136,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
+<a id="access-token-hook"></a>
+
+### Access token hook
+
+**Plain words:** A database function that Supabase Auth runs just before it signs a login token, so we can add our own fields to it.  
+**In Tafsila:** `custom_access_token_hook` adds `user_role` from `profiles.role`; the API reads the role from the token instead of the database. **Card:** [jose](tech/jose.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/auth/auth-hooks/custom-access-token-hook>
+
 <a id="letter-b"></a>
 
 ## B
@@ -975,7 +983,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JWT (JSON Web Token)
 
 **Plain words:** A signed token that proves who the user is; the server checks the signature instead of asking the database each time.  
-**In Tafsila:** Supabase issues it; API auth middleware verifies it (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**In Tafsila:** Supabase issues it; `requireAuth` in `packages/api/src/middleware/auth.ts` verifies it with [jose](tech/jose.md). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://jwt.io/introduction>
 
 <a id="letter-k"></a>
