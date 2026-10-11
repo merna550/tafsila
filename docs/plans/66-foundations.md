@@ -24,3 +24,7 @@ The issue is the plan (`plan:none`). This file records the order of work, librar
 - ADR-029 Frontend layering and enforced rules v2
 - ADR-030 Error contract (backend to frontend)
 - ADR-031 Design system (tokens, base components, Storybook)
+
+## PR 2 split (issue #68, foundations 2a/4)
+
+PR 2 was too big for one build run. #68 delivers the tokens file, Storybook, the 10 form components and the visual snapshots (ADR-031). Layout, overlay and feedback components (including `ErrorState`, toast and the connection banner) come in the next issue; `docs/frontend/design-system.md` and the skills in the last.
