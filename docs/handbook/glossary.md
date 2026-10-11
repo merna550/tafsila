@@ -88,6 +88,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `est_cost_usd` in each agent usage record, from the price table in `scripts/agent-usage.mjs`; shown in the weekly report ([tutorial](../backend/tutorials/agent-usage.md)). **Card:** [Claude Code](tech/claude-code.md#measuring-agent-usage) · **Level:** beginner  
 **Learn:** <https://www.anthropic.com/pricing>
 
+<a id="apierror"></a>
+
+### ApiError
+
+**Plain words:** The one kind of error the web app sees when a call to the server fails. It already holds the code, the Arabic or English message, the per-field messages and the request id, so screens never read raw responses.  
+**In Tafsila:** `apps/web/src/shared/api/api-error.ts`; the display place comes from `placementFor` ([ADR-030](../DECISIONS.md)). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>
+
 <a id="app-router"></a>
 
 ### App Router
@@ -583,6 +591,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A named setting given to a program from outside the code, such as a URL or secret key.  
 **In Tafsila:** Declared and validated only in `packages/config/src/env.ts`; examples in `.env.example`. Secrets never go in code ([CLAUDE.md](../../CLAUDE.md) rule 6). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://12factor.net/config>
+
+<a id="error-catalogue"></a>
+
+### Error catalogue
+
+**Plain words:** The single list of every error code the server can return, each with an Arabic and an English message, the cause and the fix. A test fails if code throws a code that is not in the list.  
+**In Tafsila:** `ERROR_CATALOGUE` in `packages/api/src/domain/errors.ts` and [docs/errors.md](../errors.md) ([ADR-030](../DECISIONS.md)). **Card:** [Vitest](tech/vitest.md) · **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>
 
 <a id="eslint"></a>
 

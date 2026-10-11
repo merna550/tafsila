@@ -23,7 +23,8 @@ src/shared/       api client, i18n, query client, workers, analytics
 
 ## Data and state
 
-- No `fetch` or Supabase calls in components. Server state = TanStack Query hooks in `features/<f>/hooks/` using the typed API client in `src/shared/`.
+- Four layers per feature: `components/` (UI) → `hooks/` (application) → `model/` (pure domain) → `shared/api` (data). Components never fetch; only `shared/api` calls `fetch`; Supabase only in `shared/auth`. Server state = TanStack Query hooks in `features/<f>/hooks/`. Details and examples: `.claude/rules/frontend/`.
+- Errors: components read `ApiError` only (`placementFor` picks the place); see `docs/errors.md`.
 - Local UI state = component state; Zustand only for the pattern-editor session.
 - Pattern geometry comes from `@tafsila/engine`; never compute geometry in the UI.
 
@@ -31,7 +32,7 @@ src/shared/       api client, i18n, query client, workers, analytics
 
 - Build from `packages/ui` first. A pattern used twice becomes a `packages/ui` component; never restyle primitives ad hoc.
 - Every user-facing string comes from `messages/{ar,en}.json` (next-intl). No hard-coded text.
-- Logical CSS only (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start`/`end`), never `left`/`right` or `ml-*`/`mr-*`.
+- Logical CSS only (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start`/`end`), never `left`/`right` or `ml-*`/`mr-*`. Tokens only: no raw colours or `bg-[...]` (ESLint fails).
 - Western digits by default (NFR-06).
 
 ## Tests

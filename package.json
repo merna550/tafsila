@@ -20,7 +20,7 @@
     "format:check": "prettier --check .",
     "jscpd": "jscpd .",
     "depcruise": "depcruise apps packages --config .dependency-cruiser.cjs",
-    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm docs:check",
+    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm tokens:check && pnpm docs:check",
     "docs:check": "node scripts/check-handbook.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
@@ -29,7 +29,8 @@
     "docker:build": "docker build -f apps/web/Dockerfile -t tafsila-web:local .",
     "labels:sync": "bash scripts/setup-labels.sh",
     "test-cases:index": "bash scripts/test-case-index.sh",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "tokens:check": "node scripts/check-design-tokens.mjs"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,cjs}": [

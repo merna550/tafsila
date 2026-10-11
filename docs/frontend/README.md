@@ -4,7 +4,7 @@ Kept current in the same PR as every UI change (Definition of Done). Architectur
 
 ## Design system
 
-- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `apps/web/src/app/globals.css`.
+- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `packages/ui/src/tokens.css` (the only file with raw colours; placeholder palette until the brand is chosen, ADR-031).
 - Features compose primitives and never restyle them ad hoc. JSX repeated twice is promoted to `packages/ui` with a test.
 - Every component has a JSDoc purpose comment and typed props (`docs/CODING_STANDARDS.md` §4–5).
 
@@ -37,6 +37,26 @@ Import direction: `app → features → entities → shared → packages/*`. Ano
 | Local UI state         | React component state                                        |
 | Pattern editor session | Zustand (selected piece, zoom, layers)                       |
 | Pattern geometry       | `@tafsila/engine` in the browser; heavy work in a Web Worker |
+
+## Layers
+
+Per feature: `components/` (UI, props in → JSX out) → `hooks/` (TanStack Query, forms, Zustand) → `model/` (pure TypeScript) → `shared/api` (the only `fetch`). The browser never talks to the database; Supabase exists only in `shared/auth/` for the session. Full rules with examples: `.claude/rules/frontend/layering.md`; enforced by dependency-cruiser (ADR-029).
+
+## Error display
+
+`shared/api` turns every failure into one `ApiError`; `placementFor(error, context)` decides where it is shown:
+
+| Case                             | Shown as                                        |
+| -------------------------------- | ----------------------------------------------- |
+| Field validation (`fieldErrors`) | text under the field (FormField)                |
+| Failed action                    | toast                                           |
+| Page data failed to load         | ErrorState in the page with "Try again"         |
+| 401                              | redirect to sign-in, then back to the same page |
+| 403                              | clear "no permission" message                   |
+| Offline / network                | fixed connection banner                         |
+| Unknown / 5xx                    | generic Arabic message + copyable reference     |
+
+The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 
 ## Testing
 

@@ -77,10 +77,76 @@ module.exports = {
     },
     {
       name: "features-through-index",
-      severity: "warn",
-      comment: "Import another feature only through its index.ts.",
+      severity: "error",
+      comment: "Import another feature only through its index.ts (ADR-029).",
       from: { path: "^apps/web/src/features/([^/]+)/" },
-      to: { path: "^apps/web/src/features/(?!$1)[^/]+/(?!index\\.ts$)" },
+      to: { path: "^apps/web/src/features/(?!$1/)[^/]+/(?!index\\.ts$)" },
+    },
+    {
+      name: "app-through-feature-index",
+      severity: "error",
+      comment: "Routes in app/ stay thin: they compose features through their index.ts only (ADR-029).",
+      from: { path: "^apps/web/src/app/" },
+      to: { path: "^apps/web/src/features/[^/]+/(?!index\\.ts$)" },
+    },
+    {
+      name: "ui-layer-is-presentational",
+      severity: "error",
+      comment:
+        "features/*/components/ get data through props: no API client, server-state library, Supabase or hooks (ADR-029).",
+      from: { path: "^apps/web/src/features/[^/]+/components/" },
+      to: {
+        path: [
+          "^apps/web/src/shared/api",
+          "^apps/web/src/shared/auth",
+          "^apps/web/src/features/[^/]+/hooks/",
+          "(^|node_modules/)@tanstack/",
+          "(^|node_modules/)@supabase/",
+        ],
+      },
+    },
+    {
+      name: "domain-layer-is-pure",
+      severity: "error",
+      comment:
+        "features/*/model/ is pure TypeScript: no React, Next, API client, hooks or components, so it is easy to test and reuse (ADR-029).",
+      from: { path: "^apps/web/src/features/[^/]+/model/" },
+      to: {
+        path: [
+          "^apps/web/src/shared/(api|auth)",
+          "^apps/web/src/features/[^/]+/(hooks|components)/",
+          "(^|node_modules/)(react|react-dom|next|@tanstack|@supabase|zustand|react-hook-form)(/|$)",
+        ],
+      },
+    },
+    {
+      name: "application-layer-not-ui",
+      severity: "error",
+      comment: "features/*/hooks/ never import components: data flows down, not up (ADR-029).",
+      from: { path: "^apps/web/src/features/[^/]+/hooks/" },
+      to: { path: "^apps/web/src/features/[^/]+/components/" },
+    },
+    {
+      name: "shared-not-features",
+      severity: "error",
+      comment: "apps/web/src/shared/ is below features: it never imports a feature (ADR-029).",
+      from: { path: "^apps/web/src/shared/" },
+      to: { path: "^apps/web/src/features/" },
+    },
+    {
+      name: "supabase-only-in-auth",
+      severity: "error",
+      comment:
+        "The browser never talks to the database. Supabase in apps/web is allowed only for the auth session (ADR-029).",
+      from: { path: "^apps/web/", pathNot: "^apps/web/src/shared/auth/" },
+      to: { path: "(^|node_modules/)@supabase/" },
+    },
+    {
+      name: "query-only-in-hooks",
+      severity: "error",
+      comment: "TanStack Query is used in features/*/hooks/ and shared/ (providers) only (ADR-029).",
+      from: { path: "^apps/web/src/", pathNot: ["/hooks/", "^apps/web/src/shared/"] },
+      to: { path: "(^|node_modules/)@tanstack/" },
     },
   ],
   options: {

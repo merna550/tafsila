@@ -509,6 +509,7 @@ Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal
 | NFR-12 | Agent delivery | Ready issues can be built by a cloud agent while the founder's laptop is off: one issue at a time, no new work when 3 PRs await review, pausable with one variable, no secrets in the repo (ADR-016); at most `DISPATCH_DAILY_LIMIT` builds a day (default 4), 50 turns per run, and a stuck unattended agent stops and marks the issue `status:blocked` (ADR-017) |
 | NFR-13 | Agent usage metrics | Every agent run produces one numbers-only record (tokens, turns, duration, API-equivalent cost, outcome, issue/PR, labels) stored on the `metrics` branch, never on `main`; no prompts, code or secrets in records; a weekly report issue lists totals, medians, top 3, flags and suggestions (ADR-028) |
 | NFR-13 | Environments | Every PR gets a preview URL; every merge to `main` migrates the staging database, deploys staging and smoke-checks `/api/health` (environment and git SHA); migrations are applied by CI only; staging uses test OTP numbers; free tiers until the beta (ADR-022, ADR-023) |
+| NFR-14 | Consistency | One design system (tokens, shared components), four frontend layers, one error contract with an Arabic message for every code; all enforced in CI, not by memory (ADR-029, ADR-030, ADR-031) |
 
 ---
 

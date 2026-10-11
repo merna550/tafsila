@@ -1,7 +1,7 @@
 /** Debug route that proves errors reach Sentry; mounted only outside production. */
 import { Hono } from "hono";
 import type { Container } from "../container";
-import { AppError, HTTP_STATUS } from "../domain/errors";
+import { AppError } from "../domain/errors";
 import type { AppEnv } from "../middleware/request-id";
 
 /** Minimum time between two debug errors on one instance (protects the free Sentry quota). */
@@ -18,12 +18,7 @@ export function debugRoutes(container: Container): Hono<AppEnv> {
   return new Hono<AppEnv>().get("/debug/error", () => {
     const now = container.clock.now().getTime();
     if (lastThrownAt !== 0 && now - lastThrownAt < DEBUG_ERROR_INTERVAL_MS) {
-      throw new AppError(
-        "RATE_LIMITED",
-        HTTP_STATUS.tooManyRequests,
-        "حاولي مرة أخرى بعد دقيقة",
-        "Debug error already thrown, retry in a minute",
-      );
+      throw new AppError("RATE_LIMITED", { messageEn: "Debug error already thrown, retry in a minute" });
     }
     lastThrownAt = now;
     throw new Error(`Debug test error ${crypto.randomUUID()}`);
