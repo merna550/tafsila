@@ -465,7 +465,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Dispatcher
 
 **Plain words:** A small scheduled robot that looks at the open issues and starts the next one for the cloud agent, following simple rules (priority, dependencies, one at a time, no more than 3 PRs waiting).  
-**In Tafsila:** `.github/workflows/dispatch.yml` runs `scripts/dispatch.mjs` when an issue becomes ready or a slot frees up (and every 6 hours as a safety net), at most `DISPATCH_DAILY_LIMIT` builds a day (default 4); pause it with the repo variable `DISPATCH_ENABLED=false` ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016, ADR-017, ADR-020). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
+**In Tafsila:** `.github/workflows/dispatch.yml` runs `scripts/dispatch.mjs` when an issue becomes ready or a slot frees up (and every 12 hours as a safety net), at most `DISPATCH_DAILY_LIMIT` builds a day (default 4); pause it with the repo variable `DISPATCH_ENABLED=false` ([tutorial](../backend/tutorials/run-agents-in-cloud.md), ADR-016, ADR-017, ADR-020). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/actions/using-workflows/reusing-workflows>
 
 <a id="docker"></a>

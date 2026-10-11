@@ -7,6 +7,7 @@ Kept current in the same PR as every backend change (Definition of Done).
 | `architecture.md` | Layers (engine → services → adapters), request flow, where code goes                |
 | `api-reference`   | Generated from OpenAPI at `/api/docs` (Scalar UI) — every endpoint, schema, example |
 | `seed-data.md`    | Test accounts and records created in every non-prod environment                     |
+| `ci-minutes.md`   | What costs GitHub Actions minutes, how to read the Usage page, rules of thumb       |
 | `environments.md` | dev / preview / staging / prod: URLs, data, keys, how to switch                     |
 | `tutorials/`      | Step-by-step how-tos (below)                                                        |
 | `../plans/`       | One file per issue: the approved plan (copied from the issue comment)               |
