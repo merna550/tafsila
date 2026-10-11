@@ -1,7 +1,7 @@
 /** Placeholder dashboard: proves the guard and the session; the real dashboard comes later. */
 import { getTranslations } from "next-intl/server";
-import type { ReactElement } from "react";
-import { SignOut } from "@/features/auth";
+import { Suspense, type ReactElement } from "react";
+import { SignOut, WelcomeTracker } from "@/features/auth";
 
 /**
  * Renders the welcome text and the sign-out button.
@@ -15,6 +15,9 @@ export default async function DashboardPage(): Promise<ReactElement> {
       <h1 className="text-2xl font-bold">{t("title")}</h1>
       <p className="text-lg leading-8">{t("welcome")}</p>
       <SignOut />
+      <Suspense>
+        <WelcomeTracker />
+      </Suspense>
     </div>
   );
 }

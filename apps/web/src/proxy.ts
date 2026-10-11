@@ -30,5 +30,5 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
   return redirect;
 }
 
-/** Skips API routes, Next internals and files with an extension. */
-export const config = { matcher: ["/((?!api|trpc|_next|_vercel|.*\\..*).*)"] };
+/** Skips API routes, the `/auth/*` link handlers, Next internals and files with an extension. */
+export const config = { matcher: ["/((?!api|auth/|trpc|_next|_vercel|.*\\..*).*)"] };

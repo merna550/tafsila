@@ -5,12 +5,21 @@ import { z } from "zod";
 const appOpenedSchema = z.object({}).strict();
 
 /** Event fired when a user starts signing up. */
-const signupStartedSchema = z.object({ source: z.enum(["home"]).optional() }).strict();
+const signupStartedSchema = z
+  .object({
+    source: z.enum(["home", "sign_up_page"]).optional(),
+    method: z.enum(["email", "google"]).optional(),
+  })
+  .strict();
+
+/** Event fired once when a new account lands on the dashboard after confirming (no email, no user id). */
+const signupCompletedSchema = z.object({ method: z.enum(["email", "google"]).optional() }).strict();
 
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
   signup_started: signupStartedSchema,
+  signup_completed: signupCompletedSchema,
 } as const;
 
 /** Names of all known analytics events. */

@@ -42,6 +42,31 @@ export const ERROR_CATALOGUE = {
     messageAr: "العنصر المطلوب غير موجود",
     messageEn: "Resource not found",
   },
+  AUTH_INVALID_CREDENTIALS: {
+    status: 401,
+    messageAr: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    messageEn: "The email or password is incorrect",
+  },
+  AUTH_EMAIL_NOT_CONFIRMED: {
+    status: 401,
+    messageAr: "لم يتم تأكيد البريد الإلكتروني بعد. يمكن فتح الرابط الذي وصل إلى البريد",
+    messageEn: "The email is not confirmed yet. Open the link we sent to your inbox",
+  },
+  AUTH_EMAIL_TAKEN: {
+    status: 409,
+    messageAr: "هذا البريد الإلكتروني مسجّل بطريقة أخرى. يمكن تسجيل الدخول بحساب Google",
+    messageEn: "This email is registered another way. Try signing in with Google",
+  },
+  AUTH_WEAK_PASSWORD: {
+    status: 400,
+    messageAr: "كلمة المرور قصيرة. يلزم 8 أحرف على الأقل",
+    messageEn: "The password is too short. Use at least 8 characters",
+  },
+  AUTH_LINK_INVALID: {
+    status: 400,
+    messageAr: "الرابط غير صالح أو انتهت صلاحيته. يمكن طلب رابط جديد",
+    messageEn: "The link is invalid or has expired. Request a new one",
+  },
   RATE_LIMITED: {
     status: 429,
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",

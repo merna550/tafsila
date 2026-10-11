@@ -40,6 +40,66 @@
     "welcome": "Welcome to Tafsila"
   },
   "auth": {
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "hero": {
+      "title": "A pattern in your client's size.",
+      "subtitle": "From a photo of the dress, ready to cut.",
+      "mannequinLabel": "A sewing mannequin with a measuring tape"
+    },
+    "tabs": {
+      "label": "Way to continue",
+      "signIn": "Sign in",
+      "signUp": "Create account"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "newPassword": "New password",
+      "passwordHint": "At least 8 characters"
+    },
+    "signIn": {
+      "submit": "Sign in",
+      "forgot": "Forgot your password?"
+    },
+    "signUp": {
+      "submit": "Create account"
+    },
+    "or": "or",
+    "google": "Continue with Google",
+    "terms": "By continuing you agree to the terms of use and the privacy policy",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordShort": "The password is too short. Use at least 8 characters",
+      "passwordMismatch": "The passwords do not match"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "body": "We sent a message to {email}. Open the link in it to continue.",
+      "resetBody": "If {email} is registered with us, we sent it a link to set a new password.",
+      "back": "Back to sign in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "intro": "Enter your email and we will send a link to set a new password.",
+      "submit": "Send the link",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "New password",
+      "intro": "Choose a new password for your account.",
+      "submit": "Save password",
+      "done": "Password changed"
+    },
+    "welcome": "Account created. Welcome to Tafsila"
+  },
+  "authErrors": {
+    "invalidCredentials": "The email or password is incorrect",
+    "emailNotConfirmed": "The email is not confirmed yet. Open the link we sent to your inbox",
+    "emailTaken": "This email is registered another way. Try signing in with Google",
+    "weakPassword": "The password is too short. Use at least 8 characters",
+    "linkInvalid": "The link is invalid or has expired. Request a new one"
   }
 }

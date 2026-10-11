@@ -13,6 +13,7 @@
     "test:e2e:update": "playwright test --update-snapshots"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
     "@sentry/nextjs": "11.6.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.3",
@@ -26,6 +27,7 @@
     "posthog-js": "^1.438.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "react-hook-form": "^7.90.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
