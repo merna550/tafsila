@@ -27,5 +27,12 @@
     "emptyTitle": "Nothing here yet",
     "toastRegion": "Notifications",
     "toastClose": "Close"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to Tafsila"
+  },
+  "auth": {
+    "signOut": "Sign out"
   }
 }

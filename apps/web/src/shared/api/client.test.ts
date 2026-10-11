@@ -67,4 +67,16 @@ describe("apiRequest", () => {
     const wrong = await failure(respond(JSON.stringify({ nope: 1 }), 200));
     expect(wrong.code).toBe("UNKNOWN_ERROR");
   });
+
+  it("sends the bearer token from the token source, and none when signed out", async () => {
+    const seen: (HeadersInit | undefined)[] = [];
+    const fetchFn = ((_url: string, init?: RequestInit) => {
+      seen.push(init?.headers);
+      return Promise.resolve(new Response(JSON.stringify({ status: "ok" }), { status: 200 }));
+    }) as unknown as typeof fetch;
+    await apiRequest("/me", { schema, fetchFn, getToken: () => Promise.resolve("tok") });
+    await apiRequest("/me", { schema, fetchFn, getToken: () => Promise.resolve(null) });
+    await apiRequest("/me", { schema, fetchFn, getToken: () => Promise.reject(new Error("x")) });
+    expect(seen).toEqual([{ authorization: "Bearer tok" }, undefined, undefined]);
+  });
 });

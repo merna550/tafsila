@@ -6,6 +6,7 @@ import { createErrorHandler } from "./middleware/error-handler";
 import { requestId, type AppEnv } from "./middleware/request-id";
 import { debugRoutes } from "./routes/debug";
 import { healthRoutes } from "./routes/health";
+import { meRoutes } from "./routes/me";
 
 /**
  * Creates the API application with all routes and the shared error handling.
@@ -17,6 +18,7 @@ export function createApp(container: Container = createContainer()): Hono<AppEnv
   const app = new Hono<AppEnv>().basePath("/api");
   app.use(requestId());
   app.route("/", healthRoutes(container));
+  app.route("/", meRoutes(container));
   if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));
   app.notFound(() => {
     throw new NotFoundError("route");

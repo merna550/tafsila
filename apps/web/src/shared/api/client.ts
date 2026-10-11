@@ -6,6 +6,37 @@ import { apiErrorFromBody, clientApiError, type ApiError } from "./api-error";
 /** Default time before a request is given up, in milliseconds. */
 export const DEFAULT_TIMEOUT_MS = 15_000;
 
+/** Returns the current access token, or null when signed out. */
+export type AccessTokenGetter = () => Promise<string | null>;
+
+let accessTokenGetter: AccessTokenGetter | null = null;
+
+/**
+ * Registers how API calls find the access token. `shared/auth` calls this, so this module never imports Supabase.
+ *
+ * @param getter - The token source, or null to remove it.
+ */
+export function setAccessTokenGetter(getter: AccessTokenGetter | null): void {
+  accessTokenGetter = getter;
+}
+
+/**
+ * Builds the request headers: JSON content type when there is a body, and the bearer token when signed in.
+ *
+ * @param hasBody - Whether the request carries a JSON body.
+ * @param getToken - Token source.
+ * @returns The headers, or undefined when there are none.
+ */
+async function buildHeaders(
+  hasBody: boolean,
+  getToken: AccessTokenGetter | null,
+): Promise<Record<string, string> | undefined> {
+  const headers: Record<string, string> = hasBody ? { "content-type": "application/json" } : {};
+  const token = getToken ? await getToken().catch(() => null) : null;
+  if (token) headers.authorization = `Bearer ${token}`;
+  return Object.keys(headers).length > 0 ? headers : undefined;
+}
+
 /** Options of one API call. */
 export interface ApiRequestOptions<T> {
   /** HTTP method; defaults to GET. */
@@ -18,6 +49,8 @@ export interface ApiRequestOptions<T> {
   readonly timeoutMs?: number;
   /** Caller cancellation (for example when a query is cancelled). */
   readonly signal?: AbortSignal;
+  /** Replaceable token source, used by tests; defaults to the one registered by `shared/auth`. */
+  readonly getToken?: AccessTokenGetter | null;
   /** Replaceable fetch, used by tests. */
   readonly fetchFn?: typeof fetch;
 }
@@ -58,12 +91,13 @@ function errorFromFailure(error: unknown): ApiError {
  */
 export async function apiRequest<T>(path: string, options: ApiRequestOptions<T>): Promise<T> {
   const { method = "GET", body, schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, fetchFn = fetch } = options;
+  const getToken = options.getToken === undefined ? accessTokenGetter : options.getToken;
   const timeout = AbortSignal.timeout(timeoutMs);
   let response: Response;
   try {
     response = await fetchFn(`/api${path}`, {
       method,
-      headers: body === undefined ? undefined : { "content-type": "application/json" },
+      headers: await buildHeaders(body !== undefined, getToken),
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
     });

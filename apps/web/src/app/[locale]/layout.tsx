@@ -7,6 +7,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { connection } from "next/server";
 import type { ReactElement, ReactNode } from "react";
+import { AuthProvider } from "../../shared/auth";
 import { DIRECTION, routing } from "../../shared/i18n";
 import { ObservabilityProvider } from "../../shared/observability/ObservabilityProvider";
 import { AppFrame } from "./AppFrame";
@@ -63,12 +64,15 @@ export default async function LocaleLayout({
   await connection();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  const config = loadPublicConfig();
   return (
     <html lang={locale} dir={DIRECTION[locale]} className={plex.variable}>
       <body className="min-h-screen antialiased">
         <NextIntlClientProvider>
-          <ObservabilityProvider config={loadPublicConfig()} />
-          <AppFrame dir={DIRECTION[locale]}>{children}</AppFrame>
+          <ObservabilityProvider config={config} />
+          <AuthProvider config={config}>
+            <AppFrame dir={DIRECTION[locale]}>{children}</AppFrame>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>
