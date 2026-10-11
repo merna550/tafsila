@@ -56,6 +56,8 @@ Per feature: `components/` (UI, props in → JSX out) → `hooks/` (TanStack Que
 | Offline / network                | fixed connection banner                         |
 | Unknown / 5xx                    | generic Arabic message + copyable reference     |
 
+In code: `routeError(error, context)` gives the place, the Arabic message and the copyable reference; `useApiErrorHandler()` shows toasts and redirects (401 goes to `/sign-in?next=<same page>`); `ConnectionBanner` is in the `AppShell` banner slot; `AppErrorBoundary` wraps the app and reports to Sentry with the request id; `DataState` (`shared/data-state`) is the loading / empty / error pattern for every data screen (ADR-72).
+
 The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 
 ## Testing

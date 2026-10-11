@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import type { ReactElement, ReactNode } from "react";
 import { ObservabilityProvider } from "../shared/observability/ObservabilityProvider";
+import { AppFrame } from "./AppFrame";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default async function RootLayout({
     <html lang="ar" dir="rtl">
       <body className="min-h-screen antialiased">
         <ObservabilityProvider config={loadPublicConfig()} />
-        {children}
+        <AppFrame>{children}</AppFrame>
       </body>
     </html>
   );

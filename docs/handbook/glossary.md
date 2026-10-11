@@ -608,6 +608,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `ERROR_CATALOGUE` in `packages/api/src/domain/errors.ts` and [docs/errors.md](../errors.md) ([ADR-030](../DECISIONS.md)). **Card:** [Vitest](tech/vitest.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>
 
+<a id="error-boundary"></a>
+
+### Error boundary
+
+**Plain words:** A React component that catches a crash while a screen is drawing, shows a calm fallback message instead of a blank page, and lets the app report the crash.
+**In Tafsila:** `AppErrorBoundary` in `apps/web/src/shared/error-display/`, which shows `ErrorState` and sends the error to Sentry with the request id ([ADR-72](../decisions/72-error-display.md)). **Card:** [React](tech/react.md) · **Level:** intermediate  
+**Learn:** <https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary>
+
 <a id="eslint"></a>
 
 ### ESLint
@@ -1984,6 +1992,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** JavaScript with types, so many mistakes are caught before running.  
 **In Tafsila:** Strict mode everywhere ([ADR-001](../DECISIONS.md)); `any` is forbidden. **Card:** [TypeScript](tech/typescript.md) · **Level:** beginner  
 **Learn:** <https://www.typescriptlang.org/docs/>
+
+<a id="three-states"></a>
+
+### Three states (loading, empty, error)
+
+**Plain words:** Every screen that loads data must look right in three situations besides "has data": still loading, nothing to show yet, and failed to load.
+**In Tafsila:** `DataState` in `apps/web/src/shared/data-state/` picks Skeleton, EmptyState or ErrorState ([ADR-72](../decisions/72-error-display.md)). **Card:** [Radix UI](tech/radix-ui.md) · **Level:** beginner  
+**Learn:** <https://web.dev/articles/inclusive-components>
 
 <a id="letter-u"></a>
 
