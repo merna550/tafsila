@@ -1,0 +1,1 @@
+[ "$1" = "rebase" ] && sh scripts/sync-deps.sh ORIG_HEAD HEAD; exit 0
