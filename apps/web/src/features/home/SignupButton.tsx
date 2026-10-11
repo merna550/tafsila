@@ -1,16 +1,23 @@
 "use client";
-/** Home call-to-action: fires `signup_started` (placeholder until the M1 signup form). */
+/** Home call-to-action: fires `signup_started` and opens the sign-up screen. */
 import { Button } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { track } from "../../shared/analytics";
+import { useRouter } from "../../shared/i18n";
 
 /**
- * Renders the "start now" button and records that signup started.
+ * Renders the "start now" button, records that signup started and opens the sign-up screen.
  *
  * @returns The button.
  */
 export function SignupButton(): ReactElement {
   const t = useTranslations("home");
-  return <Button onClick={() => track("signup_started", { source: "home" })}>{t("start")}</Button>;
+  const router = useRouter();
+  /** Records the start and opens the sign-up screen. */
+  const start = (): void => {
+    track("signup_started", { source: "home" });
+    router.push("/sign-up");
+  };
+  return <Button onClick={start}>{t("start")}</Button>;
 }
