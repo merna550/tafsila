@@ -1,4 +1,4 @@
-/** Hard ranges for body measurements, in millimetres (FR-MEAS-03, ADR-28). */
+/** Hard ranges for body measurements, in millimetres (FR-MEAS-03, ADR-28a). */
 import type { Measurements } from "@tafsila/schemas";
 
 /** Names of the numeric body measurements (every key of `Measurements` except `unit`). */
