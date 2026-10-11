@@ -3,3 +3,4 @@ export * from "./errors/drafting-error";
 export * from "./geometry";
 export * from "./sleeve/sleeve-cap";
 export * from "./version";
+export * from "./measurements";
