@@ -5,6 +5,7 @@ export * from "./form-field";
 export * from "./icon-button";
 export * from "./input";
 export * from "./link";
+export * from "./logo";
 export * from "./radio";
 export * from "./select";
 export * from "./switch";

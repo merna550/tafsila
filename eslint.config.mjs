@@ -118,11 +118,6 @@ export default tseslint.config(
     rules: { "no-restricted-globals": "off", "no-restricted-properties": "off" },
   },
   {
-    // M0 placeholder screens keep Arabic text inline until M1 wave 3 adds next-intl and messages/{ar,en}.json (#66).
-    files: ["apps/web/src/app/page.tsx", "apps/web/src/app/layout.tsx", "apps/web/src/features/home/**"],
-    rules: { "no-restricted-syntax": ["error", ...tokenRules] },
-  },
-  {
     // Config and script files (JS or outside a tsconfig): lint without type information.
     files: ["**/*.mjs", "**/*.cjs", "**/*.config.ts", "**/*.config.mjs"],
     extends: [tseslint.configs.disableTypeChecked],

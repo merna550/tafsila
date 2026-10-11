@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>تسجيل الدخول</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FBF7F1; color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl; display: flex; align-items: center; justify-content: center; padding: 32px 16px;">
+  <div style="width: 100%; max-width: 1040px; display: flex; flex-wrap: wrap; gap: 32px; align-items: stretch;">
+
+    <div style="flex: 1 1 420px; min-width: 0; background: #F9E6DA; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 24px; overflow: hidden;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <svg width="40" height="40" viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="4" width="48" height="48" rx="16" fill="#0E6B65"></rect><path d="M14 34 L42 22" stroke="#FBF7F1" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"></path><circle cx="40" cy="36" r="5" fill="#EBA83F"></circle></svg>
+        <span style="font-size: 24px; line-height: 36px; font-weight: 600;">تفصيلة</span>
+      </div>
+
+      <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 260px;">
+        <svg viewBox="0 0 300 340" style="width: 100%; max-width: 300px; display: block;" role="img" aria-label="مانيكان خياطة عليه شريط قياس">
+          <circle cx="150" cy="160" r="130" fill="#FBF7F1"></circle>
+          <rect x="140" y="22" width="20" height="26" rx="6" fill="#FFFFFF" stroke="#8C7D72" stroke-width="2"></rect>
+          <path d="M96 60 Q150 40 204 60 Q222 100 206 140 Q196 168 208 210 Q150 228 92 210 Q104 168 94 140 Q78 100 96 60 Z" fill="#FFFFFF" stroke="#8C7D72" stroke-width="2"></path>
+          <path d="M150 50 V218" stroke="#0E6B65" stroke-width="2" stroke-dasharray="6 6" fill="none"></path>
+          <path d="M118 56 Q128 120 112 214" stroke="#0E6B65" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity=".6"></path>
+          <path d="M182 56 Q172 120 188 214" stroke="#0E6B65" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity=".6"></path>
+          <path d="M150 220 V300" stroke="#8C7D72" stroke-width="5" stroke-linecap="round"></path>
+          <path d="M112 312 Q150 296 188 312" stroke="#8C7D72" stroke-width="5" stroke-linecap="round" fill="none"></path>
+          <path d="M126 48 Q150 66 174 48 L184 54 Q180 120 196 176 L184 180 Q168 120 172 62 Q150 76 128 62 Q132 120 116 180 L104 176 Q120 120 116 54 Z" fill="#EBA83F"></path>
+        </svg>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 style="margin: 0; font-size: 32px; line-height: 44px; font-weight: 600;">باترون على مقاس عميلتك.</h1>
+        <p style="margin: 0; font-size: 17px; line-height: 28px; color: #625650;">من صورة الفستان، جاهز للقص.</p>
+      </div>
+    </div>
+
+    <div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); padding: 32px 24px; display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; background: #F3ECE2; border-radius: 10px; padding: 4px; gap: 4px;">
+        <button type="button" aria-pressed="true" style="flex: 1; height: 44px; border: 0; border-radius: 8px; background: #FFFFFF; color: #2A2220; font: inherit; font-size: 15px; font-weight: 600; box-shadow: 0 1px 2px rgba(42,34,32,.08);">دخول</button>
+        <button type="button" aria-pressed="false" style="flex: 1; height: 44px; border: 0; border-radius: 8px; background: transparent; color: #625650; font: inherit; font-size: 15px; font-weight: 600;">حساب جديد</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label for="email" style="font-size: 15px; line-height: 22px; font-weight: 600;">البريد الإلكتروني</label>
+        <input id="email" type="email" value="mona.tailor@example.com" dir="ltr" style="height: 48px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; padding: 0 14px; font: inherit; font-size: 17px; color: #2A2220; background: #FFFFFF; text-align: right;">
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+          <label for="pass" style="font-size: 15px; line-height: 22px; font-weight: 600;">كلمة المرور</label>
+          <a href="#" style="font-size: 15px; font-weight: 500;">نسيت كلمة المرور؟</a>
+        </div>
+        <input id="pass" type="password" value="password1" style="height: 48px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; padding: 0 14px; font: inherit; font-size: 17px; color: #2A2220; background: #FFFFFF;">
+      </div>
+
+      <a href="Verify.dc.html" style="height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #0E6B65; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none;">دخول</a>
+
+      <div style="display: flex; align-items: center; gap: 12px; color: #625650; font-size: 15px;">
+        <div style="flex: 1; height: 1px; background: #D9CCBC;"></div><span>أو</span><div style="flex: 1; height: 1px; background: #D9CCBC;"></div>
+      </div>
+
+      <button type="button" style="height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #8C7D72; border-radius: 10px; background: #FFFFFF; color: #2A2220; font: inherit; font-size: 17px; font-weight: 600;">المتابعة بحساب Google</button>
+
+      <div style="margin-top: auto; text-align: center; font-size: 13px; line-height: 20px; color: #625650;">المتابعة تعني الموافقة على <a href="#">شروط الاستخدام</a> و<a href="#">سياسة الخصوصية</a></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

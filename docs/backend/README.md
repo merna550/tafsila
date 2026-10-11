@@ -25,3 +25,7 @@ Kept current in the same PR as every backend change (Definition of Done).
 | `tutorials/switch-environment.md`  | Pointing the app/tools at dev, staging or prod                                      |
 | `tutorials/docker.md`              | Images, containers, compose profiles, prod-like local run                           |
 | `tutorials/add-garment-module.md`  | New pattern feature in the engine (geometry, validation, tests, sew test)           |
+
+## Authentication (plan #25, part B)
+
+Sign-up, sign-in and reset go from the browser straight to Supabase Auth; our API never sees a password. Protected routes use `requireAuth(container.tokenVerifier)` from `packages/api/src/middleware/auth.ts`: it verifies the bearer access token once (`jose` against the project JWKS, issuer `<SUPABASE_URL>/auth/v1`, audience `authenticated`) and sets `{ userId, role, claims }`. The role is the `user_role` claim added by `public.custom_access_token_hook` (migration `20261011130000`, enabled in `supabase/config.toml`; staging and production need the same `[auth.hook.custom_access_token]` block pushed). `GET /api/me` returns `{ userId, role }`. If `SUPABASE_URL` is missing every token is rejected. Details: [decision 25a](../decisions/25a-auth.md), [Protect a route](tutorials/add-endpoint.md#protect-a-route-plan-25-part-b).

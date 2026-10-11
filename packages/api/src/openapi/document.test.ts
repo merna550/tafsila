@@ -1,0 +1,91 @@
+import { createRoute, z } from "@hono/zod-openapi";
+import { describe, expect, it } from "vitest";
+import { createApp } from "../app";
+import { createContainer } from "../container";
+import { buildOpenApiDocument, renderOpenApiDocument } from "./document";
+
+type Doc = {
+  openapi: string;
+  paths: Record<string, Record<string, Record<string, unknown>>>;
+  components: { securitySchemes: Record<string, unknown> };
+};
+const doc = buildOpenApiDocument() as Doc;
+type Schema = { properties: Record<string, { example?: string }> };
+const responseSchema = (path: string, status: string): Schema =>
+  (
+    doc.paths[path]!.get!.responses as Record<string, { content: { "application/json": { schema: Schema } } }>
+  )[status]!.content["application/json"].schema;
+const ERROR_KEYS = ["code", "message_ar", "message_en", "request_id"];
+
+describe("OpenAPI document", () => {
+  it("is OpenAPI 3.1 and lists exactly the API routes", () => {
+    expect(doc.openapi).toBe("3.1.0");
+    expect(Object.keys(doc.paths).sort((a, b) => a.localeCompare(b))).toEqual([
+      "/api/debug/error",
+      "/api/health",
+      "/api/me",
+    ]);
+  });
+
+  it("documents bearer auth on /api/me with the standard 401 body", () => {
+    expect(doc.components.securitySchemes.bearerAuth).toEqual({
+      type: "http",
+      scheme: "bearer",
+      bearerFormat: "JWT",
+    });
+    const me = doc.paths["/api/me"]!.get!;
+    expect(me.security).toEqual([{ bearerAuth: [] }]);
+    const schema = responseSchema("/api/me", "401");
+    for (const key of ERROR_KEYS) expect(Object.keys(schema.properties)).toContain(key);
+  });
+
+  it("documents the health fields with examples", () => {
+    const schema = responseSchema("/api/health", "200");
+    expect(Object.keys(schema.properties)).toEqual(["status", "environment", "version", "gitSha", "time"]);
+    expect(schema.properties.version?.example).toBe("1.2.3");
+  });
+
+  it("is byte-stable between runs", () => {
+    expect(renderOpenApiDocument()).toBe(renderOpenApiDocument());
+  });
+});
+
+describe("OpenAPI routes", () => {
+  const appFor = (environment: string) =>
+    createApp(createContainer({ appInfo: { environment, version: "1", gitSha: "x" } }));
+
+  it("GET /api/openapi.json serves the same document", async () => {
+    const res = await appFor("test").request("/api/openapi.json");
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual(buildOpenApiDocument());
+  });
+
+  it("GET /api/docs is HTML outside production and 404 in production", async () => {
+    const res = await appFor("test").request("/api/docs");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+    expect((await appFor("production").request("/api/docs")).status).toBe(404);
+  });
+});
+
+describe("request validation hook", () => {
+  it("turns a Zod failure into the standard VALIDATION_FAILED body", async () => {
+    const probe = createApp(createContainer());
+    const route = createRoute({
+      method: "post",
+      path: "/probe",
+      request: { body: { content: { "application/json": { schema: z.object({ name: z.string() }) } } } },
+      responses: { 200: { description: "ok" } },
+    });
+    probe.openapi(route, (c) => c.json({ ok: true }, 200));
+    const res = await probe.request("/api/probe", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: 5 }),
+    });
+    expect(res.status).toBe(400);
+    const body = (await res.json()) as { code: string; details: { fields: Record<string, string> } };
+    expect(body.code).toBe("VALIDATION_FAILED");
+    expect(Object.keys(body.details.fields)).toContain("name");
+  });
+});

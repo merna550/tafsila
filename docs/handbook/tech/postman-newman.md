@@ -31,19 +31,22 @@ If Postman's pricing or account requirement for collaboration becomes a problem,
 ## Where it lives in our code
 
 - `postman/` (README, `collection-prerequest.js`, `collection-tests.js`, `environments/`).
-- `scripts/gen-postman.mjs` (OpenAPI to collection), `compose.yaml` (service `newman`, profile `tools`).
+- `scripts/gen-postman.mjs` (OpenAPI to collection), `scripts/api-check.mjs`, `scripts/api-test.mjs`, `postman/err-cases.json` (the `ERR` requests), `compose.yaml` (service `newman`, profile `tools`).
 - Tutorial: [use-postman](../../backend/tutorials/use-postman.md); seeded test accounts: [seed-data](../../backend/seed-data.md).
 
 ## The 20% you need
 
-- Never edit the collection by hand; change the route's schema and regenerate (`pnpm api:postman`, planned with the OpenAPI work).
+- Never edit the collection by hand; change the route's schema and regenerate (`pnpm api:openapi && pnpm api:postman`; `pnpm api:check` fails when they are stale).
 - Environments (`local`, `staging`, `prod`) hold the base URL and keys; secrets stay on your machine.
 
 ## Commands you'll use
 
 ```bash
-pnpm api:postman     # regenerate the collection (planned)
-pnpm api:test        # run it with Newman (planned)
+pnpm api:openapi     # routes -> packages/api/openapi.json
+pnpm api:postman     # openapi.json -> postman/tafsila.postman_collection.json (twice changes nothing)
+pnpm api:check       # fails when either committed file is stale
+pnpm api:test        # Newman against a throwaway local API (no Docker, no Supabase)
+pnpm api:test --base-url https://staging.example.com   # same collection against a given API
 docker compose --profile tools run newman
 ```
 

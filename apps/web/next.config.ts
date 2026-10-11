@@ -2,6 +2,9 @@
 import { existsSync } from "node:fs";
 import { withSentryConfig } from "@sentry/nextjs/config";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
 
 /** Loads the repo-root .env.local (the documented place) without overriding variables already set, so apps/web/.env.local still wins (ADR-95). */
 const rootEnv = new URL("../../.env.local", import.meta.url).pathname;
@@ -22,7 +25,7 @@ const nextConfig: NextConfig = {
 };
 
 /** Source maps are uploaded only when the staging CI provides SENTRY_AUTH_TOKEN, then deleted from the build output. */
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withNextIntl(nextConfig), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   authToken: process.env.SENTRY_AUTH_TOKEN,

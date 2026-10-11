@@ -1,6 +1,7 @@
 "use client";
 /** Home call-to-action: fires `signup_started` (placeholder until the M1 signup form). */
 import { Button } from "@tafsila/ui";
+import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { track } from "../../shared/analytics";
 
@@ -10,5 +11,6 @@ import { track } from "../../shared/analytics";
  * @returns The button.
  */
 export function SignupButton(): ReactElement {
-  return <Button onClick={() => track("signup_started", { source: "home" })}>ابدئي الآن</Button>;
+  const t = useTranslations("home");
+  return <Button onClick={() => track("signup_started", { source: "home" })}>{t("start")}</Button>;
 }

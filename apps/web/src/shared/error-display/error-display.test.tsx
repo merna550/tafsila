@@ -1,7 +1,7 @@
-import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { ApiError, clientApiError } from "../api";
 import { DataState } from "../data-state";
+import { renderWithIntl, renderWithIntl as renderToStaticMarkup } from "../i18n/testing";
 import { ApiErrorView } from "./ApiErrorView";
 import { AppErrorBoundary, ErrorBoundaryFallback } from "./AppErrorBoundary";
 import { ConnectionBannerView } from "./ConnectionBanner";
@@ -86,7 +86,7 @@ describe("ApiErrorView", () => {
     expect(html).toContain("رسالة عربية");
     expect(html).toContain("req-42");
     expect(html).toContain("نسخ رقم المرجع");
-    expect(html).toContain("حاولي تاني");
+    expect(html).toContain("إعادة المحاولة");
     expect(html).not.toContain("500");
   });
 
@@ -94,13 +94,24 @@ describe("ApiErrorView", () => {
     const route = routeError(apiError(403, "forbidden"), "load");
     const html = renderToStaticMarkup(<ApiErrorView route={route} onRetry={() => undefined} />);
     expect(html).toContain("ليس لديك صلاحية");
-    expect(html).not.toContain("حاولي تاني");
+    expect(html).not.toContain("إعادة المحاولة");
+  });
+});
+
+describe("error display in English", () => {
+  it("reads its texts from messages/en.json", () => {
+    const route = routeError(apiError(500, "server", { requestId: "req-7" }), "load", "en");
+    const html = renderWithIntl(<ApiErrorView route={route} onRetry={() => undefined} />, "en");
+    expect(html).toContain("english");
+    expect(html).toContain("Copy reference");
+    expect(html).toContain("Try again");
+    expect(renderWithIntl(<ConnectionBannerView offline />, "en")).toContain("No internet connection");
   });
 });
 
 describe("ConnectionBannerView", () => {
   it("shows the offline message", () => {
-    expect(renderToStaticMarkup(<ConnectionBannerView offline />)).toContain("مفيش اتصال");
+    expect(renderToStaticMarkup(<ConnectionBannerView offline />)).toContain("لا يوجد اتصال");
   });
 
   it("renders nothing while online", () => {
@@ -116,7 +127,7 @@ describe("AppErrorBoundary", () => {
   it("renders ErrorState without technical text", () => {
     const html = renderToStaticMarkup(<ErrorBoundaryFallback />);
     expect(html).toContain('role="alert"');
-    expect(html).toContain("حصلت مشكلة غير متوقعة");
+    expect(html).toContain("حدثت مشكلة غير متوقعة");
   });
 
   it("reports to monitoring with the request id", () => {
@@ -154,7 +165,7 @@ describe("DataState (three states)", () => {
         {content}
       </DataState>,
     );
-    expect(html).toContain("لسه مفيش حاجة هنا");
+    expect(html).toContain("لا يوجد شيء هنا بعد");
   });
 
   it("shows an error state with Try again", () => {
@@ -164,7 +175,7 @@ describe("DataState (three states)", () => {
       </DataState>,
     );
     expect(html).toContain('role="alert"');
-    expect(html).toContain("حاولي تاني");
+    expect(html).toContain("إعادة المحاولة");
   });
 
   it("shows the content when loaded", () => {

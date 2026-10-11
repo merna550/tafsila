@@ -47,6 +47,21 @@ jobs:
         run: pnpm tokens:check
       - name: Scripts and handbook check tests
         run: pnpm test:docs
+      # OpenAPI and Postman checks run only when the API, its schemas or the Postman files change (issue #94, ADR-86 pattern).
+      # They are steps of this job, not a new job, so no required check can disappear.
+      - name: API paths (are the OpenAPI and Postman checks needed?)
+        id: api-paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: node scripts/ci-paths.mjs api "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: OpenAPI document and Postman collection are up to date
+        if: steps.api-paths.outputs.run == 'true'
+        run: pnpm api:check
+      - name: Newman against a local API
+        if: steps.api-paths.outputs.run == 'true'
+        run: pnpm api:test
 
   # Decides whether Storybook is needed (issue #86). A skipped `storybook` job counts as passed for a required check.
   scope-storybook:

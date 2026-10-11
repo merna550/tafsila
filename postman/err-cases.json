@@ -1,0 +1,18 @@
+[
+  {
+    "name": "ERR GET /api/me without a token returns 401",
+    "method": "GET",
+    "path": "/api/me",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR GET /api/does-not-exist returns 404",
+    "method": "GET",
+    "path": "/api/does-not-exist",
+    "auth": false,
+    "status": 404,
+    "code": "NOT_FOUND"
+  }
+]

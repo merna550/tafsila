@@ -1,0 +1,275 @@
+{
+  "item": [
+    {
+      "name": "auth",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Who the verified access token says you are",
+          "request": {
+            "name": "Who the verified access token says you are",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"userId\",\"role\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "name": "Errors",
+      "item": [
+        {
+          "name": "ERR GET /api/does-not-exist returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/does-not-exist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "does-not-exist"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR GET /api/me without a token returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error code is UNAUTHENTICATED\", () => pm.expect(pm.response.json().code).to.eql(\"UNAUTHENTICATED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "system",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Liveness check with build information",
+          "request": {
+            "name": "Liveness check with build information",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"status\",\"environment\",\"version\",\"gitSha\",\"time\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Collection-level pre-request script (injected by scripts/gen-postman.mjs).",
+          "// Logs in to Supabase with the environment's test account when there is no valid token,",
+          "// so every request is authenticated without manual steps.",
+          "const exp = Number(pm.environment.get(\"tokenExpiresAt\") || 0);",
+          "if (!pm.environment.get(\"accessToken\") || Date.now() > exp - 60_000) {",
+          "  pm.sendRequest(",
+          "    {",
+          "      url: pm.environment.get(\"supabaseUrl\") + \"/auth/v1/token?grant_type=password\",",
+          "      method: \"POST\",",
+          "      header: { \"Content-Type\": \"application/json\", apikey: pm.environment.get(\"supabaseAnonKey\") },",
+          "      body: {",
+          "        mode: \"raw\",",
+          "        raw: JSON.stringify({",
+          "          email: pm.environment.get(\"testEmail\"),",
+          "          password: pm.environment.get(\"testPassword\"),",
+          "        }),",
+          "      },",
+          "    },",
+          "    (err, res) => {",
+          "      if (err || res.code !== 200) {",
+          "        console.error(\"Login failed\", err || res.text());",
+          "        return;",
+          "      }",
+          "      const j = res.json();",
+          "      pm.environment.set(\"accessToken\", j.access_token);",
+          "      pm.environment.set(\"tokenExpiresAt\", String(Date.now() + j.expires_in * 1000));",
+          "    },",
+          "  );",
+          "}",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Collection-level test script (injected by scripts/gen-postman.mjs): runs after every request.",
+          "pm.test(\"status is 2xx (unless the request name starts with 'ERR')\", () => {",
+          "  if (!pm.info.requestName.startsWith(\"ERR\")) pm.expect(pm.response.code).to.be.within(200, 299);",
+          "});",
+          "pm.test(\"responds in under 2s\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+          "// Capture ids so later requests in the run can use them ({{designId}}, {{versionId}}, {{clientId}}).",
+          "try {",
+          "  const j = pm.response.json();",
+          "  for (const k of [\"clientId\", \"designId\", \"versionId\"]) if (j && j[k]) pm.environment.set(k, j[k]);",
+          "  if (j && j.id && pm.info.requestName.match(/create client/i)) pm.environment.set(\"clientId\", j.id);",
+          "  if (j && j.id && pm.info.requestName.match(/create design/i)) pm.environment.set(\"designId\", j.id);",
+          "} catch (_) {}",
+          "// ERR requests must return the standard error body (docs/errors.md).",
+          "if (pm.info.requestName.startsWith(\"ERR\")) {",
+          "  pm.test(\"error body has code, message_ar, message_en, request_id\", () => {",
+          "    const body = pm.response.json();",
+          "    for (const key of [\"code\", \"message_ar\", \"message_en\", \"request_id\"])",
+          "      pm.expect(body[key]).to.be.a(\"string\").that.is.not.empty;",
+          "  });",
+          "}",
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "{{baseUrl}}"
+    }
+  ],
+  "info": {
+    "name": "Tafsila API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    },
+    "_postman_id": "8f75d8c68157ca5d37a175ffe929f0758500647a38a63b6b4e17b5a82ab07801"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  }
+}

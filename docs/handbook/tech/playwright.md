@@ -6,7 +6,7 @@ adr: ADR-013
 
 # Playwright
 
-**In one line:** Drives a real browser to test full user flows, in Arabic and English. Planned for M1 onward.
+**In one line:** Drives a real browser to test full user flows, in Arabic and English. Used by `apps/web` (since #90) and for the Storybook snapshots in `packages/ui`.
 
 ## What it is (plain words)
 
@@ -25,11 +25,11 @@ Playwright opens Chromium, Firefox or WebKit, clicks and types like a user, and 
 
 ## When we would change it
 
-Unlikely. Not installed yet: the first flow tests arrive with the first user screens.
+Unlikely.
 
 ## Where it lives in our code
 
-Not installed yet. Planned: apps/web/e2e/ and the `pnpm test:e2e` script named in [CLAUDE.md](../../../CLAUDE.md). Test rules: `.claude/rules/testing.md`; manual cases: `docs/test-cases/`.
+`apps/web/e2e/` with `apps/web/playwright.config.ts` (projects `ar-desktop`, `ar-mobile`, `en-desktop`, `en-mobile`; it builds and starts the app itself) and `pnpm --filter web test:e2e`; `packages/ui/e2e/` holds the Storybook snapshots. CI: `.github/workflows/e2e.yml`. A preinstalled browser can be used with `PLAYWRIGHT_CHROMIUM_PATH`. Test rules: `.claude/rules/testing.md`; manual cases: `docs/test-cases/`.
 
 ## The 20% you need
 

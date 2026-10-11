@@ -47,7 +47,7 @@ dependency-cruiser fails the build when a component imports `shared/api`, TanSta
 
 ## Where in our code
 
-`shared/api` (the API client and `ApiError`) exists since #66. Of the feature layers only the first exists so far: `apps/web/src/app/page.tsx` (a placeholder home page) and `apps/web/src/app/layout.tsx`. The `features/`, `entities/` and `shared/` folders are **planned** from milestone M1; the first feature will be added with the `add-page` skill (`.claude/skills/add-page/SKILL.md`). Shared UI that already exists: `packages/ui/src/button.tsx`.
+`shared/api` (the API client and `ApiError`) exists since #66. Of the feature layers only the first exists so far: `apps/web/src/app/[locale]/page.tsx` (a placeholder home page) and `apps/web/src/app/[locale]/layout.tsx`. The `features/`, `entities/` and `shared/` folders are **planned** from milestone M1; the first feature will be added with the `add-page` skill (`.claude/skills/add-page/SKILL.md`). Shared UI that already exists: `packages/ui/src/button.tsx`.
 
 ## Learn more
 

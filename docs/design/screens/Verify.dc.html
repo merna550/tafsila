@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>تأكيد رقم الهاتف</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FBF7F1; color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl; display: flex; flex-direction: column; align-items: center; padding: 24px 16px 40px;">
+  <div style="width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <a href="Main.dc.html" style="min-height: 44px; display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        العودة
+      </a>
+      <span style="font-size: 15px; color: #625650;">الخطوة 2 من 2</span>
+    </div>
+    <div style="display: flex; gap: 6px;">
+      <div style="flex: 1; height: 6px; border-radius: 6px; background: #0E6B65;"></div>
+      <div style="flex: 1; height: 6px; border-radius: 6px; background: #EBA83F;"></div>
+    </div>
+
+    <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); padding: 32px 24px; display: flex; flex-direction: column; gap: 22px;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 style="margin: 0; font-size: 24px; line-height: 36px; font-weight: 600;">تأكيد رقم الهاتف</h1>
+        <p style="margin: 0; font-size: 17px; line-height: 28px; color: #625650;">سنرسل إليك رمزاً من 6 أرقام. يمنحك التأكيد 3 باترونات مجانية، مرة واحدة لكل رقم.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label for="phone" style="font-size: 15px; line-height: 22px; font-weight: 600;">رقم الهاتف</label>
+        <div style="display: flex; gap: 8px; direction: ltr;">
+          <div style="height: 48px; padding: 0 12px; display: flex; align-items: center; border: 1px solid #8C7D72; border-radius: 10px; background: #F3ECE2; font-size: 17px;">+20</div>
+          <input id="phone" type="tel" value="010 1234 5678" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; padding: 0 14px; font: inherit; font-size: 17px; color: #2A2220; background: #FFFFFF;">
+        </div>
+      </div>
+
+      <div style="background: #E1F0ED; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E6B65" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 3px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16v.5"></path></svg>
+        <span style="font-size: 15px; line-height: 24px;">أرسلنا الرمز إلى <span dir="ltr">010 1234 5678</span>. لم يصلك؟ يمكن طلب رمز جديد بعد دقيقة.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label for="c1" style="font-size: 15px; line-height: 22px; font-weight: 600;">رمز التأكيد</label>
+        <div style="display: flex; gap: 8px; direction: ltr;">
+          <input id="c1" aria-label="الرقم 1" value="4" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 2px solid #0E6B65; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; font-weight: 600; color: #2A2220; background: #FFFFFF;">
+          <input aria-label="الرقم 2" value="8" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 2px solid #0E6B65; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; font-weight: 600; color: #2A2220; background: #FFFFFF;">
+          <input aria-label="الرقم 3" value="1" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 2px solid #0E6B65; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; font-weight: 600; color: #2A2220; background: #FFFFFF;">
+          <input aria-label="الرقم 4" value="" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; color: #2A2220; background: #FFFFFF;">
+          <input aria-label="الرقم 5" value="" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; color: #2A2220; background: #FFFFFF;">
+          <input aria-label="الرقم 6" value="" style="flex: 1; min-width: 0; max-width: 64px; height: 56px; box-sizing: border-box; border: 1px solid #8C7D72; border-radius: 10px; text-align: center; font: inherit; font-size: 24px; color: #2A2220; background: #FFFFFF;">
+        </div>
+        <div style="font-size: 15px; color: #625650;">إعادة الإرسال بعد <span dir="ltr">0:42</span></div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+        <a href="Clients.dc.html" style="flex: 2 1 220px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #0E6B65; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none;">تأكيد</a>
+        <a href="#" style="flex: 1 1 140px; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #8C7D72; border-radius: 10px; color: #2A2220; background: #FFFFFF; font-size: 15px; font-weight: 600; text-decoration: none;">تغيير الرقم</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

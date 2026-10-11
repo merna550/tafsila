@@ -93,7 +93,7 @@ Presentational components receive props and render. Fetching lives in hooks. Reu
 
 Real example: `packages/ui/src/button.tsx` is a typed component with one `variant` prop instead of ad-hoc styles per page. Its Tailwind classes are in a constant (`VARIANT_CLASSES`), not scattered through JSX.
 
-(The home page `apps/web/src/app/page.tsx` has Arabic text written directly in JSX. That is a milestone M0 placeholder; real screens use `messages/{ar,en}.json` as described in the [frontend docs](../frontend/README.md).)
+Every screen, the home page included, reads its text from `messages/{ar,en}.json` as described in the [frontend docs](../frontend/README.md); ESLint fails on literal text in JSX.
 
 ## 5. Comments and JSDoc
 

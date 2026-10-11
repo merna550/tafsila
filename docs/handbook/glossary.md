@@ -136,6 +136,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
+<a id="access-token-hook"></a>
+
+### Access token hook
+
+**Plain words:** A database function that Supabase Auth runs just before it signs a login token, so we can add our own fields to it.  
+**In Tafsila:** `custom_access_token_hook` adds `user_role` from `profiles.role`; the API reads the role from the token instead of the database. **Card:** [jose](tech/jose.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/auth/auth-hooks/custom-access-token-hook>
+
 <a id="letter-b"></a>
 
 ## B
@@ -540,7 +548,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### E2E (end-to-end) test
 
 **Plain words:** A test that drives the real app like a user (click, type, read the screen) from start to finish.  
-**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English (planned; [SRS section 11](../SRS.md)). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
+**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English ([SRS section 11](../SRS.md)). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
 **Learn:** <https://playwright.dev/docs/intro>
 
 <a id="ease"></a>
@@ -899,7 +907,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### i18n (internationalisation)
 
 **Plain words:** Building an app so it can show several languages ("i" + 18 letters + "n").  
-**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (planned, next-intl). **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
+**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (next-intl). **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/Internationalization>
 
 <a id="idempotency"></a>
@@ -975,7 +983,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### JWT (JSON Web Token)
 
 **Plain words:** A signed token that proves who the user is; the server checks the signature instead of asking the database each time.  
-**In Tafsila:** Supabase issues it; API auth middleware verifies it (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**In Tafsila:** Supabase issues it; `requireAuth` in `packages/api/src/middleware/auth.ts` verifies it with [jose](tech/jose.md). **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://jwt.io/introduction>
 
 <a id="letter-k"></a>
@@ -1298,7 +1306,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### OpenAPI
 
 **Plain words:** A standard file format describing every endpoint of an API.  
-**In Tafsila:** Generated from the routes (`pnpm api:openapi`, planned) and shown at `/api/docs`; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
+**In Tafsila:** Generated from the routes (`pnpm api:openapi` writes `packages/api/openapi.json`), served at `/api/openapi.json` and shown at `/api/docs` outside production; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://spec.openapis.org/oas/latest.html>
 
 <a id="orm"></a>

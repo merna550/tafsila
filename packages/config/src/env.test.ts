@@ -17,6 +17,11 @@ describe("loadServerEnv", () => {
     expect(env.PAYMOB_MODE).toBe("sandbox");
   });
 
+  it("reads AUTH_GOOGLE_ENABLED as a boolean that defaults to false", () => {
+    expect(loadServerEnv(valid).AUTH_GOOGLE_ENABLED).toBe(false);
+    expect(loadServerEnv({ ...valid, AUTH_GOOGLE_ENABLED: "true" }).AUTH_GOOGLE_ENABLED).toBe(true);
+  });
+
   it("lists every missing variable in one error", () => {
     expect(() => loadServerEnv({})).toThrow(/SUPABASE_URL.*SUPABASE_ANON_KEY/);
   });
@@ -78,6 +83,9 @@ describe("loadPublicConfig", () => {
       posthogHost: "https://us.i.posthog.com",
       appEnv: "staging",
       release: "abc",
+      supabaseUrl: undefined,
+      supabaseAnonKey: undefined,
+      authGoogleEnabled: false,
     });
   });
 
@@ -86,11 +94,24 @@ describe("loadPublicConfig", () => {
     expect(JSON.stringify(config)).not.toMatch(/SECRET-AI|service|pay/);
     expect(Object.keys(config).sort((a, b) => a.localeCompare(b))).toEqual([
       "appEnv",
+      "authGoogleEnabled",
       "posthogHost",
       "posthogKey",
       "release",
       "sentryDsn",
+      "supabaseAnonKey",
+      "supabaseUrl",
     ]);
+  });
+
+  it("passes the public Supabase URL and anon key but never the service role key", () => {
+    const config = loadPublicConfig({ ...valid, AUTH_GOOGLE_ENABLED: "true" });
+    expect(config).toMatchObject({
+      supabaseUrl: valid.SUPABASE_URL,
+      supabaseAnonKey: "anon",
+      authGoogleEnabled: true,
+    });
+    expect(JSON.stringify(config)).not.toContain("service");
   });
 
   it("is empty-safe when nothing is configured", () => {

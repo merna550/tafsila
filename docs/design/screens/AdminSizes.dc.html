@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة: جدول المقاسات</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FBF7F1; color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl;">
+  <header style="background: #2A2220; color: #FBF7F1;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;">
+      <span style="font-size: 20px; font-weight: 600;">تفصيلة</span>
+      <span style="background: #EBA83F; color: #2A2220; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: 600;">لوحة الإدارة</span>
+      <a href="Clients.dc.html" style="margin-inline-start: auto; min-height: 44px; display: flex; align-items: center; color: #FBF7F1; font-size: 15px; font-weight: 500;">العودة إلى الموقع</a>
+    </div>
+  </header>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+    <nav aria-label="أقسام لوحة الإدارة" style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 4px; background: #FFFFFF; border-radius: 16px; padding: 8px; box-shadow: 0 1px 2px rgba(42,34,32,.06);">
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">نظرة عامة</a>
+      <a href="AdminUsers.dc.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">المستخدمون</a>
+      <a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; background: #E1F0ED; color: #0E6B65; font-size: 15px; font-weight: 600; text-decoration: none;">جدول المقاسات</a>
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">سجل التعديلات</a>
+    </nav>
+
+    <main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; line-height: 36px; font-weight: 600;">جدول المقاسات المصري</h1>
+          <div style="font-size: 15px; color: #625650;">آخر تعديل: منى، أمس 4:20 م · القيم بالسنتيمتر</div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #8C7D72; border-radius: 10px; background: #FFFFFF; color: #2A2220; font: inherit; font-size: 15px; font-weight: 600;">استيراد CSV</button>
+          <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #8C7D72; border-radius: 10px; background: #FFFFFF; color: #2A2220; font: inherit; font-size: 15px; font-weight: 600;">تصدير CSV</button>
+          <button type="button" style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: #0E6B65; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 600;">حفظ التعديلات (2)</button>
+        </div>
+      </div>
+
+      <div style="background: #F9E6DA; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; font-size: 15px; line-height: 24px;">
+        <strong style="color: #A84A22;">مؤقت:</strong>
+        <span>هذه قيم تجريبية إلى حين إضافة الجدول المعتمد. يسري التعديل على المقاسات الجديدة فقط، ولا تتغيّر مقاسات العميلات المحفوظة.</span>
+      </div>
+
+      <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); overflow-x: auto;">
+        <table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 15px;">
+          <thead>
+            <tr style="background: #F3ECE2;">
+              <th scope="col" style="text-align: start; padding: 12px 16px; font-weight: 600;">القياس</th>
+              <th scope="col" style="padding: 12px 8px; font-weight: 600;">S</th>
+              <th scope="col" style="padding: 12px 8px; font-weight: 600;">M</th>
+              <th scope="col" style="padding: 12px 8px; font-weight: 600;">L</th>
+              <th scope="col" style="padding: 12px 8px; font-weight: 600;">XL</th>
+              <th scope="col" style="padding: 12px 8px; font-weight: 600;">XXL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+              <tr style="border-top: 1px solid #D9CCBC;">
+                <th scope="row" style="text-align: start; padding: 8px 16px; font-weight: 500;">{{r.name}}</th>
+                <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="5">
+                  <td style="padding: 6px 8px; text-align: center;">
+                    <input aria-label="{{c.label}}" value="{{c.value}}" aria-invalid="{{c.invalid}}" style="{{c.style}}">
+                  </td>
+                </sc-for>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 15px;">
+        <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 16px; height: 16px; border-radius: 4px; background: #F9E6DA; border: 1px solid #A84A22;"></span>معدَّل ولم يُحفظ بعد</span>
+        <span style="display: flex; align-items: center; gap: 6px; color: #B42318;"><span style="width: 16px; height: 16px; border-radius: 4px; border: 2px solid #B42318;"></span>XL: محيط أعلى الصدر أكبر من محيط الصدر</span>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() {
+const base = 'width: 72px; height: 44px; box-sizing: border-box; border-radius: 10px; text-align: center; font: inherit; font-size: 15px; color: #2A2220; ';
+const normal = base + 'border: 1px solid #D9CCBC; background: #FFFFFF;';
+const edited = base + 'border: 1px solid #A84A22; background: #F9E6DA;';
+const bad = base + 'border: 2px solid #B42318; background: #FFFFFF;';
+const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+const data = [
+['محيط الصدر', [84, 92, 100, 108, 116], {}],
+['محيط أعلى الصدر', [80, 87, 95, 110, 110], { 3: 'bad' }],
+['محيط الخصر', [66, 74, 82, 90, 98], { 1: 'edited' }],
+['محيط الورك', [92, 100, 108, 116, 124], {}],
+['عرض الكتف', [36, 37.5, 39, 40.5, 42], { 2: 'edited' }],
+['طول الظهر', [39, 40, 41, 42, 43], {}]
+];
+const rows = data.map(([name, vals, marks]) => ({
+name,
+cells: vals.map((v, i) => ({
+value: String(v),
+label: name + ' مقاس ' + sizes[i],
+invalid: marks[i] === 'bad' ? 'true' : 'false',
+style: marks[i] === 'bad' ? bad : marks[i] === 'edited' ? edited : normal
+}))
+}));
+return { rows };
+}
+}
+</script>
+</body>
+</html>

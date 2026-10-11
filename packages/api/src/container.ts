@@ -2,12 +2,17 @@
 import { loadBuildInfo, loadPublicConfig, type BuildInfo } from "@tafsila/config";
 import { createNoopAnalytics } from "./adapters/noop/noop-analytics";
 import { createNoopErrorReporter } from "./adapters/noop/noop-error-reporter";
+import {
+  createRejectingTokenVerifier,
+  createJwksTokenVerifier,
+} from "./adapters/supabase/jwks-token-verifier";
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
 import type { ErrorReporter } from "./ports/error-reporter";
+import type { TokenVerifier } from "./ports/token-verifier";
 
 /** Build information reported by the health endpoint. */
 export type AppInfo = BuildInfo;
@@ -22,6 +27,19 @@ export interface Container {
   readonly errorReporter: ErrorReporter;
   /** Where server-side product events go. */
   readonly analytics: Analytics;
+  /** Verifies Supabase access tokens for protected routes. */
+  readonly tokenVerifier: TokenVerifier;
+}
+
+/**
+ * Chooses the token verifier: the project's JWKS when SUPABASE_URL is set, otherwise one that rejects everything.
+ *
+ * @param source - Environment variables to read (defaults to process.env).
+ * @returns The token verifier for this environment.
+ */
+export function createTokenVerifier(source: Record<string, string | undefined> = process.env): TokenVerifier {
+  const { supabaseUrl } = loadPublicConfig(source);
+  return supabaseUrl ? createJwksTokenVerifier({ supabaseUrl }) : createRejectingTokenVerifier();
 }
 
 /**
@@ -59,6 +77,7 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     clock: createSystemClock(),
     appInfo: loadBuildInfo(),
     ...createObservability(),
+    tokenVerifier: createTokenVerifier(),
     ...overrides,
   };
 }

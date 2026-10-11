@@ -22,7 +22,7 @@ Read `packages/api/CLAUDE.md`, `docs/backend/tutorials/add-endpoint.md` and the 
    - A permission test: another user's data returns 404.
    - An error test per new code: the body is `{ code, message_ar, message_en, request_id }` and `errors.test.ts` stays green.
    - Adapter tests against local Supabase or the sandbox.
-7. **API docs:** run `pnpm api:openapi && pnpm api:postman`, then `pnpm api:test` against local. Add an `ERR …` example for the main failure.
+7. **API docs:** declare the route with `createRoute(...)` and `.openapi(route, handler)` on an `OpenAPIHono` (see `routes/me.ts`); document errors with `errorResponses(...)`. Run `pnpm api:openapi && pnpm api:postman`, then `pnpm api:test` (local, no Docker). Add an `ERR …` case for the main failure to `postman/err-cases.json`. `pnpm api:check` fails when the generated files are stale.
 8. **Data:** if a migration is needed, follow `docs/backend/tutorials/add-migration.md`. Add seed rows and update `docs/backend/seed-data.md`.
 9. **Docs:**
    - Update the SRS §8 API table.
