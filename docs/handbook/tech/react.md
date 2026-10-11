@@ -31,7 +31,7 @@ Practically never; replacing React would mean rewriting every screen. We follow 
 ## Where it lives in our code
 
 - `packages/ui/src/button.tsx` (the shared button component) and `packages/ui/src/index.ts`.
-- `apps/web/src/app/page.tsx` and `apps/web/src/app/layout.tsx`.
+- `apps/web/src/app/[locale]/page.tsx` and `apps/web/src/app/[locale]/layout.tsx`.
 - `packages/ui/package.json` lists React as a dev dependency for tests; the app supplies the real one.
 
 ## The 20% you need

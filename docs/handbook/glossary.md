@@ -540,7 +540,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### E2E (end-to-end) test
 
 **Plain words:** A test that drives the real app like a user (click, type, read the screen) from start to finish.  
-**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English (planned; [SRS section 11](../SRS.md)). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
+**In Tafsila:** Playwright, run with `pnpm test:e2e` in Arabic and English ([SRS section 11](../SRS.md)). **Card:** [Playwright](tech/playwright.md) · **Level:** intermediate  
 **Learn:** <https://playwright.dev/docs/intro>
 
 <a id="ease"></a>
@@ -899,7 +899,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### i18n (internationalisation)
 
 **Plain words:** Building an app so it can show several languages ("i" + 18 letters + "n").  
-**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (planned, next-intl). **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
+**In Tafsila:** Arabic (default) and English via `messages/{ar,en}.json` (next-intl). **Card:** [next-intl](tech/next-intl.md) · **Level:** intermediate  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/Internationalization>
 
 <a id="idempotency"></a>

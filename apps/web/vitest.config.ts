@@ -2,6 +2,7 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  test: { exclude: ["e2e/**", "node_modules/**"] },
   oxc: { jsx: { runtime: "automatic" } },
   resolve: { alias: { "@messages": new URL("./messages", import.meta.url).pathname } },
 });
