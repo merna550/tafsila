@@ -5,18 +5,19 @@ description: Add a garment feature to the pattern engine (DesignSpec enum → Fe
 
 # Add a garment feature module
 
-Read `packages/engine/CLAUDE.md`, `docs/engine/README.md` and `docs/backend/tutorials/add-garment-module.md` first. Geometry work needs a `plan:opus` plan.
+Read `packages/engine/CLAUDE.md`, `docs/engine/README.md` and `docs/backend/tutorials/add-garment-module.md` first. Geometry work needs a `plan:opus` plan. The engine rules are in `.claude/rules/engine/drafting.md`; the engine is pure TypeScript (no I/O, no React, no `fetch`).
 
 1. **Spec:** extend the `DesignSpec` enum in `packages/schemas` and the catalogue in SRS §6.1. Include the Arabic name and an option card image.
 2. **Method:** write down the drafting method and its source in the plan and in the module's JSDoc. Add any new constants to `packages/engine/src/constants/` in mm.
-3. **Module:** implement a pure `FeatureModule` (`id`, `appliesTo`, `draft`) that reuses blocks and `src/geometry/`. Register it in the module registry.
-4. **Validation:** register the FR-VAL rules the feature needs (seam match, notches, cap ease, darts…) with bilingual messages.
+3. **Module:** implement a pure `FeatureModule` (`id`, `appliesTo`, `draft`) that reuses blocks and `src/geometry/`. Register it in the module registry. The web app calls the engine only from `model/` or a Web Worker, never from `components/`.
+4. **Validation:** register the FR-VAL rules the feature needs (seam match, notches, cap ease, darts…) with bilingual messages. If the API can reject the spec, add the codes to `ERROR_CATALOGUE` and `docs/errors.md` (ADR-030).
 5. **Tests:**
    - Unit tests for key points.
    - fast-check property tests for each FR-VAL rule across the size matrix in `@tafsila/test-fixtures`.
    - An SVG snapshot per size.
 6. **Version:** bump `ENGINE_VERSION` if existing inputs now produce different geometry.
-7. **Seed:** add a design that uses the feature to `packages/test-fixtures` and to the seed data.
-8. **Test cases:** add `docs/test-cases/engine/<N>-<slug>.md`, then run `scripts/test-case-index.sh`. Add the `needs:sew-test` label and keep it until a toile is sewn in 3 sizes and logged.
-9. **Docs:** add the module to the catalogue in `docs/engine/README.md`.
-10. **Definition of Done:** complete every item in `docs/WORKFLOW.md` §5. Run `pnpm quality && pnpm test`.
+7. **UI:** if the feature adds an option the user picks, add the option card with `packages/ui` components, strings in both `messages/ar.json` and `messages/en.json`, and follow the `add-page` skill.
+8. **Seed:** add a design that uses the feature to `packages/test-fixtures` and to the seed data.
+9. **Test cases:** add `docs/test-cases/engine/<N>-<slug>.md`, then run `scripts/test-case-index.sh`. Add the `needs:sew-test` label and keep it until a toile is sewn in 3 sizes and logged.
+10. **Docs:** add the module to the catalogue in `docs/engine/README.md`.
+11. **Definition of Done:** complete every item in `docs/WORKFLOW.md` §5. Run `pnpm quality && pnpm test`.

@@ -524,6 +524,13 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `packages/ui/src/tokens.css`; brand values are generated from `docs/design-system/tokens.json` by `pnpm tokens` (never edit the generated block by hand). **Card:** [Tailwind CSS](tech/tailwind.md) · **Level:** beginner  
 **Learn:** <https://tailwindcss.com/docs/theme>
 
+<a id="primary-action"></a>
+
+### Primary action
+
+**Plain words:** The one main button of a screen (the filled one); every other action is outlined or a plain link, so the user always knows what to press.  
+**In Tafsila:** `Button variant="primary"`, one per screen ([Using the design system](../frontend/design-system.md#primary-and-secondary-actions)). **Card:** [Design-system composition](patterns/design-system-composition.md) · **Level:** beginner
+
 <a id="letter-e"></a>
 
 ## E

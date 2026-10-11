@@ -4,7 +4,7 @@ Kept current in the same PR as every UI change (Definition of Done). Architectur
 
 ## Design system
 
-- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `packages/ui/src/tokens.css` (the only file with raw colours). The brand is approved: values are generated from `docs/design-system/tokens.json` with `pnpm tokens` (ADR-80); read [the design system](../design-system/README.md). A fuller `docs/frontend/design-system.md` arrives with #70 and will link there.
+- `packages/ui`: shadcn/ui-based primitives, RTL-first, with tokens for colour, spacing and radius in `packages/ui/src/tokens.css` (the only file with raw colours). The brand is approved: values are generated from `docs/design-system/tokens.json` with `pnpm tokens` (ADR-80); read [the design system](../design-system/README.md) (the brand) and [Using the design system](design-system.md) (which component for what, forms, page structure, states, RTL).
 - Features compose primitives and never restyle them ad hoc. JSX repeated twice is promoted to `packages/ui` with a test.
 - Every component has a JSDoc purpose comment and typed props (`docs/CODING_STANDARDS.md` §4–5).
 
@@ -68,9 +68,23 @@ The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 
 ## Tutorials and skills
 
-| Task                        | Where                                   |
-| --------------------------- | --------------------------------------- |
-| New page or feature         | `.claude/skills/add-page/SKILL.md`      |
-| New endpoint the page needs | `.claude/skills/add-endpoint/SKILL.md`  |
-| Run the app locally         | `docs/backend/tutorials/run-locally.md` |
-| Path-scoped agent rules     | `.claude/rules/frontend/`               |
+| Task                        | Where                                        |
+| --------------------------- | -------------------------------------------- |
+| New page or feature         | `.claude/skills/add-page/SKILL.md`           |
+| New endpoint the page needs | `.claude/skills/add-endpoint/SKILL.md`       |
+| Run the app locally         | `docs/backend/tutorials/run-locally.md`      |
+| New garment feature         | `.claude/skills/add-garment-module/SKILL.md` |
+| Path-scoped agent rules     | `.claude/rules/frontend/`                    |
+
+## Decisions
+
+| Topic                                                                  | Where                                                   |
+| ---------------------------------------------------------------------- | ------------------------------------------------------- |
+| Frontend layers and rules v2 (ADR-029), error contract (ADR-030)       | [DECISIONS.md](../DECISIONS.md) (ADR-029, ADR-030)      |
+| Design system base: tokens file, Radix, Storybook, snapshots (ADR-031) | [DECISIONS.md](../DECISIONS.md) (ADR-031)               |
+| Layout, overlay and feedback components (ADR-033)                      | [DECISIONS.md](../DECISIONS.md) (ADR-033)               |
+| Error display, `DataState`, connection banner (ADR-72)                 | [72-error-display.md](../decisions/72-error-display.md) |
+| Brand applied, generated tokens (ADR-80)                               | [80-brand-tokens.md](../decisions/80-brand-tokens.md)   |
+| Data access behind the API (ADR-035)                                   | [DECISIONS.md](../DECISIONS.md) (ADR-035)               |
+
+Rules v2: [components](../../.claude/rules/frontend/components.md) · [layering](../../.claude/rules/frontend/layering.md) · [error display](../../.claude/rules/frontend/error-display.md) · [RTL and i18n](../../.claude/rules/frontend/rtl-i18n.md) · [state and forms](../../.claude/rules/frontend/state-and-forms.md). Components and their screenshots: [design-system.md](design-system.md); error catalogue: [errors.md](../errors.md).
