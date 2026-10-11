@@ -1,6 +1,6 @@
 "use client";
 /** Client frame of every page: toasts, the top-level error boundary and AppShell with the connection banner. */
-import { AppShell, ToastProvider } from "@tafsila/ui";
+import { AppShell, Logo, ToastProvider } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement, ReactNode } from "react";
 import { AppErrorBoundary, ConnectionBanner } from "../../shared/error-display";
@@ -29,7 +29,10 @@ export function AppFrame({ children, dir }: Readonly<AppFrameProps>): ReactEleme
         banner={<ConnectionBanner />}
         header={
           <div className="flex w-full items-center justify-between gap-4">
-            <strong>{common("appName")}</strong>
+            <span className="flex items-center gap-2">
+              <Logo className="size-8" />
+              <strong>{common("appName")}</strong>
+            </span>
             <LocaleSwitch />
           </div>
         }

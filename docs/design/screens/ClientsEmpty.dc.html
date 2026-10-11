@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>عميلاتي (فارغة)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B65}a:hover{color:#0A5651}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #0E6B65;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FBF7F1; color: #2A2220; font-family: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', Tahoma, sans-serif; direction: rtl;">
+  <header style="background: #FFFFFF; border-bottom: 1px solid #D9CCBC;">
+    <div style="max-width: 1120px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;">
+      <a href="Clients.dc.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #2A2220; text-decoration: none;">
+        <svg width="36" height="36" viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="4" width="48" height="48" rx="16" fill="#0E6B65"></rect><path d="M14 34 L42 22" stroke="#FBF7F1" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"></path><circle cx="40" cy="36" r="5" fill="#EBA83F"></circle></svg>
+        <span style="font-size: 20px; font-weight: 600;">تفصيلة</span>
+      </a>
+      <nav aria-label="القائمة الرئيسية" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto;">
+        <a href="Clients.dc.html" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; background: #E1F0ED; color: #0E6B65; font-size: 15px; font-weight: 600; text-decoration: none;">العميلات</a>
+        <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">تصاميمي</a>
+        <a href="Settings.dc.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; color: #2A2220; font-size: 15px; font-weight: 500; text-decoration: none;">الإعدادات</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="display: flex; align-items: center; gap: 6px; background: #F9E6DA; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #EBA83F;"></span>3 باترونات مجانية</span>
+        <span aria-label="منى" style="width: 40px; height: 40px; border-radius: 20px; background: #A84A22; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600;">م</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; display: flex; flex-direction: column; gap: 24px;">
+    <div>
+      <div style="font-size: 15px; line-height: 22px; color: #625650;">مرحباً، منى</div>
+      <h1 style="margin: 0; font-size: 24px; line-height: 36px; font-weight: 600;">عميلاتي</h1>
+    </div>
+
+    <section style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 2px rgba(42,34,32,.06), 0 2px 8px rgba(42,34,32,.06); padding: 48px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;">
+      <svg width="140" height="120" viewBox="0 0 140 120" aria-hidden="true">
+        <circle cx="70" cy="60" r="56" fill="#F9E6DA"></circle>
+        <circle cx="70" cy="44" r="16" fill="#FFFFFF" stroke="#8C7D72" stroke-width="2"></circle>
+        <path d="M38 98 Q40 70 70 68 Q100 70 102 98 Z" fill="#FFFFFF" stroke="#8C7D72" stroke-width="2"></path>
+        <circle cx="104" cy="88" r="14" fill="#0E6B65"></circle>
+        <path d="M104 81v14M97 88h14" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path>
+      </svg>
+      <h2 style="margin: 0; font-size: 20px; line-height: 30px; font-weight: 600;">لا توجد عميلات بعد</h2>
+      <p style="margin: 0; max-width: 420px; font-size: 17px; line-height: 28px; color: #625650;">ستظهر هنا العميلات ومقاساتهن بعد إضافتهن.</p>
+      <a href="ClientProfile.dc.html" style="height: 52px; display: flex; align-items: center; gap: 8px; padding: 0 24px; border-radius: 10px; background: #0E6B65; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+        إضافة أول عميلة
+      </a>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
