@@ -1,5 +1,4 @@
 /** Form schemas of the auth screens. Error messages are keys of `auth.validation` in `messages/`, translated by the form. */
-import type { FieldValues } from "react-hook-form";
 import { z } from "zod";
 
 /** Keys of `auth.validation` in `messages/` that the schemas use as error messages. */
@@ -22,8 +21,8 @@ const newPasswordField = z.string().min(MIN_PASSWORD_LENGTH, "passwordShort");
  * @returns The schema with the match check on `confirmPassword`.
  */
 function withMatchingPasswords<V extends { password: string; confirmPassword: string }>(
-  schema: z.ZodType<V, FieldValues>,
-): z.ZodType<V, FieldValues> {
+  schema: z.ZodType<V, Record<string, unknown>>,
+): z.ZodType<V, Record<string, unknown>> {
   return schema.refine((values) => values.password === values.confirmPassword, {
     path: ["confirmPassword"],
     message: "passwordMismatch",

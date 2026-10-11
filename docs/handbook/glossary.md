@@ -136,6 +136,30 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
+<a id="oauth"></a>
+
+### OAuth
+
+**Plain words:** A way to sign in with an account you already have (such as Google) without giving our app your Google password.  
+**In Tafsila:** "Continue with Google" sends the browser to Google, which returns to `/auth/callback` with a code that becomes the session cookie. **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
+**Learn:** <https://supabase.com/docs/guides/auth/social-login/auth-google>
+
+<a id="session-cookie"></a>
+
+### Session cookie
+
+**Plain words:** A small piece of data the browser keeps after sign-in so the server knows who is asking, and refreshes it before it expires.  
+**In Tafsila:** `@supabase/ssr` stores the session in cookies, `proxy.ts` refreshes it on every request, and the dashboard layout checks it on the server. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/auth/server-side>
+
+<a id="token-hash-link"></a>
+
+### Token-hash email link
+
+**Plain words:** An email link carrying a one-time token that the server verifies, so it works even when opened on another device.  
+**In Tafsila:** confirmation and reset mails link to `/auth/confirm?token_hash=…&type=…`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/auth/auth-email-templates>
+
 <a id="access-token-hook"></a>
 
 ### Access token hook

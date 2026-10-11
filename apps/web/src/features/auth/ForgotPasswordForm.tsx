@@ -4,9 +4,9 @@ import { Link as UiLink } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { Link } from "@/shared/i18n";
-import { useForgotPassword } from "../hooks/use-forgot-password";
-import { CheckEmailNotice } from "./CheckEmailNotice";
-import { EmailField, FormError, SubmitButton } from "./fields";
+import { useForgotPassword } from "./hooks/use-forgot-password";
+import { CheckEmailNotice } from "./components/CheckEmailNotice";
+import { EmailField, FormError, SubmitButton } from "./components/fields";
 
 /**
  * Renders the forgot-password form.

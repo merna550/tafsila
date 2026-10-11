@@ -2,8 +2,8 @@
 /** Reset-password form: the new password twice, for the recovery session opened by the email link. */
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import { useResetPassword } from "../hooks/use-reset-password";
-import { FormError, PasswordField, SubmitButton } from "./fields";
+import { useResetPassword } from "./hooks/use-reset-password";
+import { FormError, PasswordField, SubmitButton } from "./components/fields";
 
 /**
  * Renders the reset-password form.

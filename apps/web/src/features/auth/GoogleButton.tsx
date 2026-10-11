@@ -3,7 +3,7 @@
 import { Button } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import { useGoogleSignIn } from "../hooks/use-google-sign-in";
+import { useGoogleSignIn } from "./hooks/use-google-sign-in";
 
 /**
  * Renders the Google button with the "or" divider above it.

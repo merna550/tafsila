@@ -2,9 +2,9 @@
 /** Sign-up form: email, password twice; after sending, it shows the "check your email" notice instead. */
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import { useSignUp } from "../hooks/use-sign-up";
-import { CheckEmailNotice } from "./CheckEmailNotice";
-import { EmailField, FormError, PasswordField, SubmitButton } from "./fields";
+import { useSignUp } from "./hooks/use-sign-up";
+import { CheckEmailNotice } from "./components/CheckEmailNotice";
+import { EmailField, FormError, PasswordField, SubmitButton } from "./components/fields";
 
 /**
  * Renders the sign-up form.

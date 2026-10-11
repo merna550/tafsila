@@ -2,10 +2,10 @@
 export { AuthCard } from "./components/AuthCard";
 export { AuthHero } from "./components/AuthHero";
 export { AuthTabs } from "./components/AuthTabs";
-export { ForgotPasswordForm } from "./components/ForgotPasswordForm";
-export { GoogleButton } from "./components/GoogleButton";
-export { ResetPasswordForm } from "./components/ResetPasswordForm";
-export { SignInForm } from "./components/SignInForm";
-export { SignUpForm } from "./components/SignUpForm";
+export { ForgotPasswordForm } from "./ForgotPasswordForm";
+export { GoogleButton } from "./GoogleButton";
+export { ResetPasswordForm } from "./ResetPasswordForm";
+export { SignInForm } from "./SignInForm";
+export { SignUpForm } from "./SignUpForm";
 export { WelcomeTracker } from "./components/WelcomeTracker";
 export { SignOut } from "./SignOut";

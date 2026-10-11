@@ -4,8 +4,8 @@ import { Link as UiLink } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { Link } from "@/shared/i18n";
-import { useSignIn } from "../hooks/use-sign-in";
-import { EmailField, FormError, PasswordField, SubmitButton } from "./fields";
+import { useSignIn } from "./hooks/use-sign-in";
+import { EmailField, FormError, PasswordField, SubmitButton } from "./components/fields";
 
 /** Props for {@link SignInForm}. */
 interface SignInFormProps {
