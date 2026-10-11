@@ -30,7 +30,8 @@
     "labels:sync": "bash scripts/setup-labels.sh",
     "test-cases:index": "bash scripts/test-case-index.sh",
     "prepare": "husky || true",
-    "tokens:check": "node scripts/check-design-tokens.mjs"
+    "tokens": "node scripts/gen-tokens.mjs",
+    "tokens:check": "node scripts/check-design-tokens.mjs && node scripts/gen-tokens.mjs --check"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,cjs}": [

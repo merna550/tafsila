@@ -11,7 +11,7 @@ describe("Button", () => {
 
   it("applies the requested variant with token classes", () => {
     const html = renderToStaticMarkup(<Button variant="secondary">x</Button>);
-    expect(html).toContain("border-primary");
+    expect(html).toContain("border-border");
     expect(html).not.toContain("rose-");
   });
 

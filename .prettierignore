@@ -9,3 +9,4 @@ docs/SRS.md
 **/test-results
 **/playwright-report
 packages/ui/e2e/__snapshots__
+packages/ui/src/tokens.css
