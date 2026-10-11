@@ -1377,6 +1377,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Planned for the A4 and A0 exports. **Level:** intermediate  
 **Learn:** <https://pdf-lib.js.org/>
 
+<a id="pgtap"></a>
+
+### pgTAP
+
+**Plain words:** A way to write tests in SQL that run inside the database, so the rules of the database (RLS, grants, triggers) are checked where they live.  
+**In Tafsila:** `supabase/tests/database/rls.test.sql`, run by `pnpm db:test` and the `supabase` CI job; the tests act as different users and expect refusals. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/local-development/testing/overview>
+
 <a id="plan"></a>
 
 ### Plan (issue plan)
@@ -1584,7 +1592,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### RLS (Row Level Security)
 
 **Plain words:** A Postgres rule that decides which rows each user may read or write, enforced by the database itself.  
-**In Tafsila:** Every user-owned table has RLS; see `supabase/migrations/` (planned, M1) and `.claude/rules/backend/database.md`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
+**In Tafsila:** Every user-owned table has RLS; see `supabase/migrations/20261011120000_m1_schema.sql` and `.claude/rules/backend/database.md`. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/database/postgres/row-level-security>
 
 <a id="route"></a>

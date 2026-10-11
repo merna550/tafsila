@@ -25,6 +25,7 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
     "db:types": "supabase gen types typescript --local > packages/api/src/adapters/supabase/database.types.ts",
     "docker:build": "docker build -f apps/web/Dockerfile -t tafsila-web:local .",
     "labels:sync": "bash scripts/setup-labels.sh",

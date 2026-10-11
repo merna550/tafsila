@@ -431,8 +431,8 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | Table | Key columns |
 |---|---|
 | `profiles` | id (= auth.users.id), name, phone, phone_verified_at, locale, role (`user`/`admin`), created_at |
-| `clients` | id, owner_id, name, notes, created_at |
-| `measurement_sets` | id, owner_id, client_id?, label, size_label?, data (jsonb Measurements), created_at |
+| `clients` | id, owner_id, name, notes, created_at (unique id + owner_id) |
+| `measurement_sets` | id, owner_id, client_id?, label, size_label?, data (jsonb Measurements), created_at (client must have the same owner) |
 | `designs` | id, owner_id, category, title, photo_paths (text[]), analysis (jsonb DesignAnalysisResult), current_version_id, created_at |
 | `pattern_versions` | id, design_id, version_no, spec (jsonb), measurement_set_id, ease_profile, options (jsonb), engine_version, validation_status, input_hash, created_by (`user`/`chat`), created_at |
 | `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at |
@@ -440,7 +440,8 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `fabric_calcs` | id, pattern_version_id, width_mm, layout, result (jsonb: length_mm, marker) |
 | `fabrics` | id, name_ar, name_en, properties (jsonb: drape, weight, stretch, sheen), care_notes |
 | `fabric_rules` | id, condition (jsonb), required_properties (jsonb), priority |
-| `size_charts` | id, name, sizes (jsonb) |
+| `size_charts` | id, name, sizes (jsonb), is_default, owner_id? (null = system chart; set = a user's private chart), updated_by, updated_at |
+| `admin_audit` | id, who, action, target, before (jsonb), after (jsonb), at (append-only, admin only) |
 | `products` | id, code, kind (`single`/`pack`/`subscription`), price_egp, credits, period_days, active |
 | `subscriptions` | id, user_id, product_id, status, current_period_end, paymob_token? |
 | `credit_ledger` | id, user_id, delta, reason (`trial`/`purchase`/`subscription`/`pattern`/`admin`/`refund`), ref_id, created_at |
@@ -449,7 +450,7 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `feedback` | id, pattern_version_id, fit_rating, problem_areas (text[]), photo_path?, comment |
 | `unsupported_features` | id, design_id, feature_text, created_at |
 
-Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`); admin via role. Photos in a private bucket with signed URLs.
+Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`); admin via role (`is_admin()`). Users cannot change `role` or `phone_verified_at` (column grants). Photos in a private bucket with signed URLs. Backlog: EU size labels are a display hint before the beta; private workshop size charts (`size_charts.owner_id`) are a Pro feature after launch, with no UI yet (ADR-24a).
 
 ---
 

@@ -19,6 +19,8 @@ jobs:
         run: pnpm exec supabase start -x studio,edge-runtime,logflare,vector,imgproxy
       - name: Apply migrations and seed on a fresh database
         run: pnpm db:reset
+      - name: RLS and schema tests (pgTAP)
+        run: pnpm db:test
       - name: Stop
         if: always()
         run: pnpm db:stop
