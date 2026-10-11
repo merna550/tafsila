@@ -1,6 +1,6 @@
 // Safety net run by `predev` (issue #95): reinstall when node_modules is out of date, fail fast on missing Supabase keys.
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -8,16 +8,56 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REQUIRED_KEYS = ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY"];
 
 /**
- * Tells whether node_modules was installed from the current lockfile.
+ * Lists the folders holding a package.json: the root and every apps/* and packages/* workspace.
  *
  * @param {string} rootDir Repository root.
- * @returns {boolean} true when node_modules/.pnpm/lock.yaml is identical to pnpm-lock.yaml.
+ * @returns {string[]} Absolute package folders.
+ */
+function packageDirs(rootDir) {
+  const dirs = [rootDir];
+  for (const group of ["apps", "packages"]) {
+    const groupDir = join(rootDir, group);
+    if (!existsSync(groupDir)) continue;
+    for (const entry of readdirSync(groupDir, { withFileTypes: true })) {
+      if (entry.isDirectory() && existsSync(join(groupDir, entry.name, "package.json"))) {
+        dirs.push(join(groupDir, entry.name));
+      }
+    }
+  }
+  return dirs;
+}
+
+/**
+ * Tells whether every declared dependency resolves under its package's node_modules (scoped names included).
+ *
+ * @param {string} rootDir Repository root.
+ * @returns {boolean} false when any dependency or devDependency folder or link is missing.
+ */
+export function allDepsInstalled(rootDir) {
+  return packageDirs(rootDir).every((dir) => {
+    const file = join(dir, "package.json");
+    if (!existsSync(file)) return true;
+    const manifest = JSON.parse(readFileSync(file, "utf8"));
+    const names = [
+      ...Object.keys(manifest.dependencies ?? {}),
+      ...Object.keys(manifest.devDependencies ?? {}),
+    ];
+    return names.every((name) => existsSync(join(dir, "node_modules", name)));
+  });
+}
+
+/**
+ * Tells whether node_modules is up to date: installed from the current lockfile and nothing deleted since.
+ *
+ * @param {string} rootDir Repository root.
+ * @returns {boolean} true when node_modules/.pnpm/lock.yaml equals pnpm-lock.yaml and every declared dependency exists.
  */
 export function depsAreCurrent(rootDir) {
   const installed = join(rootDir, "node_modules", ".pnpm", "lock.yaml");
   const wanted = join(rootDir, "pnpm-lock.yaml");
   if (!existsSync(installed) || !existsSync(wanted)) return false;
-  return readFileSync(installed, "utf8") === readFileSync(wanted, "utf8");
+  if (readFileSync(installed, "utf8") !== readFileSync(wanted, "utf8")) return false;
+  return allDepsInstalled(rootDir);
 }
 
 /**

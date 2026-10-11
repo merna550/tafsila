@@ -22,9 +22,47 @@ function fakeRoot(lock, installed) {
   return dir;
 }
 
+/**
+ * Adds a workspace package with a manifest and the given installed dependency folders.
+ *
+ * @param {string} root Fake repo root.
+ * @param {string} rel Package path such as apps/web.
+ * @param {object} manifest package.json content.
+ * @param {string[]} installed Dependency names to create under the package's node_modules.
+ */
+function addPackage(root, rel, manifest, installed) {
+  const dir = join(root, rel);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "package.json"), JSON.stringify(manifest));
+  for (const name of installed) mkdirSync(join(dir, "node_modules", name), { recursive: true });
+}
+
 describe("depsAreCurrent", () => {
-  it("is true when the installed lockfile matches", () => {
+  it("is true when the installed lockfile matches and no dependency is declared", () => {
     expect(depsAreCurrent(fakeRoot("a", "a"))).toBe(true);
+  });
+
+  it("is true when every declared dependency exists, scoped names included", () => {
+    const dir = fakeRoot("a", "a");
+    addPackage(
+      dir,
+      "apps/web",
+      { dependencies: { zod: "1", "@scope/pkg": "1" }, devDependencies: { tool: "1" } },
+      ["zod", "@scope/pkg", "tool"],
+    );
+    expect(depsAreCurrent(dir)).toBe(true);
+  });
+
+  it("is false when a dependency folder was deleted from a workspace package", () => {
+    const dir = fakeRoot("a", "a");
+    addPackage(dir, "apps/web", { dependencies: { zod: "1" } }, []);
+    expect(depsAreCurrent(dir)).toBe(false);
+  });
+
+  it("is false when a scoped dependency is missing", () => {
+    const dir = fakeRoot("a", "a");
+    addPackage(dir, "packages/api", { dependencies: { "@scope/pkg": "1" } }, ["zod"]);
+    expect(depsAreCurrent(dir)).toBe(false);
   });
 
   it("is false when the lockfile changed", () => {
