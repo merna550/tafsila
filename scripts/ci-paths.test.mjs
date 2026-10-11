@@ -90,3 +90,19 @@ describe("api checks (issue #94)", () => {
     ["packages/ui/src/Button.tsx"],
   ])("is skipped for %s", (file) => expect(needsJob("api", [file])).toBe(false));
 });
+
+describe("supabase job (issue #83)", () => {
+  it.each([
+    ["supabase/migrations/0001_init.sql"],
+    ["supabase/seed.sql"],
+    ["pnpm-lock.yaml"],
+    [".github/workflows/supabase.yml"],
+  ])("runs for %s", (file) => expect(needsJob("supabase", [file])).toBe(true));
+
+  it.each([
+    ["docs/SRS.md"],
+    ["apps/web/src/page.tsx"],
+    ["packages/ui/src/Button.tsx"],
+    ["supabase/README.md"],
+  ])("is skipped for %s", (file) => expect(needsJob("supabase", [file])).toBe(false));
+});

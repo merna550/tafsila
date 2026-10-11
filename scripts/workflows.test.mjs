@@ -14,6 +14,7 @@ const workflow = (name) =>
 
 const claude = workflow("claude.yml");
 const dispatch = workflow("dispatch.yml");
+const supabase = workflow("supabase.yml");
 const allWorkflows = [
   "staging.yml",
   "claude.yml",
@@ -22,6 +23,7 @@ const allWorkflows = [
   "docker.yml",
   "docs-links.yml",
   "agent-report.yml",
+  "supabase.yml",
 ];
 
 describe("claude.yml", () => {
@@ -98,10 +100,10 @@ describe("claude.yml model resolution", () => {
 });
 
 describe("dispatch.yml triggers (issue #50)", () => {
-  it("starts on events that may free or add work, with a 6-hour cron as a safety net", () => {
+  it("starts on events that may free or add work, with a 12-hour cron as a safety net", () => {
     expect(dispatch.on.issues.types).toEqual(["labeled", "closed"]);
     expect(dispatch.on.pull_request.types).toEqual(["closed"]);
-    expect(dispatch.on.schedule).toEqual([{ cron: "0 */6 * * *" }]);
+    expect(dispatch.on.schedule).toEqual([{ cron: "0 */12 * * *" }]);
     expect(dispatch.concurrency).toEqual({ group: "dispatch", "cancel-in-progress": false });
   });
 
@@ -288,6 +290,30 @@ describe("expensive checks run only when needed (issue #86)", () => {
     for (const wf of [quality, docker]) {
       expect(wf.concurrency["cancel-in-progress"]).toBe("${{ github.event_name == 'pull_request' }}");
       expect(wf.concurrency.group).toContain("github.event.pull_request.number");
+    }
+  });
+
+  it("runs the database proof only when a database file changes, through a scope job (issue #83)", () => {
+    expect(supabase.on.pull_request).toBeNull();
+    expect(supabase.jobs["scope-db"].steps.at(-1).run).toContain("node scripts/ci-paths.mjs supabase ");
+    expect(supabase.jobs["db-reset"].if).toBe("needs.scope-db.outputs.run == 'true'");
+    expect(supabase.jobs["db-reset"].needs).toBe("scope-db");
+  });
+
+  it("cancels superseded runs of the database proof and the link check too (issue #83)", () => {
+    for (const wf of [supabase, workflow("docs-links.yml")]) {
+      expect(wf.concurrency["cancel-in-progress"]).toBe("${{ github.event_name == 'pull_request' }}");
+      expect(wf.concurrency.group).toContain("github.event.pull_request.number");
+    }
+  });
+
+  it("caches the Playwright browsers in the Storybook and e2e jobs (issue #83)", () => {
+    for (const steps of [quality.jobs.storybook.steps, workflow("e2e.yml").jobs.e2e.steps]) {
+      const cache = steps.findIndex((step) => step.uses === "actions/cache@v4");
+      const install = steps.findIndex((step) => step.run?.includes("playwright install"));
+      expect(cache).toBeGreaterThan(-1);
+      expect(cache).toBeLessThan(install);
+      expect(steps[cache].with.path).toBe("~/.cache/ms-playwright");
     }
   });
 });
