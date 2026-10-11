@@ -122,7 +122,7 @@ Measurements ──────────────────────�
 | Nesting | SVGnest-style algorithm in a Web Worker |
 | AI | Vercel AI SDK; provider = Claude or Gemini; structured output via Zod schemas |
 | DB / Auth / Storage | Supabase (Postgres, Auth with phone OTP, Storage) |
-| ORM | Drizzle |
+| ORM | Drizzle, only through `withUser` (ADR-035) |
 | Background jobs | Inngest (or Trigger.dev) |
 | Payments | Paymob (cards, wallets, Fawry reference) |
 | Hosting | Vercel (web) + Supabase cloud |
