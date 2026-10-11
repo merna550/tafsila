@@ -10,3 +10,11 @@ try {
   if (j && j.id && pm.info.requestName.match(/create client/i)) pm.environment.set("clientId", j.id);
   if (j && j.id && pm.info.requestName.match(/create design/i)) pm.environment.set("designId", j.id);
 } catch (_) {}
+// ERR requests must return the standard error body (docs/errors.md).
+if (pm.info.requestName.startsWith("ERR")) {
+  pm.test("error body has code, message_ar, message_en, request_id", () => {
+    const body = pm.response.json();
+    for (const key of ["code", "message_ar", "message_en", "request_id"])
+      pm.expect(body[key]).to.be.a("string").that.is.not.empty;
+  });
+}
