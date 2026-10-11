@@ -5,3 +5,4 @@ export * from "./size-chart";
 export * from "./analytics-events";
 export * from "./api-error";
 export * from "./me";
+export * from "./health";
