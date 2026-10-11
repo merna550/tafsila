@@ -1,0 +1,6 @@
+# ADR-28a · 2026-10-11 · Measurement validation lives only in the engine
+
+**Context:** Issue #28 needs rules that decide whether measurements are valid, suspicious or impossible (FR-MEAS-03) and a way to start from a standard size (FR-MEAS-01, -05). The API (#29) and the form (#31) both need them.
+**Decision:** (1) `sizeChartSchema` uses free string size labels, not an enum, so sizes beyond XXL are data only (ADR-024). (2) The ranges and cross-checks live only in `packages/engine/src/measurements` and `src/constants/measurement-ranges.ts`; the database and API reuse these functions and do not repeat the numbers. Codes (`MEAS_*`) are engine report codes, separate from the API error catalogue; the API puts them in `details`. (3) An unknown size label throws `UnknownSizeError` (a programming error: the UI offers charted sizes only); invalid measurements are returned as data, never thrown. (4) The range numbers are a proposal; Merna reviews them in the PR.
+**Reason:** One source of truth for sewing knowledge; changing a range is a one-line change plus a test.
+**Alternatives:** Ranges as database CHECK constraints (duplicates the numbers, hard to change); one enum for sizes (blocks larger sizes later).

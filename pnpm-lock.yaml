@@ -149,7 +149,14 @@ importers:
         version: 4.6.5
 
   packages/engine:
+    dependencies:
+      '@tafsila/schemas':
+        specifier: workspace:*
+        version: link:../schemas
     devDependencies:
+      '@tafsila/test-fixtures':
+        specifier: workspace:*
+        version: link:../test-fixtures
       fast-check:
         specifier: ^4.10.2
         version: 4.10.2
