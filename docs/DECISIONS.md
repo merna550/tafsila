@@ -2,11 +2,17 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
-## ADR-032 · 2026-10-11 · Layout, overlay and feedback components on Radix (foundations 2b)
+## ADR-033 · 2026-10-11 · Layout, overlay and feedback components on Radix (foundations 2b)
 
 **Decision:** Dialog and Sheet share one `ModalFrame` on Radix Dialog; Tabs, Avatar, Tooltip and Toast use the matching Radix primitives (all free, ADR-022). Dialog is centred with `inset-0 m-auto` and Sheet attaches to `start`, `end` or `bottom`, so RTL mirrors with no translate tricks. Components take already-translated strings (close labels, captions) as props; none holds literal text. `ToastProvider` + `useToast()` is the only toast API (failed actions show a toast, ADR-030). `AppShell` has a `banner` slot above the header for the connection banner (#72). Unit tests use static markup; portal-based parts (open dialog, toasts) are covered by the visual snapshots because no DOM test library is added.
 **Reason:** Focus trapping, Escape, ARIA and RTL come from Radix instead of hand-written code; a single frame avoids duplicating the dialog structure.
 **Alternatives:** Hand-built dialog (accessibility to test by hand); adding jsdom and Testing Library only for portals (a new dependency for little gain now); a separate toast library such as sonner (Radix Toast is already in the family).
+
+## ADR-032 · 2026-10-11 · A dispatcher build must leave a result: outcome check and checkpoints
+
+**Context:** Run 38148350825 built #69 for 16 minutes and ended with `success`, no refused tool, no branch and no PR. The "Block" step runs only on `failure()`, so #69 stayed `status:in-progress` and the dispatcher started nothing else (issue #73). The builder had most likely hit its own 50-turn cap, and a cut-off run keeps only what was pushed.
+**Decision:** (1) After a dispatcher build, `scripts/claude-run.mjs outcome <issue>` fails the job when the issue is still `status:in-progress` or `status:ready` and no PR mentioning it was created in the last 2 hours; the existing block step then sets `status:blocked` and comments why, with the advice to split the issue. (2) `.claude/procedures/build.md` gets a checkpoint rule: push after each group of changes, keep a progress comment, open a draft PR after the first push when more groups remain, and at about 40 turns stop, push and report `BLOCKED: too big for one run, split it`. (3) Large work is split into issues that fit one run (#66 became #68, #69, #72, #70).
+**Alternatives:** Retry automatically (repeats the same cut-off and spends the daily limit); raise the turn caps (cost grows, and a bigger run is still lost when it ends); count only the issue's own `Closes #N` PR (misses "Part of #N" PRs from split issues).
 
 ## ADR-031 · 2026-10-11 · Design system base: one tokens file, Radix components, Storybook, visual snapshots
 

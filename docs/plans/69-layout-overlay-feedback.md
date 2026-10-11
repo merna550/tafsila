@@ -10,7 +10,7 @@ The issue is the plan (`plan:none`). Part of #66; follows #68 (tokens, Storybook
 
 ## Choices
 
-- New Radix packages: avatar, dialog, tabs, toast, tooltip (listed on the Radix tech card). See ADR-032.
+- New Radix packages: avatar, dialog, tabs, toast, tooltip (listed on the Radix tech card). See ADR-033.
 - Strings come in as props (already translated); stories use `sample-text.ts`.
 - `IconButton` now sets `px-0!`: the base button's `px-5` won the CSS order and squeezed icons to 4px (found while checking the Dialog snapshot); its snapshots were regenerated.
 

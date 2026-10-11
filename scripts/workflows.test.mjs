@@ -67,6 +67,16 @@ describe("claude.yml tool permissions (issue #46)", () => {
     expect(check.run).toBe('node scripts/claude-run.mjs check "$EXECUTION_FILE"');
   });
 
+  it("checks a dispatcher build left a result, right before the block step (issue #73)", () => {
+    const names = steps.map((s) => s.name);
+    const at = names.indexOf("Check the build left a result");
+    expect(at).toBeGreaterThan(-1);
+    expect(at).toBe(names.indexOf("Block the issue after a failed dispatcher build") - 1);
+    expect(steps[at].if).toBe("inputs.issue != ''");
+    expect(steps[at].env.GH_TOKEN).toBe("${{ secrets.AGENT_GITHUB_TOKEN }}");
+    expect(steps[at].run).toBe('node scripts/claude-run.mjs outcome "$ISSUE"');
+  });
+
   it("blocks the issue after any failed dispatcher build (issue #58)", () => {
     const block = steps.at(-1);
     expect(block.name).toBe("Block the issue after a failed dispatcher build");
