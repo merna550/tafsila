@@ -45,7 +45,7 @@ The dispatcher starts nothing when an issue is already `status:in-progress` (`DI
 
 The agent also stops by itself: every Action run ends after 50 turns (`--max-turns 50`), and an unattended agent that fails twice on the same problem comments the problem on the issue, sets `status:blocked` and stops; it never switches to a bigger model on its own (ADR-017). Read its comment, fix the cause or change the `build:*` label, then set `status:ready` again.
 
-When a dispatcher build fails for any other reason (a refused tool, the turn limit, an error, a failed step), the last step of `claude.yml` moves the issue to `status:blocked` and comments the reason, the run link and every refused command (`scripts/claude-run.mjs`), so the same issue is never picked again in a loop. The "Fail when Claude was refused a tool" step also prints each refused command in the log.
+When a dispatcher build fails for any other reason (a refused tool, the turn limit, an error, a failed step), the last step of `claude.yml` moves the issue to `status:blocked` and comments the reason, the run link and every refused command (`scripts/claude-run.mjs`), so the same issue is never picked again in a loop. A run that ends "successfully" but leaves nothing (no PR, issue still in progress) is caught the same way by the "Check the build left a result" step; its comment says the issue is probably too big for one run and should be split, because a builder is stopped after 50 turns and keeps only what it pushed (ADR-032). The "Fail when Claude was refused a tool" step also prints each refused command in the log.
 
 ## Current state: dispatcher is OFF
 
