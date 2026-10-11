@@ -1,6 +1,11 @@
 /** Next.js config: standalone output for the Docker image; internal packages are compiled from source. */
+import { existsSync } from "node:fs";
 import { withSentryConfig } from "@sentry/nextjs/config";
 import type { NextConfig } from "next";
+
+/** Loads the repo-root .env.local (the documented place) without overriding variables already set, so apps/web/.env.local still wins (ADR-95). */
+const rootEnv = new URL("../../.env.local", import.meta.url).pathname;
+if (existsSync(rootEnv)) process.loadEnvFile(rootEnv);
 
 const nextConfig: NextConfig = {
   output: "standalone",

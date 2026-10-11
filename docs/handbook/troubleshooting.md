@@ -11,6 +11,12 @@ Entry format: **Symptom** (the error text) · **Cause** · **Fix** (commands) ·
 | [`gh project link` owner error](#gh-project-link-owner-error)                       | GitHub CLI  |
 | [`claude` is installed but prints nothing](#claude-is-installed-but-prints-nothing) | Claude Code |
 
+## `pnpm dev` fails with "Cannot find module" or "Invalid environment configuration" after a pull
+
+**Cause:** a merged PR added dependencies that were never installed, or the env file is empty / still has `<from supabase status>` placeholders.
+
+**Fix:** nothing in most cases: `pnpm dev` runs `scripts/check-deps.mjs` first, reinstalls when the lockfile changed and names the bad `.env.local` keys. Manual fallback: `pnpm install`, then fill the named keys from `pnpm exec supabase status` (see [run locally](../backend/tutorials/run-locally.md)).
+
 ## `pnpm dev` fails: wrong Node version
 
 **Symptom:** pnpm refuses to run any script and prints something like:

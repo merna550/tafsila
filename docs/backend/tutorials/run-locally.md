@@ -30,6 +30,8 @@ pnpm test                # unit + property tests
 pnpm quality             # format, lint, typecheck, duplication, architecture
 ```
 
+- **What happens automatically (issue #95).** `pnpm dev` first runs `scripts/check-deps.mjs`: if `node_modules` does not match `pnpm-lock.yaml` it runs `pnpm install --frozen-lockfile` before Next.js starts, and if `.env.local` is missing or `SUPABASE_URL`, `SUPABASE_ANON_KEY` or `SUPABASE_SERVICE_ROLE_KEY` is empty or still a `<from supabase status>` placeholder it stops with one message naming the keys (never the values). Git hooks run `scripts/sync-deps.sh` after pull, rebase and branch switch with the same install. Nothing runs when `CI=true`. Manual fallback: `pnpm install`.
+- One env file: the web app reads the repo-root `.env.local` (no symlink in `apps/web/` needed); a value in `apps/web/.env.local` still wins ([ADR-95](../../decisions/95-local-dev-auto-sync.md)).
 - Supabase Studio: http://127.0.0.1:54323 · API health: http://localhost:3000/api/health
 - Reset database: `pnpm db:reset` · Stop services: `pnpm dev:stop`
 
