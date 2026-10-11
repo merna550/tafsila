@@ -141,6 +141,15 @@ jobs:
           EXECUTION_FILE: ${{ steps.build.outputs.execution_file || steps.answer.outputs.execution_file }}
         run: node scripts/claude-run.mjs check "$EXECUTION_FILE"
 
+      - name: Check the build left a result
+        # A run can end "successfully" with nothing on GitHub (the builder was cut off by its turn limit, issue #73).
+        # No PR and the issue still in progress fails the job, so the next step blocks it with the reason.
+        if: inputs.issue != ''
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue }}
+        run: node scripts/claude-run.mjs outcome "$ISSUE"
+
       - name: Block the issue after a failed dispatcher build
         # Any failure of a dispatcher build moves the issue to status:blocked with the reason and the refused
         # commands, so the dispatcher can never pick it again in a loop (issue #58).

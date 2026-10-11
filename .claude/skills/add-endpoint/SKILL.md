@@ -14,7 +14,7 @@ Read `packages/api/CLAUDE.md` and `docs/backend/tutorials/add-endpoint.md` first
    - If a new external capability is needed, add the interface in `ports/`.
    - Implement it in `adapters/<vendor>/`, plus a fake in `adapters/memory/`.
    - Wire both in `container.ts`.
-   - For a database table, follow the repository pattern in `docs/backend/tutorials/add-endpoint.md` (ADR-032): Drizzle only through `withUser`, `prepare: false`, one `withUser` call per atomic write.
+   - For a database table, follow the repository pattern in `docs/backend/tutorials/add-endpoint.md` (ADR-035): Drizzle only through `withUser`, `prepare: false`, one `withUser` call per atomic write.
 5. **Route:** add it in `packages/api/src/routes/`. It validates with the schema, checks auth and ownership, calls the service, and maps the result. Mount it in `app.ts`.
 6. **Tests:**
    - Service unit tests with `memory/` adapters.

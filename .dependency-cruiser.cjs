@@ -153,6 +153,6 @@ module.exports = {
     doNotFollow: { path: "node_modules" },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: "tsconfig.json" },
-    exclude: { path: ["\\.test\\.tsx?$", "^(apps|packages)/.*/(dist|\\.next)/"] },
+    exclude: { path: ["\\.test\\.tsx?$", "^(apps|packages)/.*/(dist|\\.next|storybook-static)/"] },
   },
 };

@@ -6,7 +6,7 @@ adr: ADR-012
 
 # Drizzle ORM
 
-**In one line:** A type-safe way to query Postgres from TypeScript without hiding SQL. Confirmed in M1 by a spike (ADR-032); installed with the first repository (#24).
+**In one line:** A type-safe way to query Postgres from TypeScript without hiding SQL. Confirmed in M1 by a spike (ADR-035); installed with the first repository (#24).
 
 ## What it is (plain words)
 
@@ -27,7 +27,7 @@ An ORM maps tables to code. Drizzle lets you declare tables in TypeScript and wr
 
 ## When we would change it
 
-The #23 spike compared Drizzle with `supabase-js` on a real local table with RLS. Drizzle stays because it passed the same RLS suite through `withUser`, added about 137 kB to the bundle (limit 300 kB), and does multi-table transactions natively. We would revisit it if the bundle grows past the limit or `withUser` cannot keep up with a Supabase auth change. See [ADR-032](../../DECISIONS.md).
+The #23 spike compared Drizzle with `supabase-js` on a real local table with RLS. Drizzle stays because it passed the same RLS suite through `withUser`, added about 137 kB to the bundle (limit 300 kB), and does multi-table transactions natively. We would revisit it if the bundle grows past the limit or `withUser` cannot keep up with a Supabase auth change. See [ADR-035](../../DECISIONS.md).
 
 ## Where it lives in our code
 

@@ -41,3 +41,31 @@ jobs:
         run: pnpm docs:check
       - name: Scripts and handbook check tests
         run: pnpm test:docs
+
+  # Storybook static build + visual snapshots of every story (issue #68). Free and open source only (ADR-022).
+  storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @tafsila/ui exec playwright install --with-deps chromium
+      - name: Build Storybook and compare snapshots
+        run: pnpm --filter @tafsila/ui test:visual
+        env:
+          CI: "true"
+      - name: Storybook build (artefact)
+        if: always()
+        run: pnpm --filter @tafsila/ui build-storybook
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: storybook
+          path: packages/ui/storybook-static
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-diffs
+          path: packages/ui/test-results

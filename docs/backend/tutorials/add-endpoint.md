@@ -8,7 +8,7 @@
 6. **Docs:** `pnpm api:openapi && pnpm api:postman` (regenerates OpenAPI + Postman); add seed rows if needed; add test cases file; update SRS §8 table.
 7. **Postman check:** run the collection on local; add an `ERR …` example for the main failure case.
 
-## Repository pattern (ADR-032)
+## Repository pattern (ADR-035)
 
 A repository is a port in `ports/` plus an adapter in `adapters/supabase/` that uses Drizzle. Every method takes the caller's `UserContext` and runs inside `withUser`, so Postgres applies the user's RLS policies.
 
@@ -44,4 +44,4 @@ Rules:
 - Postgres driver option `prepare: false` (the pooler runs in transaction mode).
 - The table, RLS policies and grants come from a SQL migration first; the Drizzle schema mirrors it (see `add-migration.md`).
 - Tests: service tests use the `memory/` fake; adapter tests run against local Supabase and must cover own rows, another user's rows (nothing returned), an invalid token (rejected) and, for multi-table writes, rollback on failure.
-- The decision, numbers and the guard-test idea are in ADR-032.
+- The decision, numbers and the guard-test idea are in ADR-035.

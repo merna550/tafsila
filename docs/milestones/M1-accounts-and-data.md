@@ -38,7 +38,7 @@ M0 staging (#19) and local Supabase (#18) are closed. Inside M1: #23 spike then 
 
 - RLS mistakes leak client data: every table gets a permission test for another user's data.
 - Size-chart values are founder-supplied; seed placeholders are marked as such until she provides them.
-- Drizzle vs supabase-js (#23) is decided (ADR-032): Drizzle through `withUser`; #24 adds `DATABASE_URL`, the API login role and the first repository from the tutorial pattern.
+- Drizzle vs supabase-js (#23) is decided (ADR-035): Drizzle through `withUser`; #24 adds `DATABASE_URL`, the API login role and the first repository from the tutorial pattern.
 
 ## Issues
 

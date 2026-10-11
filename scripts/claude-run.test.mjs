@@ -7,6 +7,7 @@ import {
   blockLabels,
   failureComment,
   failureReason,
+  outcomeProblem,
   readExecution,
   refusals,
   sanitizeInput,
@@ -86,7 +87,29 @@ describe("failureReason", () => {
     expect(failureReason(run({ subtype: "error_during_execution", is_error: true }))).toContain(
       "error_during_execution",
     );
-    expect(failureReason(run({ subtype: "success", is_error: false }))).toContain("later step");
+    const silent = failureReason(run({ subtype: "success", is_error: false }));
+    expect(silent).toContain("no pull request or blocker");
+    expect(silent).toContain("a later step");
+  });
+});
+
+describe("outcomeProblem", () => {
+  const now = Date.parse("2026-10-11T15:00:00Z");
+  const recent = { createdAt: "2026-10-11T14:50:00Z" };
+  const old = { createdAt: "2026-10-09T10:00:00Z" };
+
+  it("flags a build that left the issue unfinished with no recent PR", () => {
+    for (const status of ["status:in-progress", "status:ready"]) {
+      expect(outcomeProblem({ labels: [status, "area:ui"], prs: [], now })).toContain("no pull request");
+      expect(outcomeProblem({ labels: [status], prs: [old], now })).toContain("no pull request");
+    }
+  });
+
+  it("accepts a recent PR or an issue the build moved on", () => {
+    expect(outcomeProblem({ labels: ["status:in-progress"], prs: [old, recent], now })).toBeNull();
+    for (const status of ["status:in-review", "status:blocked", "status:needs-plan"]) {
+      expect(outcomeProblem({ labels: [status], prs: [], now })).toBeNull();
+    }
   });
 });
 
@@ -99,6 +122,7 @@ describe("failureComment", () => {
     expect(body).toContain("- WebFetch: `(no input)`");
     expect(body).toContain("`status:blocked`");
     expect(body).toContain("`needs:interactive`");
+    expect(body).toContain("split it into");
   });
 
   it("has no refused list when nothing was refused", () => {

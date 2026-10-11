@@ -5,3 +5,7 @@ coverage
 reports
 postman/tafsila.postman_collection.json
 docs/SRS.md
+**/storybook-static
+**/test-results
+**/playwright-report
+packages/ui/e2e/__snapshots__

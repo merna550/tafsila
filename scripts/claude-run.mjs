@@ -2,6 +2,7 @@
 // failed dispatcher build so the dispatcher can never pick it again in a loop.
 //   node scripts/claude-run.mjs check <execution-file>                 exit 1 when a tool was refused
 //   node scripts/claude-run.mjs block <issue> <execution-file> <run-url>  set status:blocked and comment why
+//   node scripts/claude-run.mjs outcome <issue>                        exit 1 when a build left no PR and no new status
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -10,6 +11,10 @@ import { pathToFileURL } from "node:url";
 const MAX_INPUT = 200;
 /** Status labels that let the dispatcher or /build pick the issue again; they are removed when it is blocked. */
 const ACTIVE_STATUSES = ["status:ready", "status:in-progress", "status:changes-requested"];
+/** Statuses an issue still has when a build ended without moving it forward. */
+const UNFINISHED_STATUSES = ["status:in-progress", "status:ready"];
+/** A pull request created this recently counts as the result of the run (the job times out after 60 minutes). */
+const RECENT_PR_MS = 2 * 60 * 60 * 1000;
 /** Token shapes that must never reach a comment, even when a refused command contains one. */
 const SECRET_PATTERN = /\b(gh[opsur]_\w{20,}|github_pat_\w{20,}|sk-ant-[\w-]{20,})/g;
 
@@ -77,7 +82,10 @@ export function failureReason(messages) {
   if (count > 0) return `Claude was refused ${count} tool call(s) after ${result.num_turns ?? "?"} turn(s).`;
   if (result.subtype === "error_max_turns") return `Claude hit the turn limit (${result.num_turns} turns).`;
   if (result.is_error || result.subtype !== "success") return `Claude ended with "${result.subtype}".`;
-  return "Claude finished, but a later step of the job failed.";
+  return (
+    "Claude finished without an error, but no pull request or blocker came out of it (the builder was " +
+    "probably cut off by its turn limit), or a later step of the job failed."
+  );
 }
 
 /**
@@ -104,7 +112,8 @@ export function failureComment(messages, runUrl) {
   lines.push(
     "",
     "Moved to `status:blocked` so the dispatcher does not pick it again. Fix the cause (or add `needs:interactive`",
-    "and build it in an interactive session), then set `status:ready`.",
+    "and build it in an interactive session), then set `status:ready`. If the issue is large, split it into",
+    "smaller issues first: a builder is stopped after 50 turns, and a stopped run keeps nothing that was not pushed.",
   );
   return lines.join("\n");
 }
@@ -120,6 +129,19 @@ export function blockLabels(current) {
     remove: ACTIVE_STATUSES.filter((label) => current.includes(label)),
     add: current.includes("status:blocked") ? [] : ["status:blocked"],
   };
+}
+
+/**
+ * Tells whether a finished build left a result on GitHub.
+ *
+ * @param {{ labels: string[], prs: { createdAt: string }[], now: number }} input Issue labels, pull requests that
+ *   mention the issue, and the current time in milliseconds.
+ * @returns {string | null} Why the build left nothing, or null when it moved the issue on or opened a recent PR.
+ */
+export function outcomeProblem({ labels, prs, now }) {
+  if (!labels.some((label) => UNFINISHED_STATUSES.includes(label))) return null;
+  if (prs.some((pr) => now - Date.parse(pr.createdAt) <= RECENT_PR_MS)) return null;
+  return "The build ended, but the issue is still in progress and no pull request was opened during the run.";
 }
 
 /**
@@ -149,6 +171,24 @@ function blockIssue(issue, file, runUrl) {
 }
 
 /**
+ * Checks that a finished dispatcher build left a result on GitHub.
+ *
+ * @param {string} issue Issue number.
+ * @returns {number} Exit code: 1 when the build left no PR and no new status, else 0.
+ */
+function checkOutcome(issue) {
+  const labels = JSON.parse(gh(["issue", "view", issue, "--json", "labels"])).labels.map((l) => l.name);
+  const search = `#${issue} in:body`;
+  const prs = JSON.parse(
+    gh(["pr", "list", "--state", "all", "--search", search, "--json", "number,createdAt"]),
+  );
+  const problem = outcomeProblem({ labels, prs, now: Date.now() });
+  console.log(problem ?? `Outcome ok: #${issue} moved on or has a recent pull request.`);
+  if (problem) console.log(`::error::${problem}`);
+  return problem ? 1 : 0;
+}
+
+/**
  * Prints refused tools as workflow errors.
  *
  * @param {string} file Execution file path.
@@ -169,9 +209,10 @@ function checkRefusals(file) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [command, ...args] = process.argv.slice(2);
   if (command === "check") process.exit(checkRefusals(args[0]));
+  else if (command === "outcome" && args[0]) process.exit(checkOutcome(args[0]));
   else if (command === "block" && args[0] && args[2]) blockIssue(args[0], args[1], args[2]);
   else {
-    console.error("usage: claude-run.mjs check <file> | block <issue> <file> <run-url>");
+    console.error("usage: claude-run.mjs check <file> | outcome <issue> | block <issue> <file> <run-url>");
     process.exit(2);
   }
 }

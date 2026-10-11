@@ -1,10 +1,100 @@
 /*
  * Design tokens: the ONLY file that may contain raw colours, font names and arbitrary values (ADR-031).
- * Pages and features use the Tailwind classes these tokens generate (bg-background, text-text, ...).
- * PLACEHOLDER: the palette and fonts are neutral stand-ins until Merna picks the brand (issue #66).
+ * Pages and features use the Tailwind classes these tokens generate (bg-primary, text-muted, p-4, rounded-md, shadow-md, z-modal ...).
+ * PLACEHOLDER: every brand value below (palette, fonts) is a neutral stand-in until Merna picks the brand.
+ * Changing the brand means editing this file only.
  */
 @theme {
+  /* Colour roles. The default Tailwind palette is removed so only roles can be used. */
+  --color-*: initial;
+  --color-primary: #be123c; /* PLACEHOLDER */
+  --color-primary-hover: #9f1239; /* PLACEHOLDER */
+  --color-on-primary: #ffffff; /* PLACEHOLDER */
+  --color-secondary: #475569; /* PLACEHOLDER */
+  --color-secondary-hover: #334155; /* PLACEHOLDER */
+  --color-on-secondary: #ffffff; /* PLACEHOLDER */
   --color-background: #fffaf9; /* PLACEHOLDER */
+  --color-surface: #ffffff; /* PLACEHOLDER */
+  --color-surface-hover: #fff1f2; /* PLACEHOLDER */
   --color-text: #2b1d21; /* PLACEHOLDER */
+  --color-muted: #6b5b60; /* PLACEHOLDER */
+  --color-border: #d9c9cd; /* PLACEHOLDER */
+  --color-focus: #1d4ed8; /* PLACEHOLDER */
+  --color-success: #15803d; /* PLACEHOLDER */
+  --color-warning: #b45309; /* PLACEHOLDER */
+  --color-danger: #b91c1c; /* PLACEHOLDER */
+  --color-info: #0369a1; /* PLACEHOLDER */
+
+  /* Typography: Arabic first, Latin fallback. */
   --font-sans: "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif; /* PLACEHOLDER */
+  --font-latin: "Inter", "Segoe UI", system-ui, sans-serif; /* PLACEHOLDER */
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.75rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.875rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.5rem;
+
+  /* Spacing scale: p-1 = 0.25rem, p-4 = 1rem, h-11 = 2.75rem (44px touch target). */
+  --spacing: 0.25rem;
+
+  /* Radii */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(43 29 33 / 0.08); /* PLACEHOLDER */
+  --shadow-md: 0 4px 12px -2px rgb(43 29 33 / 0.12); /* PLACEHOLDER */
+  --shadow-lg: 0 12px 28px -6px rgb(43 29 33 / 0.18); /* PLACEHOLDER */
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Stacking order */
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-overlay: 1200;
+  --z-modal: 1300;
+  --z-toast: 1400;
+}
+
+/* Utilities for the token groups Tailwind has no theme namespace for. */
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-base {
+  transition-duration: var(--duration-base);
+}
+@utility duration-slow {
+  transition-duration: var(--duration-slow);
 }
