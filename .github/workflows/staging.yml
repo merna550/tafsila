@@ -21,6 +21,9 @@ jobs:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_STAGING }}
       SUPABASE_PROJECT_REF_STAGING: ${{ vars.SUPABASE_PROJECT_REF_STAGING }}
+      STAGING_URL: ${{ vars.STAGING_URL }}
+      SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID }}
+      SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET: ${{ secrets.SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET }}
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -38,12 +41,26 @@ jobs:
           [remotes.staging]
           project_id = "$SUPABASE_PROJECT_REF_STAGING"
 
+          [remotes.staging.auth]
+          site_url = "$STAGING_URL"
+          additional_redirect_urls = ["$STAGING_URL/auth/confirm", "$STAGING_URL/auth/callback"]
+          minimum_password_length = 8
+
+          [remotes.staging.auth.rate_limit]
+          sign_in_sign_ups = 30
+          token_verifications = 30
+
+          [remotes.staging.auth.external.google]
+          enabled = true
+          client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+          secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+
           [remotes.staging.auth.sms.test_otp]
           201000000001 = "123456"
           201000000002 = "123456"
           201000000003 = "123456"
           EOF
-      - name: Push auth config (test OTP numbers)
+      - name: Push auth config (site URL, redirects, Google, rate limits, test OTP numbers)
         run: pnpm exec supabase config push --yes
   deploy:
     needs: migrate

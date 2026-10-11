@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <body
+    style="
+      margin: 0;
+      padding: 24px 12px;
+      background: #fbf7f1;
+      font-family: Tahoma, Arial, sans-serif;
+      color: #2a2220;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="max-width: 520px; margin: 0 auto; background: #ffffff; border-radius: 12px"
+    >
+      <tr>
+        <td style="padding: 32px 28px">
+          <p style="margin: 0 0 16px; font-size: 22px; font-weight: bold; color: #0e6b65">تفصيلة</p>
+          <div dir="rtl" style="text-align: right">
+            <h1 style="margin: 0 0 12px; font-size: 20px">استعادة كلمة المرور</h1>
+            <p style="margin: 0 0 20px; font-size: 16px; line-height: 26px">
+              وصل طلب لتعيين كلمة مرور جديدة لحسابك في تفصيلة. يمكن الضغط على الزر لاختيار كلمة مرور جديدة.
+            </p>
+            <p style="margin: 0 0 24px">
+              <a
+                href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery"
+                style="
+                  display: inline-block;
+                  padding: 14px 28px;
+                  background: #0e6b65;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  font-weight: bold;
+                "
+                >تعيين كلمة مرور جديدة</a
+              >
+            </p>
+            <p style="margin: 0; font-size: 14px; line-height: 22px; color: #625650">
+              إذا لم يتم طلب ذلك، يمكن تجاهل هذه الرسالة وستبقى كلمة المرور كما هي.
+            </p>
+          </div>
+          <hr style="margin: 28px 0; border: 0; border-top: 1px solid #d9ccbc" />
+          <div dir="ltr" style="text-align: left">
+            <h2 style="margin: 0 0 12px; font-size: 18px">Reset your password</h2>
+            <p style="margin: 0 0 20px; font-size: 15px; line-height: 24px">
+              We received a request to set a new password for your Tafsila account. Use the button to choose
+              one.
+            </p>
+            <p style="margin: 0 0 24px">
+              <a
+                href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery"
+                style="
+                  display: inline-block;
+                  padding: 12px 24px;
+                  background: #0e6b65;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 8px;
+                  font-size: 15px;
+                  font-weight: bold;
+                "
+                >Set a new password</a
+              >
+            </p>
+            <p style="margin: 0; font-size: 13px; line-height: 20px; color: #625650">
+              If you did not ask for this, you can ignore this message and your password stays the same.
+            </p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
