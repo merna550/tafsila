@@ -2,6 +2,12 @@
 
 Newest first. Each entry: date · decision · reason · alternatives considered. Agents read this before asking questions.
 
+## ADR-034 · 2026-10-11 · Error display: one router, one boundary, texts in a typed module until next-intl
+
+**Decision:** (1) `shared/error-display` turns any thrown value into an `ErrorRoute` (`routeError`, built on `placementFor`); `useApiErrorHandler` shows toasts, redirects 401 to `/sign-in?next=<same page>` (same-site paths only) and reports unexpected errors to Sentry through `reportError` in the monitoring wrapper, tagged with the request id. (2) `ConnectionBanner` sits in the `AppShell` banner slot and follows the browser's online/offline events; `AppErrorBoundary` wraps the app. (3) `DataState` in `shared/data-state` is the loading / empty / error pattern. (4) next-intl is not installed yet, so the fixed Arabic and English texts live in `shared/error-display/messages.ts`, typed per language; they move to `messages/{ar,en}.json` when i18n lands.
+**Reason:** One place decides where an error shows; screens cannot invent their own. The Sentry ban outside the wrapper is kept.
+**Alternatives:** Next `error.tsx` files only (do not cover errors above the layout and are harder to test); installing next-intl in this issue (a separate decision with routing impact).
+
 ## ADR-033 · 2026-10-11 · Layout, overlay and feedback components on Radix (foundations 2b)
 
 **Decision:** Dialog and Sheet share one `ModalFrame` on Radix Dialog; Tabs, Avatar, Tooltip and Toast use the matching Radix primitives (all free, ADR-022). Dialog is centred with `inset-0 m-auto` and Sheet attaches to `start`, `end` or `bottom`, so RTL mirrors with no translate tricks. Components take already-translated strings (close labels, captions) as props; none holds literal text. `ToastProvider` + `useToast()` is the only toast API (failed actions show a toast, ADR-030). `AppShell` has a `banner` slot above the header for the connection banner (#72). Unit tests use static markup; portal-based parts (open dialog, toasts) are covered by the visual snapshots because no DOM test library is added.

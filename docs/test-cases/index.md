@@ -124,3 +124,8 @@
 | ui/69-layout-overlay-feedback-components.md | TC-UI-69-05    | Sheet opens from the start edge and mirrors in RTL  | Medium   | ⬜  | ⬜      |
 | ui/69-layout-overlay-feedback-components.md | TC-UI-69-06    | Dialog traps focus and closes on Escape             | High     | ⬜  | ⬜      |
 | ui/69-layout-overlay-feedback-components.md | TC-UI-69-07    | AppShell works at mobile and desktop widths         | Medium   | ⬜  | ⬜      |
+| ui/error-display.md                         | TC-UI-72-01    | Offline banner                                      | High     | ⬜  | ⬜      |
+| ui/error-display.md                         | TC-UI-72-02    | Each error in its place                             | High     | ⬜  | ⬜      |
+| ui/error-display.md                         | TC-UI-72-03    | Unknown error shows reference                       | High     | ⬜  | ⬜      |
+| ui/error-display.md                         | TC-UI-72-04    | Crash shows fallback                                | Medium   | ⬜  | ⬜      |
+| ui/error-display.md                         | TC-UI-72-05    | Three states                                        | Medium   | ⬜  | ⬜      |
