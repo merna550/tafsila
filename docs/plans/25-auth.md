@@ -6,13 +6,13 @@ Depends on #24 (closed). Blocks #26, #27 and, through the i18n part, every M1 sc
 
 ## Why the size goes from M to L, and the split
 
-#25 is the first real screen, so it also has to bring in tools that are not in the repo yet: next-intl with `[locale]` routes and `messages/` (ADR-029 (6) and ADR-72 waited for this), React Hook Form, `@supabase/ssr`, and a Playwright e2e setup for `apps/web` plus its CI job. All of that does not fit one 50-turn run (ADR-032). Proposal (**needs Merna**): split it into three issues, built in order, each one PR:
+#25 is the first real screen, so it also has to bring in tools that are not in the repo yet: next-intl with `[locale]` routes and `messages/` (ADR-029 (6) and ADR-72 waited for this), React Hook Form, `@supabase/ssr`, and a Playwright e2e setup for `apps/web` plus its CI job. All of that does not fit one 50-turn run (ADR-032). Split into three issues, built in order, each one PR (approved by Merna on 2026-10-11):
 
-| Part | Issue                                                 | What                                                                                                   | Size |
-| ---- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---- |
-| A    | new: `feat(web): i18n foundation and web e2e harness` | next-intl, `app/[locale]/`, `messages/{ar,en}.json`, error texts moved, Playwright for `apps/web` + CI | M    |
-| B    | new: `feat(auth): session, route guard and API auth`  | `@supabase/ssr` in `shared/auth`, `proxy.ts`, `(dashboard)` guard, Hono auth middleware, role claim    | M    |
-| C    | #25 (kept, renamed scope)                             | the four screens, sign-out, Google, confirm route, email templates, analytics, e2e flow, staging       | M    |
+| Part | Issue                                                | What                                                                                                   | Size |
+| ---- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---- |
+| A    | #90 `feat(web): i18n foundation and web e2e harness` | next-intl, `app/[locale]/`, `messages/{ar,en}.json`, error texts moved, Playwright for `apps/web` + CI | M    |
+| B    | #91 `feat(auth): session, route guard and API auth`  | `@supabase/ssr` in `shared/auth`, `proxy.ts`, `(dashboard)` guard, Hono auth middleware, role claim    | M    |
+| C    | #25 (kept, renamed scope)                            | the four screens, sign-out, Google, confirm route, email templates, analytics, e2e flow, staging       | M    |
 
 B depends on A; C depends on B. #26 and #27 then depend on C (#25) as today. If Merna prefers one issue, the build uses "Part of #25" PRs with the same three groups and the checkpoint rule (ADR-032).
 
@@ -79,13 +79,13 @@ The browser talks to Supabase Auth directly for sign-up, sign-in, reset and Goog
 
 ## Decisions (the build writes them in `docs/decisions/25-auth.md`)
 
-1. **Split into three issues** A → B → C as above. **Needs Merna.**
+1. **Split into three issues** A (#90) → B (#91) → C (#25). Approved by Merna.
 2. **URLs:** Arabic default without prefix (`/sign-in`), English with `/en/…` (`localePrefix: "as-needed"`), so the ADR-72 redirect `/sign-in?next=` keeps working. Locale remembered in the next-intl cookie; #27 later stores it in `profiles.locale`.
 3. **Browser Supabase config at runtime** through `PublicConfig` (URL + anon key are public), never `NEXT_PUBLIC_*` (ADR-025).
 4. **Role in the token** via the custom access token hook (`user_role` claim from `profiles.role`); a role change takes effect at the next token refresh (≤ 1 hour). The API verifies tokens once in `requireAuth`; #29's `withUser` reuses the verified claims instead of verifying again.
 5. **Rate limiting (NFR-04):** auth requests go from the browser to Supabase Auth, so GoTrue's built-in limits are the auth limiter (values set for local and staging in config); no limiter in Hono for this issue because our API has no auth endpoint. A Hono limiter comes with the first AI or checkout endpoint.
 6. **Email links** use `token_hash` to `/auth/confirm` (works when the link is opened on another device, unlike the PKCE code); Arabic-first templates in `supabase/templates/`.
-7. **Password policy:** at least 8 characters, no other rules (NIST-style; long passphrases allowed). **Merna may prefer a different minimum.**
+7. **Password policy:** at least 8 characters, no other rules (NIST-style; long passphrases allowed). Approved by Merna.
 8. **Google:** off locally unless a developer enables it; on for staging with secrets; the button shows only when `AUTH_GOOGLE_ENABLED=true`.
 9. **No account enumeration:** sign-up with an existing email shows the same "check your email" notice.
 10. **Staging email:** Supabase's built-in sender only delivers to the project's team members, about 2 emails per hour. Staging is tested with Merna's own address; a custom SMTP sender (a free tier, for example Resend) is needed before the beta and is noted for M8. **Merna to know.**
