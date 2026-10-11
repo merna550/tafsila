@@ -10,7 +10,7 @@ The issue is the plan (`plan:none`). Part of #66; follows #69 (components).
 
 ## Choices
 
-- Texts live in a typed module until next-intl is installed (ADR-034).
+- Texts live in a typed module until next-intl is installed (ADR-72, [decision](../decisions/72-error-display.md)).
 - Web vitest uses the oxc automatic JSX runtime so component tests render with `renderToStaticMarkup` (no DOM).
 - The home page's `<main>` became a `<div>` because `AppShell` now provides `<main>`.
 

@@ -613,7 +613,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Error boundary
 
 **Plain words:** A React component that catches a crash while a screen is drawing, shows a calm fallback message instead of a blank page, and lets the app report the crash.
-**In Tafsila:** `AppErrorBoundary` in `apps/web/src/shared/error-display/`, which shows `ErrorState` and sends the error to Sentry with the request id ([ADR-034](../DECISIONS.md)). **Card:** [React](tech/react.md) · **Level:** intermediate  
+**In Tafsila:** `AppErrorBoundary` in `apps/web/src/shared/error-display/`, which shows `ErrorState` and sends the error to Sentry with the request id ([ADR-72](../decisions/72-error-display.md)). **Card:** [React](tech/react.md) · **Level:** intermediate  
 **Learn:** <https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary>
 
 <a id="eslint"></a>
@@ -1998,7 +1998,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Three states (loading, empty, error)
 
 **Plain words:** Every screen that loads data must look right in three situations besides "has data": still loading, nothing to show yet, and failed to load.
-**In Tafsila:** `DataState` in `apps/web/src/shared/data-state/` picks Skeleton, EmptyState or ErrorState ([ADR-034](../DECISIONS.md)). **Card:** [Radix UI](tech/radix-ui.md) · **Level:** beginner  
+**In Tafsila:** `DataState` in `apps/web/src/shared/data-state/` picks Skeleton, EmptyState or ErrorState ([ADR-72](../decisions/72-error-display.md)). **Card:** [Radix UI](tech/radix-ui.md) · **Level:** beginner  
 **Learn:** <https://web.dev/articles/inclusive-components>
 
 <a id="letter-u"></a>

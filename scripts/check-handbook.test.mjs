@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   checkDependencyCards,
+  checkAdrNumbers,
   checkHandbook,
   checkRelativeLinks,
   collectAnchors,
@@ -126,5 +127,59 @@ describe("anchors and front matter", () => {
   it("passes on the whole fixture when both checks are clean", () => {
     const root = fixture({ "package.json": manifest({}), "docs/a.md": "# A\n" });
     expect(checkHandbook(root)).toEqual([]);
+  });
+});
+
+describe("ADR numbers (issue #76)", () => {
+  const decision = (n, title = "t") => `# ADR-${n} · 2026-10-11 · ${title}\n\n**Decision:** x\n`;
+
+  it("accepts a closed log plus uniquely numbered decision files", () => {
+    const root = fixture({
+      "docs/DECISIONS.md": "# Log\n\n## ADR-002 · b\n\n## ADR-001 · a\n",
+      "docs/decisions/README.md": "# About\n",
+      "docs/decisions/76-conflicts.md": decision("76"),
+      "docs/decisions/76a-second.md": decision("76a"),
+    });
+    expect(checkAdrNumbers(root)).toEqual([]);
+  });
+
+  it("names a number used twice in the closed log", () => {
+    const root = fixture({
+      "docs/DECISIONS.md":
+        "## ADR-032 · Outcome check\n\n## ADR-031 · Design\n\n## ADR-032 · Layout components\n",
+    });
+    const errors = checkAdrNumbers(root);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("ADR-32 is used 2 times");
+    expect(errors[0]).toContain("Outcome check");
+    expect(errors[0]).toContain("Layout components");
+    expect(checkHandbook(root)).toEqual(errors);
+  });
+
+  it("flags a decision file that reuses a number of the closed log or of another file", () => {
+    const root = fixture({
+      "docs/DECISIONS.md": "## ADR-035 · Drizzle\n",
+      "docs/decisions/35-again.md": decision("35"),
+      "docs/decisions/80-a.md": decision("80"),
+      "docs/decisions/80-b.md": decision("80"),
+    });
+    const errors = checkAdrNumbers(root);
+    expect(errors).toHaveLength(2);
+    expect(errors.join("\n")).toContain("ADR-35 is used 2 times");
+    expect(errors.join("\n")).toContain("ADR-80 is used 2 times");
+  });
+
+  it("flags a file without an issue number and a heading that disagrees with the file name", () => {
+    const root = fixture({
+      "docs/decisions/notes.md": "# Notes\n",
+      "docs/decisions/90-x.md": decision("91"),
+    });
+    const errors = checkAdrNumbers(root);
+    expect(errors.join("\n")).toContain("must be named <issue>-<slug>.md");
+    expect(errors.join("\n")).toContain('must start with "# ADR-90');
+  });
+
+  it("passes when there is no decision log", () => {
+    expect(checkAdrNumbers(fixture({}))).toEqual([]);
   });
 });

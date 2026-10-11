@@ -17,6 +17,6 @@ Closes #
 
 ### Docs
 
-- [ ] SRS - [ ] DECISIONS.md - [ ] CLAUDE.md status - [ ] API docs - [ ] handbook (glossary / tech card / pattern) + learning-log
+- [ ] SRS - [ ] decision file (`docs/decisions/`) - [ ] CLAUDE.md status (only if milestone/next/open decision changed) - [ ] API docs - [ ] handbook (glossary / tech card / pattern) + learning-log
 
 ### Screenshots
