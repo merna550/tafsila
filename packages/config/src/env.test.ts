@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadBuildInfo, loadDatabaseUrl, loadPublicConfig, loadServerEnv } from "./env";
+import { loadBuildInfo, loadDatabaseUrl, loadPhoneConfig, loadPublicConfig, loadServerEnv } from "./env";
 
 const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
@@ -8,7 +8,14 @@ const valid = {
 };
 
 const observability = { SENTRY_DSN: "https://key@o1.ingest.sentry.io/1", POSTHOG_KEY: "phc_test" };
-const aiAndPaymob = { AI_MODEL_ANALYZE: "model", AI_API_KEY: "key", PAYMOB_API_KEY: "pay", ...observability };
+const phoneSecret = { PHONE_HASH_SECRET: "s".repeat(32) };
+const aiAndPaymob = {
+  AI_MODEL_ANALYZE: "model",
+  AI_API_KEY: "key",
+  PAYMOB_API_KEY: "pay",
+  ...observability,
+  ...phoneSecret,
+};
 
 describe("loadServerEnv", () => {
   it("applies defaults for optional variables", () => {
@@ -32,12 +39,12 @@ describe("loadServerEnv", () => {
 
   it("starts without AI and Paymob variables outside production", () => {
     for (const APP_ENV of ["local", "ci", "preview", "staging"]) {
-      expect(() => loadServerEnv({ ...valid, APP_ENV })).not.toThrow();
+      expect(() => loadServerEnv({ ...valid, ...phoneSecret, APP_ENV })).not.toThrow();
     }
   });
 
   it("requires AI and Paymob variables in production", () => {
-    expect(() => loadServerEnv({ ...valid, APP_ENV: "production" })).toThrow(
+    expect(() => loadServerEnv({ ...valid, ...phoneSecret, APP_ENV: "production" })).toThrow(
       /AI_MODEL_ANALYZE, AI_API_KEY, PAYMOB_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
     );
     expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, APP_ENV: "production" })).not.toThrow();
@@ -133,5 +140,53 @@ describe("loadDatabaseUrl", () => {
   it("is optional in the validated server env", () => {
     expect(loadServerEnv(valid).DATABASE_URL).toBeUndefined();
     expect(loadServerEnv({ ...valid, DATABASE_URL: "postgresql://x" }).DATABASE_URL).toBe("postgresql://x");
+  });
+});
+
+describe("phone configuration", () => {
+  const secret = "s".repeat(32);
+
+  it("works locally without the secret and defaults to the nine test numbers", () => {
+    const config = loadPhoneConfig({ APP_ENV: "local" });
+    expect(config.hashSecret).toBeUndefined();
+    expect(config.testNumbers).toHaveLength(9);
+    expect(config.testOnly).toBe(true);
+  });
+
+  it.each(["staging", "preview", "production"])("requires the secret in %s", (APP_ENV) => {
+    expect(() => loadPhoneConfig({ APP_ENV })).toThrow(/PHONE_HASH_SECRET/);
+    expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, PHONE_HASH_SECRET: undefined, APP_ENV })).toThrow(
+      /PHONE_HASH_SECRET/,
+    );
+    expect(loadPhoneConfig({ APP_ENV, PHONE_HASH_SECRET: secret }).hashSecret).toBe(secret);
+  });
+
+  it("refuses a short secret", () => {
+    expect(() => loadPhoneConfig({ APP_ENV: "local", PHONE_HASH_SECRET: "short" })).toThrow(
+      /PHONE_HASH_SECRET/,
+    );
+  });
+
+  it("reads a custom test list and refuses it in production", () => {
+    const config = loadPhoneConfig({
+      APP_ENV: "staging",
+      PHONE_HASH_SECRET: secret,
+      PHONE_TEST_NUMBERS: "+201000000001, +201000000002",
+    });
+    expect(config.testNumbers).toEqual(["+201000000001", "+201000000002"]);
+    expect(() =>
+      loadPhoneConfig({
+        APP_ENV: "production",
+        PHONE_HASH_SECRET: secret,
+        PHONE_TEST_NUMBERS: "+201000000001",
+      }),
+    ).toThrow(/PHONE_TEST_NUMBERS/);
+    expect(loadPhoneConfig({ APP_ENV: "production", PHONE_HASH_SECRET: secret }).testOnly).toBe(false);
+  });
+
+  it("refuses numbers that are not E.164", () => {
+    expect(() => loadPhoneConfig({ APP_ENV: "local", PHONE_TEST_NUMBERS: "01000000001" })).toThrow(
+      /PHONE_TEST_NUMBERS/,
+    );
   });
 });

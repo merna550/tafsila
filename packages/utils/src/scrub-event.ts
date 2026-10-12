@@ -1,5 +1,7 @@
 /** Privacy scrubber for error-tracking events (NFR-05): removes PII and request payloads before anything leaves the app. */
 
+import { maskPhones } from "./phone";
+
 /** The parts of an error event the scrubber touches (structurally compatible with Sentry events). */
 export interface ScrubbableEvent {
   /** Who was affected; only the opaque id may remain. */
@@ -9,7 +11,8 @@ export interface ScrubbableEvent {
 }
 
 /**
- * Keeps only the opaque user id and drops the request body, cookies, headers and query string.
+ * Keeps only the opaque user id and drops the request body, cookies, headers and query string;
+ * anything shaped like an Egyptian mobile number in the kept URL is masked.
  *
  * @param event - Error event about to be sent.
  * @returns The same event, scrubbed.
@@ -23,7 +26,7 @@ export function scrubEvent<T extends ScrubbableEvent>(event: T): T {
   }
   if (event.request) {
     const { url, method } = event.request as { url?: unknown; method?: unknown };
-    event.request = { url, method };
+    event.request = { url: typeof url === "string" ? maskPhones(url) : url, method };
   }
   return event;
 }

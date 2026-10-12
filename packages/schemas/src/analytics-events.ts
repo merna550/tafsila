@@ -15,11 +15,25 @@ const signupStartedSchema = z
 /** Event fired once when a new account lands on the dashboard after confirming (no email, no user id). */
 const signupCompletedSchema = z.object({ method: z.enum(["email", "google"]).optional() }).strict();
 
+/** Server event: a verification code was requested (first send or resend); never carries the number. */
+const phoneCodeRequestedSchema = z.object({ attempt: z.enum(["first", "resend"]) }).strict();
+
+/** Server event: the phone was verified; says only whether the free trial is still available. */
+const phoneVerifiedSchema = z.object({ trial_eligible: z.boolean() }).strict();
+
+/** Server event: a verification step failed, with a fixed reason (never the number or the code). */
+const phoneVerificationFailedSchema = z
+  .object({ reason: z.enum(["invalid_code", "already_used", "rate_limited", "send_failed"]) })
+  .strict();
+
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
   signup_started: signupStartedSchema,
   signup_completed: signupCompletedSchema,
+  phone_code_requested: phoneCodeRequestedSchema,
+  phone_verified: phoneVerifiedSchema,
+  phone_verification_failed: phoneVerificationFailedSchema,
 } as const;
 
 /** Names of all known analytics events. */
