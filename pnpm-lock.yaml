@@ -132,6 +132,9 @@ importers:
       '@playwright/test':
         specifier: ^1.64.0
         version: 1.64.0
+      '@tafsila/test-fixtures':
+        specifier: workspace:*
+        version: link:../../packages/test-fixtures
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3

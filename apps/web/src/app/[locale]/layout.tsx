@@ -9,6 +9,7 @@ import { connection } from "next/server";
 import type { ReactElement, ReactNode } from "react";
 import { AuthProvider } from "../../shared/auth";
 import { DIRECTION, routing } from "../../shared/i18n";
+import { QueryProvider } from "../../shared/query";
 import { ObservabilityProvider } from "../../shared/observability/ObservabilityProvider";
 import { AppFrame } from "./AppFrame";
 import "../globals.css";
@@ -71,7 +72,9 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <ObservabilityProvider config={config} />
           <AuthProvider config={config}>
-            <AppFrame dir={DIRECTION[locale]}>{children}</AppFrame>
+            <QueryProvider>
+              <AppFrame dir={DIRECTION[locale]}>{children}</AppFrame>
+            </QueryProvider>
           </AuthProvider>
         </NextIntlClientProvider>
       </body>
