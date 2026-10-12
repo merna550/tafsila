@@ -1,12 +1,38 @@
 import { randomUUID } from "node:crypto";
-import { expect, test, type Page } from "@playwright/test";
-import ar from "../messages/ar.json";
-import en from "../messages/en.json";
+import { expect, test, type Locator, type Page } from "@playwright/test";
+import type arMessages from "../messages/ar.json";
+import { readFileSync } from "node:fs";
 import { confirmLinkFor } from "./support/mailbox";
+
+type Messages = typeof arMessages;
+
+/**
+ * Reads a messages file with fs: native ESM in Playwright rejects bare JSON imports.
+ *
+ * @param locale - Which messages file to load.
+ * @returns The parsed messages.
+ */
+function loadMessages(locale: "ar" | "en"): Messages {
+  const url = new URL(`../messages/${locale}.json`, import.meta.url);
+  return JSON.parse(readFileSync(url, "utf8")) as Messages;
+}
+
+const ar = loadMessages("ar");
+const en = loadMessages("en");
 
 const MESSAGES = { ar, en } as const;
 const PASSWORD = "password-one-1";
 const NEW_PASSWORD = "password-two-2";
+
+/**
+ * Finds the app's own error notice. Next.js adds a second, empty role="alert" (the route announcer).
+ *
+ * @param page - The page.
+ * @returns Locator of the notice.
+ */
+function appAlert(page: Page): Locator {
+  return page.locator('[role="alert"]:not(#__next-route-announcer__)');
+}
 
 /**
  * Reads the language of the running project.
@@ -80,13 +106,14 @@ test.describe("auth screens", () => {
     const { prefix, t } = projectLocale(testInfo);
     await page.goto(`${prefix}/reset-password`);
     await expect(page).toHaveURL(new RegExp(`${prefix}/sign-in\\?error=link$`));
-    await expect(page.getByRole("alert")).toHaveText(t.authErrors.linkInvalid);
+    await expect(appAlert(page)).toHaveText(t.authErrors.linkInvalid);
   });
 
-  test("an invalid email link ends on sign-in with the link notice", async ({ page }) => {
+  test("an invalid email link ends on sign-in with the link notice", async ({ page }, testInfo) => {
+    const { t } = projectLocale(testInfo);
     await page.goto("/auth/confirm?token_hash=invalid&type=email");
     await expect(page).toHaveURL(/\/sign-in\?error=link$/);
-    await expect(page.getByRole("alert")).toHaveText(ar.authErrors.linkInvalid);
+    await expect(appAlert(page)).toHaveText(t.authErrors.linkInvalid);
   });
 });
 
@@ -108,7 +135,7 @@ test.describe("account flow with the local mail catcher", () => {
     await expect(page.getByRole("heading", { name: t.auth.checkEmail.title })).toBeVisible();
     await page.goto(await confirmLinkFor(email, "تأكيد"));
     await expect(page).toHaveURL(/\/dashboard$/);
-    await expect(page.getByText(t.auth.welcome)).toBeVisible();
+    await expect(page.getByText(t.auth.welcome, { exact: true })).toBeVisible();
 
     // The session survives a reload; sign out ends it and the dashboard is guarded again.
     await page.reload();
@@ -120,7 +147,7 @@ test.describe("account flow with the local mail catcher", () => {
 
     // A wrong password shows the error under the form; the right one returns to `next`.
     await signIn(page, t, email, "wrong-password-1");
-    await expect(page.getByRole("alert")).toHaveText(t.authErrors.invalidCredentials);
+    await expect(appAlert(page)).toHaveText(t.authErrors.invalidCredentials);
     await signIn(page, t, email, PASSWORD);
     await expect(page).toHaveURL(/\/dashboard$/);
     await page.getByRole("button", { name: t.auth.signOut }).click();
@@ -151,7 +178,7 @@ test.describe("account flow with the local mail catcher", () => {
     test.skip(testInfo.project.name !== "en-desktop");
     await page.goto("/en/sign-in");
     await signIn(page, en, `nobody-${randomUUID()}@example.com`, "wrong-password-1");
-    await expect(page.getByRole("alert")).toHaveText(en.authErrors.invalidCredentials);
+    await expect(appAlert(page)).toHaveText(en.authErrors.invalidCredentials);
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   });
 });
