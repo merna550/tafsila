@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page, type Response } from "@playwright/test";
 import { newEmail, signUpAndConfirm } from "./support/accounts";
 import { appAlert, projectLocale, type Messages } from "./support/app";
 
@@ -28,16 +28,32 @@ async function sendCode(page: Page, t: Messages, phone: string): Promise<void> {
 }
 
 /**
- * Fills the six code boxes (the first box takes the whole code, like an SMS autofill) and confirms.
+ * Fills the six code boxes (the first box takes the whole code, like an SMS autofill), confirms, and returns the API answer.
  *
  * @param page - The page.
  * @param t - Messages of the page language.
  * @param code - The six digits.
+ * @returns The response of POST /api/phone/verify.
  */
-async function enterCode(page: Page, t: Messages, code: string): Promise<void> {
+async function enterCode(page: Page, t: Messages, code: string): Promise<Response> {
   const firstBox = t.phoneVerification.code.digit.replace("{n}", "1");
   await page.getByLabel(firstBox, { exact: true }).fill(code);
-  await page.getByRole("button", { name: t.phoneVerification.code.confirm, exact: true }).click();
+  const [response] = await Promise.all([
+    page.waitForResponse((candidate) => candidate.url().endsWith("/api/phone/verify")),
+    page.getByRole("button", { name: t.phoneVerification.code.confirm, exact: true }).click(),
+  ]);
+  return response;
+}
+
+/**
+ * Enters the valid code and checks that the API accepted it (the body is in the failure message).
+ *
+ * @param page - The page.
+ * @param t - Messages of the page language.
+ */
+async function verifyWithValidCode(page: Page, t: Messages): Promise<void> {
+  const response = await enterCode(page, t, VALID_CODE);
+  expect(response.status(), await response.text()).toBe(200);
 }
 
 /**
@@ -64,7 +80,7 @@ test.describe("phone verification with the local test numbers", () => {
     await sendCode(page, t, NUMBER.happy);
     await expect(page.getByRole("status").filter({ hasText: "010 0000 0005" })).toBeVisible();
     await expect(page.getByText(/0:\d\d/)).toBeVisible();
-    await enterCode(page, t, VALID_CODE);
+    await verifyWithValidCode(page, t);
 
     await expect(page).toHaveURL(/\/dashboard$/);
     await openDashboard(page, prefix);
@@ -155,7 +171,7 @@ test.describe("phone verification with the local test numbers", () => {
     const first = await (await browser.newContext({ locale: "ar-EG" })).newPage();
     await signUpAndConfirm(first, t, prefix, newEmail());
     await sendCode(first, t, NUMBER.used);
-    await enterCode(first, t, VALID_CODE);
+    await verifyWithValidCode(first, t);
     await expect(first).toHaveURL(/\/dashboard/);
 
     const second = await (await browser.newContext({ locale: "ar-EG" })).newPage();
@@ -179,7 +195,7 @@ test.describe("phone verification with the local test numbers", () => {
     await expect(page.getByLabel(t.phoneVerification.phone.label, { exact: true })).toHaveValue(
       "010 0000 0009",
     );
-    await enterCode(page, t, VALID_CODE);
+    await verifyWithValidCode(page, t);
     await expect(page).toHaveURL(/\/en\/dashboard$/);
   });
 });
