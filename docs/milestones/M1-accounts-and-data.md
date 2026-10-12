@@ -58,7 +58,7 @@ The brand step (palette, font, feel) is done: Merna approved it and it is applie
 | #26   | Phone OTP + one free trial per phone                   | 2    |
 | #27   | Settings (language, units) and delete account          | 2    |
 | #29   | Clients and measurement sets API                       | 2    |
-| #30   | Clients list and profile screens                       | 3    |
+| #30   | Clients list and profile screens (+ signed-in nav bar) | 3    |
 | #31   | Measurement form with size picker, overrides and guide | 3    |
 | #32   | Mini admin: users list and size-chart editor           | 3    |
 | #34   | End-to-end exit check                                  | 4    |

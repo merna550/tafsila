@@ -17,6 +17,8 @@ export interface DataStateProps {
   readonly onRetry?: () => void;
   /** Heading of the empty state; defaults to a generic text in the page language. */
   readonly emptyTitle?: string;
+  /** One line under the heading of the empty state. */
+  readonly emptyDescription?: string;
   /** Optional action of the empty state, for example "Add the first client". */
   readonly emptyAction?: ReactNode;
   /** The data screen, rendered only when loaded and not empty. */
@@ -37,6 +39,7 @@ export function DataState({
   isEmpty,
   onRetry,
   emptyTitle,
+  emptyDescription,
   emptyAction,
   children,
 }: Readonly<DataStateProps>): ReactElement {
@@ -45,7 +48,9 @@ export function DataState({
   if (error) return <ApiErrorView route={routeError(error, "load", locale)} onRetry={onRetry} />;
   if (isPending) return <Skeleton variant="table" />;
   if (isEmpty) {
-    return <EmptyState title={emptyTitle ?? t("emptyTitle")} action={emptyAction} />;
+    return (
+      <EmptyState title={emptyTitle ?? t("emptyTitle")} description={emptyDescription} action={emptyAction} />
+    );
   }
   return <>{children}</>;
 }

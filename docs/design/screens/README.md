@@ -30,7 +30,7 @@ Each `*.dc.html` file is plain HTML with inline styles, drawn in **Arabic (RTL)*
 | `Main.dc.html`          | Sign in / sign up         | `/sign-in`                       | #25   | sign-in tab, filled form                                         |
 | `Verify.dc.html`        | Phone verification (OTP)  | `/verify-phone`                  | #26   | code half-entered, resend countdown                              |
 | `Clients.dc.html`       | Clients list              | `/clients`                       | #30   | list with 5 clients, search                                      |
-| `ClientsEmpty.dc.html`  | Clients list, first visit | `/clients`                       | #30   | empty state                                                      |
+| `ClientsEmpty.dc.html`  | Clients list, first visit | `/clients`                       | #30   | empty state (the "3 free patterns" chip is not built until M7)   |
 | `ClientProfile.dc.html` | Client profile            | `/clients/[id]`                  | #30   | notes, 2 measurement sets                                        |
 | `Measurements.dc.html`  | New measurement set       | `/clients/[id]/measurements/new` | #31   | base size M, one override, one warning, one error, save disabled |
 | `Guide.dc.html`         | How to measure (dialog)   | opens over the measurement form  | #31   | bust guide                                                       |

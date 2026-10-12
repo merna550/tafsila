@@ -1,16 +1,40 @@
 /** In-memory client repository for tests and `pnpm api:test`; filters by owner exactly as RLS does. */
-import type { Client } from "@tafsila/schemas";
+import type { Client, ClientSummary } from "@tafsila/schemas";
 import type { ClientRepository } from "../../ports/client-repository";
 import { newestFirst, type ClientRow, type MemoryOptions, type MemoryStore } from "./memory-store";
 
 /**
- * Removes the owner from a row.
+ * Counts a client's sets and finds the newest one, like the aggregate query of the database adapter.
  *
+ * @param store - Shared fake database.
+ * @param clientId - The client.
+ * @returns The summary shown on the clients list.
+ */
+function summarize(store: MemoryStore, clientId: string): ClientSummary {
+  const sets = newestFirst(store.sets.filter((set) => set.clientId === clientId));
+  const newest = sets[0];
+  return {
+    measurementSetCount: sets.length,
+    latestSizeLabel: newest?.sizeLabel ?? null,
+    lastMeasurementAt: newest?.createdAt ?? null,
+  };
+}
+
+/**
+ * Removes the owner from a row and adds its summary.
+ *
+ * @param store - Shared fake database.
  * @param row - Stored row.
  * @returns The public client.
  */
-function toClient(row: ClientRow): Client {
-  return { id: row.id, name: row.name, notes: row.notes, createdAt: row.createdAt };
+function toClient(store: MemoryStore, row: ClientRow): Client {
+  return {
+    id: row.id,
+    name: row.name,
+    notes: row.notes,
+    createdAt: row.createdAt,
+    summary: summarize(store, row.id),
+  };
 }
 
 /**
@@ -51,20 +75,20 @@ export function createMemoryClientRepository(
         createdAt: now().toISOString(),
       };
       store.clients.push(row);
-      return Promise.resolve(toClient(row));
+      return Promise.resolve(toClient(store, row));
     },
     list(ctx, { q, limit, offset }) {
       const needle = q?.toLowerCase();
       const matching = own(ctx.userId).filter((row) => !needle || row.name.toLowerCase().includes(needle));
       const items = newestFirst(matching)
         .slice(offset, offset + limit)
-        .map(toClient);
+        .map((row) => toClient(store, row));
       return Promise.resolve({ items, total: matching.length, limit, offset });
     },
     count: (ctx) => Promise.resolve(own(ctx.userId).length),
     get(ctx, id) {
       const row = find(ctx.userId, id);
-      return Promise.resolve(row ? toClient(row) : undefined);
+      return Promise.resolve(row ? toClient(store, row) : undefined);
     },
     update(ctx, id, patch) {
       const row = find(ctx.userId, id);
@@ -75,7 +99,7 @@ export function createMemoryClientRepository(
         ...(patch.notes !== undefined ? { notes: patch.notes } : {}),
       };
       store.clients = store.clients.map((existing) => (existing === row ? next : existing));
-      return Promise.resolve(toClient(next));
+      return Promise.resolve(toClient(store, next));
     },
     remove(ctx, id) {
       const row = find(ctx.userId, id);

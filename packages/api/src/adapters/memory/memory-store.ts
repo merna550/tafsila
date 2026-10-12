@@ -2,7 +2,7 @@
 import type { Client, MeasurementSet } from "@tafsila/schemas";
 
 /** A client row plus its owner. */
-export interface ClientRow extends Client {
+export interface ClientRow extends Omit<Client, "summary"> {
   readonly ownerId: string;
 }
 

@@ -6,7 +6,7 @@ export type AccessDecision =
   { readonly action: "allow" } | { readonly action: "redirect"; readonly to: string };
 
 /** Paths (without the locale prefix) that need a signed-in user. */
-const PROTECTED_PREFIXES = ["/dashboard"] as const;
+const PROTECTED_PREFIXES = ["/dashboard", "/clients"] as const;
 /** Paths a signed-in user does not need. */
 const GUEST_ONLY_PATHS = ["/sign-in", "/sign-up"] as const;
 /** Non-default locale prefixes in URLs (Arabic has none, decision 25a-2). */

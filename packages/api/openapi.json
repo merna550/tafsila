@@ -404,13 +404,46 @@
                       "type": "string",
                       "format": "date-time",
                       "example": "2026-10-11T10:00:00.000Z"
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "measurementSetCount": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "example": 2
+                        },
+                        "latestSizeLabel": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "M",
+                          "description": "Size label of the newest set; null when it has none"
+                        },
+                        "lastMeasurementAt": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time",
+                          "example": "2026-10-11T10:00:00.000Z",
+                          "description": "When the newest set was saved"
+                        }
+                      },
+                      "required": [
+                        "measurementSetCount",
+                        "latestSizeLabel",
+                        "lastMeasurementAt"
+                      ]
                     }
                   },
                   "required": [
                     "id",
                     "name",
                     "notes",
-                    "createdAt"
+                    "createdAt",
+                    "summary"
                   ]
                 }
               }
@@ -804,13 +837,46 @@
                             "type": "string",
                             "format": "date-time",
                             "example": "2026-10-11T10:00:00.000Z"
+                          },
+                          "summary": {
+                            "type": "object",
+                            "properties": {
+                              "measurementSetCount": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "example": 2
+                              },
+                              "latestSizeLabel": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "example": "M",
+                                "description": "Size label of the newest set; null when it has none"
+                              },
+                              "lastMeasurementAt": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "date-time",
+                                "example": "2026-10-11T10:00:00.000Z",
+                                "description": "When the newest set was saved"
+                              }
+                            },
+                            "required": [
+                              "measurementSetCount",
+                              "latestSizeLabel",
+                              "lastMeasurementAt"
+                            ]
                           }
                         },
                         "required": [
                           "id",
                           "name",
                           "notes",
-                          "createdAt"
+                          "createdAt",
+                          "summary"
                         ]
                       }
                     },
@@ -1118,13 +1184,46 @@
                       "type": "string",
                       "format": "date-time",
                       "example": "2026-10-11T10:00:00.000Z"
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "measurementSetCount": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "example": 2
+                        },
+                        "latestSizeLabel": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "M",
+                          "description": "Size label of the newest set; null when it has none"
+                        },
+                        "lastMeasurementAt": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time",
+                          "example": "2026-10-11T10:00:00.000Z",
+                          "description": "When the newest set was saved"
+                        }
+                      },
+                      "required": [
+                        "measurementSetCount",
+                        "latestSizeLabel",
+                        "lastMeasurementAt"
+                      ]
                     }
                   },
                   "required": [
                     "id",
                     "name",
                     "notes",
-                    "createdAt"
+                    "createdAt",
+                    "summary"
                   ]
                 }
               }
@@ -1507,13 +1606,46 @@
                       "type": "string",
                       "format": "date-time",
                       "example": "2026-10-11T10:00:00.000Z"
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "measurementSetCount": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "example": 2
+                        },
+                        "latestSizeLabel": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "M",
+                          "description": "Size label of the newest set; null when it has none"
+                        },
+                        "lastMeasurementAt": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time",
+                          "example": "2026-10-11T10:00:00.000Z",
+                          "description": "When the newest set was saved"
+                        }
+                      },
+                      "required": [
+                        "measurementSetCount",
+                        "latestSizeLabel",
+                        "lastMeasurementAt"
+                      ]
                     }
                   },
                   "required": [
                     "id",
                     "name",
                     "notes",
-                    "createdAt"
+                    "createdAt",
+                    "summary"
                   ]
                 }
               }

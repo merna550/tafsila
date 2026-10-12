@@ -43,6 +43,8 @@ export interface ApiRequestOptions<T> {
   readonly method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   /** JSON body, if any. */
   readonly body?: unknown;
+  /** Query string values; `undefined` values are left out. */
+  readonly query?: Readonly<Record<string, string | number | undefined>>;
   /** Schema from `@tafsila/schemas` that the response must match. */
   readonly schema: ZodType<T>;
   /** Timeout in milliseconds. */
@@ -53,6 +55,22 @@ export interface ApiRequestOptions<T> {
   readonly getToken?: AccessTokenGetter | null;
   /** Replaceable fetch, used by tests. */
   readonly fetchFn?: typeof fetch;
+}
+
+/**
+ * Appends the query values to a path, skipping `undefined` ones.
+ *
+ * @param path - Path under /api.
+ * @param query - Values to add.
+ * @returns The path with its query string.
+ */
+export function withQuery(path: string, query: ApiRequestOptions<unknown>["query"]): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query ?? {})) {
+    if (value !== undefined) params.set(key, String(value));
+  }
+  const text = params.toString();
+  return text ? `${path}?${text}` : path;
 }
 
 /**
@@ -90,12 +108,20 @@ function errorFromFailure(error: unknown): ApiError {
  * @throws {ApiError} For non-2xx responses, network failures, timeouts and unexpected response shapes.
  */
 export async function apiRequest<T>(path: string, options: ApiRequestOptions<T>): Promise<T> {
-  const { method = "GET", body, schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, fetchFn = fetch } = options;
+  const {
+    method = "GET",
+    body,
+    query,
+    schema,
+    timeoutMs = DEFAULT_TIMEOUT_MS,
+    signal,
+    fetchFn = fetch,
+  } = options;
   const getToken = options.getToken === undefined ? accessTokenGetter : options.getToken;
   const timeout = AbortSignal.timeout(timeoutMs);
   let response: Response;
   try {
-    response = await fetchFn(`/api${path}`, {
+    response = await fetchFn(`/api${withQuery(path, query)}`, {
       method,
       headers: await buildHeaders(body !== undefined, getToken),
       body: body === undefined ? undefined : JSON.stringify(body),

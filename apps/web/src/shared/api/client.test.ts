@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { ApiError } from "./api-error";
-import { apiRequest } from "./client";
+import { apiRequest, withQuery } from "./client";
 import { isRetryable, placementFor, supportReference } from "./error-display";
 
 const schema = z.object({ status: z.string() });
@@ -20,6 +20,26 @@ async function failure(fetchFn: typeof fetch): Promise<ApiError> {
   expect(error).toBeInstanceOf(ApiError);
   return error as ApiError;
 }
+
+describe("withQuery", () => {
+  it("adds the given values, encodes them and skips undefined ones", () => {
+    expect(withQuery("/clients", { q: "منى علي", limit: 20, offset: 0 })).toBe(
+      "/clients?q=%D9%85%D9%86%D9%89+%D8%B9%D9%84%D9%8A&limit=20&offset=0",
+    );
+    expect(withQuery("/clients", { q: undefined, limit: 20 })).toBe("/clients?limit=20");
+    expect(withQuery("/clients", undefined)).toBe("/clients");
+  });
+
+  it("sends the query string with the request", async () => {
+    const seen: string[] = [];
+    const fetchFn: typeof fetch = (url) => {
+      seen.push(typeof url === "string" ? url : "other");
+      return Promise.resolve(new Response(JSON.stringify({ status: "ok" }), { status: 200 }));
+    };
+    await apiRequest("/clients", { schema, fetchFn, query: { q: "a" } });
+    expect(seen).toEqual(["/api/clients?q=a"]);
+  });
+});
 
 describe("apiRequest", () => {
   it("returns the parsed body on success", async () => {
