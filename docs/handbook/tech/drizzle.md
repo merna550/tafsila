@@ -52,3 +52,7 @@ Not installed yet (arrives with #24). Repository adapters go under packages/api/
 
 - [Drizzle docs](https://orm.drizzle.team/docs/overview) (official)
 - Glossary: [Drizzle](../glossary.md#drizzle), [ORM](../glossary.md#orm), [repository](../glossary.md#repository)
+
+## In this repo
+
+First real use: `packages/api/src/adapters/supabase/` (`schema.ts` mirror, `with-user.ts`, `client-repository.ts`) from issue #29 ([ADR-29a](../../decisions/29a-clients-measurements-api.md)).

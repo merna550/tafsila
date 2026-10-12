@@ -13,6 +13,7 @@ const baseServerEnvSchema = z.object({
   SUPABASE_URL: z.url(),
   SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  DATABASE_URL: z.string().min(1).optional(),
   AUTH_GOOGLE_ENABLED: z.stringbool().default(false),
   AI_PROVIDER: z.enum(["anthropic", "google"]).default("anthropic"),
   AI_MODEL_ANALYZE: z.string().min(1).optional(),
@@ -132,4 +133,19 @@ export function loadPublicConfig(source: Record<string, string | undefined> = pr
     appEnv: source.APP_ENV || "local",
     release: loadBuildInfo(source).gitSha,
   };
+}
+
+/**
+ * Reads the database connection string without validating the rest of the configuration.
+ * It must use the `api_app` login role (never the superuser, which bypasses RLS; ADR-035, decision 29).
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns The connection string, or undefined when the API has no database configured.
+ * @example
+ * loadDatabaseUrl({ DATABASE_URL: "postgresql://api_app:pw@127.0.0.1:54322/postgres" });
+ */
+export function loadDatabaseUrl(
+  source: Record<string, string | undefined> = process.env,
+): string | undefined {
+  return source.DATABASE_URL || undefined;
 }

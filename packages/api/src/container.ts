@@ -1,17 +1,25 @@
 /** Composition root: the only place that chooses which adapter implements each port (ADR-006). */
-import { loadBuildInfo, loadPublicConfig, type BuildInfo } from "@tafsila/config";
+import { loadBuildInfo, loadDatabaseUrl, loadPublicConfig, type BuildInfo } from "@tafsila/config";
 import { createNoopAnalytics } from "./adapters/noop/noop-analytics";
 import { createNoopErrorReporter } from "./adapters/noop/noop-error-reporter";
 import {
   createRejectingTokenVerifier,
   createJwksTokenVerifier,
 } from "./adapters/supabase/jwks-token-verifier";
+import { createUnlimitedPlanLimits } from "./adapters/plan/unlimited-plan-limits";
+import { createClientRepository } from "./adapters/supabase/client-repository";
+import { createWithUser } from "./adapters/supabase/with-user";
+import { createMeasurementSetRepository } from "./adapters/supabase/measurement-set-repository";
+import { createRejectingRepositories, type Repositories } from "./adapters/supabase/rejecting-repositories";
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
+import type { ClientRepository } from "./ports/client-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
+import type { MeasurementSetRepository } from "./ports/measurement-set-repository";
+import type { PlanLimits } from "./ports/plan-limits";
 import type { TokenVerifier } from "./ports/token-verifier";
 
 /** Build information reported by the health endpoint. */
@@ -29,6 +37,29 @@ export interface Container {
   readonly analytics: Analytics;
   /** Verifies Supabase access tokens for protected routes. */
   readonly tokenVerifier: TokenVerifier;
+  /** The signed-in user's clients. */
+  readonly clients: ClientRepository;
+  /** The signed-in user's saved measurement sets. */
+  readonly measurementSets: MeasurementSetRepository;
+  /** What the user's plan allows (unlimited until M7). */
+  readonly planLimits: PlanLimits;
+}
+
+/**
+ * Chooses the repositories: Drizzle on DATABASE_URL, otherwise ones that fail with INTERNAL_ERROR,
+ * so a missing URL can never silently fall back to memory in production.
+ *
+ * @param source - Environment variables to read (defaults to process.env).
+ * @returns The two repositories.
+ */
+export function createRepositories(source: Record<string, string | undefined> = process.env): Repositories {
+  const databaseUrl = loadDatabaseUrl(source);
+  if (!databaseUrl) return createRejectingRepositories();
+  const withUser = createWithUser(databaseUrl);
+  return {
+    clients: createClientRepository(withUser),
+    measurementSets: createMeasurementSetRepository(withUser),
+  };
 }
 
 /**
@@ -78,6 +109,8 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     appInfo: loadBuildInfo(),
     ...createObservability(),
     tokenVerifier: createTokenVerifier(),
+    ...createRepositories(),
+    planLimits: createUnlimitedPlanLimits(),
     ...overrides,
   };
 }

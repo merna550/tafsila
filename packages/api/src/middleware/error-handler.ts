@@ -2,9 +2,24 @@
 import type { ApiErrorBody } from "@tafsila/schemas";
 import type { Context } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { AppError, ERROR_CATALOGUE } from "../domain/errors";
+import { AppError, ERROR_CATALOGUE, type ErrorDetails } from "../domain/errors";
 import type { ErrorReporter } from "../ports/error-reporter";
 import type { AppEnv } from "./request-id";
+
+/**
+ * Copies the error details into the response shape (fields always, issues only when present).
+ *
+ * @param details - Details carried by the AppError.
+ * @returns The `details` object of the error body.
+ */
+function errorDetailsBody(details: ErrorDetails): NonNullable<ApiErrorBody["details"]> {
+  return {
+    fields: { ...details.fields },
+    ...(details.issues
+      ? { issues: details.issues.map((issue) => ({ ...issue, fields: [...issue.fields] })) }
+      : {}),
+  };
+}
 
 /**
  * Builds the Hono onError handler: known AppErrors keep their status and messages; anything else is
@@ -21,7 +36,7 @@ export function createErrorHandler(reporter: ErrorReporter): (error: Error, c: C
         code: error.code,
         message_ar: error.messageAr,
         message_en: error.messageEn,
-        ...(error.details ? { details: { fields: { ...error.details.fields } } } : {}),
+        ...(error.details ? { details: errorDetailsBody(error.details) } : {}),
         request_id: requestId,
       };
       return c.json(body, error.status as ContentfulStatusCode);

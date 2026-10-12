@@ -31,3 +31,5 @@ Read `packages/api/CLAUDE.md`, `docs/backend/tutorials/add-endpoint.md` and the 
    - If a web screen consumes it, the page work follows the `add-page` skill (typed client in `shared/api`).
    - Add test cases at `docs/test-cases/api/<N>-<slug>.md`, then run `scripts/test-case-index.sh`.
 10. **Definition of Done:** complete every item in `docs/WORKFLOW.md` §5. Run `pnpm quality && pnpm test`.
+
+Worked example: issue #29 (`routes/clients.ts`, `services/create-client.ts`, `adapters/supabase/client-repository.ts`); see the "Worked example" section of `docs/backend/tutorials/add-endpoint.md`. `withUser` takes the already verified `AuthContext`; a missing `DATABASE_URL` wires rejecting repositories.

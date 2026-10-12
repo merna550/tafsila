@@ -44,6 +44,10 @@ jobs:
         run: pnpm db:reset
       - name: RLS and schema tests (pgTAP)
         run: pnpm db:test
+      - name: API repository tests (Drizzle through withUser, RLS as the user)
+        env:
+          DATABASE_URL: postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres
+        run: pnpm --filter @tafsila/api test:db
       - name: Stop
         if: always()
         run: pnpm db:stop

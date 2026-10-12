@@ -48,7 +48,12 @@ const RULES = {
   },
   // The fresh-database proof (migrations, seed, pgTAP) only depends on the database files and the install (issue #83).
   supabase: {
-    include: [SHARED, /^supabase\//, /^\.github\/workflows\/supabase\.yml$/],
+    include: [
+      SHARED,
+      /^supabase\//,
+      /^packages\/api\/src\/adapters\/supabase\//,
+      /^\.github\/workflows\/supabase\.yml$/,
+    ],
     exclude: [/\.mdx?$/],
   },
   // The OpenAPI staleness check and the Newman run depend on the API routes, their schemas, the Postman files and the

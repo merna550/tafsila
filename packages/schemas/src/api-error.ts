@@ -9,8 +9,22 @@ export const apiErrorBodySchema = z.object({
   message_ar: z.string(),
   /** Message for English users. */
   message_en: z.string(),
-  /** Extras; `fields` maps a field path to the message shown under that field. */
-  details: z.object({ fields: z.record(z.string(), z.string()).optional() }).optional(),
+  /** Extras; `fields` maps a field path to the message shown under that field, `issues` carries bilingual measurement issues. */
+  details: z
+    .object({
+      fields: z.record(z.string(), z.string()).optional(),
+      issues: z
+        .array(
+          z.object({
+            code: z.string(),
+            fields: z.array(z.string()),
+            message_ar: z.string(),
+            message_en: z.string(),
+          }),
+        )
+        .optional(),
+    })
+    .optional(),
   /** Id of the failing request; users can copy it to support. */
   request_id: z.string(),
 });

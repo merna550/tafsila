@@ -36,7 +36,20 @@ module.exports = {
       severity: "error",
       comment: "Business logic depends on interfaces (ports), so DB/payment/AI providers can be swapped.",
       from: { path: "^packages/api/src/services" },
-      to: { path: ["^packages/api/src/adapters", "node_modules/(@supabase|paymob|openai|@anthropic-ai)"] },
+      to: {
+        path: [
+          "^packages/api/src/adapters",
+          "node_modules/(@supabase|paymob|openai|@anthropic-ai|drizzle-orm|postgres)",
+        ],
+      },
+    },
+    {
+      name: "database-driver-only-in-supabase-adapters",
+      severity: "error",
+      comment:
+        "Drizzle and the Postgres driver are imported only by adapters/supabase, so every query goes through withUser (ADR-035).",
+      from: { pathNot: "^packages/api/src/adapters/supabase/" },
+      to: { path: "node_modules/(drizzle-orm|postgres)/" },
     },
     {
       name: "ui-not-backend",

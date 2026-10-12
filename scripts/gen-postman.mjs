@@ -12,6 +12,8 @@ const OPENAPI_PATH = "packages/api/openapi.json";
 const COLLECTION_PATH = "postman/tafsila.postman_collection.json";
 /** Folders that are never called by Newman (a call would throw a 500 and use the Sentry quota). */
 const SKIPPED_FOLDERS = new Set(["debug"]);
+/** Folders replaced by a hand-written journey in postman/journey.json (they need ids from earlier steps). */
+const JOURNEY_FOLDERS = new Set(["clients", "measurements"]);
 
 /**
  * Removes every `id` and `_postman_id` key (they are random UUIDs) at any depth.
@@ -93,6 +95,68 @@ function sortItems(items) {
 }
 
 /**
+ * Builds the JSON body of a request item, if the step has one.
+ *
+ * @param body - JSON value or undefined.
+ * @returns The Postman body object, or an empty object.
+ */
+function bodyOf(body) {
+  if (body === undefined) return {};
+  return {
+    body: {
+      mode: "raw",
+      raw: JSON.stringify(body, null, 2),
+      options: { raw: { language: "json" } },
+    },
+  };
+}
+
+/**
+ * Splits a path with a query string into Postman url parts.
+ *
+ * @param path - Path such as "/api/clients?q=x".
+ * @returns The Postman url object.
+ */
+function urlOf(path) {
+  const [pathname, query] = path.split("?");
+  return {
+    raw: `{{baseUrl}}${path}`,
+    host: ["{{baseUrl}}"],
+    path: pathname.split("/").filter(Boolean),
+    ...(query
+      ? { query: query.split("&").map((pair) => ({ key: pair.split("=")[0], value: pair.split("=")[1] })) }
+      : {}),
+  };
+}
+
+/**
+ * Builds one step of the journey: a request that checks its status and fields and saves ids for later steps.
+ *
+ * @param step - An entry of postman/journey.json.
+ * @returns A Postman request item.
+ */
+function journeyItem(step) {
+  const exec = [`pm.test("status is ${step.status}", () => pm.response.to.have.status(${step.status}));`];
+  for (const key of step.has ?? []) {
+    exec.push(`pm.test("has ${key}", () => pm.expect(pm.response.json()).to.have.property("${key}"));`);
+  }
+  for (const [variable, field] of Object.entries(step.capture ?? {})) {
+    exec.push(`pm.environment.set("${variable}", pm.response.json().${field});`);
+  }
+  return {
+    name: step.name,
+    event: [{ listen: "test", script: { type: "text/javascript", exec } }],
+    request: {
+      method: step.method,
+      header: step.body === undefined ? [] : [{ key: "Content-Type", value: "application/json" }],
+      ...bodyOf(step.body),
+      url: urlOf(step.path),
+    },
+    response: [],
+  };
+}
+
+/**
  * Builds one ERR request that expects an error status and the standard error body.
  *
  * @param errCase - An entry of postman/err-cases.json.
@@ -110,7 +174,8 @@ function errItem(errCase) {
     request: {
       method: errCase.method,
       ...(errCase.auth ? {} : { auth: { type: "noauth" } }),
-      header: [],
+      header: errCase.body === undefined ? [] : [{ key: "Content-Type", value: "application/json" }],
+      ...bodyOf(errCase.body),
       url: { raw: `{{baseUrl}}${errCase.path}`, host: ["{{baseUrl}}"], path: segments },
     },
     response: [],
@@ -134,10 +199,12 @@ export function buildCollection(specText) {
         col.info.name = "Tafsila API";
         col.info._postman_id = createHash("sha256").update(specText).digest("hex");
         col.item = normalizeItems(
-          col.item.filter((item) => !SKIPPED_FOLDERS.has(item.name)),
+          col.item.filter((item) => !SKIPPED_FOLDERS.has(item.name) && !JOURNEY_FOLDERS.has(item.name)),
           responseFields(JSON.parse(specText)),
         );
         const errCases = JSON.parse(readFileSync("postman/err-cases.json", "utf8"));
+        const journey = JSON.parse(readFileSync("postman/journey.json", "utf8"));
+        col.item.push({ name: "Clients and measurements", item: journey.map(journeyItem) });
         col.item.push({ name: "Errors", item: errCases.map(errItem) });
         col.item = sortItems(col.item);
         col.variable = [{ key: "baseUrl", value: "{{baseUrl}}" }];

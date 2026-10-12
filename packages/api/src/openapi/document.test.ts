@@ -21,10 +21,35 @@ describe("OpenAPI document", () => {
   it("is OpenAPI 3.1 and lists exactly the API routes", () => {
     expect(doc.openapi).toBe("3.1.0");
     expect(Object.keys(doc.paths).sort((a, b) => a.localeCompare(b))).toEqual([
+      "/api/clients",
+      "/api/clients/{id}",
       "/api/debug/error",
       "/api/health",
       "/api/me",
+      "/api/measurements",
+      "/api/measurements/{id}",
     ]);
+  });
+
+  it("lists the ten client and measurement operations and the MEASUREMENTS_INVALID response", () => {
+    const operations = Object.entries(doc.paths)
+      .filter(([path]) => path.startsWith("/api/clients") || path.startsWith("/api/measurements"))
+      .flatMap(([path, item]) => Object.keys(item).map((method) => `${method.toUpperCase()} ${path}`))
+      .sort((a, b) => a.localeCompare(b));
+    expect(operations).toEqual([
+      "DELETE /api/clients/{id}",
+      "DELETE /api/measurements/{id}",
+      "GET /api/clients",
+      "GET /api/clients/{id}",
+      "GET /api/measurements",
+      "GET /api/measurements/{id}",
+      "PATCH /api/clients/{id}",
+      "POST /api/clients",
+      "POST /api/measurements",
+      "PUT /api/measurements/{id}",
+    ]);
+    const post = doc.paths["/api/measurements"]!.post!;
+    expect(Object.keys(post.responses as object)).toContain("422");
   });
 
   it("documents bearer auth on /api/me with the standard 401 body", () => {
