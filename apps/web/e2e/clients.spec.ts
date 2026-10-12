@@ -48,8 +48,8 @@ test.describe("clients", () => {
 
     // Add a client with notes; the app opens her profile.
     await page.getByRole("button", { name: t.clients.empty.action }).click();
-    await page.getByLabel(t.clients.form.name).fill(NAME);
-    await page.getByLabel(t.clients.form.notes, { exact: false }).fill("تفضل الأكمام الواسعة");
+    await page.getByLabel(t.clients.form.name, { exact: true }).fill(NAME);
+    await page.getByLabel(t.clients.form.notes).fill("تفضل الأكمام الواسعة");
     await page.getByRole("button", { name: t.clients.form.save }).click();
     await expect(page).toHaveURL(/\/clients\/[0-9a-f-]{36}$/);
     await expect(page.getByRole("heading", { level: 1, name: NAME })).toBeVisible();
@@ -67,7 +67,7 @@ test.describe("clients", () => {
 
     // Edit the name.
     await page.getByRole("button", { name: t.clients.profile.edit }).click();
-    await page.getByLabel(t.clients.form.name).fill("سلمى أحمد");
+    await page.getByLabel(t.clients.form.name, { exact: true }).fill("سلمى أحمد");
     await page.getByRole("button", { name: t.clients.form.save }).click();
     await expect(page.getByRole("heading", { level: 1, name: "سلمى أحمد" })).toBeVisible();
 
@@ -79,8 +79,11 @@ test.describe("clients", () => {
     await expect(page.getByRole("heading", { name: t.clients.empty.title })).toBeVisible();
   });
 
-  test("a signed-out visit of /clients returns there after sign-in", async ({ page }) => {
-    await page.goto("/clients");
-    await expect(page).toHaveURL(/\/sign-in\?next=%2Fclients$/);
+  test("a signed-out visit of /clients returns there after sign-in", async ({ page }, testInfo) => {
+    // The guard keeps the language prefix: Arabic has none, English has /en.
+    const prefix = testInfo.project.metadata.locale === "en" ? "/en" : "";
+    await page.goto(`${prefix}/clients`);
+    const next = encodeURIComponent(`${prefix}/clients`);
+    await expect(page).toHaveURL(new RegExp(`${prefix}/sign-in\\?next=${next}$`));
   });
 });
