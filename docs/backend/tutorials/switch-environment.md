@@ -17,7 +17,7 @@
 
 `.github/workflows/staging.yml` runs on every push to `main` (and by hand: Actions → Staging → Run workflow), in this order:
 
-1. **migrate:** `supabase link`, `supabase db push` (migrations only, never the seed), `supabase config push` (the workflow first appends a `[remotes.staging]` block with the test OTP numbers to `supabase/config.toml`; it is not committed).
+1. **migrate:** `supabase link`, `supabase db push` (migrations only, never the seed), `supabase config push` (the workflow first appends a `[remotes.staging]` block with the test OTP numbers to `supabase/config.toml`; it is not committed). Before the push it also removes the `[auth.email.template.*]` tables, because Supabase Free refuses custom email templates; staging sends Supabase's default emails ([ADR-107](../../decisions/107-staging-email-templates.md)).
 2. **deploy:** `vercel pull`, `vercel build --prod`, `vercel deploy --prebuilt --prod` to the staging project.
 3. **smoke:** `scripts/smoke-health.mjs` retries `GET $STAGING_URL/api/health` for about 2 minutes and fails unless it reports `status: ok`, `environment: staging` and the merged commit in `gitSha`.
 
