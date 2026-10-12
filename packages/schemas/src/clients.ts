@@ -12,12 +12,29 @@ const nameSchema = z.string().trim().min(1).max(MAX_NAME_LENGTH).meta({ example:
 /** Free notes about the client; null clears them. */
 const notesSchema = z.string().trim().max(MAX_NOTES_LENGTH).meta({ example: "تفضل الأكمام الواسعة" });
 
+/** What the list screen shows about a client's measurement sets, computed by the API in one aggregate query. */
+export const clientSummarySchema = z.object({
+  measurementSetCount: z.number().int().min(0).meta({ example: 2 }),
+  latestSizeLabel: z
+    .string()
+    .nullable()
+    .meta({ example: "M", description: "Size label of the newest set; null when it has none" }),
+  lastMeasurementAt: z.iso
+    .datetime()
+    .nullable()
+    .meta({ example: "2026-10-11T10:00:00.000Z", description: "When the newest set was saved" }),
+});
+
+/** Parsed client summary. */
+export type ClientSummary = z.infer<typeof clientSummarySchema>;
+
 /** A client as the API returns it. */
 export const clientSchema = z.object({
   id: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000a1" }),
   name: nameSchema,
   notes: notesSchema.nullable(),
   createdAt: z.iso.datetime().meta({ example: "2026-10-11T10:00:00.000Z" }),
+  summary: clientSummarySchema,
 });
 
 /** Parsed client. */

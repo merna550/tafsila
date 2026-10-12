@@ -107,3 +107,55 @@ describe("update and delete", () => {
     expect(store.sets).toHaveLength(0);
   });
 });
+
+describe("client summary", () => {
+  it("is 0 / null / null for a client without sets", async () => {
+    const { deps } = setup();
+    const c = await createClient(deps, a, { name: "n" });
+    const expected = { measurementSetCount: 0, latestSizeLabel: null, lastMeasurementAt: null };
+    expect(c.summary).toEqual(expected);
+    expect((await getClient(deps, a, c.id)).summary).toEqual(expected);
+  });
+
+  it("counts sets and reports the newest one's size label and date on list, get and update", async () => {
+    const { store, deps: base } = setup();
+    let tick = Date.UTC(2026, 9, 1);
+    const measurementSets = createMemoryMeasurementSetRepository(store, {
+      now: () => {
+        tick += 60_000;
+        return new Date(tick);
+      },
+    });
+    const deps = { ...base, measurementSets };
+    const c = await createClient(deps, a, { name: "n" });
+    const first = await saveMeasurementSet(deps, a, {
+      clientId: c.id,
+      label: "old",
+      sizeLabel: "S",
+      measurements: sizeM,
+    });
+    const second = await saveMeasurementSet(deps, a, { clientId: c.id, label: "new", measurements: sizeM });
+    const expected = {
+      measurementSetCount: 2,
+      latestSizeLabel: second.sizeLabel,
+      lastMeasurementAt: second.createdAt,
+    };
+    expect(first.sizeLabel).toBe("S");
+    expect(second.sizeLabel).toBeNull();
+    expect((await getClient(deps, a, c.id)).summary).toEqual(expected);
+    expect((await listClients(deps, a, { limit: 20, offset: 0 })).items[0]?.summary).toEqual(expected);
+    expect((await updateClient(deps, a, c.id, { name: "m" })).summary).toEqual(expected);
+  });
+
+  it("drops back after a set is deleted and never counts another user's sets", async () => {
+    const { deps, store } = setup();
+    const c = await createClient(deps, a, { name: "n" });
+    const mine = await saveMeasurementSet(deps, a, { clientId: c.id, label: "L", measurements: sizeM });
+    await deps.measurementSets.remove(a, mine.id);
+    expect((await getClient(deps, a, c.id)).summary.measurementSetCount).toBe(0);
+    const other = await createClient(deps, b, { name: "theirs" });
+    await saveMeasurementSet(deps, b, { clientId: other.id, label: "L", measurements: sizeM });
+    expect(store.sets).toHaveLength(1);
+    expect((await getClient(deps, a, c.id)).summary.measurementSetCount).toBe(0);
+  });
+});

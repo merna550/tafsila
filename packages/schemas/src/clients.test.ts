@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { createClientInputSchema, listClientsQuerySchema, updateClientInputSchema } from "./clients";
+import {
+  clientSummarySchema,
+  createClientInputSchema,
+  listClientsQuerySchema,
+  updateClientInputSchema,
+} from "./clients";
 import { pageOf } from "./pagination";
 import { z } from "zod";
 
@@ -27,5 +32,11 @@ describe("client schemas", () => {
   it("builds a page schema", () => {
     const page = pageOf(z.string());
     expect(page.safeParse({ items: ["a"], total: 1, limit: 20, offset: 0 }).success).toBe(true);
+  });
+
+  it("accepts an empty summary and rejects a negative count", () => {
+    const empty = { measurementSetCount: 0, latestSizeLabel: null, lastMeasurementAt: null };
+    expect(clientSummarySchema.safeParse(empty).success).toBe(true);
+    expect(clientSummarySchema.safeParse({ ...empty, measurementSetCount: -1 }).success).toBe(false);
   });
 });
