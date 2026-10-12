@@ -135,7 +135,7 @@ test.describe("account flow with the local mail catcher", () => {
     await expect(page.getByRole("heading", { name: t.auth.checkEmail.title })).toBeVisible();
     await page.goto(await confirmLinkFor(email, "تأكيد"));
     await expect(page).toHaveURL(/\/dashboard$/);
-    await expect(page.getByText(t.auth.welcome)).toBeVisible();
+    await expect(page.getByText(t.auth.welcome, { exact: true })).toBeVisible();
 
     // The session survives a reload; sign out ends it and the dashboard is guarded again.
     await page.reload();
