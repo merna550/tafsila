@@ -16,16 +16,18 @@ export type WithUser = <T>(ctx: AuthContext, fn: (tx: Tx) => Promise<T>) => Prom
 /**
  * Creates `withUser` for a Postgres connection string (the `api_app` login role; never the superuser).
  *
- * @param databaseUrl - Connection string (`prepare: false` keeps it pooler-safe).
+ * @param databaseUrl - Connection string (`prepare: false` keeps it pooler-safe); parsed on the first call, not here.
  * @returns The `withUser` function.
  */
 export function createWithUser(databaseUrl: string): WithUser {
-  const db = drizzle(postgres(databaseUrl, { prepare: false }));
+  let db: PostgresJsDatabase | undefined;
   return (ctx, fn) => {
     if (typeof ctx.claims.sub !== "string" || ctx.claims.sub !== ctx.userId || ctx.userId === "") {
       return Promise.reject(new Error("withUser needs a verified context with a sub claim"));
     }
     const claims = JSON.stringify(ctx.claims);
+    // Built on first use: a placeholder URL (build time) fails the request, never the import.
+    db ??= drizzle(postgres(databaseUrl, { prepare: false }));
     return db.transaction(async (tx) => {
       await tx.execute(sql`select set_config('request.jwt.claims', ${claims}, true)`);
       await tx.execute(sql`set local role authenticated`);

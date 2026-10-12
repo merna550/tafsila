@@ -1,6 +1,11 @@
 /** Token verifier adapter: checks Supabase access tokens with jose against the project's JWKS (ADR-035, plan #25). */
 import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from "jose";
-import type { AuthContext, TokenVerifier, UserRole } from "../../ports/token-verifier";
+import {
+  TokenVerifierConfigError,
+  type AuthContext,
+  type TokenVerifier,
+  type UserRole,
+} from "../../ports/token-verifier";
 
 /** Audience Supabase puts in access tokens of signed-in users. */
 const AUDIENCE = "authenticated";
@@ -31,9 +36,26 @@ export interface JwksTokenVerifierOptions {
  */
 export function createJwksTokenVerifier(options: JwksTokenVerifierOptions): TokenVerifier {
   const issuer = `${options.supabaseUrl.replace(/\/$/, "")}/auth/v1`;
-  const keys = options.keys ?? createRemoteJWKSet(new URL(`${issuer}/.well-known/jwks.json`));
+  let remoteKeys: JWTVerifyGetKey | undefined;
+  /**
+   * Builds the remote key set on first use, so a bad SUPABASE_URL fails the request, never the build.
+   *
+   * @returns The key source.
+   */
+  const getKeys = (): JWTVerifyGetKey => {
+    if (options.keys) return options.keys;
+    if (!remoteKeys) {
+      try {
+        remoteKeys = createRemoteJWKSet(new URL(`${issuer}/.well-known/jwks.json`));
+      } catch (cause) {
+        throw new TokenVerifierConfigError("SUPABASE_URL is not a valid URL", { cause });
+      }
+    }
+    return remoteKeys;
+  };
   return {
     async verify(token): Promise<AuthContext> {
+      const keys = getKeys();
       const { payload } = await jwtVerify(token, keys, { issuer, audience: AUDIENCE });
       if (typeof payload.sub !== "string" || payload.sub === "") throw new Error("token has no subject");
       return { userId: payload.sub, role: toRole(payload.user_role), claims: payload };
