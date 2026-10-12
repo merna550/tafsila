@@ -47,6 +47,14 @@ Import direction: `app → features → entities → shared → packages/*`. Ano
 | Pattern editor session | Zustand (selected piece, zoom, layers)                       |
 | Pattern geometry       | `@tafsila/engine` in the browser; heavy work in a Web Worker |
 
+### Server data with TanStack Query (first used in #30)
+
+- `QueryProvider` (`shared/query/`) wraps the app: 30 s `staleTime`, reads retry only retryable errors, writes never retry.
+- Keys live in `features/<f>/hooks/query-keys.ts`: `["clients", { q, limit }]` list, `["clients", id]` one, `["measurement-sets", { clientId }]` sets. A mutation invalidates the prefix `["clients"]`.
+- Hook shapes: `use-<things>` (list, `useInfiniteQuery` with `limit`/`offset` and `keepPreviousData` while searching), `use-<thing>` (one), `use-create|update|delete-<thing>` (mutations). Components never import them; the feature-root screen (`ClientsScreen`) calls the hooks and passes props down.
+- Forms: `use-client-form` wires React Hook Form + a Zod schema whose messages are keys of `messages/`, maps `ApiError.fieldErrors` with `setError`, and toasts on success.
+- `AppNav` (`shared/layout/`) is the signed-in bar rendered by `(dashboard)/layout.tsx`; items are the typed `NAV_ITEMS` list.
+
 ## Layers
 
 Per feature: `components/` (UI, props in → JSX out) → `hooks/` (TanStack Query, forms, Zustand) → `model/` (pure TypeScript) → `shared/api` (the only `fetch`). The browser never talks to the database; Supabase exists only in `shared/auth/` for the session. Full rules with examples: `.claude/rules/frontend/layering.md`; enforced by dependency-cruiser (ADR-029).

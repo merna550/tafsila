@@ -460,6 +460,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `darts` on each piece; FR-VAL-07 checks equal legs (within 1 mm). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
 
+<a id="debounce"></a>
+
+### Debounce
+
+**Plain words:** Waiting until the user stops typing for a moment before reacting, so a search does not call the server on every keystroke.  
+**In Tafsila:** `useDebouncedValue` (300 ms) in the clients search. **Card:** [TanStack Query](tech/tanstack-query.md) · **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/Debounce>
+
 <a id="dependency"></a>
 
 ### Dependency
@@ -1589,6 +1597,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## R
 
+<a id="relative-time"></a>
+
+### Relative time
+
+**Plain words:** "Yesterday" or "3 days ago" instead of a full date, produced by the browser's `Intl.RelativeTimeFormat`.  
+**In Tafsila:** `formatRelativeTime(date, now, locale)` in `features/clients/model/`; the clock is passed in so tests are exact, digits stay 0-9. **Card:** [next-intl](tech/next-intl.md) · **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat>
+
 <a id="release"></a>
 
 ### Release
@@ -1990,7 +2006,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### TanStack Query
 
 **Plain words:** A library that fetches server data, caches it and keeps screens up to date.  
-**In Tafsila:** Planned for all server data in the web app ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** [TanStack Query](tech/tanstack-query.md) · **Level:** intermediate  
+**In Tafsila:** All server data in the web app; first used by the clients screens (#30), with query keys in `features/clients/hooks/query-keys.ts` ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** [TanStack Query](tech/tanstack-query.md) · **Level:** intermediate  
 **Learn:** <https://tanstack.com/query/latest/docs/framework/react/overview>
 
 <a id="tech-card"></a>

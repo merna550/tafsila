@@ -17,7 +17,7 @@ Feature-sliced (ADR-029), exactly the four layers of the `add-page` skill, in `a
 - Create and edit use **one `Dialog`** (`ClientFormDialog`: name required, notes optional) with React Hook Form + Zod from `createClientInputSchema` / `updateClientInputSchema`. After create the app opens `/clients/[id]`. Delete uses a confirmation `Dialog` that names the client and says her measurements go with her; success → back to `/clients` with a toast.
 - Signed-in navigation: `features/app-nav` is **not** created; instead `shared/layout/AppNav.tsx` (header bar from the design: logo, links, avatar initial) is rendered by `(dashboard)/layout.tsx`. Items are a typed list; this issue ships "العميلات" and a "الإعدادات" item that is added by #27 (see Overlaps). The "3 باترونات مجانية" chip in the design is **not built** (credits arrive in M7); a code comment points at M7.
 
-## Decisions (the build writes them in `docs/decisions/30-clients-screens.md`)
+## Decisions (the build writes them in `docs/decisions/30a-clients-screens.md`)
 
 1. **The list needs per-client measurement info, so `Client` gains a `summary` object** `{ measurementSetCount, latestSizeLabel | null, lastMeasurementAt | null }` returned by `GET /api/clients` and `GET /api/clients/{id}`. Computed in the repository with one aggregate query (left join on `measurement_sets`, grouped), never in the web app. Recommended over (a) one `GET /api/measurements?clientId` per row (N+1 on every search keystroke) and (b) showing only the name (the design shows the meta line). Additive change: no client breaks, Postman and OpenAPI regenerated.
 2. **Meta line = `size label · relative time`, without "with two overrides".** The design's "مقاس M مع تعديلين" needs the number of overridden fields, which is not stored (only `sizeLabel`). Storing overrides is #31's business (it owns the form); this issue shows "مقاس M · آخر تعديل أمس", "مقاسات مخصّصة · قبل 3 أيام" (no `sizeLabel`), "لا توجد مقاسات بعد". #31 may extend the line later. Cheap to change.
@@ -60,7 +60,7 @@ Web:
 
 ## Docs to update
 
-`docs/test-cases/ui/30-clients-screens.md`; `docs/decisions/30-clients-screens.md`; SRS FR-MEAS-04 status; OpenAPI + Postman (generated); `docs/frontend/README.md` (Query keys, the list/detail hook pattern, `AppNav`); `docs/design/screens/README.md` rows (#30 routes confirmed, "chip not built"); `.claude/skills/add-page/SKILL.md` updated from this first real feature (the issue asks for it: real file names, the dialog form pattern, the debounce hook); `docs/handbook/learning-log.md` (TanStack Query keys, debounced search, relative time with `Intl`); `docs/handbook/tech/` card for TanStack Query if missing; `docs/backend/seed-data.md` only if the seed changes; `docs/milestones/M1-accounts-and-data.md` (nav bar added).
+`docs/test-cases/ui/30-clients-screens.md`; `docs/decisions/30a-clients-screens.md`; SRS FR-MEAS-04 status; OpenAPI + Postman (generated); `docs/frontend/README.md` (Query keys, the list/detail hook pattern, `AppNav`); `docs/design/screens/README.md` rows (#30 routes confirmed, "chip not built"); `.claude/skills/add-page/SKILL.md` updated from this first real feature (the issue asks for it: real file names, the dialog form pattern, the debounce hook); `docs/handbook/learning-log.md` (TanStack Query keys, debounced search, relative time with `Intl`); `docs/handbook/tech/` card for TanStack Query if missing; `docs/backend/seed-data.md` only if the seed changes; `docs/milestones/M1-accounts-and-data.md` (nav bar added).
 
 ## Risks
 
