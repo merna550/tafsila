@@ -99,8 +99,21 @@ insert into auth.users (id, email, aud, role) values ('dddddddd-0000-4000-8000-0
 select is((select role || '/' || locale from public.profiles where id = 'dddddddd-0000-4000-8000-000000000004'), 'user/ar', '22 sign-up creates a profile with defaults');
 
 -- 28 API login role has no table access of its own
-set local role api_app;
-select throws_ok($$ select * from public.clients $$, '42501', null, '28 api_app alone cannot read clients');
+-- api_app cannot see the pgTAP schema, so it runs the query inside a helper and the result is asserted after the reset.
+create function pg_temp.api_app_read_sqlstate() returns text language plpgsql as $$
+begin
+  set local role api_app;
+  begin
+    perform * from public.clients;
+    reset role;
+    return 'allowed';
+  exception when others then
+    reset role;
+    return sqlstate;
+  end;
+end $$;
+grant execute on function pg_temp.api_app_read_sqlstate() to public;
+select is(pg_temp.api_app_read_sqlstate(), '42501', '28 api_app alone cannot read clients');
 select pg_temp.reset();
 
 -- 29-30 phone uniqueness
