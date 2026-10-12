@@ -60,6 +60,8 @@ jobs:
           201000000002 = "123456"
           201000000003 = "123456"
           EOF
+      - name: Drop custom email templates (Supabase Free refuses them without custom SMTP, issue #107)
+        run: node scripts/strip-email-templates.mjs supabase/config.toml
       - name: Push auth config (site URL, redirects, Google, rate limits, test OTP numbers)
         run: pnpm exec supabase config push --yes
   deploy:
