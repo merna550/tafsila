@@ -81,6 +81,30 @@ describe("clients repository on local Supabase", () => {
   });
 });
 
+describe("client summary on local Supabase", () => {
+  it("counts the caller's sets and reports the newest one on get, list and update", async () => {
+    const c = await clients.create(trial, { name: "Summary client" });
+    created.clients.push(c.id);
+    expect(c.summary).toEqual({ measurementSetCount: 0, latestSizeLabel: null, lastMeasurementAt: null });
+    await sets.create(trial, { clientId: c.id, label: "old", sizeLabel: "S", measurements: sizeM });
+    const newest = await sets.create(trial, {
+      clientId: c.id,
+      label: "new",
+      sizeLabel: "M",
+      measurements: sizeM,
+    });
+    const expected = {
+      measurementSetCount: 2,
+      latestSizeLabel: "M",
+      lastMeasurementAt: newest.createdAt,
+    };
+    expect((await clients.get(trial, c.id))?.summary).toEqual(expected);
+    expect((await clients.update(trial, c.id, { notes: "x" }))?.summary).toEqual(expected);
+    const listed = (await clients.list(trial, { q: "Summary client", limit: 20, offset: 0 })).items[0];
+    expect(listed?.summary).toEqual(expected);
+  });
+});
+
 describe("measurement sets repository on local Supabase", () => {
   it("rejects another user's client through the composite foreign key", async () => {
     const theirs = (await clients.list(pro, { limit: 1, offset: 0 })).items[0];

@@ -141,5 +141,92 @@
     "emailTaken": "This email is registered another way. Try signing in with Google",
     "weakPassword": "The password is too short. Use at least 8 characters",
     "linkInvalid": "The link is invalid or has expired. Request a new one"
+  },
+  "nav": {
+    "label": "Main menu",
+    "clients": "Clients",
+    "account": "My account"
+  },
+  "measurements": {
+    "fields": {
+      "bust": "Bust",
+      "waist": "Waist",
+      "hip": "Hip",
+      "shoulderWidth": "Shoulder width",
+      "backLength": "Back length",
+      "height": "Height"
+    },
+    "cm": "{value} cm"
+  },
+  "clients": {
+    "title": "My clients",
+    "count": "({count})",
+    "new": "New client",
+    "search": {
+      "label": "Search by name",
+      "clear": "Clear search"
+    },
+    "meta": {
+      "size": "Size {size} · {when}",
+      "custom": "Custom measurements · {when}",
+      "none": "No measurements yet"
+    },
+    "empty": {
+      "title": "No clients yet",
+      "description": "Your clients and their measurements will appear here once you add them.",
+      "action": "Add your first client"
+    },
+    "noResults": {
+      "title": "No results",
+      "description": "No client is named “{q}”."
+    },
+    "loadMore": "Show more",
+    "loadingMore": "Loading",
+    "profile": {
+      "breadcrumb": "Breadcrumb",
+      "since": "Client since {date}",
+      "notes": "Notes",
+      "edit": "Edit details",
+      "delete": "Delete client",
+      "initialLabel": "First letter of the client's name"
+    },
+    "sets": {
+      "title": "Measurements",
+      "new": "New measurements",
+      "latest": "Latest",
+      "basedOn": "Based on size {size}",
+      "custom": "Custom measurements",
+      "view": "View and edit",
+      "older": "Older sets",
+      "empty": {
+        "title": "No measurements yet",
+        "description": "Add this client's measurements with the button above."
+      }
+    },
+    "form": {
+      "createTitle": "New client",
+      "editTitle": "Edit client details",
+      "name": "Name",
+      "notes": "Notes",
+      "notesHint": "Optional",
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close",
+      "errors": {
+        "nameRequired": "Enter the client's name",
+        "nameTooLong": "The name is longer than 120 characters",
+        "notesTooLong": "The notes are longer than 2000 characters"
+      },
+      "created": "Client added",
+      "updated": "Changes saved"
+    },
+    "delete": {
+      "title": "Delete client",
+      "description": "{name} and all her measurements will be deleted for good. This cannot be undone.",
+      "confirm": "Delete for good",
+      "cancel": "Cancel",
+      "close": "Close",
+      "done": "Client deleted"
+    }
   }
 }

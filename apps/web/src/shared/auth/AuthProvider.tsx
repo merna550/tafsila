@@ -1,13 +1,6 @@
 "use client";
 /** Provides the browser auth client to hooks, built once from the PublicConfig handed over by the layout (no NEXT_PUBLIC_*, ADR-025). */
-import {
-  createContext,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  type ReactElement,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, type ReactElement, type ReactNode } from "react";
 import { setAccessTokenGetter } from "../api";
 import { getAccessToken } from "./auth-actions";
 import { createBrowserAuthClient, type AuthClient, type AuthConfig } from "./clients";
@@ -30,13 +23,17 @@ interface AuthProviderProps {
  */
 export function AuthProvider({ config, children }: Readonly<AuthProviderProps>): ReactElement {
   const { supabaseUrl, supabaseAnonKey } = config;
-  const client = useMemo(
-    () => (supabaseUrl && supabaseAnonKey ? createBrowserAuthClient({ supabaseUrl, supabaseAnonKey }) : null),
-    [supabaseUrl, supabaseAnonKey],
-  );
-  // A layout effect runs before every child's effect, so a hook that loads data on mount already finds the token.
-  useLayoutEffect(() => {
+  const client = useMemo(() => {
+    if (!(supabaseUrl && supabaseAnonKey)) return null;
+    const created = createBrowserAuthClient({ supabaseUrl, supabaseAnonKey });
+    // Registered while rendering, not in an effect: a child's effect (the first TanStack Query fetch) runs before this
+    // component's effects, so an effect would let that first request go out without a token and fail with 401.
+    setAccessTokenGetter(() => getAccessToken(created));
+    return created;
+  }, [supabaseUrl, supabaseAnonKey]);
+  useEffect(() => {
     if (!client) return;
+    // Registered again here because React may run this cleanup and effect twice in development.
     setAccessTokenGetter(() => getAccessToken(client));
     return () => setAccessTokenGetter(null);
   }, [client]);

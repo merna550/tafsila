@@ -25,6 +25,18 @@ describe("decideAccess", () => {
     });
   });
 
+  it("guards /clients and the pages below it, in both languages", () => {
+    expect(decideAccess("/clients", "", false)).toEqual({
+      action: "redirect",
+      to: "/sign-in?next=%2Fclients",
+    });
+    expect(decideAccess("/en/clients/abc", "", false)).toEqual({
+      action: "redirect",
+      to: "/en/sign-in?next=%2Fen%2Fclients%2Fabc",
+    });
+    expect(decideAccess("/clients", "", true)).toEqual({ action: "allow" });
+  });
+
   it("allows a signed-in user on /dashboard", () => {
     expect(decideAccess("/dashboard", "", true)).toEqual({ action: "allow" });
   });
