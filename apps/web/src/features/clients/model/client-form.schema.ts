@@ -8,6 +8,16 @@ export const MAX_NOTES_LENGTH = 2000;
 /** Keys of `clients.form.errors` that the schema uses as messages. */
 export type ClientFormErrorKey = "nameRequired" | "nameTooLong" | "notesTooLong";
 
+/**
+ * Tells whether a message is one of the schema's keys (otherwise it is text that came from the API).
+ *
+ * @param message - A field error message.
+ * @returns True for a key of `clients.form.errors`.
+ */
+export function isFormErrorKey(message: string): message is ClientFormErrorKey {
+  return message === "nameRequired" || message === "nameTooLong" || message === "notesTooLong";
+}
+
 /** The dialog's fields. Notes are a plain string in the form ("" means none) and become null/absent in the request. */
 export const clientFormSchema = z.object({
   name: z.string().trim().min(1, "nameRequired").max(MAX_NAME_LENGTH, "nameTooLong"),
