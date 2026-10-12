@@ -1,4 +1,4 @@
--- Phone verification and one free trial per phone number (issue #26, part A; decision docs/decisions/26-phone-otp-trial.md).
+-- Phone verification and one free trial per phone number (issue #26, part A; decision docs/decisions/26a-phone-otp-trial.md).
 -- Only the API (login role api_app) and the service role can touch this: the tables have no policies and no grants for
 -- anon/authenticated, and the functions live in a `private` schema that PostgREST does not expose.
 

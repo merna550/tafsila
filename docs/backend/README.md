@@ -31,6 +31,10 @@ Kept current in the same PR as every backend change (Definition of Done).
 
 Sign-up, sign-in and reset go from the browser straight to Supabase Auth; our API never sees a password. Protected routes use `requireAuth(container.tokenVerifier)` from `packages/api/src/middleware/auth.ts`: it verifies the bearer access token once (`jose` against the project JWKS, issuer `<SUPABASE_URL>/auth/v1`, audience `authenticated`) and sets `{ userId, role, claims }`. The role is the `user_role` claim added by `public.custom_access_token_hook` (migration `20261011130000`, enabled in `supabase/config.toml`; staging and production need the same `[auth.hook.custom_access_token]` block pushed). `GET /api/me` returns `{ userId, role }`. If `SUPABASE_URL` is missing every token is rejected. Details: [decision 25a](../decisions/25a-auth.md), [Protect a route](tutorials/add-endpoint.md#protect-a-route-plan-25-part-b).
 
+## Phone verification (plan #26, part A)
+
+`GET /api/phone`, `POST /api/phone/code`, `POST /api/phone/verify` (all behind `requireAuth`). The API normalises the number, checks the environment guard (`PHONE_TEST_NUMBERS` outside production), the rate limits and uniqueness, and only then asks the `PhoneOtp` port (Supabase Auth phone change) to send. Phones and IPs are stored only as HMAC hashes (`PHONE_HASH_SECRET`). The database writes go through `withApiRole` (a transaction as the `api_app` role) calling `private.*` functions; this is the only exception to "the only door is `withUser`". Details: [ADR-26a](../decisions/26a-phone-otp-trial.md), [tutorial](tutorials/phone-otp.md).
+
 ## Environment: DATABASE_URL
 
 The API reads and writes through Drizzle on `DATABASE_URL` (optional in `packages/config/src/env.ts`; without it the repositories reject every call). Use the `api_app` login role, never `postgres` (the superuser bypasses RLS). Local: `postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres` (password in `supabase/roles.sql`). Staging: set the `api_app` password once and add the secret (ADR-24a, ADR-29a).

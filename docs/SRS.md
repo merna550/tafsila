@@ -168,8 +168,8 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-AUTH-01 | Sign up / sign in with email + password and Google OAuth | M |
-| FR-AUTH-02 | Phone number verification by OTP is required before using the free trial. The production channel (SMS or WhatsApp) is chosen at M8 by price (ADR-024); dev/staging use test numbers | M |
-| FR-AUTH-03 | One free trial per verified phone number (prevent multi-account abuse) | M |
+| FR-AUTH-02 | Phone number verification by OTP is required before using the free trial. The production channel (SMS or WhatsApp) is chosen at M8 by price (ADR-024); dev/staging use test numbers. _Status: API, database and limits built (issue #26 part A, [ADR-26a](decisions/26a-phone-otp-trial.md)); the screen is part B_ | M |
+| FR-AUTH-03 | One free trial per verified phone number (prevent multi-account abuse). _Status: built in the database and API (keyed hash kept after account deletion), issue #26 part A_ | M |
 | FR-AUTH-04 | Password reset, sign out, delete account (deletes images and personal data) | M |
 | FR-AUTH-05 | User chooses language (ar/en) and unit display (cm; inches later) | M |
 
@@ -297,7 +297,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-BILL-01 | Credit ledger: each new pattern (new design) consumes 1 credit; regenerations of the same design with new measurements do **not** consume credits | M |
-| FR-BILL-02 | Free trial grants 3 credits after phone verification | M |
+| FR-BILL-02 | Free trial grants 3 credits after phone verification. _Issue #26 only exposes the eligibility flag (`trialEligible`, `private.is_trial_eligible`); granting credits is M7_ | M |
 | FR-BILL-03 | Products: single pattern (49 EGP), 5-pack (199 EGP, 90-day expiry), Hobby monthly (149 EGP, 8 credits), Pro monthly (349 EGP, 30 credits, unlimited client profiles). Prices stored in DB, not code | M |
 | FR-BILL-04 | Paymob integration: cards, mobile wallets, Fawry reference; server-side payment intention; webhook with HMAC verification; idempotent processing | M |
 | FR-BILL-05 | Subscription renewal reminders and manual renewal (auto-renew if Paymob tokenisation is available) | M |

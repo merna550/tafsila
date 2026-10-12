@@ -136,6 +136,38 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
+<a id="e164"></a>
+
+### E.164
+
+**Plain words:** The international phone format: `+` country code and number, no spaces (`+201012345678`).  
+**In Tafsila:** The only form of a phone number the API stores and compares; the shared normaliser converts what people type ([decision 26](../decisions/26a-phone-otp-trial.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/E.164>
+
+<a id="hmac-keyed-hash"></a>
+
+### HMAC (keyed hash)
+
+**Plain words:** A fingerprint of a text made with a secret key; without the key nobody can recompute or reverse it, unlike a plain hash of a short value such as a phone number.  
+**In Tafsila:** `trial_phones` keeps `HMAC-SHA256(PHONE_HASH_SECRET, phone)` so a number cannot get a second trial and a leaked table reveals no numbers. **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/HMAC>
+
+<a id="otp"></a>
+
+### OTP (one-time password)
+
+**Plain words:** A short code (six digits here) sent to a phone to prove the person holds it.  
+**In Tafsila:** Sent by Supabase Auth behind the `PhoneOtp` port; test numbers always use `123456`. **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/One-time_password>
+
+<a id="security-definer"></a>
+
+### Security definer function
+
+**Plain words:** A database function that runs with its owner's rights instead of the caller's, so it can do one narrow thing the caller is not allowed to do directly.  
+**In Tafsila:** `private.confirm_phone` is the only writer of `phone_verified_at`; only the API role may execute it. **Level:** advanced  
+**Learn:** <https://www.postgresql.org/docs/current/sql-createfunction.html#SQL-CREATEFUNCTION-SECURITY>
+
 <a id="oauth"></a>
 
 ### OAuth
