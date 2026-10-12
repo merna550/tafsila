@@ -19,6 +19,8 @@
 
 14. **The verify screen is `/verify`** (part B), soft-gated by the guard; the code boxes are a `packages/ui` component; the web form builds its schema from the same `normalizeEgyptianMobile`; the confirmation link and first Google sign-in continue to `/verify?next=...` and then the welcome dashboard; a dashboard notice shows while the phone is unverified.
 
+15. **`[auth.sms] enable_confirmations` must be true** (found by the e2e flow in CI): with false GoTrue auto-confirms a phone update, sends no code, and the number is attached without verification. Set in `supabase/config.toml` and the staging remote block.
+
 **Still open (to verify on staging):** the SMS OTP expiry. The CLI config has no key for it, so GoTrue's default applies; the target of 10 minutes is not yet checked. Merna or the staging run confirms it (TC-AUTH-26-20) before M8.
 
 **Risks to know:**

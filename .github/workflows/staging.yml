@@ -68,6 +68,7 @@ jobs:
 
           [remotes.staging.auth.sms]
           enable_signup = false
+          enable_confirmations = true
           EOF
       - name: Drop custom email templates (Supabase Free refuses them without custom SMTP, issue #107)
         run: node scripts/strip-email-templates.mjs supabase/config.toml
