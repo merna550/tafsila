@@ -1,4 +1,5 @@
 -- pgTAP tests for issue #26 part A: trial_phones, phone_otp_events, the private phone functions. Run: pnpm db:test
+-- Uses numbers outside the seed (+201000000001..9) because the seed already holds some of them.
 begin;
 select plan(31);
 
@@ -47,38 +48,38 @@ select is(has_function_privilege('service_role', 'private.confirm_phone(uuid,tex
 
 -- 13 authenticated still cannot write the verified phone
 select pg_temp.act_as('aaaaaaaa-0000-4000-8000-000000000a01');
-select throws_ok($$ update public.profiles set phone = '+201000000001' where id = auth.uid() $$, '42501', null, '13 authenticated cannot update profiles.phone');
+select throws_ok($$ update public.profiles set phone = '+201099999991' where id = auth.uid() $$, '42501', null, '13 authenticated cannot update profiles.phone');
 select pg_temp.reset();
 
 -- 14-16 A confirms hash H
-select private.confirm_phone('aaaaaaaa-0000-4000-8000-000000000a01', '+201000000001', '\x0101');
-select is((select phone from public.profiles where id = 'aaaaaaaa-0000-4000-8000-000000000a01'), '+201000000001', '14 profile phone set');
+select private.confirm_phone('aaaaaaaa-0000-4000-8000-000000000a01', '+201099999991', '\x0101');
+select is((select phone from public.profiles where id = 'aaaaaaaa-0000-4000-8000-000000000a01'), '+201099999991', '14 profile phone set');
 select isnt((select phone_verified_at from public.profiles where id = 'aaaaaaaa-0000-4000-8000-000000000a01'), null, '15 profile verified');
 select is(private.is_trial_eligible('aaaaaaaa-0000-4000-8000-000000000a01'), true, '16 A is trial eligible');
 
 -- 17-18 B cannot take the same number
-select throws_ok($$ select private.confirm_phone('bbbbbbbb-0000-4000-8000-000000000b02', '+201000000001', '\x0101') $$,
+select throws_ok($$ select private.confirm_phone('bbbbbbbb-0000-4000-8000-000000000b02', '+201099999991', '\x0101') $$,
   'PH001', 'phone_already_used', '17 second account is refused');
 select is((select phone_verified_at from public.profiles where id = 'bbbbbbbb-0000-4000-8000-000000000b02'), null, '18 B profile unchanged');
 
 -- 19 A confirming twice
-select throws_ok($$ select private.confirm_phone('aaaaaaaa-0000-4000-8000-000000000a01', '+201000000002', '\x0102') $$,
+select throws_ok($$ select private.confirm_phone('aaaaaaaa-0000-4000-8000-000000000a01', '+201099999992', '\x0102') $$,
   'PH002', 'phone_already_verified', '19 A cannot verify twice');
 
 -- 20-22 deleting A keeps the hash
 delete from auth.users where id = 'aaaaaaaa-0000-4000-8000-000000000a01';
 select is((select count(*)::int from public.profiles where id = 'aaaaaaaa-0000-4000-8000-000000000a01'), 0, '20 A profile is gone');
 select is((select user_id from public.trial_phones where phone_hash = '\x0101'), null, '21 trial_phones row kept with user_id null');
-select throws_ok($$ select private.confirm_phone('bbbbbbbb-0000-4000-8000-000000000b02', '+201000000001', '\x0101') $$,
+select throws_ok($$ select private.confirm_phone('bbbbbbbb-0000-4000-8000-000000000b02', '+201099999991', '\x0101') $$,
   'PH001', 'phone_already_used', '22 B still refused after A is deleted');
 
 -- 23 C with another number is fine, 24 trial_granted_at ends eligibility
-select is((private.confirm_phone('cccccccc-0000-4000-8000-000000000c03', '+201000000003', '\x0103') ->> 'trial_eligible')::boolean, true, '23 C confirms another number');
+select is((private.confirm_phone('cccccccc-0000-4000-8000-000000000c03', '+201099999993', '\x0103') ->> 'trial_eligible')::boolean, true, '23 C confirms another number');
 update public.trial_phones set trial_granted_at = now() where phone_hash = '\x0103';
 select is(private.is_trial_eligible('cccccccc-0000-4000-8000-000000000c03'), false, '24 granted trial is no longer eligible');
 
 -- 25 status
-select is(private.phone_status('bbbbbbbb-0000-4000-8000-000000000b02', '+201000000001', '\x0101') ->> 'number', 'taken', '25 status says taken');
+select is(private.phone_status('bbbbbbbb-0000-4000-8000-000000000b02', '+201099999991', '\x0101') ->> 'number', 'taken', '25 status says taken');
 
 -- 26 another user sees no foreign phone
 select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000b02');
