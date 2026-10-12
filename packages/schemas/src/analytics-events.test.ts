@@ -34,4 +34,20 @@ describe("analytics events", () => {
     expect(() => parseAnalyticsEvent("signup_completed", { email: "a@b.com" })).toThrow();
     expect(() => parseAnalyticsEvent("signup_completed", { userId: "123" })).toThrow();
   });
+
+  it("accepts the phone events with fixed values only", () => {
+    expect(parseAnalyticsEvent("phone_code_requested", { attempt: "resend" })).toEqual({ attempt: "resend" });
+    expect(parseAnalyticsEvent("phone_verified", { trial_eligible: true })).toEqual({ trial_eligible: true });
+    expect(parseAnalyticsEvent("phone_verification_failed", { reason: "rate_limited" })).toEqual({
+      reason: "rate_limited",
+    });
+  });
+
+  it("rejects phone-shaped values and extra fields in the phone events", () => {
+    expect(() => parseAnalyticsEvent("phone_code_requested", { attempt: "+201000000005" })).toThrow();
+    expect(() => parseAnalyticsEvent("phone_verification_failed", { reason: "01000000005" })).toThrow();
+    expect(() =>
+      parseAnalyticsEvent("phone_verified", { trial_eligible: true, phone: "+201000000005" }),
+    ).toThrow();
+  });
 });

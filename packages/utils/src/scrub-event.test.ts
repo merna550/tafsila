@@ -25,6 +25,11 @@ describe("scrubEvent", () => {
     expect(event.request).toEqual({ url: "/api/x", method: "POST" });
   });
 
+  it("masks phone-shaped text in the kept URL", () => {
+    const event = scrubEvent({ request: { url: "/x?p=+201012345678", method: "GET" } });
+    expect(event.request).toEqual({ url: "/x?p=[phone]", method: "GET" });
+  });
+
   it("leaves events without user or request alone", () => {
     expect(scrubEvent({})).toEqual({});
   });

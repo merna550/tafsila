@@ -59,6 +59,15 @@ jobs:
           201000000001 = "123456"
           201000000002 = "123456"
           201000000003 = "123456"
+          201000000004 = "123456"
+          201000000005 = "123456"
+          201000000006 = "123456"
+          201000000007 = "123456"
+          201000000008 = "123456"
+          201000000009 = "123456"
+
+          [remotes.staging.auth.sms]
+          enable_signup = false
           EOF
       - name: Drop custom email templates (Supabase Free refuses them without custom SMTP, issue #107)
         run: node scripts/strip-email-templates.mjs supabase/config.toml

@@ -3,8 +3,11 @@ import * as withUserModule from "./with-user";
 import { escapeLike } from "./client-repository";
 
 describe("withUser guard", () => {
-  it("exports only the factory (the raw Drizzle client is never exported)", () => {
-    expect(Object.keys(withUserModule)).toEqual(["createWithUser"]);
+  it("exports only the two factories (the raw Drizzle client is never exported)", () => {
+    expect(Object.keys(withUserModule).sort((a, b) => a.localeCompare(b))).toEqual([
+      "createWithApiRole",
+      "createWithUser",
+    ]);
   });
 
   it("rejects a context without a matching sub before touching the database", async () => {

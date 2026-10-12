@@ -166,5 +166,12 @@
     "method": "DELETE",
     "path": "/api/clients/{{clientId}}",
     "status": 204
+  },
+  {
+    "name": "13 Read the phone verification state",
+    "method": "GET",
+    "path": "/api/phone",
+    "status": 200,
+    "has": ["verified", "phone", "trialEligible"]
   }
 ]

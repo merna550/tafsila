@@ -11,7 +11,7 @@ import Converter from "openapi-to-postmanv2";
 const OPENAPI_PATH = "packages/api/openapi.json";
 const COLLECTION_PATH = "postman/tafsila.postman_collection.json";
 /** Folders that are never called by Newman (a call would throw a 500 and use the Sentry quota). */
-const SKIPPED_FOLDERS = new Set(["debug"]);
+const SKIPPED_FOLDERS = new Set(["debug", "phone"]);
 /** Folders replaced by a hand-written journey in postman/journey.json (they need ids from earlier steps). */
 const JOURNEY_FOLDERS = new Set(["clients", "measurements"]);
 

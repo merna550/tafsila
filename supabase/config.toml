@@ -272,8 +272,8 @@ content_path = "./supabase/templates/recovery.html"
 # content_path = "./supabase/templates/password_changed_notification.html"
 
 [auth.sms]
-# Phone auth on. Locally only the test numbers below work; no SMS provider is configured (issue #18).
-enable_signup = true
+# A phone may be added to an email account (issue #26), never create one: no phone-only sign-up.
+enable_signup = false
 # If enabled, users need to confirm their phone number before signing in.
 enable_confirmations = false
 # Template for sending OTP to users
@@ -286,6 +286,12 @@ max_frequency = "5s"
 201000000001 = "123456"
 201000000002 = "123456"
 201000000003 = "123456"
+201000000004 = "123456"
+201000000005 = "123456"
+201000000006 = "123456"
+201000000007 = "123456"
+201000000008 = "123456"
+201000000009 = "123456"
 
 # Configure logged in session timeouts.
 # [auth.sessions]

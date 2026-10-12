@@ -67,6 +67,46 @@ export const ERROR_CATALOGUE = {
     messageAr: "الرابط غير صالح أو انتهت صلاحيته. يمكن طلب رابط جديد",
     messageEn: "The link is invalid or has expired. Request a new one",
   },
+  PHONE_INVALID: {
+    status: 400,
+    messageAr: "رقم الهاتف غير صحيح. يُكتب رقم محمول مصري يبدأ بـ 010 أو 011 أو 012 أو 015",
+    messageEn: "Enter an Egyptian mobile number starting with 010, 011, 012 or 015",
+  },
+  PHONE_TEST_ONLY: {
+    status: 400,
+    messageAr: "تُقبل أرقام الاختبار فقط في هذه البيئة",
+    messageEn: "Only test numbers work in this environment",
+  },
+  PHONE_ALREADY_USED: {
+    status: 409,
+    messageAr: "هذا الرقم مستخدم في حساب آخر. لكل رقم تجربة مجانية واحدة",
+    messageEn: "This number is used by another account. Each number gets one free trial",
+  },
+  PHONE_ALREADY_VERIFIED: {
+    status: 409,
+    messageAr: "رقم الهاتف مؤكَّد بالفعل",
+    messageEn: "Your phone number is already verified",
+  },
+  PHONE_CODE_INVALID: {
+    status: 400,
+    messageAr: "رمز التأكيد غير صحيح أو انتهت صلاحيته",
+    messageEn: "The code is wrong or has expired",
+  },
+  PHONE_RESEND_TOO_SOON: {
+    status: 429,
+    messageAr: "يمكن طلب رمز جديد بعد دقيقة",
+    messageEn: "You can ask for a new code in a minute",
+  },
+  PHONE_TOO_MANY_ATTEMPTS: {
+    status: 429,
+    messageAr: "محاولات كثيرة. يمكن المحاولة مرة أخرى بعد قليل",
+    messageEn: "Too many attempts. Try again later",
+  },
+  PHONE_SEND_FAILED: {
+    status: 502,
+    messageAr: "تعذّر إرسال الرمز. يمكن المحاولة مرة أخرى",
+    messageEn: "We could not send the code. Try again",
+  },
   RATE_LIMITED: {
     status: 429,
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",
@@ -88,6 +128,8 @@ export interface ErrorDetails {
   readonly fields?: Readonly<Record<string, string>>;
   /** Bilingual measurement problems from the engine (MEASUREMENTS_INVALID), so the UI picks the language. */
   readonly issues?: readonly MeasurementIssueDto[];
+  /** Seconds until the caller may try again (429 phone codes); also sent as the Retry-After header. */
+  readonly retryAfterSeconds?: number;
 }
 
 /** Optional overrides when throwing an error. */

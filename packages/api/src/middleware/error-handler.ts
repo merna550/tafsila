@@ -15,6 +15,7 @@ import type { AppEnv } from "./request-id";
 function errorDetailsBody(details: ErrorDetails): NonNullable<ApiErrorBody["details"]> {
   return {
     fields: { ...details.fields },
+    ...(details.retryAfterSeconds === undefined ? {} : { retryAfterSeconds: details.retryAfterSeconds }),
     ...(details.issues
       ? { issues: details.issues.map((issue) => ({ ...issue, fields: [...issue.fields] })) }
       : {}),
@@ -39,7 +40,12 @@ export function createErrorHandler(reporter: ErrorReporter): (error: Error, c: C
         ...(error.details ? { details: errorDetailsBody(error.details) } : {}),
         request_id: requestId,
       };
-      return c.json(body, error.status as ContentfulStatusCode);
+      const retryAfter = error.details?.retryAfterSeconds;
+      return c.json(
+        body,
+        error.status as ContentfulStatusCode,
+        retryAfter === undefined ? undefined : { "Retry-After": String(retryAfter) },
+      );
     }
     console.error(JSON.stringify({ level: "error", request_id: requestId, message: error.message }));
     reporter.captureException(error, { requestId });

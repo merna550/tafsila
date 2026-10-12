@@ -4,6 +4,8 @@ import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
 import { createRejectingTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
 import { createRejectingRepositories } from "../adapters/supabase/rejecting-repositories";
+import { createMemoryPhoneOtp } from "../adapters/memory/phone-otp";
+import { createRejectingPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createApp } from "../app";
 import type { Container } from "../container";
 import { OPENAPI_DOCUMENT_CONFIG } from "./document-config";
@@ -17,6 +19,9 @@ const DOCUMENT_CONTAINER: Container = {
   tokenVerifier: createRejectingTokenVerifier(),
   ...createRejectingRepositories(),
   planLimits: createUnlimitedPlanLimits(),
+  phoneOtp: createMemoryPhoneOtp(),
+  phoneHasher: createRejectingPhoneHasher(),
+  phoneRules: { testOnly: true, testNumbers: [] },
 };
 
 /**
