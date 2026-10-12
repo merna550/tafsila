@@ -47,6 +47,8 @@ Import direction: `app → features → entities → shared → packages/*`. Ano
 | Pattern editor session | Zustand (selected piece, zoom, layers)                       |
 | Pattern geometry       | `@tafsila/engine` in the browser; heavy work in a Web Worker |
 
+**Where the phone screen sits (#26):** `features/verify-phone` (number step, code step, dashboard banner). The `CodeInput` in `packages/ui` is a controlled row of single-digit boxes: always `dir="ltr"`, first box has `autocomplete="one-time-code"`, paste or autofill fills all boxes, Arabic-Indic digits are converted. Until TanStack Query is added to the app, hooks load data with `apiRequest` and plain state (`use-phone-status`, `useApiAction`); switch them when the dependency lands.
+
 ## Layers
 
 Per feature: `components/` (UI, props in → JSX out) → `hooks/` (TanStack Query, forms, Zustand) → `model/` (pure TypeScript) → `shared/api` (the only `fetch`). The browser never talks to the database; Supabase exists only in `shared/auth/` for the session. Full rules with examples: `.claude/rules/frontend/layering.md`; enforced by dependency-cruiser (ADR-029).

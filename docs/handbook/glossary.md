@@ -136,6 +136,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Supabase Auth with phone [OTP](#otp); permissions via [RLS](#rls) (planned, M1). **Card:** [Supabase](tech/supabase.md) · **Level:** beginner  
 **Learn:** <https://supabase.com/docs/guides/auth>
 
+<a id="bdi"></a>
+
+### Bidi isolation (`<bdi dir="ltr">`)
+
+**Plain words:** In an Arabic sentence, a phone number can get its groups shuffled; wrapping it in `<bdi dir="ltr">` keeps it as one left-to-right block.  
+**In Tafsila:** The "we sent the code to 010 1234 5678" notice and the number field. **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/bdi>
+
 <a id="e164"></a>
 
 ### E.164

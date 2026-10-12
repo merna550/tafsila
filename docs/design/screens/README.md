@@ -28,7 +28,7 @@ Each `*.dc.html` file is plain HTML with inline styles, drawn in **Arabic (RTL)*
 | File                    | Screen                    | Route (under `/[locale]`)        | Issue | States shown                                                     |
 | ----------------------- | ------------------------- | -------------------------------- | ----- | ---------------------------------------------------------------- |
 | `Main.dc.html`          | Sign in / sign up         | `/sign-in`                       | #25   | sign-in tab, filled form                                         |
-| `Verify.dc.html`        | Phone verification (OTP)  | `/verify-phone`                  | #26   | code half-entered, resend countdown                              |
+| `Verify.dc.html`        | Phone verification (OTP)  | `/verify`                        | #26   | code half-entered, resend countdown (built, PR #116)             |
 | `Clients.dc.html`       | Clients list              | `/clients`                       | #30   | list with 5 clients, search                                      |
 | `ClientsEmpty.dc.html`  | Clients list, first visit | `/clients`                       | #30   | empty state                                                      |
 | `ClientProfile.dc.html` | Client profile            | `/clients/[id]`                  | #30   | notes, 2 measurement sets                                        |
