@@ -62,5 +62,58 @@
     "auth": false,
     "status": 401,
     "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR POST /api/phone/code without a token returns 401",
+    "method": "POST",
+    "path": "/api/phone/code",
+    "auth": false,
+    "body": {
+      "phone": "010 0000 0005"
+    },
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR POST /api/phone/code with a landline returns 400",
+    "method": "POST",
+    "path": "/api/phone/code",
+    "auth": true,
+    "body": {
+      "phone": "0221234567"
+    },
+    "status": 400,
+    "code": "PHONE_INVALID"
+  },
+  {
+    "name": "ERR POST /api/phone/code with a non-test number returns 400",
+    "method": "POST",
+    "path": "/api/phone/code",
+    "auth": true,
+    "body": {
+      "phone": "01012345678"
+    },
+    "status": 400,
+    "code": "PHONE_TEST_ONLY"
+  },
+  {
+    "name": "ERR POST /api/phone/verify with a malformed number returns 400",
+    "method": "POST",
+    "path": "/api/phone/verify",
+    "auth": true,
+    "body": {
+      "phone": "123",
+      "code": "123456"
+    },
+    "status": 400,
+    "code": "PHONE_INVALID"
+  },
+  {
+    "name": "ERR GET /api/phone without a token returns 401",
+    "method": "GET",
+    "path": "/api/phone",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
   }
 ]

@@ -116,12 +116,15 @@ declare
   v_worst int := 0;
   v_worst_scope text;
   v_worst_window int;
+  v_prior int;
 begin
   if p_kind not in ('send', 'verify_fail') then
     raise exception 'invalid kind' using errcode = '22023';
   end if;
   perform pg_advisory_xact_lock(hashtextextended('phone_otp', 0));
   delete from public.phone_otp_events where created_at < v_now - interval '24 hours';
+
+  select count(*) into v_prior from public.phone_otp_events e where e.kind = p_kind and e.user_id = p_user_id;
 
   for v_rule in select * from jsonb_array_elements(p_limits) loop
     v_scope := v_rule ->> 'scope';
@@ -148,13 +151,15 @@ begin
 
   if v_worst > 0 then
     return jsonb_build_object('allowed', false, 'retry_after_seconds', v_worst,
-                              'scope', v_worst_scope, 'window_seconds', v_worst_window);
+                              'scope', v_worst_scope, 'window_seconds', v_worst_window,
+                              'prior_events', v_prior);
   end if;
   if p_record then
     insert into public.phone_otp_events (kind, user_id, phone_hash, ip_hash)
     values (p_kind, p_user_id, p_phone_hash, p_ip_hash);
   end if;
-  return jsonb_build_object('allowed', true, 'retry_after_seconds', 0, 'scope', null, 'window_seconds', null);
+  return jsonb_build_object('allowed', true, 'retry_after_seconds', 0, 'scope', null, 'window_seconds', null,
+                            'prior_events', v_prior);
 end;
 $$;
 

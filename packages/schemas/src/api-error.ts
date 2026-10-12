@@ -13,6 +13,7 @@ export const apiErrorBodySchema = z.object({
   details: z
     .object({
       fields: z.record(z.string(), z.string()).optional(),
+      retryAfterSeconds: z.number().int().positive().optional(),
       issues: z
         .array(
           z.object({

@@ -28,6 +28,9 @@ describe("OpenAPI document", () => {
       "/api/me",
       "/api/measurements",
       "/api/measurements/{id}",
+      "/api/phone",
+      "/api/phone/code",
+      "/api/phone/verify",
     ]);
   });
 

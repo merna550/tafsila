@@ -11,6 +11,7 @@ import { OPENAPI_DOCUMENT_CONFIG } from "./openapi/document-config";
 import { docsRoutes } from "./routes/docs";
 import { healthRoutes } from "./routes/health";
 import { meRoutes } from "./routes/me";
+import { phoneRoutes } from "./routes/phone";
 
 /** Name of the bearer security scheme used by protected routes in the OpenAPI document. */
 export const BEARER_SCHEME = "bearerAuth";
@@ -40,6 +41,7 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", meRoutes(container));
   app.route("/", clientRoutes(container));
   app.route("/", measurementRoutes(container));
+  app.route("/", phoneRoutes(container));
   app.doc31("/openapi.json", OPENAPI_DOCUMENT_CONFIG);
   app.route("/", docsRoutes(container));
   if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));

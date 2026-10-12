@@ -10,17 +10,26 @@ import { createContainer } from "../container";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemoryStore } from "../adapters/memory/memory-store";
+import { createMemoryPhoneOtp } from "../adapters/memory/phone-otp";
+import { createMemoryPhoneVerification } from "../adapters/memory/phone-verification-repository";
+import { createHmacPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createJwksTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createTestAuthKeys, TEST_SUPABASE_URL } from "../test-support/auth-keys";
 
 const HTTP_SERVER_ERROR = 500;
 const keys = await createTestAuthKeys();
 const store = createMemoryStore();
+const phones = createMemoryPhoneVerification({ now: () => new Date() });
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
     clients: createMemoryClientRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
+    phoneOtp: createMemoryPhoneOtp(),
+    phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
+    phoneVerification: phones,
+    trialEligibility: phones,
+    phoneRules: { testOnly: true, testNumbers: ["+201000000005"] },
     tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
   }),
 );

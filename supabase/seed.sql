@@ -38,6 +38,16 @@ update public.profiles set phone = '+201000000002', phone_verified_at = now()
 update public.profiles set phone = '+201000000004', phone_verified_at = now(), role = 'admin'
   where id = '00000000-0000-4000-8000-000000000004';
 
+-- Trial phones for the seeded verified accounts: HMAC-SHA256 with the local PHONE_HASH_SECRET from .env.example,
+-- the same bytes the API's hasher produces. Staging has no seed, so its secret never appears here.
+insert into public.trial_phones (phone_hash, user_id)
+select extensions.hmac(v.phone, 'local-dev-phone-hash-secret-0123456789abcdef', 'sha256'), v.id
+from (values
+  ('+201000000001', '00000000-0000-4000-8000-000000000001'::uuid),
+  ('+201000000002', '00000000-0000-4000-8000-000000000002'::uuid),
+  ('+201000000004', '00000000-0000-4000-8000-000000000004'::uuid)
+) as v (phone, id);
+
 -- Placeholder size chart: demo size M scaled by fixed factors. Real values come from #32.
 insert into public.size_charts (name, sizes, is_default)
 select
