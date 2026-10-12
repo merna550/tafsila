@@ -106,9 +106,12 @@ export function createGotruePhoneOtp(config: GotrueConfig): PhoneOtp {
         body: JSON.stringify({ type: "phone_change", phone: e164, token: code }),
       });
       const payload = await readJson(response);
-      if (!response.ok) throw mapGotrueError(response.status, payload, "PHONE_CODE_INVALID");
+      if (!response.ok) {
+        const e = mapGotrueError(response.status, payload, "PHONE_CODE_INVALID");
+        throw new AppError(e.code, { messageEn: `DIAG gotrue ${response.status} ${JSON.stringify(payload)}` });
+      }
       const userId = (payload?.user as { id?: unknown } | undefined)?.id;
-      if (typeof userId !== "string") throw new AppError("PHONE_CODE_INVALID");
+      if (typeof userId !== "string") throw new AppError("PHONE_CODE_INVALID", { messageEn: `DIAG no user ${JSON.stringify(payload).slice(0, 300)}` });
       return { userId };
     },
   };

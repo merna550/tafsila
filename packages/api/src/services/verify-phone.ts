@@ -41,11 +41,15 @@ function tooManyAttempts(deps: PhoneDeps, userId: string, check: AttemptResult):
  * @param code - Six digits.
  * @returns The account the provider attached the number to, or null when the code is wrong.
  */
+let diag = "";
 async function providerUser(deps: PhoneDeps, e164: string, code: string): Promise<string | null> {
   try {
     return (await deps.otp.verify(e164, code)).userId;
   } catch (error) {
-    if (error instanceof AppError && error.code === "PHONE_CODE_INVALID") return null;
+    if (error instanceof AppError && error.code === "PHONE_CODE_INVALID") {
+      diag = error.messageEn;
+      return null;
+    }
     throw error;
   }
 }
@@ -113,7 +117,7 @@ export async function verifyPhone(deps: PhoneDeps, input: VerifyPhoneInput): Pro
     if (ipOnly) tooManyAttempts(deps, ctx.userId, check);
     await deps.phones.attempt({ ...base, rules: [], record: true });
     deps.analytics.capture(ctx.userId, "phone_verification_failed", { reason: "invalid_code" });
-    throw new AppError("PHONE_CODE_INVALID");
+    throw new AppError("PHONE_CODE_INVALID", { messageEn: diag || "DIAG user mismatch" });
   }
 
   return confirm(deps, ctx.userId, e164, phoneHash);
