@@ -26,7 +26,7 @@ const baseProps = {
 describe("CodeStep", () => {
   it("says where the code went, in the page language, with the number kept left-to-right", () => {
     const ar = renderWithIntl(<CodeStep {...baseProps} />, "ar");
-    expect(ar).toContain("أرسلنا الرمز إلى ⁦010 1234 5678⁩");
+    expect(ar).toContain('أرسلنا الرمز إلى <bdi dir="ltr" class="whitespace-nowrap">010 1234 5678</bdi>');
     const en = renderWithIntl(<CodeStep {...baseProps} />, "en");
     expect(en).toContain("We sent the code to");
   });

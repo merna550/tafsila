@@ -48,7 +48,7 @@
       "label": "Phone number",
       "sendCode": "Send code"
     },
-    "notice": "We sent the code to {phone}. Did not get it? You can ask for a new code in a minute.",
+    "notice": "We sent the code to <num>{phone}</num>. Did not get it? You can ask for a new code in a minute.",
     "code": {
       "label": "Verification code",
       "digit": "Digit {n}",

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { CODE_LENGTH } from "../model/verify-phone.schema";
 import { formatCountdown } from "../model/countdown";
-import { displayPhone, isolateLtr } from "../model/format";
+import { displayPhone } from "../model/format";
 
 /** Props of {@link CodeStep}. */
 interface CodeStepProps {
@@ -40,8 +40,15 @@ export function CodeStep(props: Readonly<CodeStepProps>): ReactElement {
   const t = useTranslations("phoneVerification");
   return (
     <>
-      <p role="status" className="flex items-start gap-2.5 rounded-md bg-primary-soft px-3.5 py-3 leading-6">
-        {t("notice", { phone: isolateLtr(displayPhone(phone)) })}
+      <p role="status" className="rounded-md bg-primary-soft px-3.5 py-3 leading-6">
+        {t.rich("notice", {
+          phone: displayPhone(phone),
+          num: (chunks) => (
+            <bdi dir="ltr" className="whitespace-nowrap">
+              {chunks}
+            </bdi>
+          ),
+        })}
       </p>
       <FormField label={t("code.label")} error={error ?? undefined}>
         {(control) => (
