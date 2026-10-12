@@ -513,6 +513,38 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "13 Read the phone verification state",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has verified\", () => pm.expect(pm.response.json()).to.have.property(\"verified\"));",
+                  "pm.test(\"has phone\", () => pm.expect(pm.response.json()).to.have.property(\"phone\"));",
+                  "pm.test(\"has trialEligible\", () => pm.expect(pm.response.json()).to.have.property(\"trialEligible\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/phone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "phone"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -910,147 +942,6 @@
           "response": []
         }
       ]
-    },
-    {
-      "name": "phone",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
-      "item": [
-        {
-          "name": "Phone verification state of the signed-in user",
-          "request": {
-            "name": "Phone verification state of the signed-in user",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "phone"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"response has the documented fields\", () => {",
-                  "  const body = pm.response.json();",
-                  "  for (const key of [\"verified\",\"phone\",\"trialEligible\"]) pm.expect(body).to.have.property(key);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Send a verification code to an Egyptian mobile number",
-          "request": {
-            "name": "Send a verification code to an Egyptian mobile number",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "phone",
-                "code"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"phone\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Verify the code and mark the phone verified",
-          "request": {
-            "name": "Verify the code and mark the phone verified",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "phone",
-                "verify"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"phone\": \"<string>\",\n  \"code\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        }
-      ],
-      "event": []
     },
     {
       "name": "system",
