@@ -9,6 +9,15 @@ describe("decideAccess", () => {
     });
   });
 
+  it("guards the verify-phone screen like the dashboard", () => {
+    expect(decideAccess("/verify", "?next=%2Fdashboard", false)).toEqual({
+      action: "redirect",
+      to: "/sign-in?next=%2Fverify%3Fnext%3D%252Fdashboard",
+    });
+    expect(decideAccess("/en/verify", "", true)).toEqual({ action: "allow" });
+    expect(decideAccess("/verifying", "", false)).toEqual({ action: "allow" });
+  });
+
   it("keeps the English prefix and the query string", () => {
     expect(decideAccess("/en/dashboard/designs", "?tab=1", false)).toEqual({
       action: "redirect",

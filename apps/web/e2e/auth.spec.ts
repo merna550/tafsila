@@ -1,53 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { expect, test, type Locator, type Page } from "@playwright/test";
-import type arMessages from "../messages/ar.json";
-import { readFileSync } from "node:fs";
+import { expect, test, type Page } from "@playwright/test";
+import { appAlert, MESSAGES, projectLocale, type Messages } from "./support/app";
 import { confirmLinkFor } from "./support/mailbox";
 
-type Messages = typeof arMessages;
-
-/**
- * Reads a messages file with fs: native ESM in Playwright rejects bare JSON imports.
- *
- * @param locale - Which messages file to load.
- * @returns The parsed messages.
- */
-function loadMessages(locale: "ar" | "en"): Messages {
-  const url = new URL(`../messages/${locale}.json`, import.meta.url);
-  return JSON.parse(readFileSync(url, "utf8")) as Messages;
-}
-
-const ar = loadMessages("ar");
-const en = loadMessages("en");
-
-const MESSAGES = { ar, en } as const;
+const en = MESSAGES.en;
 const PASSWORD = "password-one-1";
 const NEW_PASSWORD = "password-two-2";
-
-/**
- * Finds the app's own error notice. Next.js adds a second, empty role="alert" (the route announcer).
- *
- * @param page - The page.
- * @returns Locator of the notice.
- */
-function appAlert(page: Page): Locator {
-  return page.locator('[role="alert"]:not(#__next-route-announcer__)');
-}
-
-/**
- * Reads the language of the running project.
- *
- * @param testInfo - Playwright test info.
- * @returns Locale, URL prefix and its messages.
- */
-function projectLocale(testInfo: { project: { metadata: { locale?: unknown } } }): {
-  locale: "ar" | "en";
-  prefix: string;
-  t: typeof ar;
-} {
-  const locale = testInfo.project.metadata.locale as "ar" | "en";
-  return { locale, prefix: locale === "ar" ? "" : "/en", t: MESSAGES[locale] };
-}
 
 /**
  * Fills the email and password of the sign-in form and submits it.
@@ -57,7 +15,7 @@ function projectLocale(testInfo: { project: { metadata: { locale?: unknown } } }
  * @param email - Email address.
  * @param password - Password.
  */
-async function signIn(page: Page, t: typeof ar, email: string, password: string): Promise<void> {
+async function signIn(page: Page, t: Messages, email: string, password: string): Promise<void> {
   await page.getByLabel(t.auth.fields.email).fill(email);
   await page.getByLabel(t.auth.fields.password, { exact: true }).fill(password);
   await page.getByRole("button", { name: t.auth.signIn.submit }).click();
@@ -134,6 +92,9 @@ test.describe("account flow with the local mail catcher", () => {
     await page.getByRole("button", { name: t.auth.signUp.submit }).click();
     await expect(page.getByRole("heading", { name: t.auth.checkEmail.title })).toBeVisible();
     await page.goto(await confirmLinkFor(email, "تأكيد"));
+    // The phone step comes first and is skippable: "back" opens the dashboard with the welcome notice.
+    await expect(page).toHaveURL(/\/verify\?next=/);
+    await page.getByRole("link", { name: t.phoneVerification.back }).click();
     await expect(page).toHaveURL(/\/dashboard$/);
     await expect(page.getByText(t.auth.welcome, { exact: true })).toBeVisible();
 

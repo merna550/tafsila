@@ -43,6 +43,8 @@ export interface ApiErrorInit {
   readonly fieldErrors?: Readonly<Record<string, string>>;
   /** Request id the user can copy to support. */
   readonly requestId?: string;
+  /** Seconds until a rate-limited action may be tried again (from `details.retryAfterSeconds`). */
+  readonly retryAfterSeconds?: number;
 }
 
 /** A failed API call, already normalised: components read this and never a raw response. */
@@ -54,6 +56,7 @@ export class ApiError extends Error {
   public readonly messageEn: string;
   public readonly fieldErrors: Readonly<Record<string, string>>;
   public readonly requestId?: string;
+  public readonly retryAfterSeconds?: number;
 
   /**
    * Creates an ApiError.
@@ -70,6 +73,7 @@ export class ApiError extends Error {
     this.messageEn = init.messageEn;
     this.fieldErrors = init.fieldErrors ?? {};
     this.requestId = init.requestId;
+    this.retryAfterSeconds = init.retryAfterSeconds;
   }
 
   /**
@@ -119,6 +123,7 @@ export function apiErrorFromBody(body: ApiErrorBody, status: number): ApiError {
     messageEn: body.message_en,
     fieldErrors: body.details?.fields,
     requestId: body.request_id,
+    retryAfterSeconds: body.details?.retryAfterSeconds,
   });
 }
 

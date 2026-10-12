@@ -55,6 +55,8 @@ Import direction: `app → features → entities → shared → packages/*`. Ano
 - Forms: `use-client-form` wires React Hook Form + a Zod schema whose messages are keys of `messages/`, maps `ApiError.fieldErrors` with `setError`, and toasts on success.
 - `AppNav` (`shared/layout/`) is the signed-in bar rendered by `(dashboard)/layout.tsx`; items are the typed `NAV_ITEMS` list.
 
+**Where the phone screen sits (#26):** `features/verify-phone` (number step, code step, dashboard banner). The `CodeInput` in `packages/ui` is a controlled row of single-digit boxes: always `dir="ltr"`, first box has `autocomplete="one-time-code"`, paste or autofill fills all boxes, Arabic-Indic digits are converted. Its hooks load data with `apiRequest` and plain state (`use-phone-status`, `useApiAction`) because they were written before TanStack Query arrived with #30; they can move to Query hooks like the clients feature.
+
 ## Layers
 
 Per feature: `components/` (UI, props in → JSX out) → `hooks/` (TanStack Query, forms, Zustand) → `model/` (pure TypeScript) → `shared/api` (the only `fetch`). The browser never talks to the database; Supabase exists only in `shared/auth/` for the session. Full rules with examples: `.claude/rules/frontend/layering.md`; enforced by dependency-cruiser (ADR-029).

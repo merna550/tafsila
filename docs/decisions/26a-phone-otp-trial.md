@@ -17,6 +17,12 @@
 12. **`PHONE_ALREADY_USED` reveals that a number is or was used.** Unavoidable for a clear message; account and IP limits keep it from checking many numbers. **Security-sensitive, Merna to accept.**
 13. **A bad phone configuration only fails the phone routes** (`createPhoneServices` catches the config error and installs rejecting adapters), so `/api/health` still answers.
 
+14. **The verify screen is `/verify`** (part B), soft-gated by the guard; the code boxes are a `packages/ui` component; the web form builds its schema from the same `normalizeEgyptianMobile`; the confirmation link and first Google sign-in continue to `/verify?next=...` and then the welcome dashboard; a dashboard notice shows while the phone is unverified.
+
+15. **`[auth.sms] enable_confirmations` must be true** (found by the e2e flow in CI): with false GoTrue auto-confirms a phone update, sends no code, and the number is attached without verification. Set in `supabase/config.toml` and the staging remote block.
+
+**Still open (to verify on staging):** the SMS OTP expiry. The CLI config has no key for it, so GoTrue's default applies; the target of 10 minutes is not yet checked. Merna or the staging run confirms it (TC-AUTH-26-20) before M8.
+
 **Risks to know:**
 
 - `PHONE_HASH_SECRET` must be the same value for the Vercel Production target (staging) and Preview (previews share the staging database); losing or rotating it makes old hashes useless. Generate once per environment: `openssl rand -base64 32`.

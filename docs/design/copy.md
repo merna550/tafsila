@@ -41,5 +41,7 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | size chart                     | جدول المقاسات                           | size chart                          |
 | centimetre                     | سم / سنتيمتر                            | cm / centimetres                    |
 | back                           | العودة                                  | back                                |
+| free trial                     | تجربة مجانية                            | free trial                          |
+| resend code                    | إعادة الإرسال                           | resend code                         |
 
 Add a row here in the same PR whenever a new product term appears.

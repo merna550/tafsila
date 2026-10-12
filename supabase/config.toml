@@ -274,8 +274,8 @@ content_path = "./supabase/templates/recovery.html"
 [auth.sms]
 # A phone may be added to an email account (issue #26), never create one: no phone-only sign-up.
 enable_signup = false
-# If enabled, users need to confirm their phone number before signing in.
-enable_confirmations = false
+# Must stay true (issue #26): with false GoTrue auto-confirms a phone update and sends no code, so the OTP step is skipped.
+enable_confirmations = true
 # Template for sending OTP to users
 template = "Your code is {{ .Code }}"
 # Controls the minimum amount of time that must pass before sending another sms otp.

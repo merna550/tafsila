@@ -20,7 +20,7 @@ const PASSWORD = "password-one-1";
 const NAME = "سلمى عادل";
 
 /**
- * Creates a fresh confirmed account and lands on the dashboard.
+ * Creates a fresh confirmed account, skips the verify-phone screen (#26) and lands on the dashboard.
  *
  * @param page - The page.
  */
@@ -33,7 +33,10 @@ async function signUpFreshUser(page: Page): Promise<void> {
   await page.getByRole("button", { name: t.auth.signUp.submit }).click();
   await expect(page.getByRole("heading", { name: t.auth.checkEmail.title })).toBeVisible();
   await page.goto(await confirmLinkFor(email, "تأكيد"));
-  await expect(page).toHaveURL(/\/dashboard$/);
+  // A new account goes to the verify-phone screen first; it is skippable, and these tests do not need a phone.
+  await expect(page).toHaveURL(/\/verify\?next=/);
+  await page.getByRole("link", { name: t.phoneVerification.back }).click();
+  await expect(page).toHaveURL(/\/dashboard/);
 }
 
 test.describe("clients", () => {
