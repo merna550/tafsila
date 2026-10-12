@@ -39,6 +39,46 @@
     "title": "Dashboard",
     "welcome": "Welcome to Tafsila"
   },
+  "phoneVerification": {
+    "back": "Back",
+    "step": "Step 2 of 2",
+    "title": "Verify your phone number",
+    "intro": "We will send you a 6-digit code. Verifying gives you 3 free patterns, once per number.",
+    "phone": {
+      "label": "Phone number",
+      "sendCode": "Send code"
+    },
+    "notice": "We sent the code to {phone}. Did not get it? You can ask for a new code in a minute.",
+    "code": {
+      "label": "Verification code",
+      "digit": "Digit {n}",
+      "resendIn": "Resend in {time}",
+      "resend": "Resend code",
+      "confirm": "Verify",
+      "changeNumber": "Change number"
+    },
+    "verified": "Phone number verified",
+    "validation": {
+      "phoneRequired": "Enter your phone number",
+      "phoneInvalid": "Enter an Egyptian mobile number starting with 010, 011, 012 or 015",
+      "codeIncomplete": "Enter the 6-digit code"
+    },
+    "errors": {
+      "PHONE_INVALID": "Enter an Egyptian mobile number starting with 010, 011, 012 or 015",
+      "PHONE_TEST_ONLY": "Only test numbers work in this environment",
+      "PHONE_ALREADY_USED": "This number is used by another account. Each number gets one free trial",
+      "PHONE_ALREADY_VERIFIED": "Your phone number is already verified",
+      "PHONE_CODE_INVALID": "The code is wrong or has expired",
+      "PHONE_RESEND_TOO_SOON": "You can ask for a new code in a minute",
+      "PHONE_TOO_MANY_ATTEMPTS": "Too many attempts. Try again later",
+      "PHONE_SEND_FAILED": "We could not send the code. Try again"
+    },
+    "banner": {
+      "label": "Phone verification",
+      "text": "Your phone number is not verified. Verifying gives you 3 free patterns.",
+      "action": "Verify number"
+    }
+  },
   "auth": {
     "signOut": "Sign out",
     "hero": {

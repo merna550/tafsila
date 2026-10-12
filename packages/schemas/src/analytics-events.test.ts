@@ -43,6 +43,13 @@ describe("analytics events", () => {
     });
   });
 
+  it("accepts the two browser events of the verify screen with fixed values only", () => {
+    expect(parseAnalyticsEvent("phone_verify_viewed", {})).toEqual({});
+    expect(parseAnalyticsEvent("phone_verify_skipped", { step: "code" })).toEqual({ step: "code" });
+    expect(() => parseAnalyticsEvent("phone_verify_skipped", { step: "+201000000005" })).toThrow();
+    expect(() => parseAnalyticsEvent("phone_verify_viewed", { phone: "+201000000005" })).toThrow();
+  });
+
   it("rejects phone-shaped values and extra fields in the phone events", () => {
     expect(() => parseAnalyticsEvent("phone_code_requested", { attempt: "+201000000005" })).toThrow();
     expect(() => parseAnalyticsEvent("phone_verification_failed", { reason: "01000000005" })).toThrow();

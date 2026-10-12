@@ -1,19 +1,14 @@
-/** Layout of the auth screens: the hero panel next to (desktop) or above (mobile) the card, centred. */
+/** Layout shared by every auth-group page: nothing but the page; the hero layout lives in `(with-hero)`. */
 import type { ReactElement, ReactNode } from "react";
-import { AuthHero } from "@/features/auth";
 
 /**
- * Places the hero and the page's card side by side.
+ * Passes the page through. Sign-in, sign-up and the password screens add the hero panel in their own group; the
+ * verify-phone screen is a single centred card without it (docs/design/screens/Verify.dc.html).
  *
  * @param props - The page.
- * @param props.children - The card of the open screen.
- * @returns The layout.
+ * @param props.children - The open screen.
+ * @returns The page.
  */
-export default function AuthLayout({ children }: Readonly<{ children: ReactNode }>): ReactElement {
-  return (
-    <main className="mx-auto flex w-full max-w-5xl flex-wrap items-stretch gap-8 px-4 py-8">
-      <AuthHero />
-      {children}
-    </main>
-  );
+export default function AuthGroupLayout({ children }: Readonly<{ children: ReactNode }>): ReactElement {
+  return <>{children}</>;
 }

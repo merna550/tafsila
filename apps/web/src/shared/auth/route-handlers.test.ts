@@ -41,11 +41,11 @@ beforeEach(() => {
 });
 
 describe("handleConfirm", () => {
-  it("sends a confirmed sign-up to the dashboard welcome", async () => {
+  it("sends a confirmed sign-up to the phone screen, which continues to the dashboard welcome", async () => {
     verifyOtp.mockResolvedValue({ error: null });
     const response = await handleConfirm(request("/auth/confirm?token_hash=abc&type=email"));
     expect(verifyOtp).toHaveBeenCalledWith({ type: "email", token_hash: "abc" });
-    expect(target(response)).toBe("/dashboard?welcome=1");
+    expect(target(response)).toBe("/verify?next=%2Fdashboard%3Fwelcome%3D1");
   });
 
   it("sends a recovery link to the reset form", async () => {

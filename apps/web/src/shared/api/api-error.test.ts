@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { MESSAGES } from "../i18n/testing";
-import { CLIENT_ERROR_MESSAGES, clientApiError } from "./api-error";
+import { CLIENT_ERROR_MESSAGES, apiErrorFromBody, clientApiError } from "./api-error";
 
 /** Words of Egyptian dialect and feminine imperatives that docs/design/copy.md forbids in Arabic UI text. */
 const FORBIDDEN_ARABIC = ["مفيش", "اتأكد", "تاني", "شوية", "كتير", "أخد", "حاولي", "سجّلي"];
@@ -22,5 +22,30 @@ describe("client error messages", () => {
     expect(error.code).toBe("TIMEOUT");
     expect(error.messageAr).toBe(MESSAGES.ar.clientErrors.timeout);
     expect(error.messageEn).toBe(MESSAGES.en.clientErrors.timeout);
+  });
+});
+
+describe("apiErrorFromBody", () => {
+  it("keeps the retry delay of a rate-limited answer", () => {
+    const error = apiErrorFromBody(
+      {
+        code: "PHONE_RESEND_TOO_SOON",
+        message_ar: "ar",
+        message_en: "en",
+        details: { retryAfterSeconds: 42 },
+        request_id: "req-1",
+      },
+      429,
+    );
+    expect(error.kind).toBe("rate-limited");
+    expect(error.retryAfterSeconds).toBe(42);
+  });
+
+  it("has no retry delay when the server sent none", () => {
+    const error = apiErrorFromBody(
+      { code: "PHONE_INVALID", message_ar: "ar", message_en: "en", request_id: "req-2" },
+      400,
+    );
+    expect(error.retryAfterSeconds).toBeUndefined();
   });
 });

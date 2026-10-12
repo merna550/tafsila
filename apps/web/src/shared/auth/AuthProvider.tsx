@@ -1,6 +1,13 @@
 "use client";
 /** Provides the browser auth client to hooks, built once from the PublicConfig handed over by the layout (no NEXT_PUBLIC_*, ADR-025). */
-import { createContext, useContext, useEffect, useMemo, type ReactElement, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { setAccessTokenGetter } from "../api";
 import { getAccessToken } from "./auth-actions";
 import { createBrowserAuthClient, type AuthClient, type AuthConfig } from "./clients";
@@ -27,7 +34,8 @@ export function AuthProvider({ config, children }: Readonly<AuthProviderProps>):
     () => (supabaseUrl && supabaseAnonKey ? createBrowserAuthClient({ supabaseUrl, supabaseAnonKey }) : null),
     [supabaseUrl, supabaseAnonKey],
   );
-  useEffect(() => {
+  // A layout effect runs before every child's effect, so a hook that loads data on mount already finds the token.
+  useLayoutEffect(() => {
     if (!client) return;
     setAccessTokenGetter(() => getAccessToken(client));
     return () => setAccessTokenGetter(null);

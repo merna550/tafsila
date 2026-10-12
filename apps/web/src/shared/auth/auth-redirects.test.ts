@@ -14,16 +14,18 @@ describe("parseConfirmType", () => {
 });
 
 describe("confirmDestination", () => {
-  it("sends recovery links to the reset form and confirmations to the dashboard welcome", () => {
+  it("sends recovery links to the reset form and confirmations to the phone screen, then the welcome dashboard", () => {
     expect(confirmDestination("recovery")).toBe("/reset-password");
-    expect(confirmDestination("signup")).toBe("/dashboard?welcome=1");
-    expect(confirmDestination("email")).toBe("/dashboard?welcome=1");
+    expect(confirmDestination("signup")).toBe("/verify?next=%2Fdashboard%3Fwelcome%3D1");
+    expect(confirmDestination("email")).toBe("/verify?next=%2Fdashboard%3Fwelcome%3D1");
   });
 });
 
 describe("callbackDestination", () => {
-  it("welcomes an account created a few seconds ago", () => {
-    expect(callbackDestination(null, "2026-10-11T11:59:50Z", NOW)).toBe("/dashboard?welcome=1&method=google");
+  it("sends an account created a few seconds ago to the phone screen, then the welcome dashboard", () => {
+    expect(callbackDestination(null, "2026-10-11T11:59:50Z", NOW)).toBe(
+      "/verify?next=%2Fdashboard%3Fwelcome%3D1%26method%3Dgoogle",
+    );
   });
 
   it("follows a safe next for an older account", () => {

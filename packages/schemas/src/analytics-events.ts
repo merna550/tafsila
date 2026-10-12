@@ -26,6 +26,12 @@ const phoneVerificationFailedSchema = z
   .object({ reason: z.enum(["invalid_code", "already_used", "rate_limited", "send_failed"]) })
   .strict();
 
+/** Browser event: the verify-phone screen was shown; no number, no code. */
+const phoneVerifyViewedSchema = z.object({}).strict();
+
+/** Browser event: the person left the verify-phone screen without verifying, from the number step or the code step. */
+const phoneVerifySkippedSchema = z.object({ step: z.enum(["phone", "code"]) }).strict();
+
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
@@ -34,6 +40,8 @@ export const ANALYTICS_EVENTS = {
   phone_code_requested: phoneCodeRequestedSchema,
   phone_verified: phoneVerifiedSchema,
   phone_verification_failed: phoneVerificationFailedSchema,
+  phone_verify_viewed: phoneVerifyViewedSchema,
+  phone_verify_skipped: phoneVerifySkippedSchema,
 } as const;
 
 /** Names of all known analytics events. */
