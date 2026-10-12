@@ -1,4 +1,4 @@
-/** Public entry of `@tafsila/ui`: shared, RTL-first design-system components. */
+/** Public entry of `@tafsila/ui`: shared, RTL-first design-system components. */ 
 export * from "./button";
 export * from "./checkbox";
 export * from "./form-field";
