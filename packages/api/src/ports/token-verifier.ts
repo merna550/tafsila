@@ -24,3 +24,17 @@ export interface TokenVerifier {
    */
   verify(token: string): Promise<AuthContext>;
 }
+
+/** Thrown by a verifier when the server itself is misconfigured (not when the token is bad); the middleware lets it become a 500. */
+export class TokenVerifierConfigError extends Error {
+  /**
+   * Creates the error.
+   *
+   * @param message - What is misconfigured.
+   * @param options - Optional cause.
+   */
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = "TokenVerifierConfigError";
+  }
+}

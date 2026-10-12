@@ -10,6 +10,7 @@
 
 - All variables are declared once in `packages/config/src/env.ts` (Zod) and listed in `.env.example`; the app refuses to start if one is missing (`apps/web/src/instrumentation.ts`).
 - Point local tools at staging: `pnpm exec vercel env pull .env.staging.local --environment=production` (needs `vercel login` and `vercel link` once), then run with that file.
+- Vercel "Sensitive" variables are runtime-only: `vercel pull` writes them as the literal `[SENSITIVE]` during `vercel build`, so nothing may read them at import or build time. The API is built on the first request ([ADR-109](../../decisions/109-lazy-api-container.md)); a bad value fails that request, never the build.
 - Feature flags (PostHog) turn features on per environment without a deploy.
 - Rollback: Vercel → previous deployment → "Promote"; DB migrations are written to be backward compatible for one release.
 

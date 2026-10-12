@@ -84,13 +84,14 @@ export function createObservability(
 ): Pick<Container, "errorReporter" | "analytics"> {
   const config = loadPublicConfig(source);
   return {
-    errorReporter: config.sentryDsn
-      ? createSentryErrorReporter({
-          dsn: config.sentryDsn,
-          environment: config.appEnv,
-          release: config.release,
-        })
-      : createNoopErrorReporter(),
+    errorReporter:
+      config.sentryDsn && URL.canParse(config.sentryDsn)
+        ? createSentryErrorReporter({
+            dsn: config.sentryDsn,
+            environment: config.appEnv,
+            release: config.release,
+          })
+        : createNoopErrorReporter(),
     analytics: config.posthogKey
       ? createPosthogAnalytics(config.posthogKey, config.posthogHost)
       : createNoopAnalytics(),

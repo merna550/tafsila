@@ -1,7 +1,12 @@
 /** Auth middleware: requireAuth verifies the bearer token once and puts the result in the context; requireRole checks it. */
 import type { MiddlewareHandler } from "hono";
 import { AppError } from "../domain/errors";
-import type { AuthContext, TokenVerifier, UserRole } from "../ports/token-verifier";
+import {
+  TokenVerifierConfigError,
+  type AuthContext,
+  type TokenVerifier,
+  type UserRole,
+} from "../ports/token-verifier";
 import type { AppEnv } from "./request-id";
 
 /** Hono environment of routes behind requireAuth. */
@@ -24,7 +29,8 @@ export function requireAuth(verifier: TokenVerifier): MiddlewareHandler<AuthedEn
     let auth: AuthContext;
     try {
       auth = await verifier.verify(match[1]);
-    } catch {
+    } catch (error) {
+      if (error instanceof TokenVerifierConfigError) throw error;
       throw new AppError("UNAUTHENTICATED");
     }
     c.set("auth", auth);

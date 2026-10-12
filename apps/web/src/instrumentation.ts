@@ -12,6 +12,10 @@ export function register(): void {
   loadServerEnv();
   const config = loadPublicConfig();
   if (!config.sentryDsn) return;
+  if (!URL.canParse(config.sentryDsn)) {
+    console.warn("SENTRY_DSN is not a valid URL; server error tracking is off");
+    return;
+  }
   Sentry.init({
     dsn: config.sentryDsn,
     environment: config.appEnv,
