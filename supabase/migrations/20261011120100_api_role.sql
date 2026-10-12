@@ -12,3 +12,6 @@ $$;
 alter role api_app nobypassrls;
 -- SET only (no inherit): api_app can switch to authenticated but holds none of its privileges until it does.
 grant authenticated to api_app with inherit false, set true;
+-- The pgTAP suite runs as postgres and does `set role api_app` to prove it has no table access.
+-- Since Postgres 16 a role's creator gets ADMIN only, not SET, so grant SET explicitly (no inherit).
+grant api_app to postgres with inherit false, set true;

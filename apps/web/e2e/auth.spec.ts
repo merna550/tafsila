@@ -1,8 +1,24 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
-import ar from "../messages/ar.json";
-import en from "../messages/en.json";
+import type arMessages from "../messages/ar.json";
+import { readFileSync } from "node:fs";
 import { confirmLinkFor } from "./support/mailbox";
+
+type Messages = typeof arMessages;
+
+/**
+ * Reads a messages file with fs: native ESM in Playwright rejects bare JSON imports.
+ *
+ * @param locale - Which messages file to load.
+ * @returns The parsed messages.
+ */
+function loadMessages(locale: "ar" | "en"): Messages {
+  const url = new URL(`../messages/${locale}.json`, import.meta.url);
+  return JSON.parse(readFileSync(url, "utf8")) as Messages;
+}
+
+const ar = loadMessages("ar");
+const en = loadMessages("en");
 
 const MESSAGES = { ar, en } as const;
 const PASSWORD = "password-one-1";
