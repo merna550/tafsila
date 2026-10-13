@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { newEmail, signUpAndConfirm } from "./support/accounts";
 import { projectLocale, type Messages } from "./support/app";
 
@@ -39,6 +39,18 @@ async function signUpWithClient(page: Page, t: Messages, prefix: string): Promis
 }
 
 /**
+ * Finds a measurement box by its label; the label gains an "adjusted" suffix once the value differs from the size.
+ *
+ * @param page - The page.
+ * @param label - Visible label of the box, without the suffix.
+ * @returns The locator of the box.
+ */
+function measurementBox(page: Page, label: string): Locator {
+  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return page.getByLabel(new RegExp(`^${escaped}(\\s·.*)?$`));
+}
+
+/**
  * Types into a measurement box found by its label.
  *
  * @param page - The page.
@@ -46,7 +58,7 @@ async function signUpWithClient(page: Page, t: Messages, prefix: string): Promis
  * @param value - Text to type.
  */
 async function typeMeasurement(page: Page, label: string, value: string): Promise<void> {
-  await page.getByLabel(label, { exact: true }).fill(value);
+  await measurementBox(page, label).fill(value);
 }
 
 test.describe("measurement form", () => {
@@ -64,7 +76,7 @@ test.describe("measurement form", () => {
     await expect(page).toHaveURL(/\/measurements\/new$/);
     await page.getByLabel(m.setLabel.label).fill("صيف 2026");
     await page.getByRole("radio", { name: "M" }).click();
-    await expect(page.getByLabel(m.labels.bust, { exact: true })).toHaveValue("92");
+    await expect(measurementBox(page, m.labels.bust)).toHaveValue("92");
     await typeMeasurement(page, m.labels.waist, "76");
     await expect(page.getByText(m.field.adjusted)).toBeVisible();
     await shot(page, "from-size", "ar");
@@ -84,7 +96,7 @@ test.describe("measurement form", () => {
     await typeMeasurement(page, m.labels.highBust, "86");
 
     // The guide opens for a box and moves on to the next one.
-    await page.getByRole("button", { name: `${m.field.guide} ${m.labels.bust}` }).click();
+    await page.getByRole("button", { name: `${m.field.guide} ${m.labels.bust}`, exact: true }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await shot(page, "guide", "ar");
     await page.getByRole("button", { name: m.guide.next }).click();
@@ -99,9 +111,9 @@ test.describe("measurement form", () => {
 
     // Edit the saved set: the waist still shows as adjusted and can be reset to size M.
     await page.getByRole("link", { name: t.clients.sets.view }).first().click();
-    await expect(page.getByLabel(m.labels.waist, { exact: true })).toHaveValue("76");
+    await expect(measurementBox(page, m.labels.waist)).toHaveValue("76");
     await page.getByRole("button", { name: /M \(74\)/ }).click();
-    await expect(page.getByLabel(m.labels.waist, { exact: true })).toHaveValue("74");
+    await expect(measurementBox(page, m.labels.waist)).toHaveValue("74");
     await page.getByRole("button", { name: m.save.submit }).click();
     await expect(page).toHaveURL(/\/clients\/[0-9a-f-]{36}$/);
   });
@@ -160,7 +172,7 @@ test.describe("measurement form", () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow).toBeLessThanOrEqual(0);
     await shot(page, "form", locale);
-    await page.getByRole("button", { name: `${m.field.guide} ${m.labels.bust}` }).click();
+    await page.getByRole("button", { name: `${m.field.guide} ${m.labels.bust}`, exact: true }).click();
     await expect(page.getByRole("dialog")).toContainText(m.guide.bust.steps[0] ?? "");
     await shot(page, "guide", locale);
   });
