@@ -3,7 +3,7 @@
 import { useToast } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
-import { ACCOUNT_DELETED_PARAM, hasAccountDeletedFlag } from "../model/account-deleted";
+import { hasAccountDeletedFlag, withoutAccountDeletedFlag } from "../model/account-deleted";
 
 /**
  * Reads the flag from the address on arrival; renders nothing.
@@ -16,9 +16,7 @@ export function AccountDeletedNotice(): null {
   useEffect(() => {
     if (!hasAccountDeletedFlag(globalThis.location.search)) return;
     showToast({ title: t("accountDeleted"), tone: "success" });
-    const url = new URL(globalThis.location.href);
-    url.searchParams.delete(ACCOUNT_DELETED_PARAM);
-    globalThis.history.replaceState(null, "", url.pathname + url.search + url.hash);
+    globalThis.history.replaceState(null, "", withoutAccountDeletedFlag(globalThis.location.href));
   }, [showToast, t]);
   return null;
 }

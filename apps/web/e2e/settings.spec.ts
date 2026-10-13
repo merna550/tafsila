@@ -97,6 +97,8 @@ test.describe("settings", () => {
   test("the language switches to English and back to Arabic and is remembered", async ({
     page,
   }, testInfo) => {
+    // The mail subject used to confirm the account is Arabic, so this flow runs in the Arabic desktop project only.
+    test.skip(testInfo.project.name !== "ar-desktop");
     const email = await openSettings(page);
     const english = MESSAGES.en;
     const html = page.locator("html");

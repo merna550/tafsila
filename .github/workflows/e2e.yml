@@ -48,6 +48,9 @@ jobs:
         run: |
           echo "SUPABASE_URL=http://127.0.0.1:54321" >> "$GITHUB_ENV"
           pnpm exec supabase status -o env | grep '^ANON_KEY=' | sed 's/^ANON_KEY=/SUPABASE_ANON_KEY=/; s/"//g' >> "$GITHUB_ENV"
+          # Deleting an account (issue #27) calls the GoTrue admin API and Storage with the service role key, so the
+          # placeholder from ci.env is replaced by the key of this throwaway local stack (it exists only on the runner).
+          pnpm exec supabase status -o env | grep '^SERVICE_ROLE_KEY=' | sed 's/^SERVICE_ROLE_KEY=/SUPABASE_SERVICE_ROLE_KEY=/; s/"//g' >> "$GITHUB_ENV"
       - name: Playwright browser cache
         id: pw-cache
         uses: actions/cache@v4

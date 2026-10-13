@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accountDeletedPath, hasAccountDeletedFlag } from "./account-deleted";
+import { accountDeletedPath, hasAccountDeletedFlag, withoutAccountDeletedFlag } from "./account-deleted";
 
 describe("account deleted flag", () => {
   it("builds the home path per language", () => {
@@ -12,5 +12,12 @@ describe("account deleted flag", () => {
     expect(hasAccountDeletedFlag("account=deleted&x=1")).toBe(true);
     expect(hasAccountDeletedFlag("?account=other")).toBe(false);
     expect(hasAccountDeletedFlag("")).toBe(false);
+  });
+});
+
+describe("withoutAccountDeletedFlag", () => {
+  it("drops only the flag and keeps the rest of the address", () => {
+    expect(withoutAccountDeletedFlag("https://x.test/?account=deleted")).toBe("/");
+    expect(withoutAccountDeletedFlag("https://x.test/en?account=deleted&a=1#top")).toBe("/en?a=1#top");
   });
 });

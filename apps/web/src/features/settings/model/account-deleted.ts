@@ -25,3 +25,15 @@ export function accountDeletedPath(locale: "ar" | "en"): string {
 export function hasAccountDeletedFlag(search: string): boolean {
   return new URLSearchParams(search).get(ACCOUNT_DELETED_PARAM) === ACCOUNT_DELETED_VALUE;
 }
+
+/**
+ * Removes the flag from an address so a reload or a shared link does not show the notice again.
+ *
+ * @param href - Full address of the page.
+ * @returns Path, query (without the flag) and hash.
+ */
+export function withoutAccountDeletedFlag(href: string): string {
+  const url = new URL(href);
+  url.searchParams.delete(ACCOUNT_DELETED_PARAM);
+  return url.pathname + url.search + url.hash;
+}
