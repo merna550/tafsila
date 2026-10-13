@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { getAccessToken, requestReset, signIn, signOut, signUp } from "./auth-actions";
+import { clearLocalSession, getAccessToken, requestReset, signIn, signOut, signUp } from "./auth-actions";
 import type { AuthClient } from "./clients";
 
 /**
@@ -57,5 +57,19 @@ describe("auth actions", () => {
       auth: { getSession: () => Promise.resolve({ data: { session: null } }) },
     } as unknown as AuthClient;
     expect(await getAccessToken(out)).toBeNull();
+  });
+});
+
+describe("clearLocalSession", () => {
+  it("signs out with the local scope only", async () => {
+    const { client, auth } = fakeClient({ error: null });
+    await clearLocalSession(client);
+    expect(auth.signOut).toHaveBeenCalledWith({ scope: "local" });
+  });
+
+  it("ignores the error a vanished user causes", async () => {
+    const { client, auth } = fakeClient({ error: null });
+    auth.signOut.mockRejectedValue(new Error("user not found"));
+    await expect(clearLocalSession(client)).resolves.toBeUndefined();
   });
 });

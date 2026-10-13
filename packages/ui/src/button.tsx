@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactElement } from "react";
 import { DISABLED, FOCUS_RING, cx } from "./styles";
 
 /** Visual styles a button can take. */
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "dangerOutline";
 
 /** Props for {@link Button}: all native button props plus a variant. */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,6 +17,7 @@ export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   secondary: "border border-border bg-surface text-text hover:bg-surface-hover",
   ghost: "text-primary hover:bg-surface-hover",
   danger: "bg-danger text-on-primary hover:opacity-90",
+  dangerOutline: "border border-danger bg-surface text-danger hover:bg-surface-hover",
 };
 
 /**

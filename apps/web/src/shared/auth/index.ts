@@ -2,6 +2,7 @@
 export { decideAccess, type AccessDecision } from "./access-guard";
 export { AuthProvider, useAuthClient } from "./AuthProvider";
 export {
+  clearLocalSession,
   requestReset,
   signIn,
   signInWithGoogle,

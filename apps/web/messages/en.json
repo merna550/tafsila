@@ -11,7 +11,8 @@
     "title": "Tafsila",
     "intro": "Upload a photo of the garment, enter the measurements, and get an accurate pattern ready to cut, on the projector or directly on the fabric.",
     "start": "Start now",
-    "health": "System status"
+    "health": "System status",
+    "accountDeleted": "Your account was deleted"
   },
   "errors": {
     "retry": "Try again",
@@ -145,7 +146,8 @@
   "nav": {
     "label": "Main menu",
     "clients": "Clients",
-    "account": "My account"
+    "account": "My account",
+    "settings": "Settings"
   },
   "measurements": {
     "fields": {
@@ -228,5 +230,53 @@
       "close": "Close",
       "done": "Client deleted"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "My account",
+      "name": "Name",
+      "save": "Save",
+      "saved": "Name saved",
+      "nameRequired": "Name is required",
+      "nameTooLong": "The name is too long"
+    },
+    "phone": {
+      "label": "Phone number",
+      "verified": "Verified",
+      "notVerified": "Not verified",
+      "verify": "Verify the number",
+      "none": "No number yet"
+    },
+    "display": {
+      "title": "Display",
+      "language": "Language",
+      "arabic": "العربية",
+      "english": "English",
+      "languageSaveFailed": "The language changed, but it could not be saved to your account",
+      "units": "Unit of measure",
+      "centimeters": "Centimeters",
+      "inchesSoon": "Inches are coming soon."
+    },
+    "loadingLabel": "Loading settings"
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "description": "This permanently deletes all your clients, their measurements and your photos, and cannot be undone. Your phone number will not get a new free trial after deletion.",
+    "open": "Delete my account",
+    "dialogTitle": "Delete your account permanently?",
+    "dialogIntro": "The following is deleted and cannot be recovered:",
+    "items": {
+      "clients": "All your clients and their measurements",
+      "photos": "Your photos and files",
+      "profile": "Your account details and name"
+    },
+    "trialNote": "Your phone number will not get a new free trial after deletion.",
+    "typeLabel": "To confirm, type the word \"{word}\"",
+    "word": "DELETE",
+    "confirm": "Delete my account permanently",
+    "cancel": "Cancel",
+    "close": "Close",
+    "forbidden": "An admin account cannot be deleted from the app"
   }
 }
