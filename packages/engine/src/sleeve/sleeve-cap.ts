@@ -1,7 +1,8 @@
 /** Sleeve drafting: fitting a set-in sleeve cap to the bodice armhole (SRS FR-VAL-02). */
 import { DraftingError } from "../errors/drafting-error";
-import { type CubicBezier, sampleCubic } from "../geometry/bezier";
+import { sampleCubic } from "../geometry/bezier";
 import { type Point, polylineLength, pt } from "../geometry/point";
+import { cubicSeg } from "../geometry/segment";
 
 /** Lowest and highest sleeve-cap heights the solver will consider, in mm. */
 export const MIN_CAP_HEIGHT_MM = 50;
@@ -35,18 +36,18 @@ export function buildHalfCap(halfBicepMm: number, capHeightMm: number): Point[] 
   const w = halfBicepMm;
   const h = capHeightMm;
   const mid = pt(w * CAP_SHAPE.midX, h * CAP_SHAPE.midY);
-  const lower: CubicBezier = {
-    p0: pt(w, h),
-    p1: pt(w * CAP_SHAPE.lowerX, h),
-    p2: pt(w * CAP_SHAPE.lowerInnerX, h * CAP_SHAPE.lowerInnerY),
-    p3: mid,
-  };
-  const upper: CubicBezier = {
-    p0: mid,
-    p1: pt(w * CAP_SHAPE.upperInnerX, h * CAP_SHAPE.upperInnerY),
-    p2: pt(w * CAP_SHAPE.upperX, 0),
-    p3: pt(0, 0),
-  };
+  const lower = cubicSeg(
+    pt(w, h),
+    pt(w * CAP_SHAPE.lowerX, h),
+    pt(w * CAP_SHAPE.lowerInnerX, h * CAP_SHAPE.lowerInnerY),
+    mid,
+  );
+  const upper = cubicSeg(
+    mid,
+    pt(w * CAP_SHAPE.upperInnerX, h * CAP_SHAPE.upperInnerY),
+    pt(w * CAP_SHAPE.upperX, 0),
+    pt(0, 0),
+  );
   return [...sampleCubic(lower), ...sampleCubic(upper).slice(1)];
 }
 

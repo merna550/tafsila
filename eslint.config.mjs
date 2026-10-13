@@ -113,6 +113,24 @@ export default tseslint.config(
     },
   },
   {
+    // Engine purity (SRS §3.3, decision 124): same input, same output, so no randomness and no clock.
+    files: ["packages/engine/src/**/*.ts"],
+    rules: {
+      "no-restricted-properties": [
+        "error",
+        {
+          object: "Math",
+          property: "random",
+          message: "The engine is deterministic: no Math.random (SRS §3.3).",
+        },
+      ],
+      "no-restricted-globals": [
+        "error",
+        { name: "Date", message: "The engine is deterministic: no Date or clock (SRS §3.3)." },
+      ],
+    },
+  },
+  {
     // The API client is the one place allowed to call fetch.
     files: ["apps/web/src/shared/api/**/*.ts"],
     rules: { "no-restricted-globals": "off", "no-restricted-properties": "off" },
