@@ -22,6 +22,8 @@ const THREE = 3;
 const SIX = 6;
 /** Half of the parameter range. */
 const HALF = 0.5;
+/** Two cubics that do not share a stretch cross at most 3 × 3 = 9 times (Bézout's theorem). */
+const MAX_CUBIC_CROSSINGS = 9;
 
 /** Two straight-line ends; a line segment or an infinite line through both points. */
 export interface LineLike {
@@ -214,7 +216,11 @@ function mergeCrossings(crossings: readonly Crossing[]): Crossing[] {
 export function cubicCubic(first: CubicSegment, second: CubicSegment): Crossing[] {
   const state: SearchState = { found: [], steps: 0 };
   searchPieces({ curve: first, t0: 0, t1: 1 }, { curve: second, t0: 0, t1: 1 }, 0, state);
-  return mergeCrossings(state.found);
+  const crossings = mergeCrossings(state.found);
+  if (crossings.length > MAX_CUBIC_CROSSINGS) {
+    throw new DraftingError("GEOMETRY_DEGENERATE_SEGMENT", "Curves overlap along a stretch");
+  }
+  return crossings;
 }
 
 /**

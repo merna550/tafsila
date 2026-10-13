@@ -5,13 +5,14 @@
  * (fold-back at darts and hems) are not handled here (issue #130).
  */
 import {
+  DIRECTION_EPSILON_MM,
   GEOMETRY_EPSILON_MM,
   MITRE_LIMIT,
   OFFSET_MAX_DEPTH,
   OFFSET_TOLERANCE_MM,
 } from "../constants/geometry";
 import { DraftingError } from "../errors/drafting-error";
-import { pointOnCubic, splitCubic, tangentOnCubic } from "./bezier";
+import { derivativeOnCubic, pointOnCubic, splitCubic } from "./bezier";
 import { intersectSegments, lineLine } from "./intersect";
 import { isClosed, splitSegmentAt, tangentOnSegment } from "./path";
 import { type Point, add, distance, norm, normalize, pt, samePoint, scale, sub } from "./point";
@@ -108,7 +109,10 @@ function offsetError(curve: CubicSegment, candidate: CubicSegment, distanceMm: n
   let worst = 0;
   for (let i = 1; i < ERROR_SAMPLES; i += 1) {
     const t = i / ERROR_SAMPLES;
-    const exact = add(pointOnCubic(curve, t), scale(outwardNormal(tangentOnCubic(curve, t)), distanceMm));
+    const velocity = derivativeOnCubic(curve, t);
+    // A cusp has no normal: report an infinite error so the curve is split (and fails if it never resolves).
+    if (norm(velocity) < DIRECTION_EPSILON_MM) return Number.POSITIVE_INFINITY;
+    const exact = add(pointOnCubic(curve, t), scale(outwardNormal(normalize(velocity)), distanceMm));
     worst = Math.max(worst, distance(exact, pointOnCubic(candidate, t)));
   }
   return worst;

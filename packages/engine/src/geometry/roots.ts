@@ -20,7 +20,8 @@ const THIRD_TURN_RAD = (2 * Math.PI) / THREE;
  * @returns Sorted distinct roots.
  */
 function distinctSorted(roots: readonly number[]): number[] {
-  const sorted = [...roots].sort((a, b) => a - b);
+  // `r === 0 ? 0 : r` turns −0 into 0 so results compare equal.
+  const sorted = roots.map((r) => (r === 0 ? 0 : r)).sort((a, b) => a - b);
   return sorted.filter((r, i) => i === 0 || r - sorted[i - 1]! > ROOT_MERGE_EPSILON);
 }
 
