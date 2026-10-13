@@ -8,12 +8,13 @@ import { measurementKeys } from "./query-keys";
 /**
  * Loads a measurement set; another user's set answers 404 (the screen shows not-found).
  *
- * @param id - Set id.
+ * @param id - Set id; leave out (undefined) to skip loading (the new-set screen).
  * @returns The TanStack query holding the set.
  */
-export function useMeasurementSet(id: string): UseQueryResult<MeasurementSet> {
+export function useMeasurementSet(id: string | undefined): UseQueryResult<MeasurementSet> {
   return useQuery({
-    queryKey: measurementKeys.set(id),
+    queryKey: measurementKeys.set(id ?? ""),
+    enabled: id !== undefined,
     queryFn: ({ signal }) => apiRequest(`/measurements/${id}`, { schema: measurementSetSchema, signal }),
   });
 }

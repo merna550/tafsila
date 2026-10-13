@@ -1,0 +1,110 @@
+{
+  "bust": {
+    "kind": "ring",
+    "y": 72,
+    "rx": 24,
+    "dot": [84, 72]
+  },
+  "highBust": {
+    "kind": "ring",
+    "y": 58,
+    "rx": 22,
+    "dot": [82, 58]
+  },
+  "underBust": {
+    "kind": "ring",
+    "y": 84,
+    "rx": 22,
+    "dot": [82, 84]
+  },
+  "waist": {
+    "kind": "ring",
+    "y": 100,
+    "rx": 20,
+    "dot": [80, 100]
+  },
+  "hip": {
+    "kind": "ring",
+    "y": 128,
+    "rx": 27,
+    "dot": [87, 128]
+  },
+  "neck": {
+    "kind": "ring",
+    "y": 34,
+    "rx": 8,
+    "dot": [68, 34]
+  },
+  "shoulderWidth": {
+    "kind": "line",
+    "from": [36, 42],
+    "to": [84, 42],
+    "dot": [36, 42]
+  },
+  "bustPointDistance": {
+    "kind": "line",
+    "from": [50, 72],
+    "to": [70, 72],
+    "dot": [50, 72]
+  },
+  "bustHeight": {
+    "kind": "line",
+    "from": [70, 42],
+    "to": [70, 72],
+    "dot": [70, 42]
+  },
+  "armLength": {
+    "kind": "line",
+    "from": [86, 44],
+    "to": [98, 104],
+    "dot": [86, 44]
+  },
+  "upperArm": {
+    "kind": "line",
+    "from": [80, 62],
+    "to": [94, 62],
+    "dot": [80, 62]
+  },
+  "wrist": {
+    "kind": "line",
+    "from": [93, 102],
+    "to": [103, 104],
+    "dot": [93, 102]
+  },
+  "height": {
+    "kind": "line",
+    "from": [110, 6],
+    "to": [110, 196],
+    "dot": [110, 6]
+  },
+  "backLength": {
+    "kind": "line",
+    "from": [60, 40],
+    "to": [60, 100],
+    "dot": [60, 40]
+  },
+  "frontLength": {
+    "kind": "line",
+    "from": [52, 40],
+    "to": [52, 100],
+    "dot": [52, 40]
+  },
+  "hipDepth": {
+    "kind": "line",
+    "from": [30, 100],
+    "to": [30, 128],
+    "dot": [30, 100]
+  },
+  "waistToKnee": {
+    "kind": "line",
+    "from": [22, 100],
+    "to": [22, 160],
+    "dot": [22, 100]
+  },
+  "waistToFloor": {
+    "kind": "line",
+    "from": [12, 100],
+    "to": [12, 196],
+    "dot": [12, 100]
+  }
+}
