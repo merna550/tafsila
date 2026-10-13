@@ -1,5 +1,5 @@
 /** In-memory tables shared by the memory repositories, so deleting a client can cascade to its sets like the database does. */
-import type { Client, MeasurementSet, SizeChartResponse } from "@tafsila/schemas";
+import type { Client, MeasurementSet, Profile, SizeChartResponse } from "@tafsila/schemas";
 
 /** A client row plus its owner. */
 export interface ClientRow extends Omit<Client, "summary"> {
@@ -19,6 +19,10 @@ export interface MemoryStore {
   sets: SetRow[];
   /** System size charts; the first default one is served. */
   sizeCharts: SizeChartResponse[];
+  /** Profile rows by user id; a missing row means the account does not exist (or was deleted). */
+  profiles: Map<string, Pick<Profile, "name" | "locale">>;
+  /** Users whose account was deleted: they have no profile any more even if their token is still valid. */
+  deletedUsers: Set<string>;
 }
 
 /** Optional sources of time and ids, so tests can be deterministic. */
@@ -35,7 +39,7 @@ export interface MemoryOptions {
  * @returns The store to pass to both memory repositories.
  */
 export function createMemoryStore(): MemoryStore {
-  return { clients: [], sets: [], sizeCharts: [] };
+  return { clients: [], sets: [], sizeCharts: [], profiles: new Map(), deletedUsers: new Set() };
 }
 
 /**

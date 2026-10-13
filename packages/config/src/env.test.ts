@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { loadBuildInfo, loadDatabaseUrl, loadPhoneConfig, loadPublicConfig, loadServerEnv } from "./env";
+import {
+  loadAccountErasureConfig,
+  loadBuildInfo,
+  loadDatabaseUrl,
+  loadPhoneConfig,
+  loadPublicConfig,
+  loadServerEnv,
+} from "./env";
 
 const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
@@ -188,5 +195,37 @@ describe("phone configuration", () => {
     expect(() => loadPhoneConfig({ APP_ENV: "local", PHONE_TEST_NUMBERS: "01000000001" })).toThrow(
       /PHONE_TEST_NUMBERS/,
     );
+  });
+});
+
+describe("account erasure configuration", () => {
+  const posthog = { POSTHOG_PERSONAL_API_KEY: "phx_test", POSTHOG_PROJECT_ID: "123" };
+
+  it("has no PostHog credentials by default", () => {
+    expect(loadAccountErasureConfig({ ...valid }).posthog).toBeUndefined();
+    expect(loadServerEnv(valid).POSTHOG_PERSONAL_API_KEY).toBeUndefined();
+  });
+
+  it("reads the Supabase admin access and the PostHog pair with the default host", () => {
+    const config = loadAccountErasureConfig({ ...valid, ...posthog });
+    expect(config.supabaseUrl).toBe(valid.SUPABASE_URL);
+    expect(config.serviceRoleKey).toBe("service");
+    expect(config.posthog).toEqual({
+      host: "https://us.i.posthog.com",
+      personalApiKey: "phx_test",
+      projectId: "123",
+    });
+  });
+
+  it.each([{ POSTHOG_PERSONAL_API_KEY: "phx_test" }, { POSTHOG_PROJECT_ID: "123" }])(
+    "refuses only one of the two PostHog variables %j",
+    (only) => {
+      expect(() => loadAccountErasureConfig({ ...valid, ...only })).toThrow(/POSTHOG/);
+      expect(() => loadServerEnv({ ...valid, ...only })).toThrow(/POSTHOG/);
+    },
+  );
+
+  it("accepts the pair in the server environment", () => {
+    expect(loadServerEnv({ ...valid, ...posthog }).POSTHOG_PROJECT_ID).toBe("123");
   });
 });

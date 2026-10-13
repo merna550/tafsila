@@ -46,19 +46,19 @@ The brand step (palette, font, feel) is done: Merna approved it and it is applie
 
 ## Issues
 
-| Issue | Title                                                  | Wave |
-| ----- | ------------------------------------------------------ | ---- |
-| #23   | Spike: Drizzle vs supabase-js (confirm ADR-012)        | 1    |
-| #24   | M1 schema with RLS and seed users                      | 1    |
-| #28   | Measurement validation, standard sizes, size+override  | 1    |
-| #33   | Code generators (endpoint, feature, garment module)    | 1    |
-| #90   | i18n foundation and web e2e harness (part A of #25)    | 2    |
-| #91   | Session, route guard and API auth (part B of #25)      | 2    |
-| #25   | Sign up / sign in, Google, reset, sign out (part C)    | 2    |
-| #26   | Phone OTP + one free trial per phone                   | 2    |
-| #27   | Settings (language, units) and delete account          | 2    |
-| #29   | Clients and measurement sets API                       | 2    |
-| #30   | Clients list and profile screens (+ signed-in nav bar) | 3    |
-| #31   | Measurement form with size picker, overrides and guide | 3    |
-| #32   | Mini admin: users list and size-chart editor           | 3    |
-| #34   | End-to-end exit check                                  | 4    |
+| Issue | Title                                                                                                                     | Wave |
+| ----- | ------------------------------------------------------------------------------------------------------------------------- | ---- |
+| #23   | Spike: Drizzle vs supabase-js (confirm ADR-012)                                                                           | 1    |
+| #24   | M1 schema with RLS and seed users                                                                                         | 1    |
+| #28   | Measurement validation, standard sizes, size+override                                                                     | 1    |
+| #33   | Code generators (endpoint, feature, garment module)                                                                       | 1    |
+| #90   | i18n foundation and web e2e harness (part A of #25)                                                                       | 2    |
+| #91   | Session, route guard and API auth (part B of #25)                                                                         | 2    |
+| #25   | Sign up / sign in, Google, reset, sign out (part C)                                                                       | 2    |
+| #26   | Phone OTP + one free trial per phone                                                                                      | 2    |
+| #27   | Settings (language, units) and delete account (A: API and database, B: screen; depends on #25, uses #26's `trial_phones`) | 2    |
+| #29   | Clients and measurement sets API                                                                                          | 2    |
+| #30   | Clients list and profile screens (+ signed-in nav bar)                                                                    | 3    |
+| #31   | Measurement form with size picker, overrides and guide                                                                    | 3    |
+| #32   | Mini admin: users list and size-chart editor                                                                              | 3    |
+| #34   | End-to-end exit check                                                                                                     | 4    |

@@ -32,7 +32,7 @@ The issue looks like one screen, but it needs a profile endpoint, an irreversibl
 - **Delete account:** danger card, "حذف حسابي" opens a `Dialog` that lists what is removed, asks to type the word ("حذف" in Arabic, "DELETE" in English), enables the confirm button only on an exact match, calls the API, then signs out locally and opens `/` with a notice "تم حذف حسابك".
 - A "تسجيل الخروج" link at the bottom (reuses `SignOut` from `features/auth`).
 
-## Decisions (the build writes them in `docs/decisions/27-settings-delete-account.md`)
+## Decisions (the build writes them in `docs/decisions/27a-settings-delete-account.md`)
 
 1. **Deletion order: files, analytics, auth user, audit; audit failure never fails the request.** Recommended over deleting the auth user first (a failed file cleanup would then leave orphan personal files that nobody can find, because the owner id is gone) and over one big database transaction (GoTrue, Storage and PostHog are not in the database). **Security-sensitive, Merna to know.**
 2. **Confirmation: typed word in the UI plus a fixed `confirm` literal in the API body.** The literal is language independent (`DELETE_MY_ACCOUNT`), so a mistaken or scripted call without it is a `400`. No extra "sign in again" step: the token is already proof of the session (a token is valid up to one hour). Cheap to add later with a "recent sign-in" check. **Merna to accept.**
@@ -60,7 +60,7 @@ The issue looks like one screen, but it needs a profile endpoint, an irreversibl
 - `packages/config/src/env.ts` (+ test): `POSTHOG_PERSONAL_API_KEY`, `POSTHOG_PROJECT_ID` optional, both or neither; `.env.example`, `.env.docker.example`.
 - `packages/api/src/domain/storage-buckets.ts` (+ test that parses `supabase/config.toml`).
 - `.dependency-cruiser.cjs`: GoTrue admin and Storage calls only inside `adapters/supabase/`.
-- Docs: `docs/decisions/27-settings-delete-account.md`, SRS FR-AUTH-04/05 status, `docs/backend/tutorials/delete-account.md` (what is removed where, how to check on local Supabase, the admin SQL), `docs/backend/README.md`, handbook glossary (erasure, cascade delete, service role) and learning log, `docs/backend/seed-data.md` (a throwaway account for tests is created by the test, not seeded).
+- Docs: `docs/decisions/27a-settings-delete-account.md`, SRS FR-AUTH-04/05 status, `docs/backend/tutorials/delete-account.md` (what is removed where, how to check on local Supabase, the admin SQL), `docs/backend/README.md`, handbook glossary (erasure, cascade delete, service role) and learning log, `docs/backend/seed-data.md` (a throwaway account for tests is created by the test, not seeded).
 
 ### Part B: web
 

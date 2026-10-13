@@ -4,6 +4,7 @@ import { createContainer, type Container } from "./container";
 import { NotFoundError, ValidationError } from "./domain/errors";
 import { createErrorHandler } from "./middleware/error-handler";
 import { requestId, type AppEnv } from "./middleware/request-id";
+import { accountRoutes } from "./routes/account";
 import { clientRoutes } from "./routes/clients";
 import { measurementRoutes } from "./routes/measurements";
 import { sizeChartRoutes } from "./routes/size-charts";
@@ -13,6 +14,7 @@ import { docsRoutes } from "./routes/docs";
 import { healthRoutes } from "./routes/health";
 import { meRoutes } from "./routes/me";
 import { phoneRoutes } from "./routes/phone";
+import { profileRoutes } from "./routes/profile";
 
 /** Name of the bearer security scheme used by protected routes in the OpenAPI document. */
 export const BEARER_SCHEME = "bearerAuth";
@@ -44,6 +46,8 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", measurementRoutes(container));
   app.route("/", sizeChartRoutes(container));
   app.route("/", phoneRoutes(container));
+  app.route("/", profileRoutes(container));
+  app.route("/", accountRoutes(container));
   app.doc31("/openapi.json", OPENAPI_DOCUMENT_CONFIG);
   app.route("/", docsRoutes(container));
   if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));

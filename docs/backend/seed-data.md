@@ -19,3 +19,7 @@ Today (issue #24) the seed creates the four accounts with their profiles, the de
 | Designs          | V-neck half-circle dress, A-line skirt, basic blouse (+ photos in local storage)                                                                                                                                                                                                    |
 | Fabrics & rules  | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle)                                                                                                                                                                                           |
 | Products         | All plans and prices (sandbox)                                                                                                                                                                                                                                                      |
+
+## Account deletion tests (issue #27)
+
+No seed user is ever deleted. The tests that delete accounts create a throwaway user themselves and remove it, so nothing is seeded for them.

@@ -17,7 +17,7 @@ Ready to run: import, pick an environment, press **Run**. No manual tokens, no m
 
 ## Keeping it current
 
-The collection is generated from the OpenAPI document `packages/api/openapi.json` (`pnpm api:openapi && pnpm api:postman`). Never edit it by hand: change the route's Zod schema and `.meta({ example })`, or add an `ERR` case to `postman/err-cases.json`, then regenerate. `pnpm api:check` (part of `pnpm quality`, and a CI step when the API changes) fails if either file is out of date. The `debug` route and the `phone` folder (sending codes changes state; only its status step and ERR cases are kept) are left out of the collection on purpose.
+The collection is generated from the OpenAPI document `packages/api/openapi.json` (`pnpm api:openapi && pnpm api:postman`). Never edit it by hand: change the route's Zod schema and `.meta({ example })`, or add an `ERR` case to `postman/err-cases.json`, then regenerate. `pnpm api:check` (part of `pnpm quality`, and a CI step when the API changes) fails if either file is out of date. The `debug` route and the `phone` folder (sending codes changes state; only its status step and ERR cases are kept) are left out of the collection on purpose, and so is the `account` folder: `DELETE /api/account` removes the signed-in account for good, so it is never run by Newman. To try it by hand on staging, create a throwaway account, sign in, send `DELETE {{baseUrl}}/api/account` with the body `{ "confirm": "DELETE_MY_ACCOUNT" }` and that account's token, and expect `204` (steps in `docs/backend/tutorials/delete-account.md`).
 
 ## Journeys
 

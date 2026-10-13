@@ -32,6 +32,12 @@ const phoneVerifyViewedSchema = z.object({}).strict();
 /** Browser event: the person left the verify-phone screen without verifying, from the number step or the code step. */
 const phoneVerifySkippedSchema = z.object({ step: z.enum(["phone", "code"]) }).strict();
 
+/** Server event: the account and its data were deleted; the distinct id is the opaque user id and nothing else is sent. */
+const accountDeletedSchema = z.object({}).strict();
+
+/** Server event: the person changed the app language in settings. */
+const localeChangedSchema = z.object({ locale: z.enum(["ar", "en"]) }).strict();
+
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
@@ -42,6 +48,8 @@ export const ANALYTICS_EVENTS = {
   phone_verification_failed: phoneVerificationFailedSchema,
   phone_verify_viewed: phoneVerifyViewedSchema,
   phone_verify_skipped: phoneVerifySkippedSchema,
+  account_deleted: accountDeletedSchema,
+  locale_changed: localeChangedSchema,
 } as const;
 
 /** Names of all known analytics events. */

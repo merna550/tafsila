@@ -42,3 +42,14 @@ export const sizeCharts = pgTable("size_charts", {
   updatedBy: uuid("updated_by"),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 });
+
+/** public.profiles. The API reads and changes only `name` and `locale` (column grants); the other columns are mirrored for completeness. */
+export const profiles = pgTable("profiles", {
+  id: uuid("id").primaryKey(),
+  name: text("name"),
+  phone: text("phone"),
+  phoneVerifiedAt: timestamp("phone_verified_at", { withTimezone: true, mode: "date" }),
+  locale: text("locale", { enum: ["ar", "en"] }).notNull(),
+  role: text("role", { enum: ["user", "admin"] }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+});

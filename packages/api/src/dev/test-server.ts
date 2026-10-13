@@ -7,6 +7,8 @@ import { serve } from "@hono/node-server";
 import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
+import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion";
+import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
@@ -22,6 +24,7 @@ const HTTP_SERVER_ERROR = 500;
 const keys = await createTestAuthKeys();
 const store = createMemoryStore();
 store.sizeCharts.push({ id: "00000000-0000-4000-8000-0000000000d1", name: "Demo", sizes: demoSizeChart });
+const deletion = createMemoryAccountDeletion(store);
 const phones = createMemoryPhoneVerification({ now: () => new Date() });
 const app = createApp(
   createContainer({
@@ -29,6 +32,11 @@ const app = createApp(
     clients: createMemoryClientRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
     sizeCharts: createMemorySizeChartRepository(store),
+    profiles: createMemoryProfileRepository(store),
+    accountDeleter: deletion.accountDeleter,
+    userFilesRemover: deletion.userFilesRemover,
+    identityEraser: deletion.identityEraser,
+    accountAudit: deletion.accountAudit,
     phoneOtp: createMemoryPhoneOtp(),
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,
