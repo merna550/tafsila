@@ -2,7 +2,7 @@
 import { Input, SearchIcon, SegmentedControl } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import type { VerifiedFilter } from "../hooks/query-keys";
+import type { VerifiedFilter } from "../model/verified-filter";
 
 /** Props for {@link AdminUsersToolbar}. */
 interface AdminUsersToolbarProps {

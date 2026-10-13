@@ -11,7 +11,7 @@ import { AdminUsersTable } from "./components/AdminUsersTable";
 import { AdminUsersToolbar } from "./components/AdminUsersToolbar";
 import { useAdminStats } from "./hooks/use-admin-stats";
 import { useAdminUsers } from "./hooks/use-admin-users";
-import type { VerifiedFilter } from "./hooks/query-keys";
+import type { VerifiedFilter } from "./model/verified-filter";
 import { toAdminUserRow } from "./model/user-view";
 
 /**

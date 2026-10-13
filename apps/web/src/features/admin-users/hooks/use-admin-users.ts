@@ -3,7 +3,8 @@
 import { adminUserPageSchema, type AdminUser } from "@tafsila/schemas";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/shared/api";
-import { adminUserKeys, type VerifiedFilter } from "./query-keys";
+import { verifiedParam, type VerifiedFilter } from "../model/verified-filter";
+import { adminUserKeys } from "./query-keys";
 
 /** Users per page. */
 export const ADMIN_USERS_PAGE_SIZE = 20;
@@ -26,17 +27,6 @@ export interface AdminUsersResult {
   readonly loadMore: () => void;
   /** Loads again after an error. */
   readonly refetch: () => void;
-}
-
-/**
- * Maps the filter to the API's `verified` query value.
- *
- * @param filter - Screen filter.
- * @returns "true", "false" or undefined for everyone.
- */
-export function verifiedParam(filter: VerifiedFilter): "true" | "false" | undefined {
-  if (filter === "verified") return "true";
-  return filter === "unverified" ? "false" : undefined;
 }
 
 /**

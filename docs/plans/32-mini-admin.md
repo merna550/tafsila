@@ -4,7 +4,7 @@ Issue: #32 · plan:sonnet · build:sonnet · size:M → **size:L** (two PRs) · 
 
 Decided by Merna (2026-10-13): own `packages/ui` components (no Refine / React-admin); build the editor with CSV import, the real Egyptian chart values are loaded by Merna afterwards.
 
-> **Status:** Part A (database functions and API) is built in the branch `feat/32-admin-api` (ADR-32a). Part B (web screens) is a later run.
+> **Status:** Part A (database functions and API) is built in the branch `feat/32-admin-api` (ADR-32a). Part B (web screens) is built in the branch `feat/32-admin-web` (decision 32b).
 
 ## Context
 

@@ -1,7 +1,6 @@
 /** Query keys of the admin-users feature. */
 
-/** Verified filter values of the list. */
-export type VerifiedFilter = "all" | "verified" | "unverified";
+import type { VerifiedFilter } from "../model/verified-filter";
 
 /** Prefix of everything about admin users. */
 const ALL = ["admin", "users"] as const;
