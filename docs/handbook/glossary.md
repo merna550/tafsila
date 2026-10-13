@@ -854,6 +854,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## G
 
+<a id="guide-placeholder-art"></a>
+
+### Guide placeholder art
+
+**Plain words:** The simple line drawing shown in the "how do I measure?" dialog while the real illustrations are not made yet: one body outline with a dashed line for the measurement.  
+**In Tafsila:** `apps/web/src/features/measurements/guide/` holds the marks (`guide-marks.json`) and the drawing component draws the outline plus the mark of one field; final art is due before the beta ([decision 31b](../decisions/31b-measurement-screens.md)). **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths>
+
 <a id="garmentcode"></a>
 
 ### GarmentCode
