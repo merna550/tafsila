@@ -83,7 +83,9 @@ test.describe("measurement form", () => {
 
     // A warning is shown but does not block saving.
     await typeMeasurement(page, m.labels.waist, "105");
-    await expect(page.locator('[id$="-message"]:not([role="alert"])')).toBeVisible();
+    // A large waist can warn on more than one box (waist and its neighbours); none of them is an error.
+    await expect(page.locator('[id$="-message"]:not([role="alert"])').first()).toBeVisible();
+    await expect(page.locator('[id$="-message"][role="alert"]')).toHaveCount(0);
     await expect(page.getByRole("button", { name: m.save.submit })).toBeEnabled();
     await shot(page, "warning", "ar");
     await typeMeasurement(page, m.labels.waist, "76");
@@ -91,7 +93,7 @@ test.describe("measurement form", () => {
     // An impossible value blocks saving and names the box.
     await typeMeasurement(page, m.labels.highBust, "95");
     await expect(page.getByRole("button", { name: m.save.submit })).toBeDisabled();
-    await expect(page.getByRole("status")).toBeVisible();
+    await expect(page.locator('p[role="status"]')).toBeVisible();
     await shot(page, "error", "ar");
     await typeMeasurement(page, m.labels.highBust, "86");
 
@@ -106,8 +108,8 @@ test.describe("measurement form", () => {
     // Save: back on the profile with the set listed.
     await page.getByRole("button", { name: m.save.submit }).click();
     await expect(page).toHaveURL(/\/clients\/[0-9a-f-]{36}$/);
-    await expect(page.getByText(m.save.saved)).toBeVisible();
-    await expect(page.getByText(/صيف 2026/)).toBeVisible();
+    await expect(page.getByText(m.save.saved, { exact: true })).toBeVisible();
+    await expect(page.getByText(/صيف 2026/).first()).toBeVisible();
 
     // Edit the saved set: the waist still shows as adjusted and can be reset to size M.
     await page.getByRole("link", { name: t.clients.sets.view }).first().click();
