@@ -1,0 +1,17 @@
+/** Query keys of the {{kebabCase name}} feature. Mutations invalidate `{{camelCase name}}Keys.all`, which covers every list and detail. */
+
+/** Prefix of everything about {{kebabCase name}}s. */
+const ALL = ["{{kebabCase name}}s"] as const;
+
+/**
+ * Key of one {{kebabCase name}}.
+ *
+ * @param id - Row id.
+ * @returns The query key.
+ */
+function detail(id: string): readonly ["{{kebabCase name}}s", string] {
+  return ["{{kebabCase name}}s", id] as const;
+}
+
+/** All query keys of the feature. */
+export const {{camelCase name}}Keys = { all: ALL, detail };

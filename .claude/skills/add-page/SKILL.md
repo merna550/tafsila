@@ -7,6 +7,7 @@ description: Add a new page or feature screen to apps/web (route, feature folder
 
 Read `apps/web/CLAUDE.md`, `docs/frontend/README.md` and `docs/frontend/design-system.md` first. The rules in `.claude/rules/frontend/` (rules v2) are enforced by ESLint and dependency-cruiser.
 
+0. **Generate the boilerplate first:** `pnpm gen feature <name> <issue>` creates the feature folder (`index.ts`, a heading component with a test, `hooks/query-keys.ts`, a query hook, `model/` view with a test), the `ar`/`en` message keys and the test-case file. Replace its `NEXT(#issue)` placeholders and the placeholder copy, then continue below.
 1. **Contract:** if the screen shows or sends new data, add or extend the Zod schema in `packages/schemas`. If a new endpoint is needed, run the `add-endpoint` skill first.
 2. **Feature folder (four layers, ADR-029):** create `apps/web/src/features/<feature>/`:
    - `components/` (UI): props in, JSX out, no fetching, no TanStack Query

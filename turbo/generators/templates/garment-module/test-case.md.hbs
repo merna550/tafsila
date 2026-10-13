@@ -1,0 +1,32 @@
+# Test cases — {{pascalCase name}} garment module
+
+| Field        | Value                    |
+| ------------ | ------------------------ |
+| Issue        | #{{issue}}               |
+| SRS          | NEXT(#{{issue}}): FR-... |
+| Area         | engine                   |
+| Last updated | {{today}} (by PR #...)   |
+
+## Test data
+
+Size matrix from `@tafsila/test-fixtures` (see `docs/backend/seed-data.md`).
+
+| Name   | Value                    |
+| ------ | ------------------------ |
+| Design | V-neck half-circle dress |
+| Size   | M                        |
+
+## Cases
+
+Status legend: ⬜ not run · ✅ pass · ❌ fail (link issue)
+
+| ID                     | Title                       | Priority | Preconditions | Steps                                  | Expected result      | Automated by                           | dev | staging |
+| ---------------------- | --------------------------- | -------- | ------------- | -------------------------------------- | -------------------- | -------------------------------------- | --- | ------- |
+| TC-ENGINE-{{issue}}-01 | Drafts valid outlines       | High     | Size M        | 1. Draft with the module. 2. Validate. | No validation issues | `modules/{{kebabCase name}}.test.ts`   | ⬜  | ⬜      |
+| TC-ENGINE-{{issue}}-02 | Same input, same output     | High     | Size M        | 1. Draft twice.                        | Identical outlines   | `modules/{{kebabCase name}}.test.ts`   | ⬜  | ⬜      |
+| TC-ENGINE-{{issue}}-03 | Physical sew test (3 sizes) | High     | Toile fabric  | 1. Print 1:1. 2. Sew in 3 sizes.       | Seams match, fits    | manual only (`needs:sew-test`)         | ⬜  | ⬜      |
+
+## Manual run log
+
+| Date | Env | Tester | Result | Notes |
+| ---- | --- | ------ | ------ | ----- |

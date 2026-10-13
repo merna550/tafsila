@@ -1,0 +1,19 @@
+"use client";
+/** Hook that loads one {{kebabCase name}} by id. NEXT(#{{issue}}): use the shared schema from the schemas package once the endpoint exists (run `pnpm gen endpoint {{kebabCase name}}`). */
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+import { apiRequest } from "@/shared/api";
+import { type {{pascalCase name}}View, {{camelCase name}}ViewSchema } from "../model/{{kebabCase name}}-view";
+import { {{camelCase name}}Keys } from "./query-keys";
+
+/**
+ * Loads one {{kebabCase name}}.
+ *
+ * @param id - Row id.
+ * @returns The TanStack query.
+ */
+export function use{{pascalCase name}}(id: string): UseQueryResult<{{pascalCase name}}View> {
+  return useQuery({
+    queryKey: {{camelCase name}}Keys.detail(id),
+    queryFn: ({ signal }) => apiRequest(`/{{kebabCase name}}s/${id}`, { schema: {{camelCase name}}ViewSchema, signal }),
+  });
+}

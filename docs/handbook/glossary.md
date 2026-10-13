@@ -360,6 +360,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Interactive tools (viewer, projector, forms) are Client Components ([ARCHITECTURE section 1](../ARCHITECTURE.md)). **Card:** [Next.js](tech/nextjs.md) · **Level:** intermediate  
 **Learn:** <https://nextjs.org/docs/app/getting-started/server-and-client-components>
 
+<a id="code-generator"></a>
+
+### Code generator
+
+**Plain words:** A command that writes the boring, always-the-same files of a feature from templates, so a person or an agent only writes the logic.  
+**In Tafsila:** `pnpm gen endpoint|feature|garment-module <name> <issue>` (Turborepo's `turbo gen`, which uses Plop). Templates live in `turbo/generators/templates/`; the output already passes `pnpm quality` and carries `NEXT(#issue)` comments where the logic goes. **Card:** [Turborepo](tech/turborepo.md) · **Level:** beginner  
+**Learn:** <https://turborepo.dev/docs/guides/generating-code>
+
 <a id="closure"></a>
 
 ### Closure

@@ -1,0 +1,29 @@
+/** Validation rules of the {{kebabCase name}} feature (FR-VAL). NEXT(#{{issue}}): add one rule per FR-VAL the feature needs, with bilingual messages. */
+import type { Outline } from "./feature-module";
+
+/** A broken rule, with a stable code and a message in both languages. */
+export interface {{pascalCase name}}Issue {
+  readonly code: string;
+  readonly message_ar: string;
+  readonly message_en: string;
+}
+
+/**
+ * Checks the outlines the module drafted.
+ *
+ * @param outlines - Outlines from the module, in mm.
+ * @returns The broken rules; empty when the outlines are valid.
+ */
+export function validate{{pascalCase name}}(outlines: readonly Outline[]): readonly {{pascalCase name}}Issue[] {
+  return outlines.flatMap((outline, index) =>
+    outline.length < 2
+      ? [
+          {
+            code: "{{constantCase name}}_OUTLINE_TOO_SHORT",
+            message_ar: `الخط رقم ${String(index)} قصير جداً`,
+            message_en: `Outline ${String(index)} is too short`,
+          },
+        ]
+      : [],
+  );
+}

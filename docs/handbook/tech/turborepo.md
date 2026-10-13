@@ -1,5 +1,5 @@
 ---
-packages: [turbo]
+packages: [turbo, "@turbo/gen"]
 level: beginner
 adr: ADR-001
 ---
@@ -33,6 +33,8 @@ If we need remote cache across CI and developers (Turborepo supports it, a free 
 - `turbo.json` (task graph), root `package.json` scripts (`dev`, `build`, `test`, `typecheck`).
 - `apps/web/Dockerfile` (the `pruner` stage runs `turbo prune web --docker`).
 - Affected-only checks (ADR-017): `--filter=...[origin/main]` in the Stop hook (`scripts/hooks/verify-affected.sh`) and on PRs (`scripts/ci-scope.sh`). `globalDependencies` in `turbo.json` makes a change to `tsconfig.base.json` or `.nvmrc` count for every package. Turbo remote cache is not used yet; it is optional and would make repeated CI runs faster.
+
+- `turbo/generators/config.ts` and `turbo/generators/templates/` (code generators, `pnpm gen`; see [Code generator](../glossary.md#code-generator)).
 
 ## The 20% you need
 

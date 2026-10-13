@@ -7,6 +7,7 @@ description: Add a new API endpoint to packages/api (schema → service → port
 
 Read `packages/api/CLAUDE.md`, `docs/backend/tutorials/add-endpoint.md` and the rules in `.claude/rules/backend/` (rules v2: `layering.md`, `errors.md`, `api-design.md`, `database.md`) first.
 
+0. **Generate the boilerplate first:** `pnpm gen endpoint <name> <issue>` (kebab-case, singular). It writes the schema (and its export), repository port, memory adapter, create/get services, route, tests and the test-case file, formatted. Then edit the `NEXT(#issue)` placeholders and do the manual steps it prints (wire the Container, mount the route, Supabase adapter, OpenAPI/Postman). The steps below say what each file must contain.
 1. **Schema:** add request and response Zod schemas with `.openapi({ example })` in `packages/schemas`.
 2. **Domain:** put new business rules in `packages/api/src/domain/`. They do no I/O. Every new error code goes into `ERROR_CATALOGUE` (`domain/errors.ts`, Arabic and English message) and as a row in `docs/errors.md` in the same PR (ADR-030); routes and services throw `AppError`, they never build an error body.
 3. **Service:** create one use case per file in `packages/api/src/services/<action>.ts`. It depends only on interfaces in `ports/`.

@@ -1,0 +1,34 @@
+import { describe, expect, it } from "vitest";
+import { createMemory{{pascalCase name}}Repository } from "../adapters/memory/{{kebabCase name}}-repository";
+import { authFor, USER_A, USER_B } from "../test-support/memory-app";
+import { create{{pascalCase name}} } from "./create-{{kebabCase name}}";
+import { get{{pascalCase name}} } from "./get-{{kebabCase name}}";
+
+/**
+ * Fresh memory dependencies per test.
+ *
+ * @returns The service dependencies.
+ */
+function setup() {
+  return { {{camelCase name}}s: createMemory{{pascalCase name}}Repository() };
+}
+
+const a = authFor(USER_A);
+const b = authFor(USER_B);
+
+describe("create-{{kebabCase name}}", () => {
+  it("stores the {{kebabCase name}} for the caller", async () => {
+    const deps = setup();
+    const created = await create{{pascalCase name}}(deps, a, { name: "Example" });
+    expect(created).toMatchObject({ name: "Example" });
+    expect((await get{{pascalCase name}}(deps, a, created.id)).id).toBe(created.id);
+  });
+});
+
+describe("get-{{kebabCase name}}", () => {
+  it("answers NOT_FOUND for another user's {{kebabCase name}}", async () => {
+    const deps = setup();
+    const created = await create{{pascalCase name}}(deps, a, { name: "Example" });
+    await expect(get{{pascalCase name}}(deps, b, created.id)).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
+});

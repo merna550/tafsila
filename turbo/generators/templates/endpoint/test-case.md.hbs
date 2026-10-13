@@ -1,0 +1,31 @@
+# Test cases — {{pascalCase name}} API
+
+| Field        | Value                    |
+| ------------ | ------------------------ |
+| Issue        | #{{issue}}               |
+| SRS          | NEXT(#{{issue}}): FR-... |
+| Area         | api                      |
+| Last updated | {{today}} (by PR #...)   |
+
+## Test data
+
+Use the seeded accounts from `supabase/seed.sql` (see `docs/backend/seed-data.md`).
+
+| Name | Value                                               |
+| ---- | --------------------------------------------------- |
+| User | `trial@tafsila.test` / `Test1234!` (3 free credits) |
+
+## Cases
+
+Status legend: ⬜ not run · ✅ pass · ❌ fail (link issue)
+
+| ID                  | Title                                | Priority | Preconditions | Steps                                     | Expected result                         | Automated by                         | dev | staging |
+| ------------------- | ------------------------------------ | -------- | ------------- | ----------------------------------------- | --------------------------------------- | ------------------------------------ | --- | ------- |
+| TC-API-{{issue}}-01 | Create and read a {{kebabCase name}} | High     | Logged in     | 1. POST /api/{{kebabCase name}}s. 2. GET it by id. | 201 then 200 with the same body         | `routes/{{kebabCase name}}s.test.ts` | ⬜  | ⬜      |
+| TC-API-{{issue}}-02 | No token                             | High     | Not logged in | 1. POST /api/{{kebabCase name}}s without a token.  | 401 UNAUTHENTICATED, Arabic and English | `routes/{{kebabCase name}}s.test.ts` | ⬜  | ⬜      |
+| TC-API-{{issue}}-03 | Another user's {{kebabCase name}}    | High     | Two users     | 1. User A creates one. 2. User B reads it. | 404 NOT_FOUND                           | `services/{{kebabCase name}}.test.ts` | ⬜  | ⬜      |
+
+## Manual run log
+
+| Date | Env | Tester | Result | Notes |
+| ---- | --- | ------ | ------ | ----- |

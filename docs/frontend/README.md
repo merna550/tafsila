@@ -87,13 +87,13 @@ The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 
 ## Tutorials and skills
 
-| Task                        | Where                                        |
-| --------------------------- | -------------------------------------------- |
-| New page or feature         | `.claude/skills/add-page/SKILL.md`           |
-| New endpoint the page needs | `.claude/skills/add-endpoint/SKILL.md`       |
-| Run the app locally         | `docs/backend/tutorials/run-locally.md`      |
-| New garment feature         | `.claude/skills/add-garment-module/SKILL.md` |
-| Path-scoped agent rules     | `.claude/rules/frontend/`                    |
+| Task                        | Where                                                                             |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| New page or feature         | `.claude/skills/add-page/SKILL.md` (start with `pnpm gen feature <name> <issue>`) |
+| New endpoint the page needs | `.claude/skills/add-endpoint/SKILL.md`                                            |
+| Run the app locally         | `docs/backend/tutorials/run-locally.md`                                           |
+| New garment feature         | `.claude/skills/add-garment-module/SKILL.md`                                      |
+| Path-scoped agent rules     | `.claude/rules/frontend/`                                                         |
 
 ## Decisions
 

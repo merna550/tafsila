@@ -1,0 +1,30 @@
+# Test cases — {{pascalCase name}} screens
+
+| Field        | Value                    |
+| ------------ | ------------------------ |
+| Issue        | #{{issue}}               |
+| SRS          | NEXT(#{{issue}}): FR-... |
+| Area         | ui                       |
+| Last updated | {{today}} (by PR #...)   |
+
+## Test data
+
+Use the seeded accounts from `supabase/seed.sql` (see `docs/backend/seed-data.md`).
+
+| Name | Value                                               |
+| ---- | --------------------------------------------------- |
+| User | `trial@tafsila.test` / `Test1234!` (3 free credits) |
+
+## Cases
+
+Status legend: ⬜ not run · ✅ pass · ❌ fail (link issue)
+
+| ID                 | Title                   | Priority | Preconditions | Steps                            | Expected result                       | Automated by                                      | dev | staging |
+| ------------------ | ----------------------- | -------- | ------------- | -------------------------------- | ------------------------------------- | ------------------------------------------------- | --- | ------- |
+| TC-UI-{{issue}}-01 | Title in both languages | High     | Logged in     | 1. Open the screen in ar and en. | The title is shown in each language   | `components/{{pascalCase name}}Heading.test.tsx`  | ⬜  | ⬜      |
+| TC-UI-{{issue}}-02 | RTL and mobile width    | Medium   | Logged in     | 1. Open at 375px in Arabic.      | No horizontal scroll, mirrored layout | manual only                                       | ⬜  | ⬜      |
+
+## Manual run log
+
+| Date | Env | Tester | Result | Notes |
+| ---- | --- | ------ | ------ | ----- |

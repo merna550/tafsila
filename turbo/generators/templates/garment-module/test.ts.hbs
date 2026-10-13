@@ -1,0 +1,29 @@
+import { sizeM, vNeckHalfCircleDress } from "@tafsila/test-fixtures";
+import fc from "fast-check";
+import { describe, expect, it } from "vitest";
+import { pt } from "../geometry/point";
+import { {{camelCase name}}Module } from "./{{kebabCase name}}";
+import { validate{{pascalCase name}} } from "./{{kebabCase name}}-validation";
+
+describe("{{kebabCase name}} module", () => {
+  it("drafts outlines that pass its own validation", () => {
+    const outlines = {{camelCase name}}Module.draft(vNeckHalfCircleDress, sizeM);
+    expect(validate{{pascalCase name}}(outlines)).toEqual([]);
+  });
+
+  it("is deterministic: the same input gives the same outlines (property)", () => {
+    fc.assert(
+      fc.property(fc.constant(sizeM), (measurements) => {
+        expect({{camelCase name}}Module.draft(vNeckHalfCircleDress, measurements)).toEqual(
+          {{camelCase name}}Module.draft(vNeckHalfCircleDress, measurements),
+        );
+      }),
+    );
+  });
+
+  it("reports an outline with fewer than two points", () => {
+    expect(validate{{pascalCase name}}([[pt(0, 0)]]).map((issue) => issue.code)).toEqual([
+      "{{constantCase name}}_OUTLINE_TOO_SHORT",
+    ]);
+  });
+});

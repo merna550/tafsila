@@ -1,0 +1,8 @@
+import { describe, expect, it } from "vitest";
+import { titleOf } from "./{{kebabCase name}}-view";
+
+describe("titleOf", () => {
+  it("trims the name", () => {
+    expect(titleOf({ id: "a", name: "  Example " })).toBe("Example");
+  });
+});

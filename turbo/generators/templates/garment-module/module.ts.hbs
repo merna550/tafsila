@@ -1,0 +1,29 @@
+/** {{pascalCase name}} feature module. NEXT(#{{issue}}): write the drafting method and its source here (a plan:opus issue), then add the DesignSpec enum value. */
+import { pt } from "../geometry/point";
+import type { FeatureModule, Outline } from "./feature-module";
+
+/** Stable id of the module. */
+export const {{constantCase name}}_MODULE_ID = "{{kebabCase name}}";
+
+/**
+ * Tells whether the design uses the {{kebabCase name}} feature.
+ *
+ * @returns True when the module must draft.
+ */
+function appliesTo(): boolean {
+  // NEXT(#{{issue}}): take the DesignSpec and check the option that selects this feature.
+  return false;
+}
+
+/**
+ * Drafts the {{kebabCase name}} outline.
+ *
+ * @returns The outlines, in mm.
+ */
+function draft(): readonly Outline[] {
+  // NEXT(#{{issue}}): take the DesignSpec and measurements, and replace this placeholder square with the real geometry.
+  return [[pt(0, 0), pt(1, 0), pt(1, 1), pt(0, 1), pt(0, 0)]];
+}
+
+/** The {{kebabCase name}} feature module. */
+export const {{camelCase name}}Module: FeatureModule = { id: {{constantCase name}}_MODULE_ID, appliesTo, draft };

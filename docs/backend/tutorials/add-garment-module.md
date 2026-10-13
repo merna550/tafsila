@@ -1,5 +1,6 @@
 # Add a garment feature to the engine
 
+0. Run `pnpm gen garment-module <name> <issue>`: it writes the module skeleton, a validation stub, a property test and the test-case file in `packages/engine/src/modules/`. Fill in the `NEXT(#issue)` placeholders as you do steps 1 to 6.
 1. Plan with `plan:opus`: drafting method (with source), parameters, which DesignSpec enum it extends, validation rules it must satisfy.
 2. Extend the DesignSpec schema + catalogue (with option card image and Arabic name).
 3. Implement as a pure part in `packages/engine` (mm units, no randomness), reusing blocks.

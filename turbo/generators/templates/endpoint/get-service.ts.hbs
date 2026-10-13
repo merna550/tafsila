@@ -1,0 +1,24 @@
+/** Use case: read one {{kebabCase name}} of the caller. */
+import type { {{pascalCase name}} } from "@tafsila/schemas";
+import { NotFoundError } from "../domain/errors";
+import type { {{pascalCase name}}Repository } from "../ports/{{kebabCase name}}-repository";
+import type { AuthContext } from "../ports/token-verifier";
+
+/**
+ * Reads a {{kebabCase name}}.
+ *
+ * @param deps - {{pascalCase name}} repository.
+ * @param ctx - Verified caller.
+ * @param id - Row id.
+ * @returns The {{kebabCase name}}.
+ * @throws {NotFoundError} When missing or not the caller's.
+ */
+export async function get{{pascalCase name}}(
+  deps: { readonly {{camelCase name}}s: {{pascalCase name}}Repository },
+  ctx: AuthContext,
+  id: string,
+): Promise<{{pascalCase name}}> {
+  const found = await deps.{{camelCase name}}s.get(ctx, id);
+  if (!found) throw new NotFoundError("{{kebabCase name}}");
+  return found;
+}
