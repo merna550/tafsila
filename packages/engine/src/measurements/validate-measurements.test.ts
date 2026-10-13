@@ -1,4 +1,4 @@
-import { sizeM, demoSizeChart } from "@tafsila/test-fixtures";
+import { sizeM, demoSizeChart, egyptianSizeChart } from "@tafsila/test-fixtures";
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { MEASUREMENT_RANGES_MM, type MeasurementKey } from "../constants/measurement-ranges";
@@ -109,6 +109,12 @@ describe("validateMeasurements cross-checks", () => {
 describe("validateMeasurements properties", () => {
   it("passes every demo chart size with no errors and no warnings", () => {
     for (const row of Object.values(demoSizeChart)) {
+      expect(validateMeasurements(row)).toEqual({ errors: [], warnings: [] });
+    }
+  });
+
+  it("passes every Egyptian chart size with no errors and no warnings", () => {
+    for (const row of Object.values(egyptianSizeChart)) {
       expect(validateMeasurements(row)).toEqual({ errors: [], warnings: [] });
     }
   });
