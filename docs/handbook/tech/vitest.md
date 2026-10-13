@@ -1,5 +1,5 @@
 ---
-packages: [vitest]
+packages: [vitest, "@vitest/coverage-v8"]
 level: beginner
 adr: ADR-013
 ---
@@ -16,7 +16,7 @@ Vitest finds `*.test.ts` files, runs them and reports passes and failures. It un
 
 - **Fast and TypeScript-native:** no extra Babel or ts-jest setup, instant watch mode.
 - **One runner for everything:** engine maths, Hono routes (`app.request(...)`), React components, config validation.
-- **Coverage targets** (engine 85% or more, SRS NFR-10) come from its coverage support ([glossary: coverage](../glossary.md#coverage)).
+- **Coverage targets** (engine 85% or more, SRS NFR-10) come from its coverage support ([glossary: coverage](../glossary.md#coverage)). The engine uses `@vitest/coverage-v8` (MIT, free) and fails its `test` script below 85% lines, branches or functions (`packages/engine/vitest.config.ts`, [decision 124](../../decisions/124-geometry-kit.md)).
 - **Familiar API,** so agents write tests correctly the first time.
 
 ## Alternatives we considered (and why not)

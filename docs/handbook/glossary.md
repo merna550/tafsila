@@ -225,7 +225,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Bezier curve
 
 **Plain words:** A smooth curve defined by a few control points. Pattern curves (necklines, sleeve caps) are drawn with them.  
-**In Tafsila:** `packages/engine/src/geometry/bezier.ts` (`CubicBezier`, `sampleCubic`). **Level:** intermediate  
+**In Tafsila:** `packages/engine/src/geometry/bezier.ts` (`cubicLength`, `splitCubic`, `curveThroughPoints`); the segment type is `cubic` in `@tafsila/schemas` ([decision 124](../decisions/124-geometry-kit.md)). **Level:** intermediate  
 **Learn:** <https://pomax.github.io/bezierinfo/>
 
 <a id="bias"></a>
@@ -1205,6 +1205,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## M
 
+<a id="mitre-corner"></a>
+
+### Mitre corner
+
+**Plain words:** The sharp corner you get when two offset edges are extended until they meet, like a picture frame. Very sharp corners make very long points, so they are cut square past a limit.  
+**In Tafsila:** `offsetPath` in `packages/engine/src/geometry/offset.ts`; the cut happens past `MITRE_LIMIT` (4 × the seam allowance) ([decision 124](../decisions/124-geometry-kit.md)). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin>
+
 <a id="mail-catcher"></a>
 
 ### Mail catcher
@@ -1440,6 +1448,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A folder of code with its own `package.json`, usable by other code.  
 **In Tafsila:** `@tafsila/api`, `@tafsila/engine`, `@tafsila/schemas` and others under `packages/`. **Card:** [pnpm](tech/pnpm.md) · **Level:** beginner  
 **Learn:** <https://docs.npmjs.com/about-packages-and-modules>
+
+<a id="path-offset"></a>
+
+### Path offset
+
+**Plain words:** A copy of a line moved sideways by the same distance everywhere, like drawing the cutting line a seam allowance away from the stitching line.  
+**In Tafsila:** `offsetPath` in `packages/engine/src/geometry/offset.ts` (lines exactly, curves by the Tiller–Hanson method within 0.05 mm) ([decision 124](../decisions/124-geometry-kit.md)). **Level:** intermediate  
+**Learn:** <https://pomax.github.io/bezierinfo/#offsetting>
 
 <a id="pattern-piece"></a>
 

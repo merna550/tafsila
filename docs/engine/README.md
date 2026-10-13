@@ -22,13 +22,32 @@ The function is pure and deterministic and runs the same in the browser and on t
 | `validate`    | FR-VAL checks → `ValidationReport`               |
 | `sewingOrder` | Assembly steps for instructions and 3D           |
 
+## Geometry kit (`src/geometry/`)
+
+One set of pure 2D helpers; drafting code never writes its own maths ([decision 124](../decisions/124-geometry-kit.md)). Millimetres, x right, y down; angles in radians. Tolerances live in `src/constants/geometry.ts`. Degenerate input throws `DraftingError` with a `GEOMETRY_*` code.
+
+| File           | Helpers                                                                                                                        | For                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| `point.ts`     | `pt`, `add`, `sub`, `scale`, `dot`, `cross`, `norm`, `normalize`, `perpendicular`, `lerp`, `angleRad`, `distance`, `samePoint` | vector maths                           |
+| `segment.ts`   | `lineSeg`, `cubicSeg`, `mapSegment`, `reverseSegment`, `assertSegment`, `assertPath`                                           | building segments, input checks        |
+| `bezier.ts`    | `pointOnCubic`, `tangentOnCubic`, `splitCubic`, `cubicLength`, `tAtLength`, `curveThroughPoints`                               | necklines, armholes, hems              |
+| `path.ts`      | `pathLength`, `pointAtLength`, `tangentAtLength`, `splitAtLength`, `subPath`, `reversePath`, `isClosed`, `samplePath`          | seam lengths, notches, edges           |
+| `transform.ts` | `translate`, `rotateAbout`, `mirrorAcross` (points, segments, paths), `rotateSegmentAround`                                    | symmetric halves, dart closing, pivots |
+| `intersect.ts` | `lineLine`, `lineCubic`, `cubicCubic`, `intersectSegments`, `selfIntersections`                                                | construction points, FR-VAL-05         |
+| `offset.ts`    | `offsetPath(path, distanceMm or one per segment)` with mitre corners                                                           | seam allowance (FR-PAT-03)             |
+| `polygon.ts`   | `signedArea`, `bbox`, `bboxOverlap`, `pointInPolygon`                                                                          | orientation, nesting, inside tests     |
+| `roots.ts`     | `solveQuadratic`, `solveCubic`                                                                                                 | intersections                          |
+
+Coverage of the engine must stay at 85% or more (NFR-10): `pnpm --filter @tafsila/engine test` fails below it.
+
 ## Drafting methods and sources
 
 Each module cites its method in JSDoc. Basis: the FreeSewing core (SRS §1.4; licence check is open, SRS §13 #2), with standard flat-pattern drafting for blocks. Add a row here when a module introduces a new method.
 
-| Area   | Method                                                                           | Code                       |
-| ------ | -------------------------------------------------------------------------------- | -------------------------- |
-| Sleeve | Cap height solved by bisection so the cap exceeds the armhole by the target ease | `src/sleeve/sleeve-cap.ts` |
+| Area     | Method                                                                                        | Code                       |
+| -------- | --------------------------------------------------------------------------------------------- | -------------------------- |
+| Sleeve   | Cap height solved by bisection so the cap exceeds the armhole by the target ease              | `src/sleeve/sleeve-cap.ts` |
+| Geometry | Gravesen adaptive Bézier length, de Casteljau split, Catmull-Rom curves, Tiller–Hanson offset | `src/geometry/`            |
 
 ## Module catalogue
 
