@@ -76,13 +76,13 @@ test.describe("measurement form", () => {
     await expect(page).toHaveURL(/\/measurements\/new$/);
     await page.getByLabel(m.setLabel.label).fill("صيف 2026");
     await page.getByRole("radio", { name: "M" }).click();
-    await expect(measurementBox(page, m.labels.bust)).toHaveValue("92");
+    await expect(measurementBox(page, m.labels.bust)).toHaveValue("96");
     await typeMeasurement(page, m.labels.waist, "76");
     await expect(page.getByText(m.field.adjusted)).toBeVisible();
     await shot(page, "from-size", "ar");
 
     // A warning is shown but does not block saving.
-    await typeMeasurement(page, m.labels.waist, "105");
+    await typeMeasurement(page, m.labels.waist, "110");
     // A large waist can warn on more than one box (waist and its neighbours); none of them is an error.
     await expect(page.locator('[id$="-message"]:not([role="alert"])').first()).toBeVisible();
     await expect(page.locator('[id$="-message"][role="alert"]')).toHaveCount(0);
@@ -91,11 +91,11 @@ test.describe("measurement form", () => {
     await typeMeasurement(page, m.labels.waist, "76");
 
     // An impossible value blocks saving and names the box.
-    await typeMeasurement(page, m.labels.highBust, "95");
+    await typeMeasurement(page, m.labels.highBust, "99");
     await expect(page.getByRole("button", { name: m.save.submit })).toBeDisabled();
     await expect(page.locator('p[role="status"]')).toBeVisible();
     await shot(page, "error", "ar");
-    await typeMeasurement(page, m.labels.highBust, "86");
+    await typeMeasurement(page, m.labels.highBust, "91");
 
     // The guide opens for a box and moves on to the next one.
     await page.getByRole("button", { name: `${m.field.guide} ${m.labels.bust}`, exact: true }).click();
@@ -114,8 +114,8 @@ test.describe("measurement form", () => {
     // Edit the saved set: the waist still shows as adjusted and can be reset to size M.
     await page.getByRole("link", { name: t.clients.sets.view }).first().click();
     await expect(measurementBox(page, m.labels.waist)).toHaveValue("76");
-    await page.getByRole("button", { name: /M \(74\)/ }).click();
-    await expect(measurementBox(page, m.labels.waist)).toHaveValue("74");
+    await page.getByRole("button", { name: /M \(78\)/ }).click();
+    await expect(measurementBox(page, m.labels.waist)).toHaveValue("78");
     await page.getByRole("button", { name: m.save.submit }).click();
     await expect(page).toHaveURL(/\/clients\/[0-9a-f-]{36}$/);
   });
