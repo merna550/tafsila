@@ -6,6 +6,7 @@ import { createErrorHandler } from "./middleware/error-handler";
 import { requestId, type AppEnv } from "./middleware/request-id";
 import { clientRoutes } from "./routes/clients";
 import { measurementRoutes } from "./routes/measurements";
+import { sizeChartRoutes } from "./routes/size-charts";
 import { debugRoutes } from "./routes/debug";
 import { OPENAPI_DOCUMENT_CONFIG } from "./openapi/document-config";
 import { docsRoutes } from "./routes/docs";
@@ -41,6 +42,7 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", meRoutes(container));
   app.route("/", clientRoutes(container));
   app.route("/", measurementRoutes(container));
+  app.route("/", sizeChartRoutes(container));
   app.route("/", phoneRoutes(container));
   app.doc31("/openapi.json", OPENAPI_DOCUMENT_CONFIG);
   app.route("/", docsRoutes(container));

@@ -23,6 +23,7 @@ import {
 import { createWithApiRole, createWithUser } from "./adapters/supabase/with-user";
 import { createHmacPhoneHasher, createRejectingPhoneHasher } from "./adapters/system/hmac-phone-hasher";
 import { createMeasurementSetRepository } from "./adapters/supabase/measurement-set-repository";
+import { createSizeChartRepository } from "./adapters/supabase/size-chart-repository";
 import { createRejectingRepositories, type Repositories } from "./adapters/supabase/rejecting-repositories";
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
@@ -36,6 +37,7 @@ import type { PhoneHasher } from "./ports/phone-hasher";
 import type { PhoneOtp } from "./ports/phone-otp";
 import type { PhoneVerificationRepository } from "./ports/phone-verification-repository";
 import type { PlanLimits } from "./ports/plan-limits";
+import type { SizeChartRepository } from "./ports/size-chart-repository";
 import type { TrialEligibility } from "./ports/trial-eligibility";
 import type { PhoneRules } from "./services/phone-shared";
 import type { TokenVerifier } from "./ports/token-verifier";
@@ -59,6 +61,8 @@ export interface Container {
   readonly clients: ClientRepository;
   /** The signed-in user's saved measurement sets. */
   readonly measurementSets: MeasurementSetRepository;
+  /** The default size chart (system data, readable by every signed-in user). */
+  readonly sizeCharts: SizeChartRepository;
   /** What the user's plan allows (unlimited until M7). */
   readonly planLimits: PlanLimits;
   /** Sends and checks phone codes. */
@@ -90,6 +94,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     trialEligibility: createTrialEligibility(withApiRole),
     clients: createClientRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
+    sizeCharts: createSizeChartRepository(withUser),
   };
 }
 

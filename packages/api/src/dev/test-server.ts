@@ -9,22 +9,26 @@ import { createApp } from "../app";
 import { createContainer } from "../container";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
+import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
 import { createMemoryStore } from "../adapters/memory/memory-store";
 import { createMemoryPhoneOtp } from "../adapters/memory/phone-otp";
 import { createMemoryPhoneVerification } from "../adapters/memory/phone-verification-repository";
 import { createHmacPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createJwksTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
+import { demoSizeChart } from "@tafsila/test-fixtures";
 import { createTestAuthKeys, TEST_SUPABASE_URL } from "../test-support/auth-keys";
 
 const HTTP_SERVER_ERROR = 500;
 const keys = await createTestAuthKeys();
 const store = createMemoryStore();
+store.sizeCharts.push({ id: "00000000-0000-4000-8000-0000000000d1", name: "Demo", sizes: demoSizeChart });
 const phones = createMemoryPhoneVerification({ now: () => new Date() });
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
     clients: createMemoryClientRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
+    sizeCharts: createMemorySizeChartRepository(store),
     phoneOtp: createMemoryPhoneOtp(),
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,

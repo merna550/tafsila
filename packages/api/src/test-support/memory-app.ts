@@ -6,6 +6,7 @@ import {
   createMemoryPhoneVerification,
   type MemoryPhoneVerification,
 } from "../adapters/memory/phone-verification-repository";
+import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
 import { createHmacPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createMemoryStore, type MemoryStore } from "../adapters/memory/memory-store";
 import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
@@ -60,6 +61,7 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
       tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
       clients: createMemoryClientRepository(store),
       measurementSets: createMemoryMeasurementSetRepository(store),
+      sizeCharts: createMemorySizeChartRepository(store),
       planLimits: createUnlimitedPlanLimits(),
       phoneOtp,
       phoneHasher: createHmacPhoneHasher("memory-app-phone-hash-secret-0123456789"),
