@@ -75,3 +75,21 @@ export function formatMonthYear(date: Date, locale: DateLocale): string {
     date,
   );
 }
+
+/**
+ * Formats a date as a day and a month name ("3 أكتوبر", "3 October"), adding the year when it is not the current one.
+ *
+ * @param date - The date.
+ * @param now - The current time (passed in so the result is testable).
+ * @param locale - App language.
+ * @returns The short date.
+ */
+export function formatShortDate(date: Date, now: Date, locale: DateLocale): string {
+  const sameYear = date.getUTCFullYear() === now.getUTCFullYear();
+  return new Intl.DateTimeFormat(intlTag(locale), {
+    day: "numeric",
+    month: "long",
+    ...(sameYear ? {} : { year: "numeric" }),
+    timeZone: "UTC",
+  }).format(date);
+}

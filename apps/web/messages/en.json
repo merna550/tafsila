@@ -528,6 +528,120 @@
       "label": "Admin sections",
       "users": "Users",
       "sizes": "Size chart"
+    },
+    "users": {
+      "title": "Users",
+      "stats": {
+        "users": "All users",
+        "verified": "Verified phone",
+        "week": "Signed up this week",
+        "clients": "All clients"
+      },
+      "search": {
+        "label": "Search",
+        "placeholder": "Search by name, e-mail or phone"
+      },
+      "filter": {
+        "label": "Filter",
+        "all": "All",
+        "verified": "Verified phone",
+        "unverified": "Not verified"
+      },
+      "columns": {
+        "name": "Name",
+        "phone": "Phone",
+        "joined": "Joined",
+        "clients": "Clients",
+        "lastSignIn": "Last sign-in"
+      },
+      "phone": {
+        "verified": "Verified",
+        "unverified": "Not verified"
+      },
+      "noResults": {
+        "title": "No results",
+        "description": "No user matches the search.",
+        "clear": "Clear search and filter"
+      },
+      "loadMore": "Show more",
+      "loadingMore": "Loading",
+      "privacy": "The admin panel shows counts only, never clients' measurements or notes.",
+      "detail": {
+        "breadcrumb": "Breadcrumb",
+        "title": "User",
+        "email": "E-mail",
+        "measurementSets": "Measurement sets",
+        "language": "Language",
+        "role": "Role",
+        "languages": {
+          "ar": "Arabic",
+          "en": "English"
+        },
+        "roles": {
+          "user": "User",
+          "admin": "Admin"
+        }
+      }
+    },
+    "sizes": {
+      "title": "Egyptian size chart",
+      "lastEdit": "Last edited by {name}, {when} · values in cm",
+      "lastEditNone": "Not edited yet · values in cm",
+      "export": "Export CSV",
+      "save": "Save changes ({count})",
+      "saveNone": "Save changes",
+      "saved": "Size chart saved",
+      "caption": "Size chart in centimetres",
+      "measurement": "Measurement",
+      "cellLabel": "{field} size {size}",
+      "placeholder": {
+        "label": "Temporary:",
+        "text": "These are demo values until the approved chart is added. An edit applies to new measurements only; saved client measurements do not change."
+      },
+      "legend": {
+        "dirty": "Changed, not saved yet",
+        "invalid": "Wrong value, blocks saving"
+      },
+      "problems": {
+        "label": "Chart errors",
+        "warnings": "{count, plural, one {1 warning (does not block saving)} other {# warnings (do not block saving)}}"
+      },
+      "discard": {
+        "open": "Discard changes",
+        "title": "Discard changes?",
+        "description": "{count, plural, one {1 changed cell will not be saved.} other {# changed cells will not be saved.}}",
+        "keep": "Keep editing",
+        "confirm": "Discard",
+        "close": "Close"
+      },
+      "import": {
+        "open": "Import CSV",
+        "title": "Import a size chart",
+        "description": "A CSV file whose first line is: measurement, then the size names. Each next line is one measurement in cm.",
+        "file": "CSV file",
+        "name": "Chart name",
+        "defaultName": "Egyptian size chart",
+        "problemsTitle": "{count, plural, one {1 problem in the file} other {# problems in the file}}",
+        "ready": "The file is fine. Sizes: {sizes}.",
+        "replaces": "Importing replaces the whole current chart and saves at once.",
+        "confirm": "Import and save",
+        "cancel": "Cancel",
+        "close": "Close",
+        "problems": {
+          "empty": "The file is empty.",
+          "header": "The first line must start with the word measurement.",
+          "noSizes": "The first line has no size names.",
+          "duplicateSize": "The size name {size} is repeated.",
+          "unknownRow": "Line {line}: unknown measurement {key}.",
+          "duplicateRow": "Line {line}: measurement {key} is repeated.",
+          "missingRow": "There is no line for the measurement: {field}.",
+          "cell": {
+            "required": "Line {line}, size {size}: {field} is empty.",
+            "notANumber": "Line {line}, size {size}: {field} is not a number.",
+            "tooManyDecimals": "Line {line}, size {size}: {field} has more than one decimal."
+          }
+        }
+      }
     }
   }
 }
