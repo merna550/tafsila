@@ -1,3 +1,4 @@
+"use client";
 /** SegmentedControl: a small row of exclusive choices (a filter), each a toggle button with `aria-pressed`. */
 import type { ReactElement, ReactNode } from "react";
 import { FOCUS_RING, cx } from "./styles";

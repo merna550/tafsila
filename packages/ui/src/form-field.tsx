@@ -1,3 +1,4 @@
+"use client";
 /** FormField: label + control + hint + error slot, wired together with the right ids and ARIA attributes. */
 import * as RadixLabel from "@radix-ui/react-label";
 import { useId, type ReactElement, type ReactNode } from "react";
