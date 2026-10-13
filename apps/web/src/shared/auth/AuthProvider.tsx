@@ -1,7 +1,7 @@
 "use client";
 /** Provides the browser auth client to hooks, built once from the PublicConfig handed over by the layout (no NEXT_PUBLIC_*, ADR-025). */
 import { createContext, useContext, useEffect, useMemo, type ReactElement, type ReactNode } from "react";
-import { setAccessTokenGetter } from "../api";
+import { releaseAccessTokenGetter, setAccessTokenGetter, type AccessTokenGetter } from "../api";
 import { getAccessToken } from "./auth-actions";
 import { createBrowserAuthClient, type AuthClient, type AuthConfig } from "./clients";
 
@@ -23,20 +23,29 @@ interface AuthProviderProps {
  */
 export function AuthProvider({ config, children }: Readonly<AuthProviderProps>): ReactElement {
   const { supabaseUrl, supabaseAnonKey } = config;
-  const client = useMemo(() => {
+  const source = useMemo(() => {
     if (!(supabaseUrl && supabaseAnonKey)) return null;
     const created = createBrowserAuthClient({ supabaseUrl, supabaseAnonKey });
+    /**
+     * Reads the current access token of this provider's client.
+     *
+     * @returns The token, or null when signed out.
+     */
+    const getter: AccessTokenGetter = () => getAccessToken(created);
     // Registered while rendering, not in an effect: a child's effect (the first TanStack Query fetch) runs before this
     // component's effects, so an effect would let that first request go out without a token and fail with 401.
-    setAccessTokenGetter(() => getAccessToken(created));
-    return created;
+    setAccessTokenGetter(getter);
+    return { client: created, getter };
   }, [supabaseUrl, supabaseAnonKey]);
   useEffect(() => {
-    if (!client) return;
+    if (!source) return;
     // Registered again here because React may run this cleanup and effect twice in development.
-    setAccessTokenGetter(() => getAccessToken(client));
-    return () => setAccessTokenGetter(null);
-  }, [client]);
+    setAccessTokenGetter(source.getter);
+    // Release only our own source: after a remount (a language switch) the old provider's cleanup runs after the new
+    // provider registered, and must not remove the new one.
+    return () => releaseAccessTokenGetter(source.getter);
+  }, [source]);
+  const client = source?.client ?? null;
   return <AuthClientContext.Provider value={client}>{children}</AuthClientContext.Provider>;
 }
 

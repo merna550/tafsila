@@ -21,6 +21,17 @@ export function setAccessTokenGetter(getter: AccessTokenGetter | null): void {
 }
 
 /**
+ * Removes a token source, but only while it is still the registered one. When a page remounts (for example after a language
+ * switch) the new provider registers its source while rendering, and the old provider's cleanup runs afterwards; clearing
+ * unconditionally would leave the new page without a token.
+ *
+ * @param getter - The source the caller registered earlier.
+ */
+export function releaseAccessTokenGetter(getter: AccessTokenGetter): void {
+  if (accessTokenGetter === getter) accessTokenGetter = null;
+}
+
+/**
  * Builds the request headers: JSON content type when there is a body, and the bearer token when signed in.
  *
  * @param hasBody - Whether the request carries a JSON body.
