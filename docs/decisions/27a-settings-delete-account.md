@@ -18,3 +18,11 @@
 13. **Postman:** `account` is never run by Newman (it deletes the signed-in account); the `profile` folder is replaced by journey steps 14 and 15.
 
 **Tested here:** services, routes, adapters with a fake `fetch`, config, schemas, the OpenAPI document and the Newman run on memory adapters. **Not run in this environment (no Docker):** the pgTAP file `supabase/tests/database/account-deletion.test.sql` and the real-adapter end-to-end check against local Supabase; CI runs the pgTAP file.
+
+## Part B (settings screen)
+
+14. **Name is saved with an explicit button**, enabled only when the text differs from the saved name (decision 4 of the plan).
+15. **Language switch is instant, saving is best effort:** the page navigates to the other language first; `PATCH /api/profile {locale}` runs in the background and a failure shows a warning toast without undoing the switch.
+16. **Units are text only** (centimeters, "inches soon"); nothing is stored.
+17. **After deletion:** the browser clears its local session (errors ignored, the user is gone) and does a full page load of the home page with `?account=deleted`; the home page shows a toast once and removes the flag. Home in English is `/en`, in Arabic `/`.
+18. **Confirmation word** is "حذف" in Arabic and "DELETE" in English (exact match after trim; case matters in English). The API still requires the fixed `DELETE_MY_ACCOUNT` literal.
