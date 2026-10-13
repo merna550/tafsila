@@ -308,7 +308,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-ADM-01 | Dashboard: signups, trials, conversions, revenue, AI cost per pattern, failed validations | M |
-| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens in #32 (Part B) | M |
+| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens built in #32 (Part B: `/admin/users`, `/admin/sizes`, CSV import and export) | M |
 | FR-ADM-03 | View user designs (with consent flag) and unsupported-feature log | M |
 | FR-ADM-04 | Grant credits / refund | M |
 

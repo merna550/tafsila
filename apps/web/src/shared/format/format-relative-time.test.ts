@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMonthYear, formatRelativeTime } from "./format-relative-time";
+import { formatMonthYear, formatRelativeTime, formatShortDate } from "./format-relative-time";
 
 const NOW = new Date("2026-10-12T12:00:00.000Z");
 
@@ -46,5 +46,16 @@ describe("formatMonthYear", () => {
     const march = new Date("2026-03-14T10:00:00.000Z");
     expect(formatMonthYear(march, "en")).toBe("March 2026");
     expect(formatMonthYear(march, "ar")).toBe("مارس 2026");
+  });
+});
+
+describe("formatShortDate", () => {
+  it("writes the day and month with Western digits, without the year in the current year", () => {
+    expect(formatShortDate(new Date("2026-10-03T10:00:00.000Z"), NOW, "en")).toBe("October 3");
+    expect(formatShortDate(new Date("2026-10-03T10:00:00.000Z"), NOW, "ar")).toBe("3 أكتوبر");
+  });
+
+  it("adds the year for another year", () => {
+    expect(formatShortDate(new Date("2025-03-20T10:00:00.000Z"), NOW, "en")).toBe("March 20, 2025");
   });
 });

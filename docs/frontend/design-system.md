@@ -34,6 +34,8 @@ Style only with the classes the tokens generate. Raw colours, `bg-[...]` and Tai
 | A grouped block of content           | `Card`                                               | optional `title` and `footer`                                        |
 | Status or count                      | `Badge`                                              | state is never colour alone                                          |
 | Tabular data                         | `Table`; sections of a page: `Tabs`                  |                                                                      |
+| A key number with its label          | `StatTile` (inside a `dl`)                           | admin overview; no story yet (baselines need Docker)                 |
+| A filter of exclusive choices        | `SegmentedControl`                                   | toggle buttons with `aria-pressed`, not tabs (no panels)             |
 | A person                             | `Avatar`                                             |                                                                      |
 | Blocking question or short form      | `Dialog`                                             | centred, traps focus, closes on Escape                               |
 | Side or bottom panel (filters, menu) | `Sheet` (`start`, `end`, `bottom`)                   | on phones prefer `bottom`                                            |
