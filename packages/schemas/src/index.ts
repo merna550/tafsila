@@ -12,3 +12,5 @@ export * from "./measurement-sets";
 export * from "./phone";
 export * from "./profile";
 export * from "./admin";
+export * from "./pattern";
+export * from "./engine-options";

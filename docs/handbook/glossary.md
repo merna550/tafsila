@@ -1462,7 +1462,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### PatternResult
 
 **Plain words:** The JSON the engine returns: pieces, sewing order, validation report, engine version and metadata. Every output (viewer, projector, PDF) reads it.  
-**In Tafsila:** [SRS section 6.3](../SRS.md); not in code yet. See [pattern journey](map/pattern-journey.md). **Level:** intermediate  
+**In Tafsila:** [SRS section 6.3](../SRS.md); `patternResultSchema` in `packages/schemas/src/pattern.ts`. See [pattern journey](map/pattern-journey.md). **Level:** intermediate  
 **Learn:** <https://json-schema.org/understanding-json-schema>
 
 <a id="paymob"></a>
