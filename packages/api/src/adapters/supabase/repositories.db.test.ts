@@ -4,8 +4,10 @@ import postgres from "postgres";
 import { afterAll, describe, expect, it } from "vitest";
 import { loadDatabaseUrl } from "@tafsila/config";
 import type { AuthContext } from "../../ports/token-verifier";
+import { createAdminRepository } from "./admin-repository";
 import { createClientRepository } from "./client-repository";
-import { createWithUser } from "./with-user";
+import { createSizeChartRepository } from "./size-chart-repository";
+import { createWithApiRole, createWithUser } from "./with-user";
 import { createMeasurementSetRepository } from "./measurement-set-repository";
 
 const URL = loadDatabaseUrl() ?? "postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres";
@@ -27,7 +29,11 @@ const ctxOf = (userId: string): AuthContext => ({
 const withUser = createWithUser(URL);
 const clients = createClientRepository(withUser);
 const sets = createMeasurementSetRepository(withUser);
+const ADMIN = "00000000-0000-4000-8000-000000000004";
 const trial = ctxOf(TRIAL);
+const admin = { ...ctxOf(ADMIN), role: "admin" as const };
+const adminRepo = createAdminRepository(createWithApiRole(URL));
+const charts = createSizeChartRepository(withUser);
 const pro = ctxOf(PRO);
 const raw = postgres(URL, { prepare: false });
 const created: { clients: string[] } = { clients: [] };
@@ -126,6 +132,40 @@ describe("measurement sets repository on local Supabase", () => {
     expect((await sets.list(trial, { clientId: c.id, limit: 20, offset: 0 })).total).toBe(1);
     await clients.remove(trial, c.id);
     expect(await sets.get(trial, s.id)).toBeUndefined();
+  });
+});
+
+describe("admin repository on local Supabase", () => {
+  it("refuses a user who is not an admin in the database, however the token reads", async () => {
+    await expect(adminRepo.stats(TRIAL)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(adminRepo.list(TRIAL, { limit: 10, offset: 0 })).rejects.toMatchObject({
+      code: "FORBIDDEN",
+    });
+    await expect(adminRepo.get(TRIAL, PRO)).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("lists seed users with their e-mail and a client count, and reads one", async () => {
+    const page = await adminRepo.list(ADMIN, { q: "pro@tafsila", limit: 10, offset: 0 });
+    expect(page.items.map((u) => u.email)).toEqual(["pro@tafsila.test"]);
+    expect(page.total).toBe(1);
+    expect(await adminRepo.get(ADMIN, PRO)).toMatchObject({ id: PRO, role: "user" });
+    expect((await adminRepo.stats(ADMIN)).users).toBeGreaterThanOrEqual(4);
+  });
+});
+
+describe("size chart admin write on local Supabase", () => {
+  it("lets only an admin replace the default chart, writes an audit row, and can be restored", async () => {
+    const original = await charts.getDefaultRecord(admin);
+    expect(original).toBeDefined();
+    if (!original) return;
+    await expect(charts.replaceDefault(trial, { sizes: original.sizes })).rejects.toMatchObject({
+      code: "FORBIDDEN",
+    });
+    const saved = await charts.replaceDefault(admin, { name: "DB test chart", sizes: original.sizes });
+    expect(saved).toMatchObject({ name: "DB test chart", updatedBy: ADMIN });
+    expect((await charts.getDefault(trial))?.name).toBe("DB test chart");
+    await charts.replaceDefault(admin, { name: original.name, sizes: original.sizes });
+    expect((await charts.getDefault(trial))?.name).toBe(original.name);
   });
 });
 

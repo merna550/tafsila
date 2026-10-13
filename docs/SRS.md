@@ -308,7 +308,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-ADM-01 | Dashboard: signups, trials, conversions, revenue, AI cost per pattern, failed validations | M |
-| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices | M |
+| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens in #32 (Part B) | M |
 | FR-ADM-03 | View user designs (with consent flag) and unsupported-feature log | M |
 | FR-ADM-04 | Grant credits / refund | M |
 
@@ -478,7 +478,11 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | POST | `/api/billing/checkout` | Create Paymob payment intention for a product |
 | POST | `/api/billing/webhook` | Paymob callback (HMAC verified, idempotent) |
 | GET | `/api/me/credits` | Balance + plan |
-| — | `/api/admin/*` | Admin endpoints (role-guarded) |
+| GET | `/api/admin/stats` | Admin only: users, verified phones, sign-ups today and in 7 days, clients (ADR-32a) |
+| GET | `/api/admin/users` | Admin only: users newest first with `q` (name, e-mail, phone), `verified`, `limit`, `offset`; a client count, never measurements or notes |
+| GET | `/api/admin/users/:id` | Admin only: one user, read-only |
+| GET, PUT | `/api/admin/size-charts/default` | Admin only: read the default size chart with its last editor; replace it (every size checked by the engine, errors give 422 `SIZE_CHART_INVALID`, chart and audit row saved together) |
+| — | `/api/admin/*` (later) | Other admin endpoints (role-guarded) |
 
 Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal-reminder`, `files.cleanup`.
 

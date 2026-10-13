@@ -721,6 +721,71 @@
           "response": []
         },
         {
+          "name": "ERR GET /api/admin/stats without a token returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error code is UNAUTHENTICATED\", () => pm.expect(pm.response.json().code).to.eql(\"UNAUTHENTICATED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR GET /api/admin/users as a normal user returns 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error code is FORBIDDEN\", () => pm.expect(pm.response.json().code).to.eql(\"FORBIDDEN\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR GET /api/clients without a token returns 401",
           "event": [
             {
@@ -1186,6 +1251,52 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "ERR PUT /api/admin/size-charts/default as a normal user returns 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error code is FORBIDDEN\", () => pm.expect(pm.response.json().code).to.eql(\"FORBIDDEN\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sizes\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/size-charts/default",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "size-charts",
+                "default"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1379,7 +1490,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "2b61fd669734c007204b84514e161bd58005edc434734b8ec03e01f3dc6f19d6"
+    "_postman_id": "e7d64c9bc8e02faa7c2eb66848e900fc2281743dce9469c4c066233bbd619e09"
   },
   "auth": {
     "type": "bearer",

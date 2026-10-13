@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { getTableColumns } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 import { describe, expect, it } from "vitest";
-import { clients, measurementSets, profiles, sizeCharts } from "./schema";
+import { adminAudit, clients, measurementSets, profiles, sizeCharts } from "./schema";
 
 const TYPES = readFileSync(join(__dirname, "./database.types.ts"), "utf8");
 
@@ -48,6 +48,12 @@ describe("Drizzle schema mirror", () => {
   it("has the same columns as the generated Supabase types (size_charts)", () => {
     expect(drizzleColumns(sizeCharts).sort((a, b) => a.localeCompare(b))).toEqual(
       generatedColumns("size_charts").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (admin_audit)", () => {
+    expect(drizzleColumns(adminAudit).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("admin_audit").sort((a, b) => a.localeCompare(b)),
     );
   });
 

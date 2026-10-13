@@ -22,6 +22,10 @@ describe("OpenAPI document", () => {
     expect(doc.openapi).toBe("3.1.0");
     expect(Object.keys(doc.paths).sort((a, b) => a.localeCompare(b))).toEqual([
       "/api/account",
+      "/api/admin/size-charts/default",
+      "/api/admin/stats",
+      "/api/admin/users",
+      "/api/admin/users/{id}",
       "/api/clients",
       "/api/clients/{id}",
       "/api/debug/error",

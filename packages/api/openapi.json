@@ -118,6 +118,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -233,6 +236,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -306,6 +312,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -497,6 +506,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -570,6 +582,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -645,6 +660,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -718,6 +736,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -953,6 +974,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1027,6 +1051,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1100,6 +1127,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -1277,6 +1307,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1350,6 +1383,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -1425,6 +1461,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1498,6 +1537,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -1699,6 +1741,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1772,6 +1817,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -1847,6 +1895,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -1920,6 +1971,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -2023,6 +2077,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -2096,6 +2153,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -2171,6 +2231,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -2244,6 +2307,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -2695,6 +2761,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -2768,6 +2837,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -2843,6 +2915,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -2917,6 +2992,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -2990,6 +3068,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -3355,6 +3436,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -3429,6 +3513,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -3502,6 +3589,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -3812,6 +3902,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -3885,6 +3978,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -3960,6 +4056,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -4033,6 +4132,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -4490,6 +4592,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -4563,6 +4668,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -4638,6 +4746,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -4712,6 +4823,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -4785,6 +4899,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -4888,6 +5005,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -4961,6 +5081,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -5036,6 +5159,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -5109,6 +5235,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -5350,6 +5479,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -5424,6 +5556,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -5497,6 +5632,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -5617,6 +5755,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -5690,6 +5831,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -5827,6 +5971,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -5900,6 +6047,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -5975,6 +6125,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6048,6 +6201,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -6123,6 +6279,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6196,6 +6355,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -6339,6 +6501,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6412,6 +6577,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -6487,6 +6655,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6561,6 +6732,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6634,6 +6808,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -6765,6 +6942,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6839,6 +7019,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -6912,6 +7095,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -7072,6 +7258,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -7145,6 +7334,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -7220,6 +7412,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -7293,6 +7488,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -7410,6 +7608,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -7483,6 +7684,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -7558,6 +7762,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -7631,6 +7838,2624 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/stats": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Admin overview numbers (users, verified phones, sign-ups, clients)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The numbers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 42
+                    },
+                    "verifiedPhones": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 30
+                    },
+                    "signupsToday": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 2
+                    },
+                    "signupsLast7Days": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 9
+                    },
+                    "clients": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 120
+                    }
+                  },
+                  "required": [
+                    "users",
+                    "verifiedPhones",
+                    "signupsToday",
+                    "signupsLast7Days",
+                    "clients"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN: You do not have permission for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "List users (newest first) with search, verified filter and paging; a client count, never measurements or notes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "example": 20,
+              "description": "Page size, 1 to 100"
+            },
+            "required": false,
+            "description": "Page size, 1 to 100",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "default": 0,
+              "example": 0,
+              "description": "Rows to skip"
+            },
+            "required": false,
+            "description": "Rows to skip",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 100,
+              "example": "mona",
+              "description": "Search in name, e-mail and phone"
+            },
+            "required": false,
+            "description": "Search in name, e-mail and phone",
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "example": "true",
+              "description": "Only users with (true) or without (false) a verified phone"
+            },
+            "required": false,
+            "description": "Only users with (true) or without (false) a verified phone",
+            "name": "verified",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "00000000-0000-4000-8000-000000000001"
+                          },
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "منى أحمد"
+                          },
+                          "email": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "mona@example.com"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "+201000000001"
+                          },
+                          "phoneVerifiedAt": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "date-time",
+                            "example": "2026-10-11T10:00:00.000Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-10-11T10:00:00.000Z"
+                          },
+                          "lastSignInAt": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "date-time",
+                            "example": "2026-10-12T08:30:00.000Z"
+                          },
+                          "clientCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "example": 3
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "email",
+                          "phone",
+                          "phoneVerifiedAt",
+                          "createdAt",
+                          "lastSignInAt",
+                          "clientCount"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 25,
+                      "description": "Rows matching, before paging"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "example": 20
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "example": 0
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "total",
+                    "limit",
+                    "offset"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN: You do not have permission for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/users/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Read one user (read-only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-4000-8000-000000000001"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "00000000-0000-4000-8000-000000000001"
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "example": "منى أحمد"
+                    },
+                    "email": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "example": "mona@example.com"
+                    },
+                    "phone": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "example": "+201000000001"
+                    },
+                    "phoneVerifiedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time",
+                      "example": "2026-10-11T10:00:00.000Z"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2026-10-11T10:00:00.000Z"
+                    },
+                    "lastSignInAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time",
+                      "example": "2026-10-12T08:30:00.000Z"
+                    },
+                    "clientCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 3
+                    },
+                    "measurementSetCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "example": 5
+                    },
+                    "locale": {
+                      "type": "string",
+                      "enum": [
+                        "ar",
+                        "en"
+                      ],
+                      "example": "ar"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ],
+                      "example": "user"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "phoneVerifiedAt",
+                    "createdAt",
+                    "lastSignInAt",
+                    "clientCount",
+                    "measurementSetCount",
+                    "locale",
+                    "role"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN: You do not have permission for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND: Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/size-charts/default": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Read the default size chart with its last editor and the placeholder flag",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The chart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "00000000-0000-4000-8000-0000000000d1"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "Egyptian size chart"
+                    },
+                    "sizes": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm"
+                            ]
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "highBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "underBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hip": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hipDepth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "neck": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "shoulderWidth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "backLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "frontLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustPointDistance": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustHeight": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "armLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "upperArm": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "wrist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToKnee": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToFloor": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          }
+                        },
+                        "required": [
+                          "unit",
+                          "height",
+                          "bust",
+                          "highBust",
+                          "waist",
+                          "hip",
+                          "hipDepth",
+                          "neck",
+                          "shoulderWidth",
+                          "backLength",
+                          "frontLength",
+                          "bustPointDistance",
+                          "bustHeight",
+                          "armLength",
+                          "upperArm",
+                          "wrist",
+                          "waistToKnee",
+                          "waistToFloor"
+                        ]
+                      }
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time",
+                      "example": "2026-10-14T09:00:00.000Z"
+                    },
+                    "updatedBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "example": "Merna",
+                      "description": "Display name of the last editor; null when unknown"
+                    },
+                    "isPlaceholder": {
+                      "type": "boolean",
+                      "description": "True while the chart still holds demo values"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "sizes",
+                    "updatedAt",
+                    "updatedBy",
+                    "isPlaceholder"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN: You do not have permission for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SIZE_CHART_NOT_FOUND: No default size chart is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Replace the default size chart (every size is checked by the engine; chart and audit row are saved together)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "example": "Egyptian size chart"
+                  },
+                  "sizes": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "unit": {
+                          "type": "string",
+                          "enum": [
+                            "mm"
+                          ]
+                        },
+                        "height": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "bust": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "highBust": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "underBust": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "waist": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "hip": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "hipDepth": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "neck": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "shoulderWidth": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "backLength": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "frontLength": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "bustPointDistance": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "bustHeight": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "armLength": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "upperArm": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "wrist": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "waistToKnee": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        },
+                        "waistToFloor": {
+                          "type": "number",
+                          "minimum": 50,
+                          "maximum": 2500
+                        }
+                      },
+                      "required": [
+                        "unit",
+                        "height",
+                        "bust",
+                        "highBust",
+                        "waist",
+                        "hip",
+                        "hipDepth",
+                        "neck",
+                        "shoulderWidth",
+                        "backLength",
+                        "frontLength",
+                        "bustPointDistance",
+                        "bustHeight",
+                        "armLength",
+                        "upperArm",
+                        "wrist",
+                        "waistToKnee",
+                        "waistToFloor"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "sizes"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The saved chart and its warnings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "00000000-0000-4000-8000-0000000000d1"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "Egyptian size chart"
+                    },
+                    "sizes": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm"
+                            ]
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "highBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "underBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hip": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hipDepth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "neck": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "shoulderWidth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "backLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "frontLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustPointDistance": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustHeight": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "armLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "upperArm": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "wrist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToKnee": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToFloor": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          }
+                        },
+                        "required": [
+                          "unit",
+                          "height",
+                          "bust",
+                          "highBust",
+                          "waist",
+                          "hip",
+                          "hipDepth",
+                          "neck",
+                          "shoulderWidth",
+                          "backLength",
+                          "frontLength",
+                          "bustPointDistance",
+                          "bustHeight",
+                          "armLength",
+                          "upperArm",
+                          "wrist",
+                          "waistToKnee",
+                          "waistToFloor"
+                        ]
+                      }
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time",
+                      "example": "2026-10-14T09:00:00.000Z"
+                    },
+                    "updatedBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "example": "Merna",
+                      "description": "Display name of the last editor; null when unknown"
+                    },
+                    "isPlaceholder": {
+                      "type": "boolean",
+                      "description": "True while the chart still holds demo values"
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "example": "MEAS_WAIST_NOT_BELOW_HIP"
+                          },
+                          "fields": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "example": [
+                              "waist",
+                              "hip"
+                            ]
+                          },
+                          "message_ar": {
+                            "type": "string"
+                          },
+                          "message_en": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "string",
+                            "example": "M"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "fields",
+                          "message_ar",
+                          "message_en",
+                          "size"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "sizes",
+                    "updatedAt",
+                    "updatedBy",
+                    "isPlaceholder",
+                    "warnings"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN: You do not have permission for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SIZE_CHART_NOT_FOUND: No default size chart is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "SIZE_CHART_INVALID: The size chart has impossible values, check the highlighted cells",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },
@@ -7727,6 +10552,9 @@
                               },
                               "message_en": {
                                 "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
                               }
                             },
                             "required": [
@@ -7800,6 +10628,9 @@
                                 "type": "string"
                               },
                               "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
                                 "type": "string"
                               }
                             },

@@ -21,6 +21,7 @@ export const apiErrorBodySchema = z.object({
             fields: z.array(z.string()),
             message_ar: z.string(),
             message_en: z.string(),
+            size: z.string().optional(),
           }),
         )
         .optional(),

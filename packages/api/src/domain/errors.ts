@@ -117,6 +117,11 @@ export const ERROR_CATALOGUE = {
     messageAr: "لا يمكن حذف حساب المشرف من التطبيق",
     messageEn: "An admin account cannot be deleted from the app",
   },
+  SIZE_CHART_INVALID: {
+    status: 422,
+    messageAr: "جدول المقاسات فيه قيم غير منطقية، راجعي الخانات المحددة",
+    messageEn: "The size chart has impossible values, check the highlighted cells",
+  },
   RATE_LIMITED: {
     status: 429,
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",
@@ -137,7 +142,7 @@ export interface ErrorDetails {
   /** Field path (e.g. "chest_mm") to the message to show under that field. */
   readonly fields?: Readonly<Record<string, string>>;
   /** Bilingual measurement problems from the engine (MEASUREMENTS_INVALID), so the UI picks the language. */
-  readonly issues?: readonly MeasurementIssueDto[];
+  readonly issues?: readonly (MeasurementIssueDto & { readonly size?: string })[];
   /** Seconds until the caller may try again (429 phone codes); also sent as the Retry-After header. */
   readonly retryAfterSeconds?: number;
 }
@@ -218,5 +223,20 @@ export class MeasurementsInvalidError extends AppError {
     const fields: Record<string, string> = {};
     for (const issue of issues) for (const field of issue.fields) fields[field] ??= issue.message_en;
     super("MEASUREMENTS_INVALID", { details: { fields, issues } });
+  }
+}
+
+/** Raised when a size in the admin's chart has impossible measurements; the chart is not saved. */
+export class SizeChartInvalidError extends AppError {
+  /**
+   * Creates the error from the blocking issues of every size.
+   *
+   * @param issues - Blocking issues, each tagged with its size label.
+   */
+  constructor(issues: readonly (MeasurementIssueDto & { readonly size: string })[]) {
+    const fields: Record<string, string> = {};
+    for (const issue of issues)
+      for (const field of issue.fields) fields[`${issue.size}.${field}`] ??= issue.message_en;
+    super("SIZE_CHART_INVALID", { details: { fields, issues } });
   }
 }
