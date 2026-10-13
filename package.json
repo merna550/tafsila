@@ -1,7 +1,7 @@
 {
   "name": "tafsila",
   "private": true,
-  "description": "Tafsila (\u062a\u0641\u0635\u064a\u0644\u0629): photo-to-sewing-pattern web app",
+  "description": "Tafsila (تفصيلة): photo-to-sewing-pattern web app",
   "packageManager": "pnpm@10.34.6",
   "engines": {
     "node": ">=22.22.2 <23",
@@ -38,7 +38,8 @@
     "api:openapi": "pnpm --filter @tafsila/api openapi",
     "api:postman": "node scripts/gen-postman.mjs",
     "api:check": "node scripts/api-check.mjs",
-    "api:test": "node scripts/api-test.mjs"
+    "api:test": "node scripts/api-test.mjs",
+    "gen": "node scripts/gen.mjs"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,cjs}": [
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@turbo/gen": "^2.11.8",
     "@types/node": "^22.20.5",
     "dependency-cruiser": "^18.5.0",
     "eslint": "^10.12.0",

@@ -1,0 +1,27 @@
+/** The contract every garment feature module implements (SRS section 6.1). NEXT(#{{issue}}): replaced by the M2 block-drafting contract (#122) when it lands. */
+import type { DesignSpec, Measurements } from "@tafsila/schemas";
+import type { Point } from "../geometry/point";
+
+/** One closed or open outline a module contributes, in millimetres. */
+export type Outline = readonly Point[];
+
+/** A pure garment feature: decides whether a design uses it and drafts its outlines from measurements. */
+export interface FeatureModule {
+  /** Stable id, kebab-case. */
+  readonly id: string;
+  /**
+   * Tells whether the design uses this feature.
+   *
+   * @param spec - The validated design.
+   * @returns True when the module must draft.
+   */
+  appliesTo(spec: DesignSpec): boolean;
+  /**
+   * Drafts the feature's outlines. Pure: same input, same output.
+   *
+   * @param spec - The validated design.
+   * @param measurements - Body measurements in mm.
+   * @returns The outlines, in mm.
+   */
+  draft(spec: DesignSpec, measurements: Measurements): readonly Outline[];
+}

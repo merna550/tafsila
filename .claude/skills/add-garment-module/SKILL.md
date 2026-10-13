@@ -7,6 +7,7 @@ description: Add a garment feature to the pattern engine (DesignSpec enum → Fe
 
 Read `packages/engine/CLAUDE.md`, `docs/engine/README.md` and `docs/backend/tutorials/add-garment-module.md` first. Geometry work needs a `plan:opus` plan. The engine rules are in `.claude/rules/engine/drafting.md`; the engine is pure TypeScript (no I/O, no React, no `fetch`).
 
+0. **Generate the skeleton first:** `pnpm gen garment-module <name> <issue>` creates `packages/engine/src/modules/<name>.ts` (a `FeatureModule`), `<name>-validation.ts`, a test with a fast-check property and the test-case file (plus the shared `feature-module.ts` once). Replace the `NEXT(#issue)` placeholders; the M2 block-drafting contract (#122) will replace the placeholder `FeatureModule` type.
 1. **Spec:** extend the `DesignSpec` enum in `packages/schemas` and the catalogue in SRS §6.1. Include the Arabic name and an option card image.
 2. **Method:** write down the drafting method and its source in the plan and in the module's JSDoc. Add any new constants to `packages/engine/src/constants/` in mm.
 3. **Module:** implement a pure `FeatureModule` (`id`, `appliesTo`, `draft`) that reuses blocks and `src/geometry/`. Register it in the module registry. The web app calls the engine only from `model/` or a Web Worker, never from `components/`.

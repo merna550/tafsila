@@ -1,0 +1,60 @@
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { beforeAll, describe, expect, it } from "vitest";
+import { createMemory{{pascalCase name}}Repository } from "../adapters/memory/{{kebabCase name}}-repository";
+import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
+import { createJwksTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
+import { createErrorHandler } from "../middleware/error-handler";
+import { requestId, type AppEnv } from "../middleware/request-id";
+import { createTestAuthKeys, TEST_SUPABASE_URL, type TestAuthKeys } from "../test-support/auth-keys";
+import { USER_A, USER_B } from "../test-support/memory-app";
+import { {{camelCase name}}Routes } from "./{{kebabCase name}}s";
+
+let keys: TestAuthKeys;
+let app: OpenAPIHono<AppEnv>;
+
+beforeAll(async () => {
+  keys = await createTestAuthKeys();
+  const tokenVerifier = createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys });
+  app = new OpenAPIHono<AppEnv>();
+  app.use(requestId());
+  app.route("/", {{camelCase name}}Routes({ tokenVerifier, {{camelCase name}}s: createMemory{{pascalCase name}}Repository() }));
+  app.onError(createErrorHandler(createNoopErrorReporter()));
+});
+
+/**
+ * Sends one request as a user.
+ *
+ * @param userId - Caller id, or undefined for no token.
+ * @param method - HTTP method.
+ * @param path - Route path.
+ * @param body - JSON body, if any.
+ * @returns The response.
+ */
+async function call(userId: string | undefined, method: string, path: string, body?: unknown) {
+  const headers: Record<string, string> = body === undefined ? {} : { "content-type": "application/json" };
+  if (userId) headers.authorization = `Bearer ${await keys.sign({ sub: userId })}`;
+  return app.request(path, { method, headers, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+}
+
+describe("{{kebabCase name}}s API", () => {
+  it("creates and reads a {{kebabCase name}}", async () => {
+    const created = await call(USER_A, "POST", "/{{kebabCase name}}s", { name: "Example" });
+    expect(created.status).toBe(201);
+    const { id } = (await created.json()) as { id: string };
+    expect((await call(USER_A, "GET", `/{{kebabCase name}}s/${id}`)).status).toBe(200);
+  });
+
+  it("answers 401 without a token", async () => {
+    expect((await call(undefined, "POST", "/{{kebabCase name}}s", { name: "Example" })).status).toBe(401);
+  });
+
+  it("answers 400 for an empty name", async () => {
+    expect((await call(USER_A, "POST", "/{{kebabCase name}}s", { name: "" })).status).toBe(400);
+  });
+
+  it("answers 404 for another user's {{kebabCase name}}", async () => {
+    const created = await call(USER_A, "POST", "/{{kebabCase name}}s", { name: "Example" });
+    const { id } = (await created.json()) as { id: string };
+    expect((await call(USER_B, "GET", `/{{kebabCase name}}s/${id}`)).status).toBe(404);
+  });
+});

@@ -1,0 +1,23 @@
+/** {{pascalCase name}} repository port: stores the signed-in user's {{kebabCase name}}s. Every method acts for `ctx` only. */
+import type { {{pascalCase name}}, Create{{pascalCase name}}Input } from "@tafsila/schemas";
+import type { AuthContext } from "./token-verifier";
+
+/** Stores and reads the caller's {{kebabCase name}}s. Another user's row behaves as if it did not exist. */
+export interface {{pascalCase name}}Repository {
+  /**
+   * Creates a {{kebabCase name}} owned by the caller.
+   *
+   * @param ctx - Verified caller.
+   * @param input - Validated fields.
+   * @returns The stored {{kebabCase name}}.
+   */
+  create(ctx: AuthContext, input: Create{{pascalCase name}}Input): Promise<{{pascalCase name}}>;
+  /**
+   * Reads one {{kebabCase name}}.
+   *
+   * @param ctx - Verified caller.
+   * @param id - Row id.
+   * @returns The {{kebabCase name}}, or undefined when missing or not the caller's.
+   */
+  get(ctx: AuthContext, id: string): Promise<{{pascalCase name}} | undefined>;
+}

@@ -1,0 +1,81 @@
+/** {{pascalCase name}} routes: create and read the signed-in user's {{kebabCase name}}s. NEXT(#{{issue}}): add list/update/delete, mount in app.ts, add `{{camelCase name}}s` to the Container. */
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
+import { create{{pascalCase name}}InputSchema, {{camelCase name}}Schema } from "@tafsila/schemas";
+import { requireAuth, type AuthedEnv } from "../middleware/auth";
+import { errorResponses } from "../openapi/responses";
+import { HTTP_CREATED, HTTP_OK } from "../openapi/status";
+import type { {{pascalCase name}}Repository } from "../ports/{{kebabCase name}}-repository";
+import type { TokenVerifier } from "../ports/token-verifier";
+import { create{{pascalCase name}} } from "../services/create-{{kebabCase name}}";
+import { get{{pascalCase name}} } from "../services/get-{{kebabCase name}}";
+import { jsonContent } from "./json-content";
+
+/** What these routes need from the Container. */
+export interface {{pascalCase name}}RouteDeps {
+  readonly tokenVerifier: TokenVerifier;
+  readonly {{camelCase name}}s: {{pascalCase name}}Repository;
+}
+
+/** Path parameter of the routes that address one {{kebabCase name}}. */
+const idParams = z.object({ id: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000a1" }) });
+
+/** Bearer security requirement shared by every route here. */
+const SECURITY = [{ bearerAuth: [] }];
+
+/**
+ * Describes POST /{{kebabCase name}}s.
+ *
+ * @param deps - Dependencies (token verifier).
+ * @returns The route definition.
+ */
+const createRouteDef = (deps: {{pascalCase name}}RouteDeps) =>
+  createRoute({
+    method: "post",
+    path: "/{{kebabCase name}}s",
+    tags: ["{{kebabCase name}}s"],
+    summary: "Create a {{kebabCase name}}",
+    security: SECURITY,
+    middleware: [requireAuth(deps.tokenVerifier)] as const,
+    request: { body: { ...jsonContent(create{{pascalCase name}}InputSchema), required: true } },
+    responses: {
+      [HTTP_CREATED]: { description: "The new {{kebabCase name}}", ...jsonContent({{camelCase name}}Schema) },
+      ...errorResponses("VALIDATION_FAILED", "UNAUTHENTICATED", "INTERNAL_ERROR"),
+    },
+  });
+
+/**
+ * Describes GET /{{kebabCase name}}s/{id}.
+ *
+ * @param deps - Dependencies (token verifier).
+ * @returns The route definition.
+ */
+const getRouteDef = (deps: {{pascalCase name}}RouteDeps) =>
+  createRoute({
+    method: "get",
+    path: "/{{kebabCase name}}s/{id}",
+    tags: ["{{kebabCase name}}s"],
+    summary: "Read one {{kebabCase name}}",
+    security: SECURITY,
+    middleware: [requireAuth(deps.tokenVerifier)] as const,
+    request: { params: idParams },
+    responses: {
+      [HTTP_OK]: { description: "The {{kebabCase name}}", ...jsonContent({{camelCase name}}Schema) },
+      ...errorResponses("VALIDATION_FAILED", "UNAUTHENTICATED", "NOT_FOUND", "INTERNAL_ERROR"),
+    },
+  });
+
+/**
+ * Creates the /{{kebabCase name}}s routes behind requireAuth.
+ *
+ * @param deps - Dependencies (token verifier, {{kebabCase name}} repository).
+ * @returns A sub-app serving the {{kebabCase name}} routes.
+ */
+export function {{camelCase name}}Routes(deps: {{pascalCase name}}RouteDeps): OpenAPIHono<AuthedEnv> {
+  return new OpenAPIHono<AuthedEnv>()
+    .openapi(createRouteDef(deps), async (c) =>
+      c.json(await create{{pascalCase name}}(deps, c.get("auth"), c.req.valid("json")), HTTP_CREATED),
+    )
+    .openapi(getRouteDef(deps), async (c) =>
+      c.json(await get{{pascalCase name}}(deps, c.get("auth"), c.req.valid("param").id), HTTP_OK),
+    );
+}

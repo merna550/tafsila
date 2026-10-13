@@ -1,0 +1,14 @@
+/** Heading of the {{kebabCase name}} screen. NEXT(#{{issue}}): build the real screen from packages/ui components and the design in docs/design/screens. */
+import { PageHeader } from "@tafsila/ui";
+import { useTranslations } from "next-intl";
+import type { ReactElement } from "react";
+
+/**
+ * Renders the page header.
+ *
+ * @returns The header with the translated title.
+ */
+export function {{pascalCase name}}Heading(): ReactElement {
+  const t = useTranslations("{{camelCase name}}");
+  return <PageHeader title={t("title")} />;
+}

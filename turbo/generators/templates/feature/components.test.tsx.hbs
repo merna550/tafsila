@@ -1,0 +1,10 @@
+import { describe, expect, it } from "vitest";
+import { MESSAGES, renderWithIntl } from "@/shared/i18n/testing";
+import { {{pascalCase name}}Heading } from "./{{pascalCase name}}Heading";
+
+describe("{{pascalCase name}}Heading", () => {
+  it("shows the title in Arabic and in English", () => {
+    expect(renderWithIntl(<{{pascalCase name}}Heading />, "ar")).toContain(MESSAGES.ar.{{camelCase name}}.title);
+    expect(renderWithIntl(<{{pascalCase name}}Heading />, "en")).toContain(MESSAGES.en.{{camelCase name}}.title);
+  });
+});

@@ -1,5 +1,6 @@
 # Add an API endpoint
 
+0. **Generate the files:** `pnpm gen endpoint <name> <issue>` (kebab-case, singular, for example `garment-note 40`). It creates the schema, port, memory adapter, create/get services, route, tests and test-case file, already formatted, and prints what is left: wire the Container and `app.ts`, add the Supabase adapter, regenerate OpenAPI and Postman, update the SRS. Placeholders are marked `NEXT(#issue)`.
 1. **Contract:** add request/response Zod schemas with `.openapi({ example })` in `packages/schemas`. Examples feed Postman and API docs.
 2. **Service:** one use case per file in `packages/api/src/services/<action>.ts`, depending only on interfaces in `packages/api/src/ports/`.
 3. **Adapter:** DB/storage/payment/AI calls in `packages/api/src/adapters/<vendor>/` (plus a `memory/` fake), wired in `container.ts`; never call Supabase or Paymob from services directly. For a database table, follow the repository pattern below.

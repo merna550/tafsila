@@ -1,0 +1,47 @@
+/** In-memory {{kebabCase name}} repository for tests; filters by owner exactly as RLS does. NEXT(#{{issue}}): add the Supabase adapter and wire both in container.ts. */
+import type { {{pascalCase name}} } from "@tafsila/schemas";
+import type { {{pascalCase name}}Repository } from "../../ports/{{kebabCase name}}-repository";
+import type { MemoryOptions } from "./memory-store";
+
+/** A stored row: the public {{kebabCase name}} plus its owner. */
+interface {{pascalCase name}}Row extends {{pascalCase name}} {
+  readonly ownerId: string;
+}
+
+/**
+ * Removes the owner from a row.
+ *
+ * @param row - Stored row.
+ * @returns The public {{kebabCase name}}.
+ */
+function toPublic(row: {{pascalCase name}}Row): {{pascalCase name}} {
+  return { id: row.id, name: row.name, createdAt: row.createdAt };
+}
+
+/**
+ * Creates the in-memory {{kebabCase name}} repository.
+ *
+ * @param options - Time and id sources.
+ * @returns A {{pascalCase name}}Repository with its own empty table.
+ */
+export function createMemory{{pascalCase name}}Repository(options: MemoryOptions = {}): {{pascalCase name}}Repository {
+  const now = options.now ?? (() => new Date());
+  const newId = options.newId ?? (() => crypto.randomUUID());
+  const rows: {{pascalCase name}}Row[] = [];
+  return {
+    create(ctx, input) {
+      const row: {{pascalCase name}}Row = {
+        id: newId(),
+        ownerId: ctx.userId,
+        name: input.name,
+        createdAt: now().toISOString(),
+      };
+      rows.push(row);
+      return Promise.resolve(toPublic(row));
+    },
+    get(ctx, id) {
+      const row = rows.find((existing) => existing.ownerId === ctx.userId && existing.id === id);
+      return Promise.resolve(row ? toPublic(row) : undefined);
+    },
+  };
+}

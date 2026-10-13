@@ -1,0 +1,21 @@
+/** {{pascalCase name}} contract for /api/{{kebabCase name}}s. NEXT(#{{issue}}): replace the placeholder fields and add the SRS requirement ID. */
+import { z } from "zod";
+
+/** Longest {{kebabCase name}} name accepted. */
+const MAX_NAME_LENGTH = 120;
+
+/** A {{kebabCase name}} as the API returns it. */
+export const {{camelCase name}}Schema = z.object({
+  id: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000a1" }),
+  name: z.string().trim().min(1).max(MAX_NAME_LENGTH).meta({ example: "Example" }),
+  createdAt: z.iso.datetime().meta({ example: "2026-10-11T10:00:00.000Z" }),
+});
+
+/** Parsed {{kebabCase name}}. */
+export type {{pascalCase name}} = z.infer<typeof {{camelCase name}}Schema>;
+
+/** Body of POST /api/{{kebabCase name}}s. */
+export const create{{pascalCase name}}InputSchema = {{camelCase name}}Schema.pick({ name: true });
+
+/** Parsed create-{{kebabCase name}} body. */
+export type Create{{pascalCase name}}Input = z.infer<typeof create{{pascalCase name}}InputSchema>;

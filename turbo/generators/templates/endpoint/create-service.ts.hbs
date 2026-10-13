@@ -1,0 +1,25 @@
+/** Use case: create a {{kebabCase name}}. NEXT(#{{issue}}): add the business rules (plan limit, duplicates). */
+import type { {{pascalCase name}}, Create{{pascalCase name}}Input } from "@tafsila/schemas";
+import type { {{pascalCase name}}Repository } from "../ports/{{kebabCase name}}-repository";
+import type { AuthContext } from "../ports/token-verifier";
+
+/** Ports this use case needs. */
+export interface Create{{pascalCase name}}Deps {
+  readonly {{camelCase name}}s: {{pascalCase name}}Repository;
+}
+
+/**
+ * Creates a {{kebabCase name}} for the caller.
+ *
+ * @param deps - {{pascalCase name}} repository.
+ * @param ctx - Verified caller.
+ * @param input - Validated fields.
+ * @returns The stored {{kebabCase name}}.
+ */
+export function create{{pascalCase name}}(
+  deps: Create{{pascalCase name}}Deps,
+  ctx: AuthContext,
+  input: Create{{pascalCase name}}Input,
+): Promise<{{pascalCase name}}> {
+  return deps.{{camelCase name}}s.create(ctx, input);
+}

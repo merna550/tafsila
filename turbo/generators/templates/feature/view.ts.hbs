@@ -1,0 +1,18 @@
+/** View model of the {{kebabCase name}} feature: pure TypeScript, no React. NEXT(#{{issue}}): replace the placeholder fields. */
+import { z } from "zod";
+
+/** What the screen needs to show about one {{kebabCase name}}. */
+export const {{camelCase name}}ViewSchema = z.object({ id: z.string(), name: z.string() });
+
+/** Parsed {{kebabCase name}} view. */
+export type {{pascalCase name}}View = z.infer<typeof {{camelCase name}}ViewSchema>;
+
+/**
+ * Builds the text shown as the card title.
+ *
+ * @param view - The {{kebabCase name}}.
+ * @returns The trimmed name.
+ */
+export function titleOf(view: {{pascalCase name}}View): string {
+  return view.name.trim();
+}
