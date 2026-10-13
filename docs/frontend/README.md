@@ -107,3 +107,7 @@ The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 | Data access behind the API (ADR-035)                                   | [DECISIONS.md](../DECISIONS.md) (ADR-035)               |
 
 Rules v2: [components](../../.claude/rules/frontend/components.md) · [layering](../../.claude/rules/frontend/layering.md) · [error display](../../.claude/rules/frontend/error-display.md) · [RTL and i18n](../../.claude/rules/frontend/rtl-i18n.md) · [state and forms](../../.claude/rules/frontend/state-and-forms.md). Components and their screenshots: [design-system.md](design-system.md); error catalogue: [errors.md](../errors.md).
+
+## Settings feature (`features/settings`)
+
+`/settings` has three cards (account, display, delete account) and a sign-out link. The language toggle calls `router.replace(pathname, { locale })` and saves `locale` to the profile in the background (`useSwitchLanguage`); the URL and the `NEXT_LOCALE` cookie make the choice stick on this device. Account deletion (`useDeleteAccount`) calls `DELETE /api/account`, clears the local session (`clearLocalSession` in `shared/auth`) and opens the home page with `?account=deleted`, where `AccountDeletedNotice` shows a toast once.

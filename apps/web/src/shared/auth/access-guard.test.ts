@@ -37,6 +37,18 @@ describe("decideAccess", () => {
     expect(decideAccess("/clients", "", true)).toEqual({ action: "allow" });
   });
 
+  it("guards /settings in both languages", () => {
+    expect(decideAccess("/settings", "", false)).toEqual({
+      action: "redirect",
+      to: "/sign-in?next=%2Fsettings",
+    });
+    expect(decideAccess("/en/settings", "", false)).toEqual({
+      action: "redirect",
+      to: "/en/sign-in?next=%2Fen%2Fsettings",
+    });
+    expect(decideAccess("/settings", "", true)).toEqual({ action: "allow" });
+  });
+
   it("allows a signed-in user on /dashboard", () => {
     expect(decideAccess("/dashboard", "", true)).toEqual({ action: "allow" });
   });
