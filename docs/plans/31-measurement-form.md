@@ -73,3 +73,7 @@ One issue, two PRs ("Part of #31", then "Closes #31"), so each fits one build ru
 ## Labels
 
 `size:M` → `size:L` (two parts). `plan:sonnet`, `build:sonnet` kept. `scripts/needs-interactive.mjs`: no. Status stays `status:plan-review` until Merna approves.
+
+## Build notes (Part B)
+
+Deviations decided while building are in [decision 31b](../decisions/31b-measurement-screens.md): placeholder art is one component plus `guide-marks.json` (not 18 `.svg` files), the start mode uses the existing underline `Tabs`, and a server 422 shows the standard toast.

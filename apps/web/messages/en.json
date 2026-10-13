@@ -150,6 +150,242 @@
     "settings": "Settings"
   },
   "measurements": {
+    "unit": "cm",
+    "labels": {
+      "bust": "Bust",
+      "highBust": "High bust",
+      "underBust": "Under bust",
+      "waist": "Waist",
+      "hip": "Hip",
+      "neck": "Neck",
+      "shoulderWidth": "Shoulder width",
+      "bustPointDistance": "Bust point distance",
+      "bustHeight": "Bust height",
+      "armLength": "Arm length",
+      "upperArm": "Upper arm",
+      "wrist": "Wrist",
+      "height": "Height",
+      "backLength": "Back length",
+      "frontLength": "Front length",
+      "hipDepth": "Hip depth",
+      "waistToKnee": "Waist to knee",
+      "waistToFloor": "Waist to floor"
+    },
+    "optional": "optional",
+    "title": {
+      "new": "New measurements for {name}",
+      "edit": "Edit measurements for {name}"
+    },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "new": "New measurements",
+      "edit": "Edit measurements"
+    },
+    "setLabel": {
+      "label": "Set name",
+      "placeholder": "Summer 2026"
+    },
+    "mode": {
+      "label": "How to enter",
+      "size": "From a standard size",
+      "custom": "Custom measurements",
+      "customHint": "You enter every measurement yourself; none is taken from a standard size."
+    },
+    "sizes": {
+      "label": "Base size",
+      "hint": "Change any measurement that differs for the client; the rest stay from {size}.",
+      "pick": "Pick a size to fill the measurements, then adjust what you need.",
+      "chart": "Size chart: {name}"
+    },
+    "groups": {
+      "upperBody": "Upper body",
+      "arms": "Arms",
+      "lengths": "Lengths",
+      "summarySize": "{count} measurements from {size}",
+      "summaryCustom": "{count} measurements",
+      "expand": "Show measurements",
+      "collapse": "Hide measurements"
+    },
+    "field": {
+      "adjusted": "adjusted",
+      "reset": "Reset to {size} ({value})",
+      "guide": "How do I measure?",
+      "guideFor": "How to measure: {field}",
+      "warning": "Warning",
+      "error": "Error"
+    },
+    "errors": {
+      "required": "Enter this measurement",
+      "notANumber": "Enter a number in cm, such as 92 or 92.5",
+      "tooManyDecimals": "One decimal is enough, such as 92.5",
+      "labelRequired": "Enter a name for the set",
+      "labelTooLong": "The name is longer than 120 characters"
+    },
+    "tips": {
+      "title": "Measuring tips",
+      "illustration": "Illustration of the body and where to measure",
+      "one": "Measure over light clothes.",
+      "two": "Keep the tape snug without pressing on the body.",
+      "three": "The client stands straight and relaxed."
+    },
+    "save": {
+      "submit": "Save measurements",
+      "cancel": "Cancel",
+      "errors": "{count, plural, one {Fix 1 error before saving} other {Fix # errors before saving}}",
+      "incomplete": "Fill in the required measurements before saving",
+      "saved": "Measurements saved"
+    },
+    "guide": {
+      "close": "Close",
+      "done": "Got it",
+      "next": "Next measurement",
+      "illustration": "Illustration of where to measure",
+      "bust": {
+        "steps": [
+          "The client stands relaxed, arms down.",
+          "Wrap the tape around the fullest part of the bust.",
+          "Keep the tape parallel to the floor, front and back.",
+          "Read the number while she breathes normally."
+        ],
+        "warning": "A tape pulled tight gives a smaller size, and the pattern comes out too narrow."
+      },
+      "highBust": {
+        "steps": [
+          "Wrap the tape around the chest just above the bust and under the armpits.",
+          "The tape crosses the shoulder blades at the back.",
+          "Keep the tape parallel to the floor."
+        ],
+        "warning": "This must be smaller than the bust measurement."
+      },
+      "underBust": {
+        "steps": [
+          "Wrap the tape around the ribcage right under the bust.",
+          "Snug but not pressing, parallel to the floor.",
+          "This measurement is optional; it helps with dresses fitted under the bust."
+        ],
+        "warning": "Do not let the tape sag at the back."
+      },
+      "waist": {
+        "steps": [
+          "Find the narrowest part of the torso, usually above the navel.",
+          "Wrap the tape around the waist without pulling.",
+          "She breathes normally and does not hold in her stomach."
+        ],
+        "warning": "A waist taken too low makes the pattern too long."
+      },
+      "hip": {
+        "steps": [
+          "The client stands with feet together.",
+          "Wrap the tape around the fullest part of the hips.",
+          "Keep the tape parallel to the floor all the way round."
+        ],
+        "warning": "Measure over light clothes that add no volume."
+      },
+      "neck": {
+        "steps": [
+          "Wrap the tape around the base of the neck.",
+          "It runs from below the throat to the bone that sticks out at the back.",
+          "Leave one finger of room between the tape and the neck."
+        ],
+        "warning": "A tight tape gives a neckline that is too small."
+      },
+      "shoulderWidth": {
+        "steps": [
+          "Measure from behind while she stands straight.",
+          "Start at the tip of one shoulder and end at the tip of the other.",
+          "The tape passes over the bone at the base of the neck."
+        ],
+        "warning": "Measure to the shoulder tip, not down the arm."
+      },
+      "bustPointDistance": {
+        "steps": [
+          "Mark the highest point of each breast.",
+          "Measure the straight distance between the two marks.",
+          "Keep the tape level without pressing on the chest."
+        ],
+        "warning": "Measure over a suitable bra."
+      },
+      "bustHeight": {
+        "steps": [
+          "Find the highest point of the breast.",
+          "Measure from the top of the shoulder at the base of the neck down to that point.",
+          "Keep the tape straight, not slanted."
+        ],
+        "warning": "Her usual bra gives a more accurate number."
+      },
+      "armLength": {
+        "steps": [
+          "The arm hangs by the body with a slight bend at the elbow.",
+          "Measure from the shoulder tip over the elbow to the wrist bone.",
+          "Keep the tape laid flat along the arm."
+        ],
+        "warning": "Bending the arm sharply shortens the measurement."
+      },
+      "upperArm": {
+        "steps": [
+          "The arm hangs relaxed by the body.",
+          "Wrap the tape around the fullest part of the upper arm.",
+          "Snug but not pressing."
+        ],
+        "warning": "The tape must not squeeze the arm."
+      },
+      "wrist": {
+        "steps": [
+          "Wrap the tape around the wrist bone.",
+          "Leave one finger of room for comfort.",
+          "Keep the hand flat."
+        ],
+        "warning": "If the sleeve must pass over the hand, measure around the hand too."
+      },
+      "height": {
+        "steps": [
+          "The client stands without shoes, back against a wall.",
+          "Measure from the top of the head to the floor.",
+          "She looks straight ahead with the chin level."
+        ],
+        "warning": "Measure without shoes so the height is not inflated."
+      },
+      "backLength": {
+        "steps": [
+          "Start at the bone that sticks out at the base of the neck.",
+          "Run the tape down the spine to the waistline.",
+          "The client stands straight."
+        ],
+        "warning": "The waistline is the narrowest point, not the waistband."
+      },
+      "frontLength": {
+        "steps": [
+          "Start at the top of the shoulder at the base of the neck.",
+          "Run the tape over the highest point of the bust down to the waistline.",
+          "Keep the tape laid flat on the body."
+        ],
+        "warning": "This is usually longer than the back length."
+      },
+      "hipDepth": {
+        "steps": [
+          "Mark the waistline and the fullest part of the hips.",
+          "Measure straight down the side between the two.",
+          "The client stands straight."
+        ],
+        "warning": "Measure at the side, not at the front."
+      },
+      "waistToKnee": {
+        "steps": [
+          "Mark the waistline at the side.",
+          "Measure straight down to the middle of the knee.",
+          "The client stands with feet parallel."
+        ],
+        "warning": "Keep the tape vertical, with no curve."
+      },
+      "waistToFloor": {
+        "steps": [
+          "Mark the waistline at the side.",
+          "Measure straight down to the floor.",
+          "The client stands without shoes."
+        ],
+        "warning": "Measure without shoes, and add the heel height if needed."
+      }
+    },
     "fields": {
       "bust": "Bust",
       "waist": "Waist",
