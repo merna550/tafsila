@@ -11,6 +11,35 @@ export interface SetRow extends Omit<MeasurementSet, "warnings"> {
   readonly ownerId: string;
 }
 
+/** A system size chart row with its edit trail (absent until an admin saves it). */
+export interface ChartRow extends SizeChartResponse {
+  readonly updatedAt?: string;
+  readonly updatedBy?: string | null;
+}
+
+/** A user as the admin list sees it: the profile row plus the sign-in data of auth.users. */
+export interface UserRow {
+  readonly id: string;
+  readonly name: string | null;
+  readonly email: string | null;
+  readonly phone: string | null;
+  readonly phoneVerifiedAt: string | null;
+  readonly createdAt: string;
+  readonly lastSignInAt: string | null;
+  readonly locale: "ar" | "en";
+  readonly role: "user" | "admin";
+}
+
+/** One row of admin_audit. */
+export interface AuditRow {
+  readonly who: string;
+  readonly action: string;
+  readonly target: string;
+  readonly before: unknown;
+  readonly after: unknown;
+  readonly at: string;
+}
+
 /** The fake database. */
 export interface MemoryStore {
   /** Client rows in insertion order. */
@@ -18,7 +47,11 @@ export interface MemoryStore {
   /** Measurement set rows in insertion order. */
   sets: SetRow[];
   /** System size charts; the first default one is served. */
-  sizeCharts: SizeChartResponse[];
+  sizeCharts: ChartRow[];
+  /** Users the admin screens list (the fake of profiles joined with auth.users); an admin check reads `role` here. */
+  users: UserRow[];
+  /** Rows written to admin_audit, oldest first. */
+  audit: AuditRow[];
   /** Profile rows by user id; a missing row means the account does not exist (or was deleted). */
   profiles: Map<string, Pick<Profile, "name" | "locale">>;
   /** Users whose account was deleted: they have no profile any more even if their token is still valid. */
@@ -39,7 +72,15 @@ export interface MemoryOptions {
  * @returns The store to pass to both memory repositories.
  */
 export function createMemoryStore(): MemoryStore {
-  return { clients: [], sets: [], sizeCharts: [], profiles: new Map(), deletedUsers: new Set() };
+  return {
+    clients: [],
+    sets: [],
+    sizeCharts: [],
+    users: [],
+    audit: [],
+    profiles: new Map(),
+    deletedUsers: new Set(),
+  };
 }
 
 /**

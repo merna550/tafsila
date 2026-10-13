@@ -53,3 +53,14 @@ export const profiles = pgTable("profiles", {
   role: text("role", { enum: ["user", "admin"] }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 });
+
+/** public.admin_audit. The API only inserts (as an admin, `who` = the caller); the table is append-only. */
+export const adminAudit = pgTable("admin_audit", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  who: uuid("who"),
+  action: text("action").notNull(),
+  target: text("target"),
+  before: jsonb("before"),
+  after: jsonb("after"),
+  at: timestamp("at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+});

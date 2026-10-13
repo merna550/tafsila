@@ -4,6 +4,7 @@ import { createContainer, type Container } from "./container";
 import { NotFoundError, ValidationError } from "./domain/errors";
 import { createErrorHandler } from "./middleware/error-handler";
 import { requestId, type AppEnv } from "./middleware/request-id";
+import { adminRoutes } from "./routes/admin";
 import { accountRoutes } from "./routes/account";
 import { clientRoutes } from "./routes/clients";
 import { measurementRoutes } from "./routes/measurements";
@@ -48,6 +49,7 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", phoneRoutes(container));
   app.route("/", profileRoutes(container));
   app.route("/", accountRoutes(container));
+  app.route("/", adminRoutes(container));
   app.doc31("/openapi.json", OPENAPI_DOCUMENT_CONFIG);
   app.route("/", docsRoutes(container));
   if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));

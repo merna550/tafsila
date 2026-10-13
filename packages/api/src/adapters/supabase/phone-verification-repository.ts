@@ -4,6 +4,7 @@ import { AppError } from "../../domain/errors";
 import type { AttemptResult, LimitScope } from "../../domain/phone-limits";
 import type { PhoneVerificationRepository, NumberState } from "../../ports/phone-verification-repository";
 import type { TrialEligibility } from "../../ports/trial-eligibility";
+import { sqlState } from "./sql-state";
 import type { Tx, WithApiRole } from "./with-user";
 
 /** SQLSTATE raised by private.confirm_phone when the number is taken. */
@@ -33,19 +34,6 @@ async function scalar<T>(tx: Tx, query: ReturnType<typeof sql>): Promise<T> {
   const row = rows[0];
   if (!row) throw new Error("private function returned no row");
   return row.result;
-}
-
-/**
- * Reads the SQLSTATE of a driver error, whether Drizzle wrapped it or not.
- *
- * @param error - Thrown value.
- * @returns The five-character code, if any.
- */
-function sqlState(error: unknown): string | undefined {
-  const own = (error as { code?: unknown }).code;
-  const cause = (error as { cause?: { code?: unknown } }).cause?.code;
-  const code = typeof own === "string" ? own : cause;
-  return typeof code === "string" ? code : undefined;
 }
 
 /**

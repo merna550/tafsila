@@ -10,6 +10,7 @@ import {
 } from "@tafsila/config";
 import { createNoopIdentityEraser } from "./adapters/noop/noop-identity-eraser";
 import { createPosthogIdentityEraser } from "./adapters/posthog/posthog-identity-eraser";
+import { createAdminRepository } from "./adapters/supabase/admin-repository";
 import { createAccountAudit } from "./adapters/supabase/account-audit";
 import { createGotrueAccountDeleter } from "./adapters/supabase/gotrue-account-deleter";
 import { createProfileRepository } from "./adapters/supabase/profile-repository";
@@ -35,6 +36,7 @@ import { createRejectingRepositories, type Repositories } from "./adapters/supab
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
+import type { AdminRepository } from "./ports/admin-repository";
 import type { AccountAudit } from "./ports/account-audit";
 import type { AccountDeleter } from "./ports/account-deleter";
 import type { IdentityEraser } from "./ports/identity-eraser";
@@ -75,6 +77,8 @@ export interface Container {
   readonly measurementSets: MeasurementSetRepository;
   /** The default size chart (system data, readable by every signed-in user). */
   readonly sizeCharts: SizeChartRepository;
+  /** Users and stats for the admin screens (admin only; the database checks the admin again). */
+  readonly admin: AdminRepository;
   /** What the user's plan allows (unlimited until M7). */
   readonly planLimits: PlanLimits;
   /** Sends and checks phone codes. */
@@ -119,6 +123,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     sizeCharts: createSizeChartRepository(withUser),
     profiles: createProfileRepository(withUser),
     accountAudit: createAccountAudit(withApiRole),
+    admin: createAdminRepository(withApiRole),
   };
 }
 

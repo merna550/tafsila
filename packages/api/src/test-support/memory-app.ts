@@ -1,4 +1,5 @@
 /** Test helper: the real app wired with memory repositories and a local-key token verifier (no network, no database). */
+import { createMemoryAdminRepository } from "../adapters/memory/admin-repository";
 import { createMemoryAccountDeletion, type MemoryAccountDeletion } from "../adapters/memory/account-deletion";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
@@ -75,6 +76,7 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
       measurementSets: createMemoryMeasurementSetRepository(store),
       sizeCharts: createMemorySizeChartRepository(store),
       profiles: createMemoryProfileRepository(store),
+      admin: createMemoryAdminRepository(store),
       accountDeleter: deletion.accountDeleter,
       userFilesRemover: deletion.userFilesRemover,
       identityEraser: deletion.identityEraser,
