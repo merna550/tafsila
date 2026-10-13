@@ -1190,6 +1190,60 @@
       ]
     },
     {
+      "name": "size-charts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Read the default size chart (every size, measurements in millimetres)",
+          "request": {
+            "name": "Read the default size chart (every size, measurements in millimetres)",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "size-charts",
+                "default"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"id\",\"name\",\"sizes\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
       "name": "system",
       "description": {
         "content": "",
@@ -1325,7 +1379,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "d0220e55b257cdfcc2ce5b2559aad65199dc4fb714c93d0b8227e4dfce4ff113"
+    "_postman_id": "2b61fd669734c007204b84514e161bd58005edc434734b8ec03e01f3dc6f19d6"
   },
   "auth": {
     "type": "bearer",

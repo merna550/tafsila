@@ -48,19 +48,7 @@ from (values
   ('+201000000004', '00000000-0000-4000-8000-000000000004'::uuid)
 ) as v (phone, id);
 
--- Placeholder size chart: demo size M scaled by fixed factors. Real values come from #32.
-insert into public.size_charts (name, sizes, is_default)
-select
-  'PLACEHOLDER Egyptian/EU S-XXL (demo values)',
-  jsonb_object_agg(s.label, jsonb_build_object(
-    'eu', s.eu,
-    'unit', 'mm',
-    'height', 1650,
-    'bust', round(920 * s.f), 'waist', round(740 * s.f), 'hip', round(1000 * s.f)
-  )),
-  true
-from (values ('S', 36, 0.95), ('M', 38, 1.0), ('L', 40, 1.05), ('XL', 42, 1.10), ('XXL', 44, 1.15))
-  as s (label, eu, f);
+-- The default size chart comes from the migration 20261013120000_default_size_chart.sql (same on local, CI and staging).
 
 -- Clients and measurement sets (data follows measurementsSchema, size M demo body).
 insert into public.clients (id, owner_id, name, notes) values

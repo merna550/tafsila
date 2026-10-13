@@ -1,6 +1,6 @@
 /** Drizzle mirror of the SQL tables the API uses (supabase/migrations is the source of truth; schema.test.ts compares the columns). */
-import type { Measurements } from "@tafsila/schemas";
-import { foreignKey, jsonb, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
+import type { Measurements, SizeChart } from "@tafsila/schemas";
+import { boolean, foreignKey, jsonb, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 
 /** public.clients */
 export const clients = pgTable(
@@ -31,6 +31,17 @@ export const measurementSets = pgTable(
     foreignKey({ columns: [table.clientId, table.ownerId], foreignColumns: [clients.id, clients.ownerId] }),
   ],
 );
+
+/** public.size_charts */
+export const sizeCharts = pgTable("size_charts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  sizes: jsonb("sizes").$type<SizeChart>().notNull(),
+  isDefault: boolean("is_default").notNull().default(false),
+  ownerId: uuid("owner_id"),
+  updatedBy: uuid("updated_by"),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+});
 
 /** public.profiles. The API reads and changes only `name` and `locale` (column grants); the other columns are mirrored for completeness. */
 export const profiles = pgTable("profiles", {

@@ -42,6 +42,11 @@ export const ERROR_CATALOGUE = {
     messageAr: "العنصر المطلوب غير موجود",
     messageEn: "Resource not found",
   },
+  SIZE_CHART_NOT_FOUND: {
+    status: 404,
+    messageAr: "جدول المقاسات غير متاح حالياً",
+    messageEn: "No default size chart is available",
+  },
   AUTH_INVALID_CREDENTIALS: {
     status: 401,
     messageAr: "البريد الإلكتروني أو كلمة المرور غير صحيحة",

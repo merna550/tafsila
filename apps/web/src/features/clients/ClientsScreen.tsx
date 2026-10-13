@@ -11,7 +11,7 @@ import { ClientSearch } from "./components/ClientSearch";
 import { ClientsList } from "./components/ClientsList";
 import { useClientForm } from "./hooks/use-client-form";
 import { useClients } from "./hooks/use-clients";
-import { useDebouncedValue } from "./hooks/use-debounced-value";
+import { useDebouncedValue } from "@/shared/hooks/use-debounced-value";
 import { toClientRow } from "./model/client-view";
 
 /**
