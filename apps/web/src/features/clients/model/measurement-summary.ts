@@ -1,5 +1,6 @@
 /** The few measurements shown on a set card, converted from millimetres to centimetres. */
 import type { Measurements } from "@tafsila/schemas";
+import { formatCm } from "@tafsila/utils";
 
 /** Measurements shown on the card, in this order (the design shows six). */
 export const KEY_FIELDS = ["bust", "waist", "hip", "shoulderWidth", "backLength", "height"] as const;
@@ -15,19 +16,6 @@ export interface KeyValue {
   readonly cm: string;
 }
 
-/** Millimetres in a centimetre. */
-const MM_PER_CM = 10;
-
-/**
- * Converts millimetres to centimetres with at most one decimal and no trailing ".0".
- *
- * @param mm - Length in millimetres.
- * @returns The text, for example "92" or "92.5".
- */
-export function mmToCm(mm: number): string {
-  return String(Math.round(mm) / MM_PER_CM);
-}
-
 /**
  * Picks the key values of a set; a field that is missing is left out instead of showing "NaN".
  *
@@ -37,6 +25,6 @@ export function mmToCm(mm: number): string {
 export function toKeyValues(measurements: Partial<Measurements>): KeyValue[] {
   return KEY_FIELDS.flatMap((field) => {
     const mm = measurements[field];
-    return typeof mm === "number" ? [{ field, cm: mmToCm(mm) }] : [];
+    return typeof mm === "number" ? [{ field, cm: formatCm(mm) }] : [];
   });
 }

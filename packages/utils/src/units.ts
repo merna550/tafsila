@@ -43,3 +43,15 @@ export function roundTo(value: number, decimals: number): number {
   const factor = DECIMAL_BASE ** decimals;
   return Math.round((value + Number.EPSILON) * factor) / factor;
 }
+
+/**
+ * Formats millimetres as centimetres for display: at most one decimal, no trailing ".0", Western digits.
+ *
+ * @param mm - Length in millimetres.
+ * @returns The text, for example "92" or "92.5".
+ * @example
+ * formatCm(925) // "92.5"
+ */
+export function formatCm(mm: number): string {
+  return String(roundTo(mmToCm(Math.round(mm)), 1));
+}

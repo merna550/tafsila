@@ -1,23 +1,13 @@
 import { sizeM } from "@tafsila/test-fixtures";
+import { formatCm } from "@tafsila/utils";
 import { describe, expect, it } from "vitest";
-import { KEY_FIELDS, mmToCm, toKeyValues } from "./measurement-summary";
-
-describe("mmToCm", () => {
-  it.each([
-    [920, "92"],
-    [925, "92.5"],
-    [923, "92.3"],
-    [1620, "162"],
-  ])("turns %i mm into %s cm", (mm, expected) => {
-    expect(mmToCm(mm)).toBe(expected);
-  });
-});
+import { KEY_FIELDS, toKeyValues } from "./measurement-summary";
 
 describe("toKeyValues", () => {
   it("returns the six key values in card order", () => {
     const values = toKeyValues(sizeM);
     expect(values.map((value) => value.field)).toEqual([...KEY_FIELDS]);
-    expect(values[0]?.cm).toBe(mmToCm(sizeM.bust));
+    expect(values[0]?.cm).toBe(formatCm(sizeM.bust));
   });
 
   it("leaves out a missing value instead of showing NaN", () => {
