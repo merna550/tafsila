@@ -560,7 +560,7 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 | # | Question | Status |
 |---|---|---|
 | 1 | Product name and domain | Name decided: Tafsila / تفصيلة. Domain bought at M8; staging and early prod use Vercel URLs (ADR-024) |
-| 2 | Verify FreeSewing licence for commercial SaaS; decide fork vs dependency | Open |
+| 2 | Verify FreeSewing licence for commercial SaaS; decide fork vs dependency | Decided: no dependency or fork; FreeSewing (MIT) is a cited reference only ([ADR-122](decisions/122-m2-engine-scope.md)) |
 | 3 | AI provider for v1 (Claude vs Gemini) after eval on 50 photos | Open |
 | 4 | Default Egyptian size chart source and values | Open — founder to compile |
 | 5 | Paymob fees, merchant onboarding requirements, recurring payments support | Open |

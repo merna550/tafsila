@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { ApiError } from "./api-error";
-import { apiRequest, withQuery } from "./client";
+import { apiRequest, releaseAccessTokenGetter, setAccessTokenGetter, withQuery } from "./client";
 import { isRetryable, placementFor, supportReference } from "./error-display";
 
 const schema = z.object({ status: z.string() });
@@ -98,5 +98,39 @@ describe("apiRequest", () => {
     await apiRequest("/me", { schema, fetchFn, getToken: () => Promise.resolve(null) });
     await apiRequest("/me", { schema, fetchFn, getToken: () => Promise.reject(new Error("x")) });
     expect(seen).toEqual([{ authorization: "Bearer tok" }, undefined, undefined]);
+  });
+});
+
+describe("releaseAccessTokenGetter", () => {
+  /**
+   * Sends one request with the registered token source and returns the authorization header it carried.
+   *
+   * @returns The header value, or null when none was sent.
+   */
+  async function sentAuthorization(): Promise<string | null> {
+    let header: string | null = null;
+    const fetchFn = ((_url: string, init?: RequestInit) => {
+      header = new Headers(init?.headers).get("authorization");
+      return Promise.resolve(new Response(JSON.stringify({ status: "ok" }), { status: 200 }));
+    }) as unknown as typeof fetch;
+    await apiRequest("/x", { schema, fetchFn });
+    return header;
+  }
+
+  it("removes the source it was given", async () => {
+    const mine = () => Promise.resolve("old");
+    setAccessTokenGetter(mine);
+    releaseAccessTokenGetter(mine);
+    expect(await sentAuthorization()).toBeNull();
+  });
+
+  it("keeps a newer source registered by a remounted provider", async () => {
+    const old = () => Promise.resolve("old");
+    const next = () => Promise.resolve("new");
+    setAccessTokenGetter(old);
+    setAccessTokenGetter(next);
+    releaseAccessTokenGetter(old);
+    expect(await sentAuthorization()).toBe("Bearer new");
+    releaseAccessTokenGetter(next);
   });
 });

@@ -15,6 +15,13 @@ describe("Button", () => {
     expect(html).not.toContain("rose-");
   });
 
+  it("renders the outlined danger variant with a red border and text on a plain surface", () => {
+    const html = renderToStaticMarkup(<Button variant="dangerOutline">x</Button>);
+    expect(html).toContain("border-danger");
+    expect(html).toContain("text-danger");
+    expect(html).toContain("bg-surface");
+  });
+
   it("keeps a 44px touch target and merges extra classes", () => {
     const html = renderToStaticMarkup(<Button className="ms-4">x</Button>);
     expect(html).toContain("min-h-11");

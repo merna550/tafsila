@@ -106,6 +106,20 @@ export function signOut(client: AuthClient): Promise<AuthResult> {
 }
 
 /**
+ * Removes the session from this browser only, after the server already deleted the account: the user is gone, so the server
+ * call of a normal sign-out would fail, and that failure is ignored on purpose.
+ *
+ * @param client - Browser auth client.
+ */
+export async function clearLocalSession(client: AuthClient): Promise<void> {
+  try {
+    await client.auth.signOut({ scope: "local" });
+  } catch {
+    /* the account no longer exists; the cookies are cleared by supabase-js either way */
+  }
+}
+
+/**
  * Reads the current access token for API calls; the session is refreshed by supabase-js when needed.
  *
  * @param client - Browser auth client.

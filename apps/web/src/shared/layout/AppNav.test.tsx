@@ -24,6 +24,13 @@ describe("AppNav", () => {
     expect(html).toContain(">M<");
   });
 
+  it("lists settings and marks it on /settings", () => {
+    const html = renderWithIntl(<AppNavView pathname="/settings" initial="م" />, "ar");
+    expect(html).toContain('href="/settings"');
+    expect(html).toContain("الإعدادات");
+    expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+  });
+
   it("does not treat a longer name as the same area", () => {
     expect(isActive("/clientsx", "/clients")).toBe(false);
   });

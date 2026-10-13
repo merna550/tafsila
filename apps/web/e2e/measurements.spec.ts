@@ -47,7 +47,7 @@ async function signUpWithClient(page: Page, t: Messages, prefix: string): Promis
  */
 function measurementBox(page: Page, label: string): Locator {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return page.getByLabel(new RegExp(`^${escaped}(\\s·.*)?$`));
+  return page.getByLabel(new RegExp(`^${escaped}(\\s*·.*)?$`));
 }
 
 /**

@@ -21,27 +21,28 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 
 ## Glossary (use these words, nothing else)
 
-| Concept                        | Arabic                                  | English                             |
-| ------------------------------ | --------------------------------------- | ----------------------------------- |
-| client (the tailor's customer) | عميلة / العميلات / عميلاتي              | client / clients / my clients       |
-| measurement set                | مجموعة مقاسات                           | measurement set                     |
-| a single measurement           | قياس                                    | measurement                         |
-| standard size                  | مقاس جاهز                               | standard size                       |
-| base size                      | المقاس الأساسي                          | base size                           |
-| override / overridden          | تعديل / معدَّل                          | override / adjusted                 |
-| custom measurements            | مقاسات مخصّصة                           | custom measurements                 |
-| pattern                        | باترون / باترونات                       | pattern / patterns                  |
-| my designs                     | تصاميمي                                 | my designs                          |
-| phone number                   | رقم الهاتف                              | phone number                        |
-| verification code              | رمز التأكيد                             | verification code                   |
-| verified / not verified        | مؤكَّد / غير مؤكَّد                     | verified / not verified             |
-| password                       | كلمة المرور                             | password                            |
-| sign in / sign up / sign out   | تسجيل الدخول / حساب جديد / تسجيل الخروج | sign in / create account / sign out |
-| admin panel                    | لوحة الإدارة                            | admin                               |
-| size chart                     | جدول المقاسات                           | size chart                          |
-| centimetre                     | سم / سنتيمتر                            | cm / centimetres                    |
-| back                           | العودة                                  | back                                |
-| free trial                     | تجربة مجانية                            | free trial                          |
-| resend code                    | إعادة الإرسال                           | resend code                         |
+| Concept                            | Arabic                                  | English                             |
+| ---------------------------------- | --------------------------------------- | ----------------------------------- |
+| client (the tailor's customer)     | عميلة / العميلات / عميلاتي              | client / clients / my clients       |
+| delete account (confirmation word) | حذف الحساب (الكلمة: حذف)                | delete account (word: DELETE)       |
+| measurement set                    | مجموعة مقاسات                           | measurement set                     |
+| a single measurement               | قياس                                    | measurement                         |
+| standard size                      | مقاس جاهز                               | standard size                       |
+| base size                          | المقاس الأساسي                          | base size                           |
+| override / overridden              | تعديل / معدَّل                          | override / adjusted                 |
+| custom measurements                | مقاسات مخصّصة                           | custom measurements                 |
+| pattern                            | باترون / باترونات                       | pattern / patterns                  |
+| my designs                         | تصاميمي                                 | my designs                          |
+| phone number                       | رقم الهاتف                              | phone number                        |
+| verification code                  | رمز التأكيد                             | verification code                   |
+| verified / not verified            | مؤكَّد / غير مؤكَّد                     | verified / not verified             |
+| password                           | كلمة المرور                             | password                            |
+| sign in / sign up / sign out       | تسجيل الدخول / حساب جديد / تسجيل الخروج | sign in / create account / sign out |
+| admin panel                        | لوحة الإدارة                            | admin                               |
+| size chart                         | جدول المقاسات                           | size chart                          |
+| centimetre                         | سم / سنتيمتر                            | cm / centimetres                    |
+| back                               | العودة                                  | back                                |
+| free trial                         | تجربة مجانية                            | free trial                          |
+| resend code                        | إعادة الإرسال                           | resend code                         |
 
 Add a row here in the same PR whenever a new product term appears.

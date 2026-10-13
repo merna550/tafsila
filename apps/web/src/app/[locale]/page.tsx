@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { ReactElement } from "react";
 import { SignupButton } from "../../features/home";
+import { AccountDeletedNotice } from "../../features/settings";
 import { routing } from "../../shared/i18n";
 
 /**
@@ -21,6 +22,7 @@ export default async function HomePage({
   const t = await getTranslations("home");
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-start gap-6 px-6 py-24">
+      <AccountDeletedNotice />
       <h1 className="text-2xl font-bold">{t("title")}</h1>
       <p className="text-lg leading-8">{t("intro")}</p>
       <div className="flex gap-3">
