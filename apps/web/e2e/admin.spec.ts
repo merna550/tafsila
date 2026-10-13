@@ -58,8 +58,14 @@ test.describe("admin area", () => {
     await signInAsAdmin(page, t, prefix);
     await page.goto(`${prefix}/admin/users`);
     await page.getByLabel(t.admin.users.search.label).fill("pro@tafsila");
-    await expect(page.getByRole("link", { name: /pro@tafsila/ })).toBeVisible();
-    await expect(page.getByRole("table").getByRole("row")).toHaveCount(2);
+    // The link carries the name ("Pro Workshop"); the e-mail is the small line under it, so find the row by its text.
+    const dataRows = page
+      .getByRole("table")
+      .getByRole("row")
+      .filter({ has: page.getByRole("link") });
+    await expect(dataRows).toHaveCount(1);
+    await expect(dataRows.first()).toContainText("pro@tafsila.test");
+    await expect(dataRows.first().getByRole("link")).toBeVisible();
     await page.getByLabel(t.admin.users.search.label).fill("nobody-matches-this");
     await expect(page.getByText(t.admin.users.noResults.title)).toBeVisible();
     await page.getByRole("button", { name: t.admin.users.noResults.clear }).click();
