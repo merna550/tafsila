@@ -11,8 +11,9 @@
     "test": "vitest run --passWithNoTests"
   },
   "devDependencies": {
-    "fast-check": "^4.10.2",
-    "@tafsila/test-fixtures": "workspace:*"
+    "@tafsila/test-fixtures": "workspace:*",
+    "@vitest/coverage-v8": "4.1.11",
+    "fast-check": "^4.10.2"
   },
   "dependencies": {
     "@tafsila/schemas": "workspace:*"

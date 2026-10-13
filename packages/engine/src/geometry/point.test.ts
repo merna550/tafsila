@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { sampleCubic } from "./bezier";
+import { cubicSeg } from "./segment";
 import { distance, polylineLength, pt } from "./point";
 
 describe("geometry", () => {
@@ -12,7 +13,7 @@ describe("geometry", () => {
   });
 
   it("samples a straight Bézier to a line of the same length", () => {
-    const line = sampleCubic({ p0: pt(0, 0), p1: pt(10, 0), p2: pt(20, 0), p3: pt(30, 0) });
+    const line = sampleCubic(cubicSeg(pt(0, 0), pt(10, 0), pt(20, 0), pt(30, 0)));
     expect(polylineLength(line)).toBeCloseTo(30, 6);
   });
 });
