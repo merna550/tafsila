@@ -107,6 +107,11 @@ export const ERROR_CATALOGUE = {
     messageAr: "تعذّر إرسال الرمز. يمكن المحاولة مرة أخرى",
     messageEn: "We could not send the code. Try again",
   },
+  ACCOUNT_DELETE_FORBIDDEN: {
+    status: 403,
+    messageAr: "لا يمكن حذف حساب المشرف من التطبيق",
+    messageEn: "An admin account cannot be deleted from the app",
+  },
   RATE_LIMITED: {
     status: 429,
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",

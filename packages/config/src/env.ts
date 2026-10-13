@@ -95,7 +95,29 @@ const baseServerEnvSchema = z.object({
   POSTHOG_HOST: z.url().default("https://us.i.posthog.com"),
   PHONE_HASH_SECRET: phoneEnvFields.PHONE_HASH_SECRET,
   PHONE_TEST_NUMBERS: phoneEnvFields.PHONE_TEST_NUMBERS,
+  POSTHOG_PERSONAL_API_KEY: z.string().min(1).optional(),
+  POSTHOG_PROJECT_ID: z.string().min(1).optional(),
 });
+
+/**
+ * Applies the PostHog erasure rule: the personal API key and the project id are set together or not at all.
+ *
+ * @param env - The parsed variables.
+ * @param ctx - Zod refinement context.
+ */
+function refinePosthogErasureEnv(
+  env: { POSTHOG_PERSONAL_API_KEY?: string; POSTHOG_PROJECT_ID?: string },
+  ctx: z.RefinementCtx,
+): void {
+  if ((env.POSTHOG_PERSONAL_API_KEY === undefined) === (env.POSTHOG_PROJECT_ID === undefined)) return;
+  const missing =
+    env.POSTHOG_PERSONAL_API_KEY === undefined ? "POSTHOG_PERSONAL_API_KEY" : "POSTHOG_PROJECT_ID";
+  ctx.addIssue({
+    code: "custom",
+    path: [missing],
+    message: "POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID must be set together",
+  });
+}
 
 /** Variables that are optional until their milestone (AI in M6, Paymob in M7) or locally (observability) but mandatory in production. */
 export const PRODUCTION_REQUIRED_KEYS = [
@@ -109,6 +131,7 @@ export const PRODUCTION_REQUIRED_KEYS = [
 /** Schema of all server-side environment variables; AI and Paymob keys are required only when APP_ENV is production. */
 export const serverEnvSchema = baseServerEnvSchema.superRefine((env, ctx) => {
   refinePhoneEnv(env, ctx);
+  refinePosthogErasureEnv(env, ctx);
   if (env.APP_ENV !== "production") return;
   for (const key of PRODUCTION_REQUIRED_KEYS) {
     if (env[key] === undefined) {
@@ -260,5 +283,57 @@ export function loadPhoneConfig(source: Record<string, string | undefined> = pro
     hashSecret: PHONE_HASH_SECRET,
     testNumbers: PHONE_TEST_NUMBERS ? splitList(PHONE_TEST_NUMBERS) : DEFAULT_PHONE_TEST_NUMBERS,
     testOnly: APP_ENV !== "production",
+  };
+}
+
+/** What account deletion needs beyond the database (decision 27-settings-delete-account). */
+export interface AccountErasureConfig {
+  /** Supabase project URL, or undefined when not configured. */
+  readonly supabaseUrl: string | undefined;
+  /** Service role key used only by the GoTrue and Storage deletion adapters. */
+  readonly serviceRoleKey: string | undefined;
+  /** PostHog person-delete credentials; undefined disables erasure at PostHog (a warning is logged per deletion). */
+  readonly posthog:
+    { readonly host: string; readonly personalApiKey: string; readonly projectId: string } | undefined;
+}
+
+/**
+ * Reads the account deletion settings without validating the rest of the configuration.
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns Supabase admin access and the optional PostHog erasure credentials.
+ * @throws {Error} When only one of POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID is set.
+ * @example
+ * loadAccountErasureConfig({ APP_ENV: "local" }).posthog; // undefined
+ */
+export function loadAccountErasureConfig(
+  source: Record<string, string | undefined> = process.env,
+): AccountErasureConfig {
+  const result = z
+    .object({
+      POSTHOG_PERSONAL_API_KEY: z.string().min(1).optional(),
+      POSTHOG_PROJECT_ID: z.string().min(1).optional(),
+    })
+    .superRefine(refinePosthogErasureEnv)
+    .safeParse({
+      POSTHOG_PERSONAL_API_KEY: source.POSTHOG_PERSONAL_API_KEY || undefined,
+      POSTHOG_PROJECT_ID: source.POSTHOG_PROJECT_ID || undefined,
+    });
+  if (!result.success) {
+    const keys = result.error.issues.map((issue) => issue.path.join(".")).join(", ");
+    throw new Error(`Invalid account erasure configuration: ${keys}`);
+  }
+  const { POSTHOG_PERSONAL_API_KEY, POSTHOG_PROJECT_ID } = result.data;
+  return {
+    supabaseUrl: source.SUPABASE_URL || undefined,
+    serviceRoleKey: source.SUPABASE_SERVICE_ROLE_KEY || undefined,
+    posthog:
+      POSTHOG_PERSONAL_API_KEY && POSTHOG_PROJECT_ID
+        ? {
+            host: source.POSTHOG_HOST || "https://us.i.posthog.com",
+            personalApiKey: POSTHOG_PERSONAL_API_KEY,
+            projectId: POSTHOG_PROJECT_ID,
+          }
+        : undefined,
   };
 }

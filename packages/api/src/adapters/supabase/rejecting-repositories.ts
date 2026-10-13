@@ -1,6 +1,8 @@
 /** Repositories used when DATABASE_URL is not configured: every call fails, so the API never falls back to memory silently. */
+import type { AccountAudit } from "../../ports/account-audit";
 import type { ClientRepository } from "../../ports/client-repository";
 import type { MeasurementSetRepository } from "../../ports/measurement-set-repository";
+import type { ProfileRepository } from "../../ports/profile-repository";
 import type { PhoneVerificationRepository } from "../../ports/phone-verification-repository";
 import type { TrialEligibility } from "../../ports/trial-eligibility";
 
@@ -10,6 +12,8 @@ export interface Repositories {
   readonly measurementSets: MeasurementSetRepository;
   readonly phoneVerification: PhoneVerificationRepository;
   readonly trialEligibility: TrialEligibility;
+  readonly profiles: ProfileRepository;
+  readonly accountAudit: AccountAudit;
 }
 
 /**
@@ -45,5 +49,7 @@ export function createRejectingRepositories(): Repositories {
     },
     phoneVerification: { status: failing(), attempt: failing(), confirm: failing() },
     trialEligibility: { isEligible: failing() },
+    profiles: { get: failing(), update: failing() },
+    accountAudit: { recordDeleted: failing() },
   };
 }
