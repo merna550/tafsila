@@ -34,4 +34,13 @@ describe("AppNav", () => {
   it("does not treat a longer name as the same area", () => {
     expect(isActive("/clientsx", "/clients")).toBe(false);
   });
+
+  it("shows the admin link to admins only and marks it below /admin", () => {
+    const user = renderWithIntl(<AppNavView pathname="/clients" initial="م" />, "en");
+    expect(user).not.toContain("/admin/users");
+    const admin = renderWithIntl(<AppNavView pathname="/admin/sizes" initial="M" isAdmin />, "en");
+    expect(admin).toContain('href="/admin/users"');
+    expect(admin).toContain(">Admin<");
+    expect(admin.match(/aria-current="page"/g)).toHaveLength(1);
+  });
 });

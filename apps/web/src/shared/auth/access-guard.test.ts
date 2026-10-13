@@ -64,4 +64,17 @@ describe("decideAccess", () => {
     expect(decideAccess("/dashboards", "", false)).toEqual({ action: "allow" });
     expect(decideAccess("/entry/dashboard", "", false)).toEqual({ action: "allow" });
   });
+
+  it("guards /admin and the pages below it, in both languages", () => {
+    expect(decideAccess("/admin/users", "", false)).toEqual({
+      action: "redirect",
+      to: "/sign-in?next=%2Fadmin%2Fusers",
+    });
+    expect(decideAccess("/en/admin/sizes", "", false)).toEqual({
+      action: "redirect",
+      to: "/en/sign-in?next=%2Fen%2Fadmin%2Fsizes",
+    });
+    expect(decideAccess("/admin/users", "", true)).toEqual({ action: "allow" });
+    expect(decideAccess("/administrator", "", false)).toEqual({ action: "allow" });
+  });
 });

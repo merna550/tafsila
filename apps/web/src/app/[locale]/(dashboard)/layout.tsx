@@ -2,7 +2,7 @@
 import type { ReactElement, ReactNode } from "react";
 import { redirect } from "@/shared/i18n";
 import { getLocale } from "next-intl/server";
-import { getSessionUser } from "@/shared/auth/server";
+import { getSessionRole, getSessionUser } from "@/shared/auth/server";
 import { AppNav } from "@/shared/layout";
 
 /**
@@ -17,10 +17,11 @@ export default async function DashboardLayout({
 }: Readonly<{ children: ReactNode }>): Promise<ReactElement> {
   const user = await getSessionUser();
   if (!user) redirect({ href: "/sign-in?next=%2Fdashboard", locale: await getLocale() });
+  const isAdmin = (await getSessionRole()) === "admin";
   const initial = (user?.email ?? "").trim().charAt(0).toUpperCase();
   return (
     <>
-      <AppNav initial={initial} />
+      <AppNav initial={initial} isAdmin={isAdmin} />
       <div className="px-4 py-6">{children}</div>
     </>
   );

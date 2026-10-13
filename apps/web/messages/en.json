@@ -147,7 +147,8 @@
     "label": "Main menu",
     "clients": "Clients",
     "account": "My account",
-    "settings": "Settings"
+    "settings": "Settings",
+    "admin": "Admin"
   },
   "measurements": {
     "unit": "cm",
@@ -514,5 +515,19 @@
     "cancel": "Cancel",
     "close": "Close",
     "forbidden": "An admin account cannot be deleted from the app"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The link is wrong or the page no longer exists.",
+    "home": "Back to home"
+  },
+  "admin": {
+    "badge": "Admin panel",
+    "backToSite": "Back to the site",
+    "nav": {
+      "label": "Admin sections",
+      "users": "Users",
+      "sizes": "Size chart"
+    }
   }
 }
