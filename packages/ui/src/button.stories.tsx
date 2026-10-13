@@ -15,7 +15,6 @@ export const Variants: Story = {
       <Button variant="secondary">{sampleFor(context).send}</Button>
       <Button variant="ghost">{sampleFor(context).send}</Button>
       <Button variant="danger">{sampleFor(context).send}</Button>
-      <Button variant="dangerOutline">{sampleFor(context).send}</Button>
       <Button disabled>{sampleFor(context).send}</Button>
     </div>
   ),
