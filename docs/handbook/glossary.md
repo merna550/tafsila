@@ -312,6 +312,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** FR-PROJ-02 stores `pxPerMm` per device; accuracy target is 2 mm over 50 cm ([SRS NFR-01](../SRS.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
+<a id="cascade-delete"></a>
+
+### Cascade delete
+
+**Plain words:** A database rule (`on delete cascade`) that removes the rows that belong to a deleted row, so nothing is left behind. `on delete set null` instead keeps the row and only forgets who it belonged to.  
+**In Tafsila:** Deleting the auth user removes the profile, clients, measurement sets and OTP events; `trial_phones.user_id` is set to null so the hashed number stays. **Level:** intermediate  
+**Learn:** <https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK>
+
 <a id="ci-cd"></a>
 
 ### CI/CD (continuous integration / delivery)
@@ -686,6 +694,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A named setting given to a program from outside the code, such as a URL or secret key.  
 **In Tafsila:** Declared and validated only in `packages/config/src/env.ts`; examples in `.env.example`. Secrets never go in code ([CLAUDE.md](../../CLAUDE.md) rule 6). **Card:** [Zod](tech/zod.md) · **Level:** beginner  
 **Learn:** <https://12factor.net/config>
+
+<a id="erasure-right-to-be-forgotten"></a>
+
+### Erasure (right to be forgotten)
+
+**Plain words:** The person's right to have their personal data deleted, everywhere it is kept: database, stored files and analytics.  
+**In Tafsila:** `DELETE /api/account` (FR-AUTH-04, NFR-05, Egypt Law 151/2020); see [delete-account](../backend/tutorials/delete-account.md). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Right_to_be_forgotten>
 
 <a id="error-catalogue"></a>
 
@@ -1806,6 +1822,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** One business action in code, such as "create a pattern version", that uses ports and domain rules.  
 **In Tafsila:** `packages/api/src/services/` (planned), one use case per file. Not the same as a deployed service such as `services/sim`. **Level:** intermediate  
 **Learn:** <https://alistair.cockburn.us/hexagonal-architecture/>
+
+<a id="service-role-key"></a>
+
+### Service role key
+
+**Plain words:** A Supabase secret that bypasses all row security and can administer users and files. It must never reach the browser.  
+**In Tafsila:** Used only by `gotrue-account-deleter` and `storage-files-remover` to delete an account. **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/api/api-keys>
 
 <a id="set-in-sleeve"></a>
 

@@ -49,3 +49,7 @@ Vercel project → Settings → Environment Variables: `APP_ENV` (`staging` for 
 - **`supabase config push` refused** (dummy SMS provider): set the same numbers by hand in the dashboard (Authentication → Sign In / Providers → Phone → test numbers): `201000000001`, `201000000002`, `201000000003`, code `123456`.
 - **Smoke check fails on `gitSha`:** the deploy served an older build; check the Vercel deployment list and re-run the workflow.
 - **Health returns 500:** a Vercel variable is missing; `instrumentation.ts` names the invalid keys in the runtime log.
+
+## Optional: PostHog erasure (issue #27)
+
+`POSTHOG_PERSONAL_API_KEY` and `POSTHOG_PROJECT_ID` let account deletion erase the person at PostHog. Set both or neither. Without them deletion still works and logs one warning. Required before the beta; steps in [delete-account](delete-account.md).

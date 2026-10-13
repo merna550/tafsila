@@ -27,6 +27,7 @@ export type Profile = z.infer<typeof profileSchema>;
 export const updateProfileInputSchema = z
   .object({ name: profileNameSchema.optional(), locale: localeSchema.optional() })
   .strict()
+  .meta({ example: { name: "منى أحمد", locale: "ar" } })
   .refine((value) => value.name !== undefined || value.locale !== undefined, {
     message: "Send at least one of name or locale",
   });
