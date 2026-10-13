@@ -6,6 +6,8 @@ Kept current in the same PR as every engine change (Definition of Done). Archite
 
 `generatePattern(spec: DesignSpec, measurements: Measurements, options) → PatternResult`
 
+The shapes of `PatternResult` and `EngineOptions` are Zod schemas in `packages/schemas/src/pattern.ts` and `engine-options.ts` ([decision 121](../decisions/121-pattern-contract.md)).
+
 The function is pure and deterministic and runs the same in the browser and on the server. Every result is stamped with `ENGINE_VERSION` (`src/version.ts`), so stored versions re-render identically. Bump it whenever an existing input produces different geometry.
 
 ## Pipeline

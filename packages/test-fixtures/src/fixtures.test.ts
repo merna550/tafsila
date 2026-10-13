@@ -1,7 +1,8 @@
-import { designSpecSchema, measurementsSchema } from "@tafsila/schemas";
+import { designSpecSchema, measurementsSchema, patternResultSchema } from "@tafsila/schemas";
 import { describe, expect, it } from "vitest";
 import { vNeckHalfCircleDress } from "./designs";
 import { sizeM } from "./measurements";
+import { rectanglePattern } from "./pattern";
 
 describe("fixtures stay valid against the shared schemas", () => {
   it("the demo dress is a valid DesignSpec", () => {
@@ -10,6 +11,10 @@ describe("fixtures stay valid against the shared schemas", () => {
 
   it("size M is a valid Measurements object", () => {
     expect(measurementsSchema.safeParse(sizeM).success).toBe(true);
+  });
+
+  it("the rectangle pattern is a valid PatternResult", () => {
+    expect(patternResultSchema.safeParse(rectanglePattern).success).toBe(true);
   });
 
   it("the schema rejects categories outside release 1", () => {

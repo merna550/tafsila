@@ -12,3 +12,4 @@ packages/ui/e2e/__snapshots__
 packages/ui/src/tokens.css
 packages/api/openapi.json
 docs/design/screens/*.dc.html
+packages/schemas/json/

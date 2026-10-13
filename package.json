@@ -34,6 +34,7 @@
     "prepare": "husky || true",
     "tokens": "node scripts/gen-tokens.mjs",
     "tokens:check": "node scripts/check-design-tokens.mjs && node scripts/gen-tokens.mjs --check",
+    "schemas:json": "pnpm --filter @tafsila/schemas json",
     "api:openapi": "pnpm --filter @tafsila/api openapi",
     "api:postman": "node scripts/gen-postman.mjs",
     "api:check": "node scripts/api-check.mjs",

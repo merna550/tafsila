@@ -1,0 +1,838 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "engineVersion": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+",
+      "type": "string"
+    },
+    "meta": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "dress",
+            "skirt",
+            "blouse"
+          ],
+          "type": "string"
+        },
+        "createdFrom": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sizeLabel": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "sizeLabel",
+        "createdFrom"
+      ],
+      "type": "object"
+    },
+    "pieces": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "bbox": {
+            "additionalProperties": false,
+            "properties": {
+              "heightMm": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "widthMm": {
+                "minimum": 0,
+                "type": "number"
+              }
+            },
+            "required": [
+              "widthMm",
+              "heightMm"
+            ],
+            "type": "object"
+          },
+          "cut": {
+            "additionalProperties": false,
+            "properties": {
+              "fabric": {
+                "enum": [
+                  "main",
+                  "lining",
+                  "interfacing"
+                ],
+                "type": "string"
+              },
+              "mirror": {
+                "type": "boolean"
+              },
+              "onFold": {
+                "type": "boolean"
+              },
+              "quantity": {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "quantity",
+              "onFold",
+              "mirror",
+              "fabric"
+            ],
+            "type": "object"
+          },
+          "cutPath": {
+            "items": {
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "kind": {
+                      "const": "line",
+                      "type": "string"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "c1": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "c2": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "kind": {
+                      "const": "cubic",
+                      "type": "string"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "c1",
+                    "c2",
+                    "to"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "darts": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "apex": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "type": "object"
+                },
+                "edgeId": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "legs": {
+                  "items": false,
+                  "maxItems": 2,
+                  "minItems": 2,
+                  "prefixItems": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "id",
+                "edgeId",
+                "apex",
+                "legs"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "edges": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "fromSegment": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "pairsWith": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "intendedEaseMm": {
+                      "type": "number"
+                    },
+                    "pieceId": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pieceId",
+                    "edgeId"
+                  ],
+                  "type": "object"
+                },
+                "seamAllowanceMm": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "toSegment": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "fromSegment",
+                "toSegment",
+                "seamAllowanceMm"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "grainLine": {
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "type": "object"
+              }
+            ],
+            "type": "array"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "labels": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "at": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "kind": {
+                  "enum": [
+                    "name",
+                    "size",
+                    "cut",
+                    "scale-square"
+                  ],
+                  "type": "string"
+                },
+                "rotationDeg": {
+                  "type": "number"
+                },
+                "sizeMm": {
+                  "exclusiveMinimum": 0,
+                  "type": "number"
+                },
+                "text": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ar": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "en": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ar",
+                    "en"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "text",
+                "at",
+                "rotationDeg"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "name": {
+            "additionalProperties": false,
+            "properties": {
+              "ar": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "en": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "ar",
+              "en"
+            ],
+            "type": "object"
+          },
+          "notches": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "atMm": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "edgeId": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "pairsWith": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "pieceId": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pieceId",
+                    "edgeId"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "id",
+                "edgeId",
+                "atMm"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "stitchPath": {
+            "items": {
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "kind": {
+                      "const": "line",
+                      "type": "string"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "c1": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "c2": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "kind": {
+                      "const": "cubic",
+                      "type": "string"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "c1",
+                    "c2",
+                    "to"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "cut",
+          "stitchPath",
+          "cutPath",
+          "edges",
+          "notches",
+          "grainLine",
+          "darts",
+          "labels",
+          "bbox"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "sewingOrder": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "sew",
+              "press",
+              "finish",
+              "attach"
+            ],
+            "type": "string"
+          },
+          "edges": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "order": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "text": {
+            "additionalProperties": false,
+            "properties": {
+              "ar": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "en": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "ar",
+              "en"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "order",
+          "action",
+          "edges",
+          "text"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "validation": {
+      "additionalProperties": false,
+      "properties": {
+        "checks": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "expectedMm": {
+                "type": "number"
+              },
+              "id": {
+                "enum": [
+                  "FR-VAL-01",
+                  "FR-VAL-02",
+                  "FR-VAL-03",
+                  "FR-VAL-04",
+                  "FR-VAL-05",
+                  "FR-VAL-06",
+                  "FR-VAL-07",
+                  "FR-VAL-08",
+                  "FR-MEAS-01"
+                ],
+                "type": "string"
+              },
+              "measuredMm": {
+                "type": "number"
+              },
+              "message": {
+                "additionalProperties": false,
+                "properties": {
+                  "ar": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "en": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ar",
+                  "en"
+                ],
+                "type": "object"
+              },
+              "refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "status": {
+                "enum": [
+                  "pass",
+                  "warn",
+                  "fail"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "message"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "checks"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "engineVersion",
+    "pieces",
+    "sewingOrder",
+    "validation",
+    "meta"
+  ],
+  "type": "object"
+}
