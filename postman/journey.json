@@ -173,5 +173,23 @@
     "path": "/api/phone",
     "status": 200,
     "has": ["verified", "phone", "trialEligible"]
+  },
+  {
+    "name": "14 Read the profile",
+    "method": "GET",
+    "path": "/api/profile",
+    "status": 200,
+    "has": ["name", "locale", "email"]
+  },
+  {
+    "name": "15 Change the profile",
+    "method": "PATCH",
+    "path": "/api/profile",
+    "body": {
+      "name": "Postman",
+      "locale": "ar"
+    },
+    "status": 200,
+    "has": ["name", "locale", "email"]
   }
 ]

@@ -12,6 +12,8 @@ export const TEST_SUPABASE_URL = "http://127.0.0.1:54321";
 export interface TestTokenOptions {
   readonly sub?: string;
   readonly role?: string;
+  /** The `email` claim Supabase puts in access tokens. */
+  readonly email?: string;
   readonly issuer?: string;
   readonly audience?: string;
   /** Seconds from now; negative makes an expired token. */
@@ -41,7 +43,7 @@ export async function createTestAuthKeys(): Promise<TestAuthKeys> {
     keys: createLocalJWKSet({ keys: [jwk] }),
     foreignKey: other.privateKey,
     async sign(options = {}, signWith) {
-      const jwt = new SignJWT({ user_role: options.role })
+      const jwt = new SignJWT({ user_role: options.role, email: options.email })
         .setProtectedHeader({ alg: "ES256", kid: "test-key" })
         .setSubject(options.sub ?? "aaaaaaaa-0000-4000-8000-000000000001")
         .setIssuer(options.issuer ?? `${TEST_SUPABASE_URL}/auth/v1`)

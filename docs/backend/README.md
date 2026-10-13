@@ -16,16 +16,17 @@ Kept current in the same PR as every backend change (Definition of Done).
 
 ## Tutorials
 
-| Tutorial                           | When                                                                                |
-| ---------------------------------- | ----------------------------------------------------------------------------------- |
-| `tutorials/run-locally.md`         | First time on a machine; daily start                                                |
-| `tutorials/add-endpoint.md`        | New API route (schema → service → adapter → tests → OpenAPI → Postman)              |
-| `tutorials/add-migration.md`       | Any DB change (migration, RLS, seed update, types regen)                            |
-| `tutorials/use-postman.md`         | Testing the API by hand                                                             |
-| `tutorials/run-agents-in-cloud.md` | Let agents build issues while the laptop is off (setup, start, stop, pause, tokens) |
-| `tutorials/switch-environment.md`  | Pointing the app/tools at dev, staging or prod                                      |
-| `tutorials/docker.md`              | Images, containers, compose profiles, prod-like local run                           |
-| `tutorials/add-garment-module.md`  | New pattern feature in the engine (geometry, validation, tests, sew test)           |
+| Tutorial                           | When                                                                                  |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
+| `tutorials/run-locally.md`         | First time on a machine; daily start                                                  |
+| `tutorials/add-endpoint.md`        | New API route (schema → service → adapter → tests → OpenAPI → Postman)                |
+| `tutorials/add-migration.md`       | Any DB change (migration, RLS, seed update, types regen)                              |
+| `tutorials/use-postman.md`         | Testing the API by hand                                                               |
+| `tutorials/run-agents-in-cloud.md` | Let agents build issues while the laptop is off (setup, start, stop, pause, tokens)   |
+| `tutorials/switch-environment.md`  | Pointing the app/tools at dev, staging or prod                                        |
+| `tutorials/delete-account.md`      | What account deletion removes, where, how to check it, the admin SQL, the PostHog key |
+| `tutorials/docker.md`              | Images, containers, compose profiles, prod-like local run                             |
+| `tutorials/add-garment-module.md`  | New pattern feature in the engine (geometry, validation, tests, sew test)             |
 
 ## Authentication (plan #25, part B)
 

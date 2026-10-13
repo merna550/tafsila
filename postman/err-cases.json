@@ -115,5 +115,42 @@
     "auth": false,
     "status": 401,
     "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR GET /api/profile without a token returns 401",
+    "method": "GET",
+    "path": "/api/profile",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR PATCH /api/profile with an empty body returns 400",
+    "method": "PATCH",
+    "path": "/api/profile",
+    "body": {},
+    "status": 400,
+    "code": "VALIDATION_FAILED",
+    "auth": true
+  },
+  {
+    "name": "ERR DELETE /api/account without a token returns 401",
+    "method": "DELETE",
+    "path": "/api/account",
+    "auth": false,
+    "body": {
+      "confirm": "DELETE_MY_ACCOUNT"
+    },
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR DELETE /api/account without the confirmation returns 400",
+    "method": "DELETE",
+    "path": "/api/account",
+    "body": {},
+    "status": 400,
+    "code": "VALIDATION_FAILED",
+    "auth": true
   }
 ]

@@ -21,6 +21,7 @@ describe("OpenAPI document", () => {
   it("is OpenAPI 3.1 and lists exactly the API routes", () => {
     expect(doc.openapi).toBe("3.1.0");
     expect(Object.keys(doc.paths).sort((a, b) => a.localeCompare(b))).toEqual([
+      "/api/account",
       "/api/clients",
       "/api/clients/{id}",
       "/api/debug/error",
@@ -31,6 +32,17 @@ describe("OpenAPI document", () => {
       "/api/phone",
       "/api/phone/code",
       "/api/phone/verify",
+      "/api/profile",
+    ]);
+  });
+
+  it("documents the account deletion with its 403 and 204 responses and the profile operations", () => {
+    expect(
+      Object.keys(doc.paths["/api/account"]!.delete!.responses as object).sort((a, b) => a.localeCompare(b)),
+    ).toEqual(["204", "400", "401", "403", "500"]);
+    expect(Object.keys(doc.paths["/api/profile"]!).sort((a, b) => a.localeCompare(b))).toEqual([
+      "get",
+      "patch",
     ]);
   });
 

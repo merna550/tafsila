@@ -57,4 +57,11 @@ describe("analytics events", () => {
       parseAnalyticsEvent("phone_verified", { trial_eligible: true, phone: "+201000000005" }),
     ).toThrow();
   });
+
+  it("accepts the settings events with fixed values only", () => {
+    expect(parseAnalyticsEvent("account_deleted", {})).toEqual({});
+    expect(parseAnalyticsEvent("locale_changed", { locale: "en" })).toEqual({ locale: "en" });
+    expect(() => parseAnalyticsEvent("account_deleted", { email: "a@b.com" })).toThrow();
+    expect(() => parseAnalyticsEvent("locale_changed", { locale: "fr" })).toThrow();
+  });
 });

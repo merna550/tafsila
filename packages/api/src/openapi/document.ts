@@ -1,5 +1,6 @@
 /** Builds the OpenAPI document from the real routes, with every dependency fixed so the output is byte-stable. */
 import { createNoopAnalytics } from "../adapters/noop/noop-analytics";
+import { createNoopIdentityEraser } from "../adapters/noop/noop-identity-eraser";
 import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
 import { createRejectingTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
@@ -22,6 +23,9 @@ const DOCUMENT_CONTAINER: Container = {
   phoneOtp: createMemoryPhoneOtp(),
   phoneHasher: createRejectingPhoneHasher(),
   phoneRules: { testOnly: true, testNumbers: [] },
+  accountDeleter: { deleteUser: () => Promise.resolve() },
+  userFilesRemover: { removeAll: () => Promise.resolve() },
+  identityEraser: createNoopIdentityEraser(),
 };
 
 /**

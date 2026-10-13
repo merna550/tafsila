@@ -7,6 +7,8 @@ import { serve } from "@hono/node-server";
 import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
+import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion";
+import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemoryStore } from "../adapters/memory/memory-store";
@@ -19,12 +21,18 @@ import { createTestAuthKeys, TEST_SUPABASE_URL } from "../test-support/auth-keys
 const HTTP_SERVER_ERROR = 500;
 const keys = await createTestAuthKeys();
 const store = createMemoryStore();
+const deletion = createMemoryAccountDeletion(store);
 const phones = createMemoryPhoneVerification({ now: () => new Date() });
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
     clients: createMemoryClientRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
+    profiles: createMemoryProfileRepository(store),
+    accountDeleter: deletion.accountDeleter,
+    userFilesRemover: deletion.userFilesRemover,
+    identityEraser: deletion.identityEraser,
+    accountAudit: deletion.accountAudit,
     phoneOtp: createMemoryPhoneOtp(),
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,

@@ -170,8 +170,8 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | FR-AUTH-01 | Sign up / sign in with email + password and Google OAuth | M |
 | FR-AUTH-02 | Phone number verification by OTP is required before using the free trial. The production channel (SMS or WhatsApp) is chosen at M8 by price (ADR-024); dev/staging use test numbers. _Status: API, database and limits built (issue #26 part A, [ADR-26a](decisions/26a-phone-otp-trial.md)); the screen is part B_ | M |
 | FR-AUTH-03 | One free trial per verified phone number (prevent multi-account abuse). _Status: built in the database and API (keyed hash kept after account deletion), issue #26 part A_ | M |
-| FR-AUTH-04 | Password reset, sign out, delete account (deletes images and personal data) | M |
-| FR-AUTH-05 | User chooses language (ar/en) and unit display (cm; inches later) | M |
+| FR-AUTH-04 | Password reset, sign out, delete account (deletes images and personal data). _Status: delete-account API built (issue #27 part A, [decision 27a](decisions/27a-settings-delete-account.md)); the screen is part B_ | M |
+| FR-AUTH-05 | User chooses language (ar/en) and unit display (cm; inches later). _Status: `GET`/`PATCH /api/profile` built (issue #27 part A); the settings screen is part B_ | M |
 
 ### 4.2 Measurements & Client Profiles (MEAS)
 | ID | Requirement | Pri |

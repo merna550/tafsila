@@ -1,5 +1,6 @@
 /** Composition root: the only place that chooses which adapter implements each port (ADR-006). */
 import {
+  loadAccountErasureConfig,
   loadBuildInfo,
   loadDatabaseUrl,
   loadPhoneConfig,
@@ -7,6 +8,12 @@ import {
   type BuildInfo,
   type PhoneConfig,
 } from "@tafsila/config";
+import { createNoopIdentityEraser } from "./adapters/noop/noop-identity-eraser";
+import { createPosthogIdentityEraser } from "./adapters/posthog/posthog-identity-eraser";
+import { createAccountAudit } from "./adapters/supabase/account-audit";
+import { createGotrueAccountDeleter } from "./adapters/supabase/gotrue-account-deleter";
+import { createProfileRepository } from "./adapters/supabase/profile-repository";
+import { createStorageFilesRemover } from "./adapters/supabase/storage-files-remover";
 import { createNoopAnalytics } from "./adapters/noop/noop-analytics";
 import { createNoopErrorReporter } from "./adapters/noop/noop-error-reporter";
 import {
@@ -27,6 +34,11 @@ import { createRejectingRepositories, type Repositories } from "./adapters/supab
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
+import type { AccountAudit } from "./ports/account-audit";
+import type { AccountDeleter } from "./ports/account-deleter";
+import type { IdentityEraser } from "./ports/identity-eraser";
+import type { ProfileRepository } from "./ports/profile-repository";
+import type { UserFilesRemover } from "./ports/user-files-remover";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
 import type { ClientRepository } from "./ports/client-repository";
@@ -71,6 +83,16 @@ export interface Container {
   readonly trialEligibility: TrialEligibility;
   /** Test-number guard for the current environment. */
   readonly phoneRules: PhoneRules;
+  /** The signed-in user's name and language. */
+  readonly profiles: ProfileRepository;
+  /** Removes the sign-in account (service role). */
+  readonly accountDeleter: AccountDeleter;
+  /** Removes the user's stored files (service role). */
+  readonly userFilesRemover: UserFilesRemover;
+  /** Erases the person at the analytics provider. */
+  readonly identityEraser: IdentityEraser;
+  /** Records the anonymous deletion row. */
+  readonly accountAudit: AccountAudit;
 }
 
 /**
@@ -90,6 +112,37 @@ export function createRepositories(source: Record<string, string | undefined> = 
     trialEligibility: createTrialEligibility(withApiRole),
     clients: createClientRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
+    profiles: createProfileRepository(withUser),
+    accountAudit: createAccountAudit(withApiRole),
+  };
+}
+
+/**
+ * Chooses the account deletion adapters. Without Supabase admin access they fail the request (INTERNAL_ERROR) before
+ * anything irreversible happens; without PostHog credentials erasure at PostHog is skipped with a warning.
+ *
+ * @param source - Environment variables to read (defaults to process.env).
+ * @returns The account deleter, the files remover and the identity eraser.
+ */
+export function createAccountErasure(
+  source: Record<string, string | undefined> = process.env,
+): Pick<Container, "accountDeleter" | "userFilesRemover" | "identityEraser"> {
+  const config = loadAccountErasureConfig(source);
+  const admin =
+    config.supabaseUrl && config.serviceRoleKey
+      ? { supabaseUrl: config.supabaseUrl, serviceRoleKey: config.serviceRoleKey }
+      : undefined;
+  /**
+   * Fails the request when Supabase admin access is not configured.
+   *
+   * @returns A rejected promise.
+   */
+  const missing = (): Promise<never> =>
+    Promise.reject(new Error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not configured"));
+  return {
+    accountDeleter: admin ? createGotrueAccountDeleter(admin) : { deleteUser: missing },
+    userFilesRemover: admin ? createStorageFilesRemover(admin) : { removeAll: missing },
+    identityEraser: config.posthog ? createPosthogIdentityEraser(config.posthog) : createNoopIdentityEraser(),
   };
 }
 
@@ -193,6 +246,7 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     ...createRepositories(),
     planLimits: createUnlimitedPlanLimits(),
     ...createPhoneServices(),
+    ...createAccountErasure(),
     ...overrides,
   };
 }
