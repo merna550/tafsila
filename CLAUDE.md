@@ -56,4 +56,5 @@ _Updated when the milestone, the next step or an open decision changes. What was
 
 - Milestone: M0 - Foundation & environments (in progress)
 - Next: first issues from SRS M1
-- Open decisions: final product name/domain; AI provider after eval
+- M2 brief and issues drafted (#121–#148, `docs/milestones/M2-engine-core.md`); next for M2: `/plan-wave M2`
+- Open decisions: final product name/domain; AI provider after eval; block drafting system (#122)
