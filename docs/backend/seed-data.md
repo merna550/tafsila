@@ -12,13 +12,13 @@
 
 Today (issue #24) the seed creates the four accounts with their profiles, the demo data below marked "now", and sets the phone and role of the profiles directly (users cannot change them). The plan, credits and design columns arrive in later milestones; until then they are documentation only. Seed phone numbers are `+20100000000n` (trial 1, pro 2, admin 4); their keyed hashes are in `trial_phones` (computed with the local `PHONE_HASH_SECRET` from `.env.example`). `empty@tafsila.test` verifies with `+201000000003` (code `123456`); `+201000000005` to `07` are for e2e, `08` and `09` for manual tests.
 
-| Data             | Content                                                                                                                                           |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Size charts      | now: one system chart `PLACEHOLDER Egyptian/EU S-XXL (demo values)` (size M scaled by 0.95 to 1.15; real values come from #32). Egyptian/EU S–XXL |
-| Measurement sets | Size S, M, L, XL + 3 custom real-body sets                                                                                                        |
-| Designs          | V-neck half-circle dress, A-line skirt, basic blouse (+ photos in local storage)                                                                  |
-| Fabrics & rules  | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle)                                                         |
-| Products         | All plans and prices (sandbox)                                                                                                                    |
+| Data             | Content                                                                                                                                                                                                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Size charts      | one system chart `PLACEHOLDER S-XXL (demo values, replaced in #32)` with all 18 measurements for S, M, L, XL, XXL. It is inserted by the migration `20261013120000_default_size_chart.sql` (not the seed), so local, CI and staging have the same chart; real values come from #32. |
+| Measurement sets | Size S, M, L, XL + 3 custom real-body sets                                                                                                                                                                                                                                          |
+| Designs          | V-neck half-circle dress, A-line skirt, basic blouse (+ photos in local storage)                                                                                                                                                                                                    |
+| Fabrics & rules  | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle)                                                                                                                                                                                           |
+| Products         | All plans and prices (sandbox)                                                                                                                                                                                                                                                      |
 
 ## Account deletion tests (issue #27)
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cmToMm, mmToCm, roundTo } from "./units";
+import { cmToMm, formatCm, mmToCm, roundTo } from "./units";
 
 describe("units", () => {
   it("converts centimetres to millimetres and back", () => {
@@ -10,5 +10,11 @@ describe("units", () => {
   it("rounds without floating-point noise", () => {
     expect(roundTo(0.1 + 0.2, 2)).toBeCloseTo(0.3, 10);
     expect(roundTo(12.3456, 1)).toBeCloseTo(12.3, 10);
+  });
+
+  it("formats millimetres as centimetres with at most one decimal", () => {
+    expect(formatCm(920)).toBe("92");
+    expect(formatCm(925)).toBe("92.5");
+    expect(formatCm(924.6)).toBe("92.5");
   });
 });

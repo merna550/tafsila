@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "@tafsila/api": "workspace:*",
     "@tafsila/config": "workspace:*",
+    "@tafsila/engine": "workspace:*",
     "@tafsila/schemas": "workspace:*",
     "@tafsila/ui": "workspace:*",
     "@tafsila/utils": "workspace:*",

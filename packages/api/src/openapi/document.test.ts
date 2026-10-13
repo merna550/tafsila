@@ -33,6 +33,7 @@ describe("OpenAPI document", () => {
       "/api/phone/code",
       "/api/phone/verify",
       "/api/profile",
+      "/api/size-charts/default",
     ]);
   });
 

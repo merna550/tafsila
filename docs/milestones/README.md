@@ -6,6 +6,7 @@ One page per active milestone: goal, scope, SRS IDs, deliverables, exit criteria
 | ------------------------------ | -------------------------------------------------- |
 | M0 - Foundation & environments | [M0-foundation.md](M0-foundation.md)               |
 | M1 - Accounts & data           | [M1-accounts-and-data.md](M1-accounts-and-data.md) |
+| M2 - Engine core               | [M2-engine-core.md](M2-engine-core.md)             |
 
 Rules (issue #22, [ADR-024](../DECISIONS.md)):
 

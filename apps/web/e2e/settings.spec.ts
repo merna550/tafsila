@@ -55,7 +55,8 @@ test.describe("settings", () => {
     await page.reload();
     await expect(page).toHaveURL(/\/en\/settings$/);
     await page.getByRole("button", { name: t.settings.display.arabic }).click();
-    await expect(page).toHaveURL(/\/settings$/);
+    // "/en/settings" also ends with "/settings", so the path is compared exactly.
+    await expect.poll(() => new URL(page.url()).pathname).toBe("/settings");
 
     // Delete: the button waits for the exact word.
     await page.getByRole("button", { name: t.deleteAccount.open }).click();
@@ -77,8 +78,11 @@ test.describe("settings", () => {
     await expect(page).toHaveURL(/\/sign-in/);
   });
 
-  test("settings needs a signed-in user", async ({ page }) => {
-    await page.goto("/settings");
-    await expect(page).toHaveURL(/\/sign-in\?next=%2Fsettings/);
+  test("settings needs a signed-in user", async ({ page }, testInfo) => {
+    // The guard keeps the language prefix: Arabic has none, English has /en.
+    const prefix = testInfo.project.metadata.locale === "en" ? "/en" : "";
+    await page.goto(`${prefix}/settings`);
+    const next = encodeURIComponent(`${prefix}/settings`);
+    await expect(page).toHaveURL(new RegExp(`${prefix}/sign-in\\?next=${next}$`));
   });
 });

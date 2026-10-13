@@ -14,3 +14,13 @@ export const sizeChartSchema = z
 
 /** Validated size chart: size label to measurements in millimetres. */
 export type SizeChart = z.infer<typeof sizeChartSchema>;
+
+/** The default size chart as GET /api/size-charts/default returns it. */
+export const sizeChartResponseSchema = z.object({
+  id: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000d1" }),
+  name: z.string().min(1).meta({ example: "Egyptian/EU S-XXL" }),
+  sizes: sizeChartSchema,
+});
+
+/** Parsed default size chart response. */
+export type SizeChartResponse = z.infer<typeof sizeChartResponseSchema>;

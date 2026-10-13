@@ -5139,6 +5139,394 @@
         }
       }
     },
+    "/api/size-charts/default": {
+      "get": {
+        "tags": [
+          "size-charts"
+        ],
+        "summary": "Read the default size chart (every size, measurements in millimetres)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The default chart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "00000000-0000-4000-8000-0000000000d1"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "Egyptian/EU S-XXL"
+                    },
+                    "sizes": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm"
+                            ]
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "highBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "underBust": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hip": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "hipDepth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "neck": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "shoulderWidth": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "backLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "frontLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustPointDistance": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "bustHeight": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "armLength": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "upperArm": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "wrist": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToKnee": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          },
+                          "waistToFloor": {
+                            "type": "number",
+                            "minimum": 50,
+                            "maximum": 2500
+                          }
+                        },
+                        "required": [
+                          "unit",
+                          "height",
+                          "bust",
+                          "highBust",
+                          "waist",
+                          "hip",
+                          "hipDepth",
+                          "neck",
+                          "shoulderWidth",
+                          "backLength",
+                          "frontLength",
+                          "bustPointDistance",
+                          "bustHeight",
+                          "armLength",
+                          "upperArm",
+                          "wrist",
+                          "waistToKnee",
+                          "waistToFloor"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "sizes"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SIZE_CHART_NOT_FOUND: No default size chart is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/phone": {
       "get": {
         "tags": [
