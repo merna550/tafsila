@@ -1,3 +1,4 @@
+"use client";
 /** ErrorState: the "could not load" state of a data screen, with a "Try again" button. */
 import type { ReactElement, ReactNode } from "react";
 import { Button } from "./button";

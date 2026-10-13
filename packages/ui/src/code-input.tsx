@@ -1,3 +1,4 @@
+"use client";
 /** CodeInput: a row of single-digit boxes for a one-time code; always left-to-right, paste fills every box. */
 import { useRef, type ReactElement } from "react";
 import { FIELD_BASE, cx } from "./styles";

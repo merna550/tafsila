@@ -1,6 +1,6 @@
 /** Pure view-models of the clients screens: what a list row and the profile card show, derived from API data. */
 import type { Client, MeasurementSet } from "@tafsila/schemas";
-import { formatMonthYear, formatRelativeTime, type DateLocale } from "./format-relative-time";
+import { formatMonthYear, formatRelativeTime, type DateLocale } from "@/shared/format";
 
 /** The three forms of the one-line description under a client's name. */
 export type ClientMeta =

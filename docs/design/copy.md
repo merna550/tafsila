@@ -36,6 +36,12 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | phone number                       | رقم الهاتف                              | phone number                        |
 | verification code                  | رمز التأكيد                             | verification code                   |
 | verified / not verified            | مؤكَّد / غير مؤكَّد                     | verified / not verified             |
+| admin panel                        | لوحة الإدارة                            | admin panel                         |
+| admin (the link)                   | الإدارة                                 | admin                               |
+| users (admin list)                 | المستخدمون                              | users                               |
+| size chart                         | جدول المقاسات                           | size chart                          |
+| import / export CSV                | استيراد CSV / تصدير CSV                 | import CSV / export CSV             |
+| discard changes                    | تجاهل التعديلات                         | discard changes                     |
 | password                           | كلمة المرور                             | password                            |
 | sign in / sign up / sign out       | تسجيل الدخول / حساب جديد / تسجيل الخروج | sign in / create account / sign out |
 | admin panel                        | لوحة الإدارة                            | admin                               |
