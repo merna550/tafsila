@@ -168,6 +168,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Sent by Supabase Auth behind the `PhoneOtp` port; test numbers always use `123456`. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/One-time_password>
 
+<a id="stale-token-role"></a>
+
+### Stale token role
+
+**Plain words:** The role (user or admin) is copied into the sign-in token when it is issued, and the token lives up to an hour. If the role changes meanwhile, the token still says the old one until it is refreshed. So anything dangerous must also be checked against the database.  
+**In Tafsila:** the API trusts `user_role` for the first check (`requireRole("admin")`); every `private.admin_*` function checks `profiles.role` again. **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac>
+
 <a id="security-definer"></a>
 
 ### Security definer function

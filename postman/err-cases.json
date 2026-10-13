@@ -152,5 +152,32 @@
     "status": 400,
     "code": "VALIDATION_FAILED",
     "auth": true
+  },
+  {
+    "name": "ERR GET /api/admin/stats without a token returns 401",
+    "method": "GET",
+    "path": "/api/admin/stats",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR GET /api/admin/users as a normal user returns 403",
+    "method": "GET",
+    "path": "/api/admin/users",
+    "auth": true,
+    "status": 403,
+    "code": "FORBIDDEN"
+  },
+  {
+    "name": "ERR PUT /api/admin/size-charts/default as a normal user returns 403",
+    "method": "PUT",
+    "path": "/api/admin/size-charts/default",
+    "auth": true,
+    "body": {
+      "sizes": {}
+    },
+    "status": 403,
+    "code": "FORBIDDEN"
   }
 ]

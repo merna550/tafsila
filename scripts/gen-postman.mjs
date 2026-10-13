@@ -10,8 +10,8 @@ import Converter from "openapi-to-postmanv2";
 
 const OPENAPI_PATH = "packages/api/openapi.json";
 const COLLECTION_PATH = "postman/tafsila.postman_collection.json";
-/** Folders that are never called by Newman (a call would throw a 500 and use the Sentry quota; "account" deletes the signed-in account, so it is only called by hand on a throwaway account). */
-const SKIPPED_FOLDERS = new Set(["debug", "phone", "account"]);
+/** Folders that are never called by Newman ("admin": Newman has no admin token, the ERR cases cover 401 and 403; a call would throw a 500 and use the Sentry quota; "account" deletes the signed-in account, so it is only called by hand on a throwaway account). */
+const SKIPPED_FOLDERS = new Set(["debug", "phone", "account", "admin"]);
 /** Folders replaced by a hand-written journey in postman/journey.json (they need ids from earlier steps). */
 const JOURNEY_FOLDERS = new Set(["clients", "measurements", "profile"]);
 

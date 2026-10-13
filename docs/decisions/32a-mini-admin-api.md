@@ -1,0 +1,22 @@
+# ADR-32a · 2026-10-14 · Mini admin: database functions and API (Part A)
+
+**Context:** Issue #32 (FR-MEAS-01 "chart editable by admin", FR-ADM partly). Merna needs to watch sign-ups and edit the standard size chart from inside the app. Part A (database functions and `/api/admin/*`) is built; Part B (the screens) follows. Plan: `docs/plans/32-mini-admin.md`.
+**Decision:**
+
+1. **Own `packages/ui` components, no Refine / React-admin** (Merna, 2026-10-13). No new dependency; it matches RTL and the tokens. Part B builds `StatTile` and `SegmentedControl`.
+2. **The users list goes through `private` security-definer functions** (`admin_users`, `admin_user`, `admin_stats`), called with `withApiRole`: the e-mail and last sign-in live in `auth.users` and other users' rows are hidden by RLS. `execute` only for `api_app` and `service_role`. **Security-sensitive.**
+3. **The admin is re-checked inside the database.** Every function starts with `private.assert_admin(p_admin)`, which raises SQLSTATE `42501` unless the profile role is `admin`; the adapter turns that into `403 FORBIDDEN`. The `user_role` claim in the token can be up to an hour stale, so the database is the second fuse (the route is the first: `requireAuth` + `requireRole("admin")`).
+4. **Privacy: counts only.** An admin sees name, e-mail, phone, dates and the number of clients and measurement sets; never measurements, notes or files. A pgTAP test fails when a function gains a column named `notes`, `data`, `sizes` or `measurements` (NFR-05).
+5. **Chart edits run as the admin through `withUser`** (the existing RLS policies `size_charts_admin_write` and `admin_audit_insert`), so no new function is needed. The update and the `admin_audit` row (`size_chart.updated`, target = chart id, `before` and `after` = name and sizes) are one transaction: both or neither. `updated_by` and `updated_at` are set explicitly (nothing in the database sets them). If the update touches no row (a stale admin token), the adapter throws `FORBIDDEN` and writes no audit row.
+6. **Validation:** `sizeChartSchema` first, then the engine's `validateMeasurements` for every size. Any error answers `422 SIZE_CHART_INVALID` with `details.issues` (each tagged with its `size`) and `details.fields` keyed `<size>.<measurement>`; nothing is saved. Warnings are saved and returned in `warnings`.
+7. **`PUT` without `name` keeps the current name.** A chart whose name starts with `PLACEHOLDER` is `isPlaceholder: true`; the screen shows the "temporary" banner until the real chart is saved with a new name.
+8. **The editor's display name is looked up through `admin_user`** (admins cannot read other profiles through RLS); `updatedBy` is the name, falling back to the e-mail, or `null` for the seeded chart or a deleted editor.
+9. **CSV is a client-side format.** The API only accepts JSON; the import and export code is in Part B.
+10. **The real Egyptian chart is data, not a migration.** Merna imports it per environment through the editor. A follow-up small PR then updates `packages/test-fixtures/src/size-chart-sql.ts` and its migration so new environments start with it (the drift test requires both).
+11. **Non-admins get `403 FORBIDDEN`** from the API (the standard contract); Part B's pages answer 404 so the admin area is not advertised.
+12. **Making a user an admin is a manual SQL step** by the project owner: [make-a-user-admin](../backend/tutorials/make-a-user-admin.md). The role reaches the token at its next refresh (up to one hour).
+13. **Postman:** the `admin` folder is never run by Newman (it has no admin token); hand-written ERR cases cover 401 and 403.
+
+**Tested here:** services and routes on memory adapters (including the stale-admin-token case), the OpenAPI document, the Drizzle mirror, and the Newman run. The SQL functions and the pgTAP assertions were also run against a scratch PostgreSQL 16 with stub tables. **Not run in this environment (no Docker):** `supabase/tests/database/admin-functions.test.sql` under real pgTAP, the real-adapter tests in `repositories.db.test.ts`, and e2e; CI runs them.
+
+**Alternatives:** a service-role call for the users list (rejected: holds the key on a hot path, ADR-27a 8); listing users from the browser with `supabase-js` (rejected: RLS hides them and it would need a policy that exposes every profile); a new `replace_size_chart` function (rejected: the RLS policies already express the rule).

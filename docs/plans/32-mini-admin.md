@@ -4,6 +4,8 @@ Issue: #32 · plan:sonnet · build:sonnet · size:M → **size:L** (two PRs) · 
 
 Decided by Merna (2026-10-13): own `packages/ui` components (no Refine / React-admin); build the editor with CSV import, the real Egyptian chart values are loaded by Merna afterwards.
 
+> **Status:** Part A (database functions and API) is built in the branch `feat/32-admin-api` (ADR-32a). Part B (web screens) is a later run.
+
 ## Context
 
 Merna needs to watch sign-ups and edit the standard size chart from inside the app (FR-MEAS-01 "chart editable by admin", FR-ADM partly). Today there is no admin route, no write path for size charts and no way to list users: `size_charts` and `admin_audit` already exist with admin-only write RLS, `requireRole("admin")` exists but only a test uses it, the default chart in the DB is a PLACEHOLDER (S–XXL, 18 measurements, ADR-024 fixes S–XXL), and the AdminUsers / AdminSizes designs are approved. Merna's answers (this session): build the editor plus CSV import and she loads the real values afterwards; use our own `packages/ui` components, no Refine/React-admin. Size goes S → **L**, built as two PRs ("Part of #32"): **A** database + API, **B** web.
