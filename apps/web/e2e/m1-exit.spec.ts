@@ -15,7 +15,11 @@ const CLIENT_NAME = "هدى مصطفى";
  */
 async function verifyPhone(page: Page, t: Messages): Promise<void> {
   await page.getByLabel(t.phoneVerification.phone.label, { exact: true }).fill(PHONE);
-  await page.getByRole("button", { name: t.phoneVerification.phone.sendCode, exact: true }).click();
+  const [sent] = await Promise.all([
+    page.waitForResponse((candidate) => candidate.url().endsWith("/api/phone/code")),
+    page.getByRole("button", { name: t.phoneVerification.phone.sendCode, exact: true }).click(),
+  ]);
+  expect(sent.status(), await sent.text()).toBe(200);
   const firstBox = t.phoneVerification.code.digit.replace("{n}", "1");
   await page.getByLabel(firstBox, { exact: true }).fill(VALID_CODE);
   const [response] = await Promise.all([
