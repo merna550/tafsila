@@ -1,5 +1,9 @@
 # M1 - Accounts & data
 
+## Status
+
+All build issues are merged. The exit check (#34) is automated in `apps/web/e2e/m1-exit.spec.ts` ([test cases](../test-cases/ui/34-m1-exit-check.md)); the milestone closes when Merna has run the High cases on staging (#34).
+
 ## Goal
 
 A user signs up, verifies a phone number, and saves a client with measurements. Data is protected by RLS.
