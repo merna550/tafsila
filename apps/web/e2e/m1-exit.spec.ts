@@ -14,12 +14,13 @@ const CLIENT_NAME = "هدى مصطفى";
  * @param t - Messages of the page language.
  */
 async function verifyPhone(page: Page, t: Messages): Promise<void> {
+  await expect(page.getByRole("heading", { name: t.phoneVerification.title })).toBeVisible();
   await page.getByLabel(t.phoneVerification.phone.label, { exact: true }).fill(PHONE);
   const [sent] = await Promise.all([
     page.waitForResponse((candidate) => candidate.url().endsWith("/api/phone/code")),
     page.getByRole("button", { name: t.phoneVerification.phone.sendCode, exact: true }).click(),
   ]);
-  expect(sent.status(), await sent.text()).toBe(200);
+  expect(sent.status(), await sent.text()).toBe(202);
   const firstBox = t.phoneVerification.code.digit.replace("{n}", "1");
   await page.getByLabel(firstBox, { exact: true }).fill(VALID_CODE);
   const [response] = await Promise.all([
