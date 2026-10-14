@@ -84,7 +84,7 @@ test.describe("M1 exit check", () => {
       await expect(other.getByRole("heading", { name: t.clients.empty.title })).toBeVisible();
       await expect(other.getByText(CLIENT_NAME)).toHaveCount(0);
       await other.goto(profileUrl);
-      await expect(other.getByRole("heading", { level: 1 })).not.toContainText(CLIENT_NAME);
+      await expect(other.getByText(t.notFound.title, { exact: true })).toBeVisible();
       await expect(other.getByText(CLIENT_NAME)).toHaveCount(0);
     } finally {
       await context.close();
