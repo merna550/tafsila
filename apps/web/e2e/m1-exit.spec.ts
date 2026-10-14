@@ -32,6 +32,9 @@ async function verifyPhone(page: Page, t: Messages): Promise<void> {
 }
 
 test.describe("M1 exit check", () => {
+  // The phone number is single-use: a retry could only fail with PHONE_ALREADY_USED and hide the first error.
+  test.describe.configure({ retries: 0 });
+
   test("sign up, verify phone, save a client with measurements, and another user cannot see her", async ({
     page,
     browser,
@@ -64,7 +67,8 @@ test.describe("M1 exit check", () => {
     await expect(page).toHaveURL(/\/clients\/[0-9a-f-]{36}$/);
     await expect(page.getByText(m.save.saved, { exact: true })).toBeVisible();
 
-    // Sign out; the client page is guarded.
+    // Sign out (the button lives on the dashboard); the client page is guarded.
+    await page.goto(`${prefix}/dashboard`);
     await page.getByRole("button", { name: t.auth.signOut }).click();
     await expect(page).toHaveURL(/\/$/);
     await page.goto(profileUrl);
