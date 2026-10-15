@@ -24,6 +24,8 @@ Full guide: `docs/engine/README.md` · Architecture: `docs/ARCHITECTURE.md` §3 
 - Drafting failures throw `DraftingError` (`src/errors/drafting-error.ts`).
 - New feature: use the `add-garment-module` skill (plan with `plan:opus`).
 
+- `src/render/` draws a `PatternResult` as deterministic SVG (`renderSvg`, `renderPrintSheet`); the vitest helper `expectSvgSnapshot` is exported only as `@tafsila/engine/testing`. Print: `pnpm engine:print`.
+
 ## Validation (FR-VAL-01…09)
 
 - Each module registers the rules it needs. Tolerances come from the SRS:

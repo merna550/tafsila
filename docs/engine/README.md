@@ -57,6 +57,19 @@ One set of pure 2D helpers; drafting code never writes its own maths ([decision 
 
 Coverage of the engine must stay at 85% or more (NFR-10): `pnpm --filter @tafsila/engine test` fails below it.
 
+## Rendering and printing a toile (`src/render/`)
+
+`renderSvg(result, { layers, scale })` turns a `PatternResult` into one SVG text; the same result always gives the same bytes ([decision 127](../decisions/127-svg-renderer.md)). Units are mm (`viewBox` and `width`/`height` use the same numbers). Layers, in fixed order: `grid`, `cut`, `stitch`, `notches`, `grain`, `darts`, `labels`, `scale`.
+
+**Print a toile at 1:1:**
+
+1. Run `pnpm engine:print rectangle size-m --out toile.svg` (fixture: `rectangle` or a design fixture such as `vNeckHalfCircleDress`; size: a `SIZE_MATRIX` id such as `size-m`). A design prints only once its garment modules exist; until then the command exits 1 with a message.
+2. Open `toile.svg` in Chrome and print with **scale 100% / actual size** (never "fit to page"), or send the file to a plotter print shop.
+3. Measure the scale square with a ruler: it must be 100 mm (plus or minus 1 mm). If it is not, the print was scaled; do not cut.
+4. If the shop has no Arabic font, open the file in Chrome and print to PDF first.
+
+**Snapshot tests:** `import { expectSvgSnapshot } from "@tafsila/engine/testing"` and `await expectSvgSnapshot(result)` in a test. It writes `__snapshots__/<test name>.svg` next to the test (update with `vitest -u`); open the file in a browser to review it.
+
 ## Drafting methods and sources
 
 Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich, _Metric Pattern Cutting for Women's Wear_ (6th ed., metric made-to-measure), written step by step on our measurement fields in [drafting-method.md](drafting-method.md) with reference key points in `@tafsila/test-fixtures` (`referenceDrafts`); FreeSewing (MIT) is only a cited reference for curve construction, not a dependency ([ADR-122](../decisions/122-m2-engine-scope.md), [ADR-122a](../decisions/122a-drafting-system.md)). Add a row here when a module introduces a new method.
@@ -142,7 +155,7 @@ Cross-checks:
 
 - Unit tests for key points.
 - Property tests (fast-check) for every FR-VAL rule across the size matrix: `SIZE_MATRIX` (5 chart sizes + 20 custom sets) and `arbMeasurements()` in `packages/test-fixtures/src/size-matrix.ts`. Use them, never a private copy. Synthetic sets become `source: "real"` when Merna supplies anonymised sets.
-- SVG snapshot per size.
+- SVG snapshot per size with `expectSvgSnapshot` (see "Rendering and printing a toile").
 - Physical QA: each garment type is sewn as a toile in ≥ 3 sizes (`needs:sew-test`).
 
 ## Tutorials and skills
