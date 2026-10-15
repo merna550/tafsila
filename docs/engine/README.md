@@ -42,12 +42,15 @@ Coverage of the engine must stay at 85% or more (NFR-10): `pnpm --filter @tafsil
 
 ## Drafting methods and sources
 
-Each module cites its method in JSDoc. Basis: the FreeSewing core (SRS §1.4; licence check is open, SRS §13 #2), with standard flat-pattern drafting for blocks. Add a row here when a module introduces a new method.
+Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich, _Metric Pattern Cutting for Women's Wear_ (6th ed., metric made-to-measure), written step by step on our measurement fields in [drafting-method.md](drafting-method.md) with reference key points in `@tafsila/test-fixtures` (`referenceDrafts`); FreeSewing (MIT) is only a cited reference for curve construction, not a dependency ([ADR-122](../decisions/122-m2-engine-scope.md), [ADR-122a](../decisions/122a-drafting-system.md)). Add a row here when a module introduces a new method.
 
-| Area     | Method                                                                                        | Code                       |
-| -------- | --------------------------------------------------------------------------------------------- | -------------------------- |
-| Sleeve   | Cap height solved by bisection so the cap exceeds the armhole by the target ease              | `src/sleeve/sleeve-cap.ts` |
-| Geometry | Gravesen adaptive Bézier length, de Casteljau split, Catmull-Rom curves, Tiller–Hanson offset | `src/geometry/`            |
+| Area     | Method                                                                                                    | Code                                     |
+| -------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Bodice   | Aldrich close-fitting block, back and front, bust dart and waist darts; missing lengths from cited ratios | [drafting-method.md](drafting-method.md) |
+| Skirt    | Aldrich straight skirt block, front and back, waist darts                                                 | [drafting-method.md](drafting-method.md) |
+| Sleeve   | Aldrich one-piece set-in sleeve block (reference points; the cap curve is built by the engine)            | [drafting-method.md](drafting-method.md) |
+| Sleeve   | Cap height solved by bisection so the cap exceeds the armhole by the target ease                          | `src/sleeve/sleeve-cap.ts`               |
+| Geometry | Gravesen adaptive Bézier length, de Casteljau split, Catmull-Rom curves, Tiller–Hanson offset             | `src/geometry/`                          |
 
 ## Module catalogue
 
@@ -92,7 +95,7 @@ Pure functions in `src/measurements/`, used by the API and the measurements form
 | backLength        | 300      | 550      | nape to waist                              |
 | frontLength       | 320      | 600      | shoulder point over bust to waist          |
 | bustPointDistance | 120      | 300      | distance between bust points               |
-| bustHeight        | 150      | 420      | shoulder point to bust point               |
+| bustHeight        | 150      | 420      | HPS to bust point                          |
 | armLength         | 400      | 750      | shoulder to wrist                          |
 | upperArm          | 180      | 500      | upper arm circumference                    |
 | wrist             | 110      | 260      | wrist circumference                        |

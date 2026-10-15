@@ -57,4 +57,4 @@ _Updated when the milestone, the next step or an open decision changes. What was
 - Milestone: M1 - Accounts & data (built; closes after Merna's staging run of the exit check, #34)
 - Next: M2 engine core
 - M2 brief and issues drafted (#121–#148, `docs/milestones/M2-engine-core.md`); next for M2: `/plan-wave M2`
-- Open decisions: final product name/domain; AI provider after eval; block drafting system (#122)
+- Open decisions: final product name/domain; AI provider after eval

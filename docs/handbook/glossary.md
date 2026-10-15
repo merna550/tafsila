@@ -1669,6 +1669,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `formatRelativeTime(date, now, locale)` in `features/clients/model/`; the clock is passed in so tests are exact, digits stay 0-9. **Card:** [next-intl](tech/next-intl.md) · **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat>
 
+<a id="reference-draft"></a>
+
+### Reference draft
+
+**Plain words:** The corner and dart points of a block worked out once, on paper or in a spreadsheet, so the program's drawing can be checked against them to the millimetre. Arabic: مسودة مرجعية.  
+**In Tafsila:** `referenceDrafts` in `packages/test-fixtures/src/reference-drafts.ts` (sizes S, M, XXL), produced by one calculation and described in [drafting-method.md](../engine/drafting-method.md) ([decision 122a](../decisions/122a-drafting-system.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern#Drafting>
+
 <a id="release"></a>
 
 ### Release
