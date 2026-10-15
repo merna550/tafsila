@@ -652,7 +652,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Ease
 
 **Plain words:** Extra room added to a body measurement for comfort or style. Arabic: راحة.  
-**In Tafsila:** `EaseProfile` (`fitted`, `regular`, `loose`) in `measurements.ts`; ease tables live in `packages/engine/src/constants/` (planned). FR-VAL-03 checks that circumference equals measurement plus ease. **Level:** beginner  
+**In Tafsila:** `EaseProfile` (`fitted`, `regular`, `loose`) in `measurements.ts`; ease tables live in `packages/engine/src/constants/ease.ts`; the resolve step subtracts the ease already inside each block ([decision 126](../decisions/126-ease-tables.md)). FR-VAL-03 checks that circumference equals measurement plus ease. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Ease_(sewing)>
 
 <a id="egp"></a>

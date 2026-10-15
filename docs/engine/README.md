@@ -14,15 +14,15 @@ The function is pure and deterministic and runs the same in the browser and on t
 
 `generatePattern(spec, measurements, options?, registry?)` lives in `src/pipeline/` ([decision 125](../decisions/125-pipeline.md); pattern: [functional core and plugin pipeline](../handbook/patterns/functional-core-plugin-pipeline.md)). It first checks the input, then runs seven steps. Each step is a pure function `(ctx: DraftContext) => DraftContext` over a frozen context.
 
-| Step          | Does                                             | Filled by  |
-| ------------- | ------------------------------------------------ | ---------- |
-| `resolve`     | Drafting inputs from measurements + ease tables  | #126       |
-| `blocks`      | Base blocks: bodice, skirt, sleeve               | #128, #129 |
-| `modules`     | Registered `FeatureModule`s transform the blocks | real now   |
-| `finishing`   | Seam allowance, notches, grain, darts, cut info  | #130, #131 |
-| `layout`      | Collision-free label placement                   | #131       |
-| `validate`    | Registered rules → `ValidationReport`            | real now   |
-| `sewingOrder` | Assembly steps for instructions and 3D           | #146       |
+| Step          | Does                                                             | Filled by  |
+| ------------- | ---------------------------------------------------------------- | ---------- |
+| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | #126       |
+| `blocks`      | Base blocks: bodice, skirt, sleeve                               | #128, #129 |
+| `modules`     | Registered `FeatureModule`s transform the blocks                 | real now   |
+| `finishing`   | Seam allowance, notches, grain, darts, cut info                  | #130, #131 |
+| `layout`      | Collision-free label placement                                   | #131       |
+| `validate`    | Registered rules → `ValidationReport`                            | real now   |
+| `sewingOrder` | Assembly steps for instructions and 3D                           | #146       |
 
 Empty steps are identity functions whose JSDoc names the issue that fills them.
 
@@ -38,6 +38,26 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 | `steps.ts`            | The seven steps and `buildReport` (worst status wins, `pass` when empty)                                                                                             |
 
 Bad input never throws: it returns a `fail` result with no pieces. Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
+
+## Ease tables and resolve (`src/constants/ease.ts`, `src/resolve/`)
+
+`resolveDraftInputs(spec, measurements, { easeProfile })` returns the finished quarter widths (`bustQuarterMm`, `bodiceWaistQuarterMm`, `hipQuarterMm`, `skirtWaistQuarterMm`), sleeve half widths, the style ease per block line, the total ease, pass-through body lengths and `skirtLengthMm`. Blocks never read a body circumference directly for a width ([decision 126](../decisions/126-ease-tables.md)).
+
+**Ease is never added twice.** The tables hold the total ease (what the SRS and FR-VAL-03 talk about). The Aldrich blocks already contain some (`BLOCK_BUILT_IN_EASE_MM`: bust 80, bodice waist 40, skirt hip 40, skirt waist 20, sleeve bicep 50, sleeve wrist 30). Resolve subtracts it and returns the remainder as `styleEaseMm`.
+
+Total ease, mm over the whole circumference (regular is SRS §6.2; the rest are proposals):
+
+| Body line  | fitted | regular | loose |
+| ---------- | ------ | ------- | ----- |
+| bust       | 60     | 80      | 120   |
+| waist      | 20     | 40      | 70    |
+| hip        | 30     | 50      | 80    |
+| upperArm   | 40     | 50      | 80    |
+| acrossBack | 0      | 0       | 20    |
+
+`bodice.fit` modifier on bust, waist and hip (total floored at 0): fitted -10, semi-fitted 0, loose +30. No bodice means 0.
+
+Skirt length: `skirt.lengthMm` wins; otherwise from `waistToKnee` (K) and `waistToFloor` (F): mini K - 180, knee K, midi K + 0.40 (F - K), ankle K + 0.85 (F - K), floor F - 20. Errors: `SKIRT_LENGTH_INVALID_BODY` (F - K below 150), `SKIRT_LENGTH_OUT_OF_BODY` (explicit length below 100 or above F), `FABRIC_NOT_SUPPORTED` (non-woven).
 
 ## Geometry kit (`src/geometry/`)
 
