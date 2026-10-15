@@ -5,7 +5,7 @@ Plan #26 part A. Decision: [ADR-26a](../../decisions/26a-phone-otp-trial.md).
 ## Local
 
 1. `.env.local` gets `PHONE_HASH_SECRET` from `.env.example` (already filled with a local value; `supabase/seed.sql` uses the same value for the seeded numbers).
-2. `pnpm db:reset`. GoTrue knows test numbers `+201000000001` to `+201000000009`; the code is always `123456`; the API refuses any other number outside production (`PHONE_TEST_ONLY`).
+2. `pnpm db:reset`. GoTrue knows test numbers `+201000000001` to `+201000000010`; the code is always `123456`; the API refuses any other number outside production (`PHONE_TEST_ONLY`).
 3. Try it: sign in, `POST /api/phone/code {"phone":"010 0000 0005"}` then `POST /api/phone/verify {"phone":"010 0000 0005","code":"123456"}` (Postman folder "phone"). Seed numbers 1, 2, 4 are already used; use 5 to 9.
 
 ## Staging and previews: the secret

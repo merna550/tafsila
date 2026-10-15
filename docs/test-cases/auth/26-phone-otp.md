@@ -9,7 +9,7 @@
 
 ## Test data
 
-Signed-in user with a bearer token (Postman environment). Test numbers `+201000000005` to `+201000000009` (code `123456`); `...01`, `...02`, `...04` are already used by the seed. Locally and on staging only these nine numbers work.
+Signed-in user with a bearer token (Postman environment). Test numbers `+201000000005` to `+201000000010` (code `123456`); `...01`, `...02`, `...04` are already used by the seed. Locally and on staging only these ten numbers work.
 
 ## Cases
 

@@ -4,7 +4,7 @@ import { z } from "zod";
 /** Deployment environments the app can run in. */
 export const APP_ENVIRONMENTS = ["local", "ci", "preview", "staging", "production"] as const;
 
-/** Nine test numbers (ADR-021, decision 26-phone-otp-trial): GoTrue knows them, the code is always 123456. */
+/** Ten test numbers (ADR-021, decision 26-phone-otp-trial): GoTrue knows them, the code is always 123456. */
 export const DEFAULT_PHONE_TEST_NUMBERS = [
   "+201000000001",
   "+201000000002",
@@ -15,6 +15,7 @@ export const DEFAULT_PHONE_TEST_NUMBERS = [
   "+201000000007",
   "+201000000008",
   "+201000000009",
+  "+201000000010",
 ] as const;
 
 /** Environments that must have their own PHONE_HASH_SECRET (local and ci read it from the example files). */

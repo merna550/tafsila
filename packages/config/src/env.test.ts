@@ -153,10 +153,10 @@ describe("loadDatabaseUrl", () => {
 describe("phone configuration", () => {
   const secret = "s".repeat(32);
 
-  it("works locally without the secret and defaults to the nine test numbers", () => {
+  it("works locally without the secret and defaults to the ten test numbers", () => {
     const config = loadPhoneConfig({ APP_ENV: "local" });
     expect(config.hashSecret).toBeUndefined();
-    expect(config.testNumbers).toHaveLength(9);
+    expect(config.testNumbers).toHaveLength(10);
     expect(config.testOnly).toBe(true);
   });
 
