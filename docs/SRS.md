@@ -394,7 +394,16 @@ interface Measurements {
 }
 type EaseProfile = 'fitted' | 'regular' | 'loose';
 ```
-Default ease tables (mm) live in `packages/engine/src/ease.ts` and are editable by product decision (e.g. regular bodice: bust +80, waist +40, hip +50).
+Default ease tables (mm, total over the whole circumference, woven) live in `packages/engine/src/constants/ease.ts` and are editable by product decision. The `regular` column equals the example (bust +80, waist +40, hip +50); `fitted` and `loose` and the `bodice.fit` modifiers are proposals awaiting product approval ([decision 126](decisions/126-ease-tables.md)).
+
+| Body line | fitted | regular | loose |
+| --------- | ------ | ------- | ----- |
+| bust      | 60     | 80      | 120   |
+| waist     | 20     | 40      | 70    |
+| hip       | 30     | 50      | 80    |
+| upper arm | 40     | 50      | 80    |
+
+`bodice.fit` adds -10 (fitted), 0 (semi-fitted) or +30 (loose) mm to bust, waist and hip; the total is never below 0.
 
 ### 6.3 PatternResult / Pattern JSON
 ```ts
