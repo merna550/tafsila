@@ -29,6 +29,7 @@ When the Node version we run supports extensionless TypeScript imports natively.
 
 ## Where it lives in our code
 
+- `packages/engine/scripts/print.ts` (`pnpm engine:print`, #127), run with `tsx` from `packages/engine`.
 - `packages/api/src/openapi/write.ts` (`pnpm api:openapi`) and `packages/api/src/dev/test-server.ts` (`pnpm api:test`); `scripts/api-check.mjs` and `scripts/api-test.mjs` start them with `node --import tsx`.
 
 ## The 20% you need

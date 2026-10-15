@@ -5,8 +5,8 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "v8",
-      include: ["src/**/*.ts"],
-      exclude: ["src/**/*.test.ts", "src/test-utils/**"],
+      include: ["src/**/*.ts", "scripts/**/*.ts"],
+      exclude: ["src/**/*.test.ts", "src/test-utils/**", "src/render/expect-svg-snapshot.ts"],
       thresholds: { lines: 85, branches: 85, functions: 85 },
     },
   },

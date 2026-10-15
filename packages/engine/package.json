@@ -4,17 +4,20 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./testing": "./src/render/expect-svg-snapshot.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p .",
     "test": "vitest run --coverage",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "print": "tsx scripts/print.ts"
   },
   "devDependencies": {
     "@tafsila/test-fixtures": "workspace:*",
     "@vitest/coverage-v8": "4.1.11",
-    "fast-check": "^4.10.2"
+    "fast-check": "^4.10.2",
+    "tsx": "^4.23.15"
   },
   "dependencies": {
     "@tafsila/schemas": "workspace:*"

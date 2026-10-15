@@ -2323,3 +2323,11 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A small library for sharing state between React components.  
 **In Tafsila:** Planned only for the pattern editor session (selected piece, zoom, layers). **Card:** [Zustand](tech/zustand.md) · **Level:** intermediate  
 **Learn:** <https://zustand.docs.pmnd.rs/>
+
+<a id="toile-print-sheet"></a>
+
+### Toile print sheet
+
+**Plain words:** One SVG file with every pattern piece side by side at real size and a 10 cm square, so you can print it at 100%, check the square with a ruler, and cut a test garment (toile). Arabic: ورقة طباعة التجربة.  
+**In Tafsila:** `renderPrintSheet` in `packages/engine/src/render/print-sheet.ts`, run by `pnpm engine:print` ([decision 127](../decisions/127-svg-renderer.md)). **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Positions>
