@@ -6,4 +6,5 @@ export * from "./geometry";
 export * from "./sleeve/sleeve-cap";
 export * from "./version";
 export * from "./measurements";
+export * from "./pipeline";
 export * from "./resolve";

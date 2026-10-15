@@ -12,15 +12,32 @@ The function is pure and deterministic and runs the same in the browser and on t
 
 ## Pipeline
 
-| Step          | Does                                                             |
-| ------------- | ---------------------------------------------------------------- |
-| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) |
-| `blocks`      | Base blocks: bodice, skirt, sleeve                               |
-| `modules`     | Registered `FeatureModule`s transform the blocks                 |
-| `finishing`   | Seam allowance, notches, grain, darts, cut info                  |
-| `layout`      | Collision-free label placement                                   |
-| `validate`    | FR-VAL checks → `ValidationReport`                               |
-| `sewingOrder` | Assembly steps for instructions and 3D                           |
+`generatePattern(spec, measurements, options?, registry?)` lives in `src/pipeline/` ([decision 125](../decisions/125-pipeline.md); pattern: [functional core and plugin pipeline](../handbook/patterns/functional-core-plugin-pipeline.md)). It first checks the input, then runs seven steps. Each step is a pure function `(ctx: DraftContext) => DraftContext` over a frozen context.
+
+| Step          | Does                                                             | Filled by  |
+| ------------- | ---------------------------------------------------------------- | ---------- |
+| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | #126       |
+| `blocks`      | Base blocks: bodice, skirt, sleeve                               | #128, #129 |
+| `modules`     | Registered `FeatureModule`s transform the blocks                 | real now   |
+| `finishing`   | Seam allowance, notches, grain, darts, cut info                  | #130, #131 |
+| `layout`      | Collision-free label placement                                   | #131       |
+| `validate`    | Registered rules → `ValidationReport`                            | real now   |
+| `sewingOrder` | Assembly steps for instructions and 3D                           | #146       |
+
+Empty steps are identity functions whose JSDoc names the issue that fills them.
+
+| File                  | Holds                                                                                                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `resolved`, `pieces`, `checks`) and `withPiece`/`withCheck`                                                             |
+| `feature-module.ts`   | `FeatureModule` and `ValidationRule` interfaces                                                                                                                      |
+| `registry.ts`         | `createRegistry`: order by `order` then `id`, duplicate id throws `PIPELINE_DUPLICATE_MODULE`                                                                        |
+| `default-registry.ts` | The registry used by default; each real module adds one line                                                                                                         |
+| `category-rules.ts`   | Blocks per category (dress: bodice + skirt, skirt, blouse: bodice); bad combination throws `PIPELINE_UNSUPPORTED_COMBINATION`                                        |
+| `input-check.ts`      | Schemas + `validateMeasurements`; problems become `fail` checks (`FR-MEAS-01` + `SPEC_INVALID`, `MEAS_INVALID`, `OPTIONS_INVALID` or `MEAS_*`), warnings stay `warn` |
+| `input-hash.ts`       | `canonicalJson` and `inputHash` (FNV-1a 64-bit) for `meta.createdFrom`                                                                                               |
+| `steps.ts`            | The seven steps and `buildReport` (worst status wins, `pass` when empty)                                                                                             |
+
+Bad input never throws: it returns a `fail` result with no pieces. Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
 
 ## Ease tables and resolve (`src/constants/ease.ts`, `src/resolve/`)
 
