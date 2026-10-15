@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270.00mm" height="520.00mm" viewBox="0 0 270.00 520.00">
+<title>Tafsila pattern - skirt - M</title>
+<g id="layer-grid">
+<path id="grid-minor" d="M 10.00 0 V 520.00 M 20.00 0 V 520.00 M 30.00 0 V 520.00 M 40.00 0 V 520.00 M 50.00 0 V 520.00 M 60.00 0 V 520.00 M 70.00 0 V 520.00 M 80.00 0 V 520.00 M 90.00 0 V 520.00 M 110.00 0 V 520.00 M 120.00 0 V 520.00 M 130.00 0 V 520.00 M 140.00 0 V 520.00 M 150.00 0 V 520.00 M 160.00 0 V 520.00 M 170.00 0 V 520.00 M 180.00 0 V 520.00 M 190.00 0 V 520.00 M 210.00 0 V 520.00 M 220.00 0 V 520.00 M 230.00 0 V 520.00 M 240.00 0 V 520.00 M 250.00 0 V 520.00 M 260.00 0 V 520.00 M 270.00 0 V 520.00 M 0 10.00 H 270.00 M 0 20.00 H 270.00 M 0 30.00 H 270.00 M 0 40.00 H 270.00 M 0 50.00 H 270.00 M 0 60.00 H 270.00 M 0 70.00 H 270.00 M 0 80.00 H 270.00 M 0 90.00 H 270.00 M 0 110.00 H 270.00 M 0 120.00 H 270.00 M 0 130.00 H 270.00 M 0 140.00 H 270.00 M 0 150.00 H 270.00 M 0 160.00 H 270.00 M 0 170.00 H 270.00 M 0 180.00 H 270.00 M 0 190.00 H 270.00 M 0 210.00 H 270.00 M 0 220.00 H 270.00 M 0 230.00 H 270.00 M 0 240.00 H 270.00 M 0 250.00 H 270.00 M 0 260.00 H 270.00 M 0 270.00 H 270.00 M 0 280.00 H 270.00 M 0 290.00 H 270.00 M 0 310.00 H 270.00 M 0 320.00 H 270.00 M 0 330.00 H 270.00 M 0 340.00 H 270.00 M 0 350.00 H 270.00 M 0 360.00 H 270.00 M 0 370.00 H 270.00 M 0 380.00 H 270.00 M 0 390.00 H 270.00 M 0 410.00 H 270.00 M 0 420.00 H 270.00 M 0 430.00 H 270.00 M 0 440.00 H 270.00 M 0 450.00 H 270.00 M 0 460.00 H 270.00 M 0 470.00 H 270.00 M 0 480.00 H 270.00 M 0 490.00 H 270.00 M 0 510.00 H 270.00 M 0 520.00 H 270.00" fill="none" stroke="#d0d0d0" stroke-width="0.1"/>
+<path id="grid-major" d="M 0.00 0 V 520.00 M 100.00 0 V 520.00 M 200.00 0 V 520.00 M 0 0.00 H 270.00 M 0 100.00 H 270.00 M 0 200.00 H 270.00 M 0 300.00 H 270.00 M 0 400.00 H 270.00 M 0 500.00 H 270.00" fill="none" stroke="#a0a0a0" stroke-width="0.2"/>
+</g>
+<g id="layer-cut">
+<path id="piece-front-panel-cut" d="M 20.00 20.00 L 250.00 20.00 L 250.00 350.00 L 20.00 350.00 L 20.00 20.00 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
+</g>
+<g id="layer-stitch">
+<path id="piece-front-panel-stitch" d="M 35.00 35.00 L 235.00 35.00 L 235.00 335.00 L 35.00 335.00 L 35.00 35.00 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
+</g>
+<g id="layer-notches">
+<path id="piece-front-panel-notch-n1" d="M 237.50 185.00 L 232.50 185.00" fill="none" stroke="#000000" stroke-width="0.25"/>
+</g>
+<g id="layer-grain">
+<path id="piece-front-panel-grain" d="M 135.00 85.00 L 135.00 285.00 M 133.00 279.00 L 135.00 285.00 L 137.00 279.00 M 137.00 91.00 L 135.00 85.00 L 133.00 91.00" fill="none" stroke="#000000" stroke-width="0.25"/>
+</g>
+<g id="layer-darts">
+
+</g>
+<g id="layer-labels">
+<text id="piece-front-panel-label-l1" x="135.00" y="185.00" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">الأمام</text>
+</g>
+<g id="layer-scale">
+<rect id="scale-square" x="20.00" y="400.00" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>
+<path id="scale-ticks" d="M 30.00 400.00 v 3.00 M 20.00 410.00 h 3.00 M 40.00 400.00 v 3.00 M 20.00 420.00 h 3.00 M 50.00 400.00 v 3.00 M 20.00 430.00 h 3.00 M 60.00 400.00 v 3.00 M 20.00 440.00 h 3.00 M 70.00 400.00 v 3.00 M 20.00 450.00 h 3.00 M 80.00 400.00 v 3.00 M 20.00 460.00 h 3.00 M 90.00 400.00 v 3.00 M 20.00 470.00 h 3.00 M 100.00 400.00 v 3.00 M 20.00 480.00 h 3.00 M 110.00 400.00 v 3.00 M 20.00 490.00 h 3.00" fill="none" stroke="#000000" stroke-width="0.25"/>
+<text id="scale-caption-ar" x="70.00" y="447.00" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">١٠ سم</text>
+<text id="scale-caption-en" x="70.00" y="456.00" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="ltr" unicode-bidi="plaintext" text-anchor="middle">10 cm</text>
+</g>
+</svg>
