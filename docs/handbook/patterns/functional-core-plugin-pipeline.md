@@ -48,7 +48,10 @@ This interface is the **design**; `FeatureModule` is not in code yet (the module
 | Version stamp                                  | `packages/engine/src/version.ts`               |
 | Public entry (nothing else is importable)      | `packages/engine/src/index.ts`                 |
 
-Pipeline steps `resolve` through `sewingOrder` and the module registry are **planned** for milestone M2.
+| The seven steps and the context | `packages/engine/src/pipeline/steps.ts`, `draft-context.ts` |
+| Module registry (fixed order) | `packages/engine/src/pipeline/registry.ts` |
+| The entry `generatePattern` | `packages/engine/src/pipeline/generate-pattern.ts` |
+| A tiny example module | `packages/engine/src/pipeline/test-support/rectangle-module.ts` |
 
 ## Learn more
 
