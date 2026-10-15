@@ -124,7 +124,7 @@ Cross-checks:
 ## Testing
 
 - Unit tests for key points.
-- Property tests (fast-check) for every FR-VAL rule across the size matrix (`@tafsila/test-fixtures`).
+- Property tests (fast-check) for every FR-VAL rule across the size matrix: `SIZE_MATRIX` (5 chart sizes + 20 custom sets) and `arbMeasurements()` in `packages/test-fixtures/src/size-matrix.ts`. Use them, never a private copy. Synthetic sets become `source: "real"` when Merna supplies anonymised sets.
 - SVG snapshot per size.
 - Physical QA: each garment type is sewn as a toile in ≥ 3 sizes (`needs:sew-test`).
 

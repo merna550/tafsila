@@ -11,6 +11,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@tafsila/schemas": "workspace:*"
+    "@tafsila/schemas": "workspace:*",
+    "fast-check": "^4.10.2"
   }
 }
