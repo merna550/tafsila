@@ -1935,6 +1935,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Runs `scripts/agent-setup.sh`, which exits at once unless `CLAUDE_CODE_REMOTE=true` (a cloud session) or `GITHUB_ACTIONS=true`, so it never runs on a laptop; in the cloud (and in GitHub Actions) it enables corepack and runs `pnpm install --frozen-lockfile`, writing everything to a log file and printing one summary line (ADR-016, ADR-017). **Card:** [Claude Code](tech/claude-code.md) · **Level:** intermediate  
 **Learn:** <https://docs.claude.com/en/docs/claude-code/hooks>
 
+<a id="size-matrix"></a>
+
+### Size matrix
+
+**Plain words:** One fixed list of bodies (5 chart sizes plus 20 odd shapes such as petite, tall, pear, apple) that every pattern test is run against, so a rule that works for size M but breaks for a broad-shouldered body is caught. Arabic: مصفوفة المقاسات.  
+**In Tafsila:** `SIZE_MATRIX` and `arbMeasurements()` in `packages/test-fixtures/src/size-matrix.ts`; the 20 custom sets are `synthetic` until Merna swaps in anonymised real ones ([plan](../plans/123-size-matrix.md)). **Level:** intermediate  
+**Learn:** <https://fast-check.dev/>
+
 <a id="skill-agent"></a>
 
 ### Skill (Claude Code)
