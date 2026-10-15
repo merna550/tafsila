@@ -1,0 +1,236 @@
+# Drafting method for the blocks (issue #122)
+
+The one drafting system every M2 block follows, so the code can be checked against hand-computed points to ± 1 mm (NFR-01). Decision: [ADR-122a](../decisions/122a-drafting-system.md). Requirements: FR-PAT-01, NFR-01.
+
+**Source.** Winifred Aldrich, _Metric Pattern Cutting for Women's Wear_, 6th edition (Wiley-Blackwell, 2015), the metric made-to-measure blocks: Chapter 1 (measuring, size chart), Chapter 2 "Basic blocks" (bodice, skirt, sleeve). FreeSewing is only a reference for curve construction and is not a dependency (ADR-122).
+
+**What this document is.** A paraphrase of the book's construction logic written on our `Measurements` fields. No book text is copied. Where the book gives a value from its size chart that we do not measure, the value is replaced by a ratio (see "Missing lengths").
+
+> **Verification status (read before trusting a number).** The author of this draft had no copy of the book. The step order, the chapter and the ratios below come from the construction logic and the size-12 chart values the author knows, **and the page numbers are not filled in**. Merna checks every row of "Constants" and the step order against her copy and fills the page column (checklist at the end). A wrong constant changes the tables, not the method: edit `DRAFT_CONSTANTS` in `packages/test-fixtures/src/reference-drafts-calc.ts`, regenerate (command at the end) and the fixture and these tables follow.
+
+## Frame and naming
+
+- Millimetres, angles in radians, x to the right, y down, as in `packages/engine/src/geometry/point.ts`.
+- **Bodice blocks** (one back half, one front half): x = 0 on the centre line (CB or CF); y = 0 on the horizontal through the high point of shoulder (HPS). The back nape is `backNeckRise` below that line.
+- **Skirt blocks** (front half, back half): x = 0 on the centre line, y = 0 on the waist line.
+- **Sleeve:** x = 0 on the grain line, y = 0 at the top of the cap. The back of the sleeve is at -x, the front at +x.
+- Key point names are `bodice.back.*`, `bodice.front.*`, `skirt.back.*`, `skirt.front.*` and `sleeve.*`. Block issues (#128, #129, #134) assert against these names in `referenceDrafts` (`@tafsila/test-fixtures`).
+- Armhole, neckline and sleeve cap curves are not fixed by this document: the engine builds them through the listed key points (`curveThroughPoints`), and the reference only fixes the points they pass through.
+
+## Measurement mapping
+
+Symbols: B bust, W waist, H hip, N neck, BL backLength, FL frontLength, SW shoulderWidth, HD hipDepth, BPD bustPointDistance, BH bustHeight, AL armLength, UA upperArm, WR wrist, WK waistToKnee. All in mm.
+
+| Used by the method              | Our field                                         | Note                                                    |
+| ------------------------------- | ------------------------------------------------- | ------------------------------------------------------- |
+| Bust, waist, hip                | `bust`, `waist`, `hip`                            | circumferences                                          |
+| Neck size                       | `neck`                                            |                                                         |
+| Back neck to waist              | `backLength`                                      | nape to waist along the centre back                     |
+| Front shoulder to waist         | `frontLength`                                     | HPS to waist at the centre front                        |
+| Shoulder (point to point)       | `shoulderWidth`                                   | half of it is the x of the shoulder tip                 |
+| Bust point position             | `bustPointDistance`, `bustHeight`                 | x = BPD / 2, y = BH (BH is HPS to bust point, SRS §6.2) |
+| Hip line depth                  | `hipDepth`                                        | waist to hip line                                       |
+| Skirt length                    | `waistToKnee`                                     | the straight-skirt block ends at the knee               |
+| Sleeve length, upper arm, wrist | `armLength`, `upperArm`, `wrist`                  |                                                         |
+| Not used by these blocks        | `height`, `highBust`, `underBust`, `waistToFloor` | used by later modules (long skirts, fitted styles)      |
+
+### Missing lengths (derived, no schema change)
+
+Merna's decision (ADR-122a): a length the book uses and we do not measure is derived with a ratio taken from the book's size chart (size 12, bust 880 mm). The ratios are constants, never inline.
+
+| Length              | Derivation                                            | Basis (size-12 chart value)                     |
+| ------------------- | ----------------------------------------------------- | ----------------------------------------------- |
+| Armscye depth       | B / 8 + 100                                           | 210 at B = 880; grows by one eighth of the bust |
+| Back width (whole)  | B x 356 / 880                                         | 356                                             |
+| Chest width (whole) | B x 320 / 880                                         | 320                                             |
+| Neck width          | N / 5 - 2                                             | the book's neck / 5 rule                        |
+| Shoulder length     | from SW / 2, neck width and the slope                 | horizontal run x sqrt(1 + slope^2)              |
+| Shoulder slope      | back 0.36, front 0.40 (drop per mm of run)            | about 20 and 22 degrees                         |
+| Bust dart opening   | B x 25 / 880                                          | 25; ignores cup size (see "Known limits")       |
+| Waist dart widths   | share of (bust quarter + ease - waist quarter - ease) | see step 7                                      |
+| Sleeve cap height   | 2/3 of the armscye depth                              | about 140 at size 12                            |
+
+### `bustHeight` definition
+
+HPS to bust point, measured down the body (SRS §6.2). `docs/engine/README.md` said "shoulder point to bust point"; it is corrected in the same PR. The draft uses it directly: the bust point is at (BPD / 2, BH) in the front bodice frame.
+
+## Ease already inside the blocks
+
+#126's ease tables add only the **style ease** on top of these; never add them twice.
+
+| Where            | Built-in ease                                                                                            | Constant                   |
+| ---------------- | -------------------------------------------------------------------------------------------------------- | -------------------------- |
+| Bodice bust      | 20 mm per quarter (80 mm in total)                                                                       | `bustEaseQuarterMm`        |
+| Bodice waist     | 10 mm per quarter (40 mm in total)                                                                       | `bodiceWaistEaseQuarterMm` |
+| Skirt hip        | 10 mm per quarter (40 mm in total)                                                                       | `hipEaseQuarterMm`         |
+| Skirt waist      | 5 mm per quarter (20 mm in total)                                                                        | `skirtWaistEaseQuarterMm`  |
+| Armhole          | whatever the curve through the key points gives; the sleeve cap ease is measured by FR-VAL-02 (10-40 mm) | n/a                        |
+| Sleeve upper arm | 50 mm in total                                                                                           | `sleeveBicepEaseMm`        |
+| Sleeve wrist     | 30 mm in total                                                                                           | `sleeveWristEaseMm`        |
+
+## Construction steps
+
+Each step names its key point. Source column: chapter and section of the 6th edition; page numbers are filled in by Merna.
+
+### Bodice back (Chapter 2, "Bodice block", back)
+
+| #   | Step (paraphrased)                                                                                                                                   | Formula (mm)                                                                                                              | Key point                                      | Page |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ---- |
+| 1   | Start at the nape on the centre back; the HPS level is the back neck rise above it                                                                   | nape = (0, 20)                                                                                                            | `bodice.back.nape`                             |      |
+| 2   | Neck point on the HPS level, one fifth of the neck size from the centre less a small deduction                                                       | neckPoint = (N / 5 - 2, 0)                                                                                                | `bodice.back.neckPoint`                        |      |
+| 3   | Shoulder tip: half the shoulder width across, dropped along the back shoulder slope from the neck point                                              | tip = (SW / 2, 0.36 x (SW / 2 - neckW))                                                                                   | `bodice.back.shoulderTip`                      |      |
+| 4   | Armscye line: square across from the centre back at the armscye depth below the nape level                                                           | y = 20 + (B / 8 + 100)                                                                                                    | `bodice.back.scyeLineCB`                       |      |
+| 5   | Underarm point: the bust quarter plus the built-in ease along the armscye line                                                                       | (B / 4 + 20, y of step 4)                                                                                                 | `bodice.back.underarm`                         |      |
+| 6   | Back width point: half the back width across, one third of the way down from the shoulder tip to the armscye line                                    | (0.405 B / 2, tipY + (scyeY - tipY) / 3)                                                                                  | `bodice.back.backWidthPoint`                   |      |
+| 7   | Waist: down the centre back by the back length from the nape; the side seam comes in by the share of the waist shaping that is not taken by the dart | waistCB = (0, 20 + BL); shaping = (B / 4 + 20) - (W / 4 + 10); dart = shaping / 2; side x = B / 4 + 20 - (shaping - dart) | `bodice.back.waistCB`, `bodice.back.sideWaist` |      |
+| 8   | Waist dart: centred half way across the waist, pointing up to half way between the armscye line and the waist                                        | legs = (side x / 2 +- dart / 2, waist y); apex = (side x / 2, (scyeY + waistY) / 2)                                       | `bodice.back.waistDartLeft/Right/Apex`         |      |
+
+### Bodice front (Chapter 2, "Bodice block", front)
+
+| #   | Step (paraphrased)                                                                                                                                          | Formula (mm)                                                                       | Key point                                          | Page |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- | ---- |
+| 1   | Neck point on the HPS level, same width as the back neck                                                                                                    | (N / 5 - 2, 0)                                                                     | `bodice.front.neckPoint`                           |      |
+| 2   | Centre front neck: deeper than the back neck, below the HPS level                                                                                           | neckCF = (0, N / 5 + 10)                                                           | `bodice.front.neckCF`                              |      |
+| 3   | Shoulder tip: as the back, with the steeper front slope                                                                                                     | (SW / 2, 0.40 x (SW / 2 - neckW))                                                  | `bodice.front.shoulderTip`                         |      |
+| 4   | Armscye line and underarm point: same y and same width as the back                                                                                          | y = 20 + (B / 8 + 100); x = B / 4 + 20                                             | `bodice.front.scyeLineCF`, `bodice.front.underarm` |      |
+| 5   | Chest width point: half the chest width across, one third of the way down from the tip                                                                      | (0.364 B / 2, tipY + (scyeY - tipY) / 3)                                           | `bodice.front.chestWidthPoint`                     |      |
+| 6   | Bust point from the measured position                                                                                                                       | (BPD / 2, BH)                                                                      | `bodice.front.bustPoint`                           |      |
+| 7   | Bust dart: opens on the side seam a little below the underarm, width from the bust                                                                          | upper = (side x, scyeY + 20); lower = upper + (0, 25 B / 880)                      | `bodice.front.bustDartUpper/Lower`                 |      |
+| 8   | Waist: centre front at the front length; the side seam ends lower than the back by the bust dart opening, so the seam lengths match once the dart is closed | waistCF = (0, FL); sideWaist = (side x, 20 + BL + bustDart), side x as back step 7 | `bodice.front.waistCF`, `bodice.front.sideWaist`   |      |
+| 9   | Waist dart: centred under the bust point, ending a little below it                                                                                          | legs = (BPD / 2 +- dart / 2, y on the waist line); apex = (BPD / 2, BH + 25)       | `bodice.front.waistDartLeft/Right/Apex`            |      |
+
+### Straight skirt, front and back (Chapter 2, "Skirt block")
+
+Both halves share the steps; only the dart share and length differ (front 50 % and 90 mm, back 60 % and 140 mm).
+
+| #   | Step (paraphrased)                                                                                          | Formula (mm)                                                                                                  | Key point                                 | Page |
+| --- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ---- |
+| 1   | Waist on y = 0 at the centre; hip line down by the hip depth; hem down by the waist-to-knee length          | (0, 0), (0, HD), (0, WK)                                                                                      | `skirt.*.waistCentre/hipCentre/hemCentre` |      |
+| 2   | Hip side: the hip quarter plus the built-in ease; the side seam falls straight from there to the hem        | hipX = H / 4 + 10; (hipX, HD), (hipX, WK)                                                                     | `skirt.*.hipSide`, `skirt.*.hemSide`      |      |
+| 3   | Waist: shaping is the hip quarter minus the waist quarter; the dart takes its share, the side seam the rest | waistQ = W / 4 + 5; shaping = hipX - waistQ; dart = share x shaping; waistSide = (hipX - (shaping - dart), 0) | `skirt.*.waistSide`                       |      |
+| 4   | Dart centred half way across the waist, pointing down to its length                                         | legs = (waistSide.x / 2 +- dart / 2, 0); apex = (waistSide.x / 2, length)                                     | `skirt.*.dartLeft/dartRight/dartApex`     |      |
+
+### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
+
+| #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |
+| --- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------- | ---- |
+| 1   | Top of the cap on the grain line                                                 | (0, 0)                                                             | `sleeve.capTop`                           |      |
+| 2   | Upper-arm line: cap height below the top, half the upper arm plus ease each side | capH = (2/3) x (B / 8 + 100); half = (UA + 50) / 2; (+-half, capH) | `sleeve.underarmBack/Front`               |      |
+| 3   | Wrist: the sleeve length down the grain line, half the wrist plus ease each side | (0, AL), (+-(WR + 30) / 2, AL)                                     | `sleeve.wristCentre/wristBack/wristFront` |      |
+
+The cap curve runs from the underarm points up through the cap top; FR-VAL-02 checks that its length exceeds the armhole by 10-40 mm. The engine's cap-height bisection (README, "Drafting methods") is a later refinement and must still start from, and be compared with, these reference points.
+
+## Reference key points
+
+Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/egyptian-size-chart.ts`), rounded to 0.1 mm. The tables below and `packages/test-fixtures/src/reference-drafts.ts` come from **one calculation** (`reference-drafts-calc.ts`); a test fails when they differ. The "Egyptian chart" waist and the other measurements except bust, hip and height are themselves derived (ADR-158), so these drafts prove the method, not the fit on real bodies.
+
+### bodiceBack
+
+| Key point                    | S (x, y)   | M (x, y)     | XXL (x, y)   |
+| ---------------------------- | ---------- | ------------ | ------------ |
+| `bodice.back.nape`           | 0, 20      | 0, 20        | 0, 20        |
+| `bodice.back.neckPoint`      | 68, 0      | 71, 0        | 80, 0        |
+| `bodice.back.shoulderTip`    | 185, 42.1  | 192.5, 43.7  | 215, 48.6    |
+| `bodice.back.backWidthPoint` | 178, 104.7 | 194.2, 109.2 | 242.7, 122.4 |
+| `bodice.back.scyeLineCB`     | 0, 230     | 0, 240       | 0, 270       |
+| `bodice.back.underarm`       | 240, 230   | 260, 240     | 320, 270     |
+| `bodice.back.waistCB`        | 0, 410     | 0, 415       | 0, 430       |
+| `bodice.back.sideWaist`      | 212.5, 410 | 232.5, 415   | 292.5, 430   |
+| `bodice.back.waistDartLeft`  | 92.5, 410  | 102.5, 415   | 132.5, 430   |
+| `bodice.back.waistDartRight` | 120, 410   | 130, 415     | 160, 430     |
+| `bodice.back.waistDartApex`  | 106.3, 320 | 116.3, 327.5 | 146.3, 350   |
+
+### bodiceFront
+
+| Key point                      | S (x, y)     | M (x, y)     | XXL (x, y)   |
+| ------------------------------ | ------------ | ------------ | ------------ |
+| `bodice.front.neckPoint`       | 68, 0        | 71, 0        | 80, 0        |
+| `bodice.front.neckCF`          | 0, 80        | 0, 83        | 0, 92        |
+| `bodice.front.shoulderTip`     | 185, 46.8    | 192.5, 48.6  | 215, 54      |
+| `bodice.front.chestWidthPoint` | 160, 107.9   | 174.5, 112.4 | 218.2, 126   |
+| `bodice.front.scyeLineCF`      | 0, 230       | 0, 240       | 0, 270       |
+| `bodice.front.underarm`        | 240, 230     | 260, 240     | 320, 270     |
+| `bodice.front.bustPoint`       | 90, 240      | 95, 250      | 110, 280     |
+| `bodice.front.bustDartUpper`   | 240, 250     | 260, 260     | 320, 290     |
+| `bodice.front.bustDartLower`   | 240, 275     | 260, 287.3   | 320, 324.1   |
+| `bodice.front.waistCF`         | 0, 420       | 0, 435       | 0, 480       |
+| `bodice.front.sideWaist`       | 212.5, 435   | 232.5, 442.3 | 292.5, 464.1 |
+| `bodice.front.waistDartLeft`   | 76.3, 425.4  | 81.3, 437.6  | 96.3, 474.8  |
+| `bodice.front.waistDartRight`  | 103.8, 427.3 | 108.8, 438.4 | 123.8, 473.3 |
+| `bodice.front.waistDartApex`   | 90, 265      | 95, 275      | 110, 305     |
+
+### skirtBack
+
+| Key point                | S (x, y) | M (x, y) | XXL (x, y) |
+| ------------------------ | -------- | -------- | ---------- |
+| `skirt.back.waistCentre` | 0, 0     | 0, 0     | 0, 0       |
+| `skirt.back.waistSide`   | 222, 0   | 242, 0   | 302, 0     |
+| `skirt.back.dartLeft`    | 90, 0    | 100, 0   | 130, 0     |
+| `skirt.back.dartRight`   | 132, 0   | 142, 0   | 172, 0     |
+| `skirt.back.dartApex`    | 111, 140 | 121, 140 | 151, 140   |
+| `skirt.back.hipCentre`   | 0, 200   | 0, 205   | 0, 220     |
+| `skirt.back.hipSide`     | 250, 200 | 270, 205 | 330, 220   |
+| `skirt.back.hemCentre`   | 0, 570   | 0, 570   | 0, 580     |
+| `skirt.back.hemSide`     | 250, 570 | 270, 570 | 330, 580   |
+
+### skirtFront
+
+| Key point                 | S (x, y)  | M (x, y)  | XXL (x, y) |
+| ------------------------- | --------- | --------- | ---------- |
+| `skirt.front.waistCentre` | 0, 0      | 0, 0      | 0, 0       |
+| `skirt.front.waistSide`   | 215, 0    | 235, 0    | 295, 0     |
+| `skirt.front.dartLeft`    | 90, 0     | 100, 0    | 130, 0     |
+| `skirt.front.dartRight`   | 125, 0    | 135, 0    | 165, 0     |
+| `skirt.front.dartApex`    | 107.5, 90 | 117.5, 90 | 147.5, 90  |
+| `skirt.front.hipCentre`   | 0, 200    | 0, 205    | 0, 220     |
+| `skirt.front.hipSide`     | 250, 200  | 270, 205  | 330, 220   |
+| `skirt.front.hemCentre`   | 0, 570    | 0, 570    | 0, 580     |
+| `skirt.front.hemSide`     | 250, 570  | 270, 570  | 330, 580   |
+
+### sleeve
+
+| Key point              | S (x, y)   | M (x, y)      | XXL (x, y)  |
+| ---------------------- | ---------- | ------------- | ----------- |
+| `sleeve.capTop`        | 0, 0       | 0, 0          | 0, 0        |
+| `sleeve.underarmBack`  | -160, 140  | -172.5, 146.7 | -210, 166.7 |
+| `sleeve.underarmFront` | 160, 140   | 172.5, 146.7  | 210, 166.7  |
+| `sleeve.wristBack`     | -92.5, 570 | -95, 575      | -102.5, 590 |
+| `sleeve.wristFront`    | 92.5, 570  | 95, 575       | 102.5, 590  |
+| `sleeve.wristCentre`   | 0, 570     | 0, 575        | 0, 590      |
+
+### Derived lengths
+
+| Length              | S     | M     | XXL   |
+| ------------------- | ----- | ----- | ----- |
+| scyeDepth           | 210   | 220   | 250   |
+| backWidth           | 356   | 388.4 | 485.5 |
+| chestWidth          | 320   | 349.1 | 436.4 |
+| neckWidth           | 68    | 71    | 80    |
+| frontNeckDepth      | 80    | 83    | 92    |
+| backShoulderLength  | 124.4 | 129.1 | 143.5 |
+| frontShoulderLength | 126   | 130.9 | 145.4 |
+| bustDart            | 25    | 27.3  | 34.1  |
+| backWaistDart       | 27.5  | 27.5  | 27.5  |
+| frontWaistDart      | 27.5  | 27.5  | 27.5  |
+| sleeveCapHeight     | 140   | 146.7 | 166.7 |
+
+## How the numbers were produced and checked
+
+1. `packages/test-fixtures/src/reference-drafts-calc.ts` holds the arithmetic and the named constants. From the repo root:
+   `cd packages/api && ./node_modules/.bin/tsx ../test-fixtures/src/gen-reference-drafts.ts ts > ../test-fixtures/src/reference-drafts.ts` (the fixture) and the same with `md` (the tables above), then `npx prettier --write` on the fixture.
+2. Size M was recomputed independently, in a separate script with exact fractions and a different structure, written from the formulas of this document and not from the TypeScript. 24 key points (the ones that depend on a new formula: widths, shoulder, dart legs and apexes, side waists, sleeve points) agree within the 0.1 mm rounding. The script is not committed (it is a one-off check; the PR description records it).
+3. `reference-drafts.test.ts` checks that every block has every name, values are finite, widths equal the measurement quarter plus the documented ease, the skirt hip line is at `hipDepth`, the bust point is the measured one, and that the fixture equals the calculation.
+
+## Known limits
+
+- **Bust dart ignores cup size.** It scales with the bust only. `frontLength - backLength` could refine it later; not needed for the toiles of M2.
+- **Back and front each take half the bust ease.** The book may balance them differently (a little more at the front); a change is one constant.
+- **The XXL front waist runs the other way.** For XXL the chart's `frontLength` is far above `backLength`, so the front waist at the centre front is lower than at the side seam. This comes from the derived chart (ADR-158), not from the method.
+- **Elbow dart, sleeve pitch points and the back neck shaping of the book are not part of the reference.** Style modules add them.
+
+## Checklist for Merna (page numbers and constants)
+
+- [ ] Fill the "Page" column of every step table from the 6th edition.
+- [ ] Compare the constants of "Missing lengths" and "Ease already inside the blocks" with the size chart and block instructions.
+- [ ] Confirm the step order of the three blocks.
+- [ ] If anything differs, change `DRAFT_CONSTANTS` and regenerate; do not edit the tables by hand.
