@@ -64,8 +64,9 @@ function notchPairs(ctx: DraftContext): { source: OwnedNotch; target?: OwnedNotc
           return;
         }
         const candidates = notchesOn(ctx, pair.pieceId, pair.edgeId);
+        const fallbackIndex = pair.reversed ? candidates.length - 1 - index : index;
         const target =
-          candidates.find((candidate) => candidate.notch.id === source.notch.id) ?? candidates[index];
+          candidates.find((candidate) => candidate.notch.id === source.notch.id) ?? candidates[fallbackIndex];
         const key = target
           ? [notchRef(source), notchRef(target)].sort((a, b) => a.localeCompare(b, "en")).join("|")
           : notchRef(source);

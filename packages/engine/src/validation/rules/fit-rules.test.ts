@@ -110,6 +110,36 @@ describe("FR-VAL-04 notches", () => {
     expect(run(150)).toMatchObject({ status: "pass", measuredMm: 0 });
     expect(run(147)).toMatchObject({ status: "fail", measuredMm: 3 });
   });
+
+  it("pairs multiple differently named notches in reversed sewing order", () => {
+    const piece = (id: string, partner: string, notchIds: readonly string[]) =>
+      validationPiece({
+        id,
+        edges: validationPiece().edges.map((edge) =>
+          edge.id === "side"
+            ? { ...edge, pairsWith: { pieceId: partner, edgeId: "side", reversed: true } }
+            : edge,
+        ),
+        notches: [
+          { id: notchIds[0]!, edgeId: "side", atMm: 40 },
+          { id: notchIds[1]!, edgeId: "side", atMm: 160 },
+        ],
+      });
+    const checks = notchAlignmentRule.runMany!(
+      validationContext([
+        piece("front", "back", ["front-upper", "front-lower"]),
+        piece("back", "front", ["back-lower", "back-upper"]),
+      ]),
+    );
+
+    expect(checks).toHaveLength(2);
+    expect(checks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ status: "pass", measuredMm: 0 }),
+        expect.objectContaining({ status: "pass", measuredMm: 0 }),
+      ]),
+    );
+  });
 });
 
 describe("FR-VAL-07 darts", () => {
