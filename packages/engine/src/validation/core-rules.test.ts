@@ -8,9 +8,10 @@ import { validationContext, validationPiece } from "./test-support";
 describe("CORE_RULES", () => {
   it("passes a valid finished fixture without changing its geometry", () => {
     const context = validationContext([validationPiece()]);
-    const checked = validateStep(createRegistry([], CORE_RULES))(context);
+    const registry = createRegistry([], CORE_RULES);
+    const checked = validateStep(registry)(context);
     expect(checked.pieces).toBe(context.pieces);
-    expect(checked.checks).toHaveLength(CORE_RULES.length);
+    expect(checked.checks).toHaveLength(registry.rulesFor(context).length);
     expect(buildReport(checked.checks).status).toBe("pass");
   });
 

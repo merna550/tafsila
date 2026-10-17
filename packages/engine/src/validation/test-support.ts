@@ -71,6 +71,7 @@ export function validationPiece(overrides: Partial<PieceDraft> = {}): PieceDraft
       { id: "fold", fromSegment: 3, toSegment: 3, kind: "fold", seamAllowanceMm: 0 },
     ],
     notches: [],
+    bodyLines: [],
     grainLine: [
       { x: PIECE_WIDTH_MM / 2, y: GRAIN_INSET_MM },
       { x: PIECE_WIDTH_MM / 2, y: PIECE_HEIGHT_MM - GRAIN_INSET_MM },

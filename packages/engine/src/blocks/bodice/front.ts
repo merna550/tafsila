@@ -116,11 +116,28 @@ function frontDarts(k: FrontPoints, hasWaistDart: boolean): Dart[] {
     edgeId: "side",
     apex: k.bustDartApex,
     legs: [k.bustDartUpper, k.bustDartLower],
+    bustPointLimit: {
+      point: k.bustPoint,
+      axis: "x",
+      direction: "positive",
+      setbackMm: BUST_DART_APEX_SETBACK_MM,
+    },
   };
   if (!hasWaistDart) return [bust];
   return [
     bust,
-    { id: "waist-dart", edgeId: "waist", apex: k.waistDartApex, legs: [k.waistDartRight, k.waistDartLeft] },
+    {
+      id: "waist-dart",
+      edgeId: "waist",
+      apex: k.waistDartApex,
+      legs: [k.waistDartRight, k.waistDartLeft],
+      bustPointLimit: {
+        point: k.bustPoint,
+        axis: "y",
+        direction: "positive",
+        setbackMm: FRONT_DART_BELOW_BUST_MM,
+      },
+    },
   ];
 }
 
@@ -175,6 +192,10 @@ export function frontPiece(
     stitchPath: outline,
     edges,
     notches: [],
+    bodyLines: [
+      { id: "bodice-bust", measurement: "bust", kind: "horizontal", atMm: k.underarm.y },
+      { id: "bodice-waist", measurement: "waist", kind: "edge", edgeId: "waist" },
+    ],
     grainLine: grainLine(k.neckCF.y, k.waistCF.y),
     darts: frontDarts(k, hasWaistDart),
   };

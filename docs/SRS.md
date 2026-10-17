@@ -422,12 +422,14 @@ interface Piece {
   cutPath: Path;                          // stitchPath offset by SA
   edges: Edge[];                          // named edges with SA and pairing info
   notches: Notch[];
+  bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations
+  sleeveCap?: { edgeId: string; armholeRefs: Array<{ pieceId: string; edgeId: string }> };
   grainLine: [Point, Point];
   darts: Dart[];
   labels: Label[];
   bbox: { widthMm: number; heightMm: number };
 }
-interface Edge { id: string; fromSegment: number; toSegment: number; kind?: 'side' | 'neckline' | 'armhole' | 'hem' | 'other' | 'fold'; seamAllowanceMm: number; pairsWith?: { pieceId: string; edgeId: string; intendedEaseMm?: number } }
+interface Edge { id: string; fromSegment: number; toSegment: number; kind?: 'side' | 'neckline' | 'armhole' | 'hem' | 'other' | 'fold'; seamAllowanceMm: number; pairsWith?: { pieceId: string; edgeId: string; intendedEaseMm?: number; reversed?: boolean } }
 interface SewingStep { order: number; action: 'sew' | 'press' | 'finish' | 'attach'; edges: string[]; text: { ar: string; en: string } }
 interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ id: 'FR-VAL-01'..'FR-VAL-08' | 'FR-MEAS-01'; code?: string; status: 'pass' | 'warn' | 'fail'; message: { ar: string; en: string }; measuredMm?: number; expectedMm?: number; refs?: string[] }> }
 ```

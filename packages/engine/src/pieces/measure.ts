@@ -46,11 +46,13 @@ export function edgeLengthMm(
 ): number {
   const full = pathLength(edgeSegments(piece, edgeId));
   if (!options.closeDarts) return full;
-  const mouths = piece.darts
-    .filter((d) => d.edgeId === edgeId)
-    .map((d) => dartMouthIndex(piece.stitchPath, d))
-    .filter((i) => i >= 0);
-  return mouths.reduce((len, i) => len - segmentLength(piece.stitchPath[i]!), full);
+  const dartIntakeMm = piece.darts
+    .filter((dart) => dart.edgeId === edgeId)
+    .reduce((sum, dart) => {
+      const mouthIndex = dartMouthIndex(piece.stitchPath, dart);
+      return sum + (mouthIndex >= 0 ? segmentLength(piece.stitchPath[mouthIndex]!) : distance(...dart.legs));
+    }, 0);
+  return full - dartIntakeMm;
 }
 
 /**

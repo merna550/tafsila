@@ -53,6 +53,7 @@ function trapezoid({ hemMm, waistMm, heightMm }: Trapezoid): PieceDraft {
     stitchPath,
     edges: kinds.map((kind, i) => ({ id: kind, fromSegment: i, toSegment: i, kind, seamAllowanceMm: 0 })),
     notches: [],
+    bodyLines: [],
     grainLine: [pt(10, 10), pt(10, 100)],
     darts: [],
   };

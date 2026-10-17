@@ -1,7 +1,62 @@
-/** Stable bilingual messages for the engine validation report (FR-VAL-05, -06, -08). */
+/** Stable bilingual messages for the engine validation report (FR-VAL-01…08). */
 
 /** Arabic and English text for every stable structural-validation code. */
 export const VALIDATION_MESSAGES = {
+  SEAM_MATCH_OK: {
+    ar: "طولا الحافتين متطابقان: {first} و{second}",
+    en: "Paired edge lengths match: {first} and {second}",
+  },
+  SEAM_MATCH_MISMATCH: {
+    ar: "فرق طول الحافتين {first} و{second} هو {mm} مم (المتوقع {expected} مم)",
+    en: "Edge length difference for {first} and {second} is {mm} mm (expected {expected} mm)",
+  },
+  SEAM_MATCH_BROKEN_REF: {
+    ar: "مرجع الحافة المقترنة غير موجود: {first} إلى {second}",
+    en: "Paired edge reference is missing: {first} to {second}",
+  },
+  SLEEVE_CAP_OK: { ar: "راحة رأس الكم {mm} مم", en: "Sleeve-cap ease is {mm} mm" },
+  SLEEVE_CAP_OUT_OF_RANGE: {
+    ar: "راحة رأس الكم {mm} مم؛ المطلوب من {min} إلى {max} مم",
+    en: "Sleeve-cap ease is {mm} mm; expected {min} to {max} mm",
+  },
+  SLEEVE_CAP_BROKEN_REF: {
+    ar: "مرجع رأس الكم أو حردة الإبط غير موجود: {ref}",
+    en: "Sleeve-cap or armhole reference is missing: {ref}",
+  },
+  CIRCUMFERENCE_OK: { ar: "محيط {line} يطابق القياس: {mm} مم", en: "{line} circumference matches: {mm} mm" },
+  CIRCUMFERENCE_MISMATCH: {
+    ar: "محيط {line} هو {mm} مم؛ المتوقع {expected} مم",
+    en: "{line} circumference is {mm} mm; expected {expected} mm",
+  },
+  CIRCUMFERENCE_BROKEN_LINE: {
+    ar: "لا يمكن قياس خط الجسم {line} على القطعة {piece}",
+    en: "Body line {line} cannot be measured on piece {piece}",
+  },
+  NOTCH_OK: {
+    ar: "علامتا المطابقة متحاذيتان: {first} و{second}",
+    en: "Paired notches align: {first} and {second}",
+  },
+  NOTCH_MISMATCH: {
+    ar: "فرق موضع علامتي {first} و{second} هو {mm} مم",
+    en: "Notch position difference for {first} and {second} is {mm} mm",
+  },
+  NOTCH_BROKEN_REF: {
+    ar: "علامة المطابقة المقترنة غير موجودة: {first} إلى {second}",
+    en: "Paired notch reference is missing: {first} to {second}",
+  },
+  DART_LEGS_OK: { ar: "ضلعا البنسة متساويان: {ref}", en: "Dart legs match: {ref}" },
+  DART_LEGS_MISMATCH: {
+    ar: "فرق ضلعي البنسة {ref} هو {mm} مم",
+    en: "Dart leg difference for {ref} is {mm} mm",
+  },
+  DART_APEX_OK: {
+    ar: "رأس البنسة خلف حد نقطة الصدر: {ref}",
+    en: "Dart apex respects the bust-point limit: {ref}",
+  },
+  DART_APEX_PAST_LIMIT: {
+    ar: "بعد رأس البنسة {ref} عن نقطة الصدر {mm} مم؛ الحد {expected} مم",
+    en: "Dart apex {ref} is {mm} mm from the bust point; limit {expected} mm",
+  },
   STRUCT_OK: { ar: "بنية القطعة صحيحة", en: "Piece structure is valid" },
   STRUCT_OPEN_PATH: {
     ar: "الحافة مفتوحة: القطعة {piece} لا تقفل على نفسها",
