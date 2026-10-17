@@ -32,3 +32,15 @@ export const dartedBlouse: DesignSpec = {
   pockets: [],
   lining: false,
 };
+
+/** A plain straight skirt at the knee with a side zip: front and back both cut on the fold (issue #129). */
+export const straightKneeSkirt: DesignSpec = {
+  schemaVersion: 1,
+  category: "skirt",
+  fabricType: "woven",
+  skirt: { type: "straight", length: "knee" },
+  waistband: "none",
+  closure: { type: "zip", position: "side" },
+  pockets: [],
+  lining: false,
+};

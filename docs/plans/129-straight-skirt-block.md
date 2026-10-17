@@ -74,3 +74,9 @@ The build writes them as `docs/decisions/129-skirt-block.md`.
 ## Size
 
 M, as labelled. build:opus (unchanged).
+
+## Build notes
+
+- Built as planned, plus one addition: the front and back side seams are trued to equal length (decision 129-skirt-block, 5), because the method's dart shares leave the front side seam up to about 3 mm longer on pear bodies (FR-VAL-01 is 2 mm).
+- `Edge.kind` came from #130; the plan's fallback (adding it here) was not needed.
+- Design fixture `straightKneeSkirt` added to `@tafsila/test-fixtures` and to `pnpm engine:print`.

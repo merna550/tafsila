@@ -61,9 +61,13 @@ describe("generatePattern with the rectangle module", () => {
     expect(timesMs[Math.floor(SMOKE_RUNS / 2)]!).toBeLessThan(PIPELINE_SMOKE_BUDGET_MS);
   });
 
-  it("uses default options and the empty default registry: only the bodice block pieces", () => {
+  it("uses default options and the default registry to draft the bodice and skirt blocks", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM);
-    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+    const ids = result.pieces.map((p) => p.id);
+    expect(ids).toContain("bodice-back");
+    expect(ids).toContain("bodice-front");
+    expect(ids).toContain("skirt-front");
+    expect(ids).toContain("skirt-back");
     expect(result.validation.status).toBe("pass");
   });
 

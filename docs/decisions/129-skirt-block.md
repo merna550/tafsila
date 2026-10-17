@@ -1,0 +1,16 @@
+# ADR-129 · 2026-10-17 · Straight skirt block, front and back
+
+**Context:** Issue #129 (FR-PAT-01, FR-PAT-05, FR-VAL-01, -03, -07, NFR-01). Plan: [`docs/plans/129-straight-skirt-block.md`](../plans/129-straight-skirt-block.md). Method: "Straight skirt, front and back" in [`drafting-method.md`](../engine/drafting-method.md).
+**Decision:**
+
+1. **Built-in ease first, style ease as a widening.** Each half is drafted at the method's built-in ease (hip `H/4 + 10`, waist `W/4 + 5`), so the dart is sized from the block alone. Then the hip side and hem side move out by `styleEaseMm.skirtHip / 4` and the waist side point by `styleEaseMm.skirtWaist / 4`. With style ease 0 the key points equal the #122 reference drafts; the finished circumference is always measurement + total ease (the ease is counted once).
+2. **The module calls `resolveDraftInputs` itself** while the pipeline's `resolve` step is still a stub. When a later issue wires `ctx.resolved`, the module switches to it.
+3. **Edge `kind` reuses the field added by #130** (decision 130). `cf` is always `fold`; `cb` is `fold`, or `other` (a seam, 15 mm default allowance) when `closure.position` is `center-back`, and the back is then cut as a mirrored pair (`quantity 2, onFold false, mirror true`). `side` is `side`, `waist` is `other`, `hem` is `hem`.
+4. **Piece and edge ids:** pieces `skirt-front` and `skirt-back`; edges `waist`, `side`, `hem`, `cf`, `cb`; the dart is `waist-dart` on edge `waist`. The side edges pair front with back (`intendedEaseMm: 0`). Key points use the reference names (`skirt.front.hipSide`, ...).
+5. **Side seams are trued (not in the plan).** With the method's dart shares (front 50 %, back 60 %) the front side seam takes more shaping than the back, so it is longer: about 1 mm on the chart sizes, 3 mm or more on pear bodies, which would fail FR-VAL-01 (2 mm). The block moves the front waist side point down and the back one up by the same amount until both side seams are equal (to 0.01 mm, a short fixed-point loop). The move is about 0.5 mm on chart sizes (inside the 1 mm reference tolerance) and a few mm on extreme pear bodies. The waist stays a straight line from the centre to the moved side point. This is standard "truing" practice; reverting it is one function. The dart legs follow the sloped waist line and the apex is square to it, so both legs stay equal.
+6. **No dart for a non-positive shaping.** When the hip quarter is not wider than the waist quarter (apple bodies), the dart is omitted, never negative.
+7. **Hem errors:** `SKIRT_SHORTER_THAN_HIP_DEPTH` when the resolved length is not below the hip line (a straight skirt needs its hip line); `SKIRT_LENGTH_MISSING` when no length was resolved (a programming error).
+8. **Grain line** on the vertical through half the hip width, from 10 % to 60 % of the way from the hip line to the hem (`SKIRT_GRAIN_LINE_SHARE`).
+9. **`ENGINE_VERSION` 0.1.0 → 0.2.0:** a design with a skirt now gets two pieces where it got none.
+
+**Consequences:** The default registry is no longer empty: every design with a skirt gets the straight block (later skirt modules start from it). FR-VAL rules are not registered by the module yet; the property tests compute the checks from the geometry. `needs:sew-test` stays until toiles in 3 sizes are sewn and logged in `docs/test-cases/engine/sew-tests.md`.

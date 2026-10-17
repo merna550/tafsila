@@ -150,9 +150,24 @@ Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich
 
 Target catalogue: SRS §6.1 (`DesignSpec`). Implemented modules:
 
-| Module id | DesignSpec path | Status        | Sew-tested |
-| --------- | --------------- | ------------- | ---------- |
-| —         | —               | none yet (M1) | —          |
+| Module id     | DesignSpec path              | Status                                              | Sew-tested |
+| ------------- | ---------------------------- | --------------------------------------------------- | ---------- |
+| `block-skirt` | `skirt` (any type; the base) | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`) | not yet    |
+
+**Skirt block names** ([decision 129](../decisions/129-skirt-block.md)); #135 to #140 and #143 use the same ones:
+
+| Piece         | Edge    | Kind                                     | Pairs with         |
+| ------------- | ------- | ---------------------------------------- | ------------------ |
+| `skirt-front` | `waist` | `other`                                  | (waistband, later) |
+| `skirt-front` | `side`  | `side`                                   | `skirt-back/side`  |
+| `skirt-front` | `hem`   | `hem`                                    | —                  |
+| `skirt-front` | `cf`    | `fold`                                   | —                  |
+| `skirt-back`  | `waist` | `other`                                  | (waistband, later) |
+| `skirt-back`  | `side`  | `side`                                   | `skirt-front/side` |
+| `skirt-back`  | `hem`   | `hem`                                    | —                  |
+| `skirt-back`  | `cb`    | `fold`, or `other` for a centre-back zip | `skirt-back/cb`    |
+
+The block is drafted at its built-in ease and widened at the side seam by the style ease; the front and back side seams are trued to equal length by moving the waist side points (front down, back up). Errors: `SKIRT_SHORTER_THAN_HIP_DEPTH`, `SKIRT_LENGTH_MISSING`. Print: `pnpm engine:print straightKneeSkirt size-m`.
 
 ## Validation rules (SRS §4.5)
 
