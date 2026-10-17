@@ -300,6 +300,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `pnpm build` runs `turbo run build`; the web app builds with `next build` into a standalone output ([ADR-004](../DECISIONS.md)). **Card:** [Turborepo](tech/turborepo.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs/app/getting-started/deploying>
 
+<a id="built-in-ease"></a>
+
+### Built-in ease and style ease
+
+**Plain words:** A drafting block already has some room drawn into it (built-in ease); style ease is whatever extra (or less) room the chosen fit adds on top. Adding both by mistake makes the garment too big.  
+**In Tafsila:** `BLOCK_BUILT_IN_EASE_MM` holds the block's own ease; `resolveDraftInputs` returns `styleEaseMm` = total minus built-in. The skirt block is drafted at its built-in ease and then widened at the side seam by the style ease ([decision 129](../decisions/129-skirt-block.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Ease_(sewing)>
+
 <a id="bust-point"></a>
 
 ### Bust point, bust height, high bust, under bust
@@ -2143,6 +2151,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A scanner that looks for known security problems in container images.  
 **In Tafsila:** Runs in the Docker workflow ([WORKFLOW section 5](../WORKFLOW.md)). **Card:** [Docker](tech/docker.md) · **Level:** advanced  
 **Learn:** <https://trivy.dev/latest/docs/>
+
+<a id="truing"></a>
+
+### Truing (seams)
+
+**Plain words:** Adjusting the ends of two seams that are sewn together so they have exactly the same length before cutting.  
+**In Tafsila:** The straight skirt block moves the front waist side point down and the back one up by the same small amount until the side seams match, so FR-VAL-01 passes for every body ([decision 129](../decisions/129-skirt-block.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Pattern_(sewing)>
 
 <a id="turborepo"></a>
 
