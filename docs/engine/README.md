@@ -19,7 +19,7 @@ The function is pure and deterministic and runs the same in the browser and on t
 | `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | #126       |
 | `blocks`      | Base blocks: bodice, skirt, sleeve                               | #128, #129 |
 | `modules`     | Registered `FeatureModule`s transform the blocks                 | real now   |
-| `finishing`   | Seam allowance, notches, grain, darts, cut info                  | #130, #131 |
+| `finishing`   | Seam allowance (real now), notches, grain, darts, cut info       | #130, #131 |
 | `layout`      | Collision-free label placement                                   | #131       |
 | `validate`    | Registered rules → `ValidationReport`                            | real now   |
 | `sewingOrder` | Assembly steps for instructions and 3D                           | #146       |
@@ -28,7 +28,7 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 
 | File                  | Holds                                                                                                                                                                |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `resolved`, `pieces`, `checks`) and `withPiece`/`withCheck`                                                             |
+| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `resolved`, `pieces`, `checks`) `Step`, and `withPiece`/`withPieces`/`withCheck`                                        |
 | `feature-module.ts`   | `FeatureModule` and `ValidationRule` interfaces                                                                                                                      |
 | `registry.ts`         | `createRegistry`: order by `order` then `id`, duplicate id throws `PIPELINE_DUPLICATE_MODULE`                                                                        |
 | `default-registry.ts` | The registry used by default; each real module adds one line                                                                                                         |
@@ -63,19 +63,49 @@ Skirt length: `skirt.lengthMm` wins; otherwise from `waistToKnee` (K) and `waist
 
 One set of pure 2D helpers; drafting code never writes its own maths ([decision 124](../decisions/124-geometry-kit.md)). Millimetres, x right, y down; angles in radians. Tolerances live in `src/constants/geometry.ts`. Degenerate input throws `DraftingError` with a `GEOMETRY_*` code.
 
-| File           | Helpers                                                                                                                        | For                                    |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| `point.ts`     | `pt`, `add`, `sub`, `scale`, `dot`, `cross`, `norm`, `normalize`, `perpendicular`, `lerp`, `angleRad`, `distance`, `samePoint` | vector maths                           |
-| `segment.ts`   | `lineSeg`, `cubicSeg`, `mapSegment`, `reverseSegment`, `assertSegment`, `assertPath`                                           | building segments, input checks        |
-| `bezier.ts`    | `pointOnCubic`, `tangentOnCubic`, `splitCubic`, `cubicLength`, `tAtLength`, `curveThroughPoints`                               | necklines, armholes, hems              |
-| `path.ts`      | `pathLength`, `pointAtLength`, `tangentAtLength`, `splitAtLength`, `subPath`, `reversePath`, `isClosed`, `samplePath`          | seam lengths, notches, edges           |
-| `transform.ts` | `translate`, `rotateAbout`, `mirrorAcross` (points, segments, paths), `rotateSegmentAround`                                    | symmetric halves, dart closing, pivots |
-| `intersect.ts` | `lineLine`, `lineCubic`, `cubicCubic`, `intersectSegments`, `selfIntersections`                                                | construction points, FR-VAL-05         |
-| `offset.ts`    | `offsetPath(path, distanceMm or one per segment)` with mitre corners                                                           | seam allowance (FR-PAT-03)             |
-| `polygon.ts`   | `signedArea`, `bbox`, `bboxOverlap`, `pointInPolygon`                                                                          | orientation, nesting, inside tests     |
-| `roots.ts`     | `solveQuadratic`, `solveCubic`                                                                                                 | intersections                          |
+| File               | Helpers                                                                                                                        | For                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| `point.ts`         | `pt`, `add`, `sub`, `scale`, `dot`, `cross`, `norm`, `normalize`, `perpendicular`, `lerp`, `angleRad`, `distance`, `samePoint` | vector maths                           |
+| `segment.ts`       | `lineSeg`, `cubicSeg`, `mapSegment`, `reverseSegment`, `assertSegment`, `assertPath`                                           | building segments, input checks        |
+| `bezier.ts`        | `pointOnCubic`, `tangentOnCubic`, `splitCubic`, `cubicLength`, `tAtLength`, `curveThroughPoints`                               | necklines, armholes, hems              |
+| `path.ts`          | `pathLength`, `pointAtLength`, `tangentAtLength`, `splitAtLength`, `subPath`, `reversePath`, `isClosed`, `samplePath`          | seam lengths, notches, edges           |
+| `transform.ts`     | `translate`, `rotateAbout`, `mirrorAcross` (points, segments, paths), `rotateSegmentAround`                                    | symmetric halves, dart closing, pivots |
+| `intersect.ts`     | `lineLine`, `lineCubic`, `cubicCubic`, `intersectSegments`, `selfIntersections`                                                | construction points, FR-VAL-05         |
+| `offset.ts`        | `offsetPath(path, distanceMm or one per segment, { cornerAt })` with mitre or mirrored hem corners                             | seam allowance (FR-PAT-03)             |
+| `mirror-corner.ts` | `mirrorHemCorner`: the mirrored hem corner used by `offsetPath`                                                                | hem corners of the cut line            |
+| `polygon.ts`       | `signedArea`, `bbox`, `bboxOverlap`, `pointInPolygon`                                                                          | orientation, nesting, inside tests     |
+| `roots.ts`         | `solveQuadratic`, `solveCubic`                                                                                                 | intersections                          |
 
 Coverage of the engine must stay at 85% or more (NFR-10): `pnpm --filter @tafsila/engine test` fails below it.
+
+## Seam allowance and the cutting line (`src/finishing/`)
+
+The `finishing` step is an ordered list of sub-steps (`finishingSteps` in `src/finishing/index.ts`); `seamAllowanceStep` runs first ([decision 130](../decisions/130-seam-allowance.md), FR-PAT-03). For every piece it:
+
+1. gives each stitch-path segment the allowance of the edge that covers it (`fromSegment..toSegment`, inclusive): `0` when `edge.kind` is `fold`, else `options.seamAllowance.perEdgeMm["<pieceId>/<edgeId>"]`, else `defaultsMm[edge.kind ?? "other"]` (side 15, neckline 10, armhole 10, hem 30, other 15 mm). Uncovered segments get `other`; two edges on one segment throw `FINISHING_EDGES_OVERLAP`;
+2. offsets the stitch path with `offsetPath` (distances negated for a clockwise path) and writes `cutPath` and each edge's `seamAllowanceMm` on a new piece.
+
+**Corner rules**
+
+| Where                                      | Corner                                               |
+| ------------------------------------------ | ---------------------------------------------------- |
+| A hem meets a seam (not a fold, not a hem) | Mirrored hem corner                                  |
+| Everywhere else                            | Mitre, cut square past `MITRE_LIMIT` × allowance     |
+| Fold edge                                  | Allowance 0, so the cut line runs on the stitch line |
+| Darts                                      | Inside the outline in v1 blocks; no treatment        |
+
+**Mirrored hem corner.** The side cut line runs down to the hem stitch line (P), then continues as its mirror image across that line until it meets the hem cut line (Q). Folded up on the hem stitch line, the hem allowance lies exactly on the side seam allowance, so the seam can be sewn through the turned-up hem. On a square corner P–Q is straight down and Q is the mitre point; on an A-line the hem allowance narrows:
+
+```
+        side stitch   side cut
+              \        \
+               \        \
+  hem stitch ---+--------P        <- fold line
+                         /
+  hem cut  -------------Q         <- mirror of the side cut line, 30 mm below
+```
+
+Curved edges use their tangent at the corner (exact for a hem folded on a straight line). Tests: `src/finishing/seam-allowance.test.ts` (distance property ± `SEAM_ALLOWANCE_TOLERANCE_MM` = 0.1 mm, fold, override, orientation, size matrix) and `src/geometry/mirror-corner.test.ts` (hand-computed A-line corner ± 0.05 mm). Print check: `pnpm engine:print seam-rectangle size-m`.
 
 ## Rendering and printing a toile (`src/render/`)
 
