@@ -34,6 +34,15 @@ describe("engine:print", () => {
     expect(readFileSync(file, "utf8")).toContain("piece-front-panel");
   });
 
+  it("writes the marks-pair sheet with notches, labels and one scale square", () => {
+    const file = join(mkdtempSync(join(tmpdir(), "print-")), "marks.svg");
+    const { code } = runCli(["marks-pair", "size-m", "--out", file]);
+    expect(code).toBe(0);
+    const svg = readFileSync(file, "utf8");
+    expect(svg).toContain("piece-back-panel-notch-n2");
+    expect(svg.match(/id="[^"]*scale-square"/g)).toHaveLength(1);
+  });
+
   it("answers wrong arguments with usage and code 2", () => {
     for (const argv of [
       [],

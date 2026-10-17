@@ -107,6 +107,17 @@ The `finishing` step is an ordered list of sub-steps (`finishingSteps` in `src/f
 
 Curved edges use their tangent at the corner (exact for a hem folded on a straight line). Tests: `src/finishing/seam-allowance.test.ts` (distance property ± `SEAM_ALLOWANCE_TOLERANCE_MM` = 0.1 mm, fold, override, orientation, size matrix) and `src/geometry/mirror-corner.test.ts` (hand-computed A-line corner ± 0.05 mm). Print check: `pnpm engine:print seam-rectangle size-m`.
 
+## Marks and labels (`src/finishing/`, `src/layout/`, `src/i18n/pieces.ts`)
+
+Decision: [131](../decisions/131-marks-and-labels.md).
+
+- **Notches.** A module writes a notch on one edge (`edgeId`, `atMm` along the stitch line from the edge start, `pairsWith`). `notchStep` writes the partner on the paired edge at the same distance from the **shared end**: `pairsWith.reversed: true` when the two edges run in opposite directions (partner at `length - atMm`). `marks: 1` (default) is a **single** notch = front; `marks: 2` is a **double** notch = back.
+- **Grain line.** `defaultGrainLine(stitchPath, direction)`: centred, parallel to the centre line (vertical in the block frame), 60 % of the height and at least 120 mm. A module may give its own line (bias pieces).
+- **Darts.** Recorded as two legs on an edge and an apex inside the piece; the fold direction is always towards the centre line. `dartStep` only validates (legs within 0.1 mm of the edge).
+- **Labels.** `layout` writes `name`, `cut` and `size` labels (text from `src/i18n/pieces.ts`: the one catalogue for Arabic and English; the size line also carries the client label and the engine version). The block is placed inside the stitch outline at the largest text size from 8 to 4 mm that fits, 3 mm away from every stitch, cut, grain and dart line (text width is estimated, see decision 131). If it does not fit, it goes just below the piece.
+- **Scale square.** One 100 x 100 mm `scale-square` label on the largest piece that holds it; otherwise the sheet draws its own (never both).
+- Print check: `pnpm engine:print marks-pair size-m`.
+
 ## Rendering and printing a toile (`src/render/`)
 
 `renderSvg(result, { layers, scale })` turns a `PatternResult` into one SVG text; the same result always gives the same bytes ([decision 127](../decisions/127-svg-renderer.md)). Units are mm (`viewBox` and `width`/`height` use the same numbers). Layers, in fixed order: `grid`, `cut`, `stitch`, `notches`, `grain`, `darts`, `labels`, `scale`.
