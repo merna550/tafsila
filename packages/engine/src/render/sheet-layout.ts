@@ -31,8 +31,8 @@ export interface SheetLayout {
   readonly heightMm: number;
   /** One placement per piece, in piece order. */
   readonly placements: readonly PiecePlacement[];
-  /** Top-left of the scale square. */
-  readonly scaleSquare: Point;
+  /** Top-left of the sheet's own scale square; null when a piece carries the square as a label. */
+  readonly scaleSquare: Point | null;
 }
 
 /** Cut-path bounding box of a piece. */
@@ -100,7 +100,16 @@ export function layoutSheet(pieces: readonly Piece[]): SheetLayout {
       offset: { x: next.cell.x - box.minX, y: next.cell.y - box.minY },
     };
   });
-  const squareY = pieces.length === 0 ? SHEET_MARGIN_MM : state.y + state.rowHeight + SHEET_GAP_MM;
+  const piecesBottom = pieces.length === 0 ? SHEET_MARGIN_MM : state.y + state.rowHeight;
+  if (pieces.some((p) => p.labels.some((l) => l.kind === "scale-square"))) {
+    return {
+      widthMm: state.right + SHEET_MARGIN_MM,
+      heightMm: piecesBottom + SHEET_MARGIN_MM,
+      placements,
+      scaleSquare: null,
+    };
+  }
+  const squareY = pieces.length === 0 ? SHEET_MARGIN_MM : piecesBottom + SHEET_GAP_MM;
   return {
     widthMm: Math.max(state.right, SHEET_MARGIN_MM + SCALE_SQUARE_MM) + SHEET_MARGIN_MM,
     heightMm: squareY + SCALE_SQUARE_MM + SHEET_MARGIN_MM,
