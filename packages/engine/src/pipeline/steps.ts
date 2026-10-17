@@ -1,28 +1,34 @@
 /** The seven pipeline steps, each a pure function over a frozen context. */
 import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
+import { BLOCK_DRAFTERS } from "../blocks";
 import { finishing } from "../finishing";
+import { resolveDraftInputs } from "../resolve/resolve-draft-inputs";
+import { CATEGORY_BLOCKS } from "./category-rules";
 import type { Step } from "./draft-context";
-import { withCheck } from "./draft-context";
+import { withCheck, withInputs } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
 export type { Step } from "./draft-context";
 export { finishing };
 
 /**
- * Step 1: derive the named drafting inputs from measurements and ease. Filled by #126.
+ * Step 1: derive the block inputs (widths with ease, lengths) from measurements and ease (#126).
  *
  * @param ctx - Current context.
- * @returns The same context for now.
+ * @returns The context with `inputs` set.
+ * @throws {DraftingError} A `SKIRT_LENGTH_*` input code when the skirt length does not fit the body.
  */
-export const resolve: Step = (ctx) => ctx;
+export const resolve: Step = (ctx) =>
+  withInputs(ctx, resolveDraftInputs(ctx.spec, ctx.measurements, ctx.options));
 
 /**
- * Step 2: draft the base blocks (bodice, skirt, sleeve). Filled by #128 and #129.
+ * Step 2: draft the base blocks the category needs, in `CATEGORY_BLOCKS` order (bodice #128, skirt #129).
  *
- * @param ctx - Current context.
- * @returns The same context for now.
+ * @param ctx - Context after the resolve step.
+ * @returns The context with the block pieces.
  */
-export const blocks: Step = (ctx) => ctx;
+export const blocks: Step = (ctx) =>
+  CATEGORY_BLOCKS[ctx.spec.category].reduce((acc, name) => BLOCK_DRAFTERS[name](acc), ctx);
 
 /**
  * Step 5: collision-free label placement. Filled by #131.

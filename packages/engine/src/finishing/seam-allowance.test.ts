@@ -264,12 +264,12 @@ describe("finishing", () => {
   it("gives the rectangle a closed, simple cutting line in every size of the matrix", () => {
     for (const entry of SIZE_MATRIX) {
       const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: entry.id };
-      const [piece] = generatePattern(
+      const piece = generatePattern(
         vNeckHalfCircleDress,
         entry.measurements,
         options,
         rectangleRegistry,
-      ).pieces;
+      ).pieces.find((p) => p.id === "front-panel");
       const cut = piece!.cutPath;
       expect(isClosed(cut)).toBe(true);
       expect(selfIntersections(cut)).toEqual([]);

@@ -11,6 +11,19 @@ export const GEOMETRY_ERROR_CODES = [
 /** One of the geometry kit's error codes. */
 export type GeometryErrorCode = (typeof GEOMETRY_ERROR_CODES)[number];
 
+/**
+ * Stable codes for body proportions the bodice block cannot draft (issue #128). They are input errors: the
+ * pipeline turns them into a `fail` result, never a throw.
+ */
+export const BODICE_ERROR_CODES = [
+  "BODICE_SHOULDER_INVALID",
+  "BODICE_LENGTHS_INVALID",
+  "BODICE_BUST_POINT_OUT_OF_BLOCK",
+] as const;
+
+/** One of the bodice block's error codes. */
+export type BodiceErrorCode = (typeof BODICE_ERROR_CODES)[number];
+
 /** Thrown when a pattern cannot be drafted for the given design and measurements. */
 export class DraftingError extends Error {
   /**

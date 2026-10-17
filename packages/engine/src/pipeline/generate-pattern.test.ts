@@ -6,7 +6,7 @@ import { DraftingError } from "../errors/drafting-error";
 import { deepFreeze } from "../test-utils/deep-freeze";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "./generate-pattern";
 import { createRegistry } from "./registry";
-import { rectangleModule, rectangleRegistry } from "./test-support/rectangle-module";
+import { RECTANGLE_PIECE_ID, rectangleModule, rectangleRegistry } from "./test-support/rectangle-module";
 
 const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
 
@@ -16,19 +16,24 @@ const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
  * which #147 measures properly.
  */
 const PIPELINE_SMOKE_BUDGET_MS = 100;
-/** Timed runs after one warm-up; the median ignores a single slow run (GC pause, busy runner). */
+/** Untimed runs first, so the timing is the steady-state cost and not JIT compilation (#128). */
+const SMOKE_WARM_UPS = 50;
+/** Timed runs after the warm-ups; the median ignores a single slow run (GC pause, busy runner). */
 const SMOKE_RUNS = 20;
 
 describe("generatePattern with the rectangle module", () => {
-  it("returns a schema-valid result with one piece and a passing FR-VAL-06", () => {
+  it("returns a schema-valid result with the bodice and rectangle pieces and a passing FR-VAL-06", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
     expect(patternResultSchema.safeParse(result).success).toBe(true);
-    expect(result.pieces).toHaveLength(1);
+    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front", RECTANGLE_PIECE_ID]);
     expect(result.validation.checks.find((c) => c.id === "FR-VAL-06")?.status).toBe("pass");
     expect(result.validation.status).toBe("pass");
     expect(result.meta).toMatchObject({ category: "dress", sizeLabel: "M" });
     expect(result.meta.createdFrom).toMatch(/^fnv1a64:[0-9a-f]{16}$/);
-    expect(result.pieces[0]?.bbox).toEqual({ widthMm: 215, heightMm: 345 });
+    expect(result.pieces.find((p) => p.id === RECTANGLE_PIECE_ID)?.bbox).toEqual({
+      widthMm: 215,
+      heightMm: 345,
+    });
   });
 
   it("is deterministic and does not change frozen inputs", () => {
@@ -44,7 +49,10 @@ describe("generatePattern with the rectangle module", () => {
   });
 
   it("finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)", () => {
-    generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+    // Since #128 the dress also drafts the bodice block: warm up so the JIT has compiled the drafting code
+    // before timing (a cold run on a loaded CI runner was 7-8 ms, a warm one well under 1 ms).
+    for (let i = 0; i < SMOKE_WARM_UPS; i += 1)
+      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
     const timesMs = Array.from({ length: SMOKE_RUNS }, () => {
       const start = performance.now();
       generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
@@ -53,9 +61,11 @@ describe("generatePattern with the rectangle module", () => {
     expect(timesMs[Math.floor(SMOKE_RUNS / 2)]!).toBeLessThan(PIPELINE_SMOKE_BUDGET_MS);
   });
 
-  it("uses default options and the default registry, which drafts the skirt block", () => {
+  it("uses default options and the default registry to draft the bodice and skirt blocks", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM);
     const ids = result.pieces.map((p) => p.id);
+    expect(ids).toContain("bodice-back");
+    expect(ids).toContain("bodice-front");
     expect(ids).toContain("skirt-front");
     expect(ids).toContain("skirt-back");
     expect(result.validation.status).toBe("pass");
@@ -70,7 +80,7 @@ describe("generatePattern with the rectangle module", () => {
     );
     expect(result.validation.status).toBe("warn");
     expect(result.validation.checks.some((c) => c.code === "MEAS_WAIST_NOT_BELOW_HIP")).toBe(true);
-    expect(result.pieces).toHaveLength(1);
+    expect(result.pieces.some((p) => p.id === RECTANGLE_PIECE_ID)).toBe(true);
   });
 });
 

@@ -81,7 +81,7 @@ export function cross(a: Point, b: Point): number {
  * @returns |v| in mm.
  */
 export function norm(v: Point): number {
-  return Math.hypot(v.x, v.y);
+  return Math.sqrt(v.x * v.x + v.y * v.y);
 }
 
 /**
@@ -92,7 +92,10 @@ export function norm(v: Point): number {
  * @returns Distance in mm.
  */
 export function distance(a: Point, b: Point): number {
-  return Math.hypot(b.x - a.x, b.y - a.y);
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  // Math.sqrt over Math.hypot: hypot is several times slower and lengths here never overflow (#128).
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 /**
