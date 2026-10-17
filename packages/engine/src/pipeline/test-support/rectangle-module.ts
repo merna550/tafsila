@@ -16,6 +16,14 @@ const rectanglePath: Piece["stitchPath"] = [
   lineSeg({ x: 0, y: HEIGHT_MM }, { x: 0, y: 0 }),
 ];
 
+/** The rectangle's edges, one per side: waist (top), side (right), hem (bottom), centre front on the fold (left). */
+export const rectangleEdges: Piece["edges"] = [
+  { id: "waist", fromSegment: 0, toSegment: 0, kind: "other", seamAllowanceMm: 0 },
+  { id: "side", fromSegment: 1, toSegment: 1, kind: "side", seamAllowanceMm: 0 },
+  { id: "hem", fromSegment: 2, toSegment: 2, kind: "hem", seamAllowanceMm: 0 },
+  { id: "cf", fromSegment: 3, toSegment: 3, kind: "fold", seamAllowanceMm: 0 },
+];
+
 /** Adds one rectangle piece and an FR-VAL-06 rule that checks its width. */
 export const rectangleModule: FeatureModule = {
   id: "test-rectangle",
@@ -27,7 +35,7 @@ export const rectangleModule: FeatureModule = {
       name: { ar: "الأمام", en: "Front" },
       cut: { quantity: 1, onFold: false, mirror: false, fabric: "main" },
       stitchPath: rectanglePath,
-      edges: [],
+      edges: rectangleEdges,
       notches: [],
       grainLine: [
         { x: 100, y: 50 },

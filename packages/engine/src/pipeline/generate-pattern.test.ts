@@ -19,7 +19,7 @@ describe("generatePattern with the rectangle module", () => {
     expect(result.validation.status).toBe("pass");
     expect(result.meta).toMatchObject({ category: "dress", sizeLabel: "M" });
     expect(result.meta.createdFrom).toMatch(/^fnv1a64:[0-9a-f]{16}$/);
-    expect(result.pieces[0]?.bbox).toEqual({ widthMm: 200, heightMm: 300 });
+    expect(result.pieces[0]?.bbox).toEqual({ widthMm: 215, heightMm: 345 });
   });
 
   it("is deterministic and does not change frozen inputs", () => {

@@ -1,6 +1,7 @@
 /** Engine output contract: PatternResult, Piece, Path and friends (SRS §6.3). All lengths are in millimetres. */
 import { z } from "zod";
 import { garmentCategorySchema } from "./design-spec";
+import { edgeKindSchema } from "./engine-options";
 
 /** Largest gap, in mm, tolerated between the end of one segment and the start of the next. */
 export const PATH_JOIN_TOLERANCE_MM = 0.01;
@@ -72,11 +73,18 @@ const edgePairSchema = z.object({
   intendedEaseMm: z.number().optional(),
 });
 
+/** What an edge is for: a seam-allowance kind, or `fold` (cut on the fold, never any allowance; decision 130). */
+export const pieceEdgeKindSchema = z.enum([...edgeKindSchema.options, "fold"]);
+
+/** What an edge is for: a seam-allowance kind, or `fold`. */
+export type PieceEdgeKind = z.infer<typeof pieceEdgeKindSchema>;
+
 /** A named run of stitch-path segments with its seam allowance and the edge it is sewn to. */
 export const edgeSchema = z.object({
   id: z.string().min(1),
   fromSegment: z.number().int().min(0),
   toSegment: z.number().int().min(0),
+  kind: pieceEdgeKindSchema.optional(),
   seamAllowanceMm: z.number().min(0),
   pairsWith: edgePairSchema.optional(),
 });
