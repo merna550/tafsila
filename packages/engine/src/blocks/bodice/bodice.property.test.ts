@@ -10,6 +10,7 @@ import {
   lineSeg,
   pointInPolygon,
   samplePath,
+  segmentPoints,
   selfIntersections,
 } from "../../geometry";
 import { completePiece, generatePattern } from "../../pipeline/generate-pattern";
@@ -53,15 +54,35 @@ function trianglesOverlap(a: Point[], b: Point[]): boolean {
   return sides(a).some((s) => sides(b).some((o) => intersectSegments(s, o).length > 0));
 }
 
+/** Sample points per cubic for the armhole direction check (enough to see a dip of a tenth of a mm). */
+const CURVE_SAMPLES = 16;
+
+/** Drafts per matrix case, computed once and shared by every property (the draft is pure). */
+const DRAFTS = new Map<(typeof CASES)[number], ReturnType<typeof draftUncached>>();
+
 /**
  * Drafts one matrix case.
  *
  * @param c - The case.
  * @returns The case input and draft.
  */
-function draft(c: (typeof CASES)[number]) {
+function draftUncached(c: (typeof CASES)[number]) {
   const bc = bodiceCase(c.m, c.p, c.f);
   return { ...bc, d: draftBodice(bc.input) };
+}
+
+/**
+ * Drafts one matrix case, once.
+ *
+ * @param c - The case.
+ * @returns The case input and draft.
+ */
+function draft(c: (typeof CASES)[number]) {
+  const hit = DRAFTS.get(c);
+  if (hit) return hit;
+  const out = draftUncached(c);
+  DRAFTS.set(c, out);
+  return out;
 }
 
 describe("bodice properties across the size matrix (225 cases)", () => {
@@ -136,22 +157,24 @@ describe("bodice properties across the size matrix (225 cases)", () => {
     fc.assert(
       fc.property(arbCase, (c) => {
         const { d } = draft(c);
-        for (const arm of [d.armhole.back, d.armhole.front]) {
-          const ys = samplePath(arm).map((p) => p.y);
-          ys.forEach((y, i) => i > 0 && expect(y).toBeGreaterThanOrEqual(ys[i - 1]! - 1e-9));
-        }
+        // Collect the worst values first and assert once per case: an expect per sample point was the cost.
+        const drops = [d.armhole.back, d.armhole.front].map((arm) => {
+          const ys = samplePath(arm, CURVE_SAMPLES).map((p) => p.y);
+          return Math.min(...ys.slice(1).map((y, i) => y - ys[i]!));
+        });
+        expect(Math.min(...drops)).toBeGreaterThanOrEqual(-1e-9);
         const neckW = d.keyPoints["bodice.back.neckPoint"].x;
         const boxes = [
           [d.back, d.keyPoints["bodice.back.nape"].y],
           [d.front, d.keyPoints["bodice.front.neckCF"].y],
         ] as const;
         for (const [piece, depth] of boxes) {
-          for (const p of samplePath([piece.stitchPath[0]!])) {
-            expect(p.x).toBeGreaterThanOrEqual(-0.5);
-            expect(p.x).toBeLessThanOrEqual(neckW + 0.5);
-            expect(p.y).toBeGreaterThanOrEqual(-0.5);
-            expect(p.y).toBeLessThanOrEqual(depth + 0.5);
-          }
+          // The control points bound the cubic, so checking them proves the whole curve is in the box.
+          const pts = segmentPoints(piece.stitchPath[0]!);
+          const inBox = pts.every(
+            (p) => p.x >= -0.5 && p.x <= neckW + 0.5 && p.y >= -0.5 && p.y <= depth + 0.5,
+          );
+          expect(inBox).toBe(true);
         }
       }),
       ALL,

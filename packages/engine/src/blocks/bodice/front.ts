@@ -129,12 +129,14 @@ function frontDarts(k: FrontPoints, hasWaistDart: boolean): Dart[] {
  * waist, centre front on the fold).
  *
  * @param k - Front key points.
+ * @param armhole - The front armhole (drafted once by the caller, also passed on to the sleeve).
  * @param hasWaistDart - Whether the waist dart is drafted.
  * @param options - Engine options, for the seam allowances.
  * @returns The front piece in progress.
  */
 export function frontPiece(
   k: FrontPoints,
+  armhole: readonly Segment[],
   hasWaistDart: boolean,
   options: Pick<EngineOptions, "seamAllowance">,
 ): PieceDraft {
@@ -142,7 +144,7 @@ export function frontPiece(
   const outline: Segment[] = [
     ...neckCurve(k.neckCF, k.neckPoint, FRONT_SHOULDER_SLOPE),
     lineSeg(k.neckPoint, k.shoulderTip),
-    ...frontArmhole(k),
+    ...armhole,
     lineSeg(k.underarm, k.bustDartUpper),
     lineSeg(k.bustDartUpper, k.bustDartLower),
     lineSeg(k.bustDartLower, k.sideWaist),

@@ -63,12 +63,14 @@ export function backArmhole(k: BackPoints): Segment[] {
  * Builds the back piece: outline from the nape (neck, shoulder, armhole, side, waist, centre back on the fold).
  *
  * @param k - Back key points.
+ * @param armhole - The back armhole (drafted once by the caller, also passed on to the sleeve).
  * @param hasDart - Whether the waist dart is drafted.
  * @param options - Engine options, for the seam allowances.
  * @returns The back piece in progress.
  */
 export function backPiece(
   k: BackPoints,
+  armhole: readonly Segment[],
   hasDart: boolean,
   options: Pick<EngineOptions, "seamAllowance">,
 ): PieceDraft {
@@ -76,7 +78,7 @@ export function backPiece(
   const outline: Segment[] = [
     ...neckCurve(k.nape, k.neckPoint, BACK_SHOULDER_SLOPE),
     lineSeg(k.neckPoint, k.shoulderTip),
-    ...backArmhole(k),
+    ...armhole,
     lineSeg(k.underarm, k.sideWaist),
     ...waist,
     lineSeg(k.waistCB, k.nape),

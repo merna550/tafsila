@@ -59,8 +59,8 @@ export function draftBodice(
   const armBack = backArmhole(back);
   const armFront = frontArmhole(front);
   return {
-    back: backPiece(back, hasDart, options),
-    front: frontPiece(front, hasDart, options),
+    back: backPiece(back, armBack, hasDart, options),
+    front: frontPiece(front, armFront, hasDart, options),
     keyPoints: namedKeyPoints(back, front),
     armhole: {
       back: armBack,

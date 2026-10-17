@@ -38,10 +38,13 @@ describe("generatePattern with the rectangle module", () => {
   });
 
   it("finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)", () => {
-    // Since #128 the dress also drafts the bodice block, so one cold timing under a parallel, coverage-instrumented
-    // run is noise (6-7 ms seen once, 0.7 ms median alone). Warm up, then take the median of several runs.
+    // Since #128 the dress also drafts the bodice block. The guard measures the steady-state cost of one run:
+    // warm up so the JIT has compiled the drafting code (a cold run on a loaded CI runner was 7-8 ms while a
+    // warm one is well under 1 ms), then take the median of several runs. The 5 ms target is unchanged.
+    const warmUps = 50;
     const runs = 21;
-    for (let i = 0; i < 3; i += 1) generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+    for (let i = 0; i < warmUps; i += 1)
+      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
     const timesMs = Array.from({ length: runs }, () => {
       const start = performance.now();
       generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
