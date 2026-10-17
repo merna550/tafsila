@@ -16,3 +16,19 @@ export const vNeckHalfCircleDress: DesignSpec = {
   lining: false,
   belt: "none",
 };
+
+/**
+ * The bodice block seed design (issue #128): a semi-fitted, darted blouse with no sleeves, no collar and a
+ * centre-back zip. Used by the bodice snapshots, property tests and `pnpm engine:print dartedBlouse size-m`.
+ */
+export const dartedBlouse: DesignSpec = {
+  schemaVersion: 1,
+  category: "blouse",
+  fabricType: "woven",
+  bodice: { fit: "semi-fitted", shaping: "darts", waistSeam: false },
+  neckline: { front: "round", back: "round", collar: "none" },
+  sleeve: { type: "none", length: "short", cuff: "none" },
+  closure: { type: "zip", position: "center-back" },
+  pockets: [],
+  lining: false,
+};

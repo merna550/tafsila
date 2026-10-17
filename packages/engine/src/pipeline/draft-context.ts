@@ -1,5 +1,6 @@
 /** The immutable value that flows through the pipeline steps (ARCHITECTURE §3). */
 import type { DesignSpec, EngineOptions, Measurements, Piece, ValidationCheck } from "@tafsila/schemas";
+import type { ResolvedDraftInputs } from "../resolve/types";
 
 /** A piece in progress: the finishing step adds the cut path, labels and bounding box later. */
 export type PieceDraft = Omit<Piece, "cutPath" | "labels" | "bbox"> &
@@ -13,7 +14,9 @@ export interface DraftContext {
   readonly measurements: Measurements;
   /** The validated engine options. */
   readonly options: EngineOptions;
-  /** Named drafting inputs in mm; filled by the resolve step (#126). */
+  /** The block inputs from the resolve step (#126); undefined before it runs (#128). */
+  readonly inputs: ResolvedDraftInputs | undefined;
+  /** Named numbers in mm that steps pass on, such as the bodice armhole lengths for the sleeve (#128). */
   readonly resolved: Readonly<Record<string, number>>;
   /** Pieces drafted so far. */
   readonly pieces: readonly PieceDraft[];
@@ -40,6 +43,7 @@ export function createContext(
     spec,
     measurements,
     options,
+    inputs: undefined,
     resolved: Object.freeze({}),
     pieces: Object.freeze([]),
     checks,
@@ -78,4 +82,15 @@ export function withCheck(ctx: DraftContext, check: ValidationCheck): DraftConte
  */
 export function withResolved(ctx: DraftContext, values: Readonly<Record<string, number>>): DraftContext {
   return Object.freeze({ ...ctx, resolved: Object.freeze({ ...ctx.resolved, ...values }) });
+}
+
+/**
+ * Returns a context with the resolved block inputs.
+ *
+ * @param ctx - Current context.
+ * @param inputs - Output of `resolveDraftInputs`.
+ * @returns A new frozen context.
+ */
+export function withInputs(ctx: DraftContext, inputs: ResolvedDraftInputs): DraftContext {
+  return Object.freeze({ ...ctx, inputs: Object.freeze(inputs) });
 }

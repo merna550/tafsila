@@ -6,20 +6,23 @@ import { DraftingError } from "../errors/drafting-error";
 import { deepFreeze } from "../test-utils/deep-freeze";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "./generate-pattern";
 import { createRegistry } from "./registry";
-import { rectangleModule, rectangleRegistry } from "./test-support/rectangle-module";
+import { RECTANGLE_PIECE_ID, rectangleModule, rectangleRegistry } from "./test-support/rectangle-module";
 
 const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
 
 describe("generatePattern with the rectangle module", () => {
-  it("returns a schema-valid result with one piece and a passing FR-VAL-06", () => {
+  it("returns a schema-valid result with the bodice and rectangle pieces and a passing FR-VAL-06", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
     expect(patternResultSchema.safeParse(result).success).toBe(true);
-    expect(result.pieces).toHaveLength(1);
+    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front", RECTANGLE_PIECE_ID]);
     expect(result.validation.checks.find((c) => c.id === "FR-VAL-06")?.status).toBe("pass");
     expect(result.validation.status).toBe("pass");
     expect(result.meta).toMatchObject({ category: "dress", sizeLabel: "M" });
     expect(result.meta.createdFrom).toMatch(/^fnv1a64:[0-9a-f]{16}$/);
-    expect(result.pieces[0]?.bbox).toEqual({ widthMm: 200, heightMm: 300 });
+    expect(result.pieces.find((p) => p.id === RECTANGLE_PIECE_ID)?.bbox).toEqual({
+      widthMm: 200,
+      heightMm: 300,
+    });
   });
 
   it("is deterministic and does not change frozen inputs", () => {
@@ -41,9 +44,9 @@ describe("generatePattern with the rectangle module", () => {
     expect(performance.now() - start).toBeLessThan(5);
   });
 
-  it("uses default options and the empty default registry", () => {
+  it("uses default options and the empty default registry: only the bodice block pieces", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM);
-    expect(result.pieces).toEqual([]);
+    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
     expect(result.validation.status).toBe("pass");
   });
 
@@ -56,7 +59,7 @@ describe("generatePattern with the rectangle module", () => {
     );
     expect(result.validation.status).toBe("warn");
     expect(result.validation.checks.some((c) => c.code === "MEAS_WAIST_NOT_BELOW_HIP")).toBe(true);
-    expect(result.pieces).toHaveLength(1);
+    expect(result.pieces.some((p) => p.id === RECTANGLE_PIECE_ID)).toBe(true);
   });
 });
 
