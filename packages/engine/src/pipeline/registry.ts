@@ -16,6 +16,17 @@ export interface ModuleRegistry {
 }
 
 /**
+ * Orders validation rules by requirement id, then stable code.
+ *
+ * @param a - First rule.
+ * @param b - Second rule.
+ * @returns Sort result.
+ */
+function byRuleIdThenCode(a: ValidationRule, b: ValidationRule): number {
+  return compareText(a.id, b.id) || compareText(a.code, b.code);
+}
+
+/**
  * Orders modules by `order`, then `id`.
  *
  * @param a - First module.
@@ -30,10 +41,14 @@ function byOrderThenId(a: FeatureModule, b: FeatureModule): number {
  * Builds a registry from modules given in any order.
  *
  * @param modules - The feature modules.
+ * @param coreRules - Rules applied to every pattern before module rules.
  * @returns The registry.
  * @throws {DraftingError} PIPELINE_DUPLICATE_MODULE when two modules share an id.
  */
-export function createRegistry(modules: readonly FeatureModule[]): ModuleRegistry {
+export function createRegistry(
+  modules: readonly FeatureModule[],
+  coreRules: readonly ValidationRule[] = [],
+): ModuleRegistry {
   const ids = new Set<string>();
   for (const m of modules) {
     if (ids.has(m.id))
@@ -41,12 +56,18 @@ export function createRegistry(modules: readonly FeatureModule[]): ModuleRegistr
     ids.add(m.id);
   }
   const sorted = Object.freeze([...modules].sort(byOrderThenId));
+  const sortedCoreRules = Object.freeze([...coreRules].sort(byRuleIdThenCode));
   return Object.freeze({
     modules: sorted,
     modulesFor: (spec: DesignSpec) => sorted.filter((m) => m.appliesTo(spec)),
-    rulesFor: (ctx: DraftContext) =>
-      sorted
+    rulesFor: (ctx: DraftContext) => {
+      const applicableCoreRules = sortedCoreRules.filter((rule) => rule.appliesTo(ctx));
+      const moduleRules = sorted
         .filter((m) => m.appliesTo(ctx.spec))
-        .flatMap((m) => (m.validations ?? []).filter((r) => r.appliesTo(ctx))),
+        .flatMap((m) => m.validations ?? [])
+        .filter((rule) => rule.appliesTo(ctx))
+        .sort(byRuleIdThenCode);
+      return [...applicableCoreRules, ...moduleRules];
+    },
   });
 }

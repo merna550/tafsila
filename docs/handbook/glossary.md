@@ -2256,6 +2256,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## V
 
+<a id="validation-rule"></a>
+
+### Validation rule
+
+**Plain words:** One repeatable check that says whether a generated pattern passes, needs a warning, or has a problem.
+**In Tafsila:** Core rules check every piece for sound outlines, seam allowance, grain and cutting information, ease and fabric width; garment modules can add their own rules. Each result has a stable code and Arabic/English message ([engine docs](../engine/README.md#validation-rules-srs-45)). **Level:** intermediate
+**Learn:** <https://en.wikipedia.org/wiki/Software_verification_and_validation>
+
 <a id="validation-report"></a>
 
 ### ValidationReport (FR-VAL)

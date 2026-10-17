@@ -4,6 +4,7 @@ import { lineSeg } from "../../geometry";
 import { withPiece, type DraftContext } from "../draft-context";
 import type { FeatureModule } from "../feature-module";
 import { createRegistry } from "../registry";
+import { CORE_RULES } from "../../validation/core-rules";
 
 /** Id of the rectangle piece; tests find it by id because real blocks add pieces too (#128). */
 export const RECTANGLE_PIECE_ID = "front-panel";
@@ -49,6 +50,7 @@ export const rectangleModule: FeatureModule = {
   validations: [
     {
       id: "FR-VAL-06",
+      code: "RECTANGLE_WIDTH",
       appliesTo: () => true,
       run: (ctx: DraftContext): ValidationCheck => {
         const bboxWidth = ctx.pieces.find((p) => p.id === RECTANGLE_PIECE_ID)?.stitchPath[0]?.to.x ?? 0;
@@ -65,4 +67,4 @@ export const rectangleModule: FeatureModule = {
 };
 
 /** A registry holding only the rectangle module. */
-export const rectangleRegistry = createRegistry([rectangleModule]);
+export const rectangleRegistry = createRegistry([rectangleModule], CORE_RULES);
