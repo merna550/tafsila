@@ -4,6 +4,8 @@ Plan comment: <https://github.com/merna550/tafsila/issues/130#issuecomment-62373
 
 Plan wave M2, 2026-10-17. Depends on #124 and #125, both merged.
 
+**Built 2026-10-17.** Deviations, recorded in [decision 130](../decisions/130-seam-allowance.md): the mirrored corner lives in `geometry/mirror-corner.ts` (not `finishing/hem-corner.ts`) and `cornerAt` returns `"mitre" | "mirror-hem-after" | "mirror-hem-before"` (the hem line is the hem segment's tangent, so there is no `mirrorLine` option); `pnpm engine:print seam-rectangle` prints the pipeline rectangle for the manual check.
+
 ## Approach
 
 Fill the pipeline's `finishing` step with a first sub-step, `seamAllowanceStep`. For every piece it works out one allowance per stitch-path segment, offsets the stitch path with `offsetPath`, and writes `cutPath` and `edge.seamAllowanceMm`. It never edits geometry in place and never throws on a piece that is merely unusual: a curve that cannot be offset becomes a `DraftingError` with the existing `GEOMETRY_OFFSET_FAILED` code (a programming or block error, not user input).

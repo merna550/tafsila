@@ -1,8 +1,8 @@
 /**
  * Parallel offset of a path, used for seam allowance (FR-PAT-03). Lines are offset exactly; cubics by the
  * Tiller–Hanson control-polygon method, split until within OFFSET_TOLERANCE_MM (Tiller & Hanson 1984).
- * Corners meet at the mitre point, cut square past MITRE_LIMIT × distance. Seam-specific corners
- * (fold-back at darts and hems) are not handled here (issue #130).
+ * Corners meet at the mitre point, cut square past MITRE_LIMIT × distance; chosen corners can use the mirrored hem
+ * corner instead (`cornerAt`, issue #130).
  */
 import {
   DIRECTION_EPSILON_MM,
@@ -14,6 +14,7 @@ import {
 import { DraftingError } from "../errors/drafting-error";
 import { derivativeOnCubic, pointOnCubic, splitCubic } from "./bezier";
 import { intersectSegments, lineLine } from "./intersect";
+import { type HemSide, type JoinedPieces, mirrorHemCorner } from "./mirror-corner";
 import { isClosed, splitSegmentAt, tangentOnSegment } from "./path";
 import { type Point, add, distance, norm, normalize, pt, samePoint, scale, sub } from "./point";
 import {
@@ -31,10 +32,15 @@ const ERROR_SAMPLES = 8;
 /** Half of the parameter range. */
 const HALF = 0.5;
 
+/** How one corner is closed: a mitre, or the mirrored hem corner with the hem after or before the corner. */
+export type CornerStyle = "mitre" | "mirror-hem-after" | "mirror-hem-before";
+
 /** How corners between offset segments are closed. */
 export interface OffsetOptions {
-  /** Corner style; only the mitre (with a square cut past the limit) exists today. */
+  /** Default corner style: the mitre (with a square cut past the limit). */
   readonly corner?: "mitre";
+  /** Style of corner i, which joins segment i to the next one; corners it leaves out (or answers "mitre") mitre. */
+  readonly cornerAt?: (index: number) => CornerStyle;
 }
 
 /**
@@ -180,15 +186,8 @@ type CornerBridge = (
   limit: CornerLimit,
 ) => Segment[];
 
-/** Two offset pieces after their shared corner has been closed. */
-interface Joined {
-  /** The piece before the corner, possibly trimmed. */
-  readonly end: Segment[];
-  /** Segments added to close the corner (empty when trimmed). */
-  readonly bridge: Segment[];
-  /** The piece after the corner, possibly trimmed. */
-  readonly start: Segment[];
-}
+/** Two offset pieces after their shared corner has been closed (the bridge is empty when trimmed). */
+type Joined = JoinedPieces;
 
 /**
  * Trims two overlapping offset pieces at their crossing (an inside corner).
@@ -241,6 +240,12 @@ function mitreBridge(
   return polyline([endPoint, cutEnd, cutStart, startPoint]);
 }
 
+/** Where the hem lies for each mirrored corner style. */
+const HEM_SIDE: Record<Exclude<CornerStyle, "mitre">, HemSide> = {
+  "mirror-hem-after": "after",
+  "mirror-hem-before": "before",
+};
+
 /** Corner styles by name (#130 adds seam-specific ones). */
 const CORNER_BRIDGES: Record<NonNullable<OffsetOptions["corner"]>, CornerBridge> = { mitre: mitreBridge };
 
@@ -291,7 +296,7 @@ function distancesFor(path: ReadonlyPath, distanceMm: number | readonly number[]
  *
  * @param path - The stitch path.
  * @param distanceMm - Offset in mm, one for all segments or one per segment.
- * @param options - Corner style (mitre by default).
+ * @param options - Corner style (mitre by default) and, optionally, a style per corner.
  * @returns The offset path (closed when the input is closed).
  * @throws {DraftingError} GEOMETRY_OFFSET_FAILED for bad distances or a curve tighter than its offset.
  * @example
@@ -311,12 +316,13 @@ export function offsetPath(
   const corners = isClosed(path) ? pairs : pairs.slice(0, -1);
   for (const [i, j] of corners) {
     const limit = Math.max(Math.abs(distances[i]!), Math.abs(distances[j]!));
-    const joined = joinCorner(
-      pieces[i]!,
-      pieces[j]!,
-      { corner: path[i]!.to, distanceMm: limit },
-      bridgeCorner,
-    );
+    const style = options.cornerAt?.(i) ?? "mitre";
+    const stitch = { before: path[i]!, after: path[j]! };
+    const mirrored =
+      style === "mitre" ? null : mirrorHemCorner(pieces[i]!, pieces[j]!, stitch, HEM_SIDE[style]);
+    const joined =
+      mirrored ??
+      joinCorner(pieces[i]!, pieces[j]!, { corner: path[i]!.to, distanceMm: limit }, bridgeCorner);
     pieces[i] = joined.end;
     bridges[i] = joined.bridge;
     pieces[j] = joined.start;
