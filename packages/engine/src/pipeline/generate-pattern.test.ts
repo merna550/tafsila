@@ -10,6 +10,15 @@ import { rectangleModule, rectangleRegistry } from "./test-support/rectangle-mod
 
 const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
 
+/**
+ * Smoke budget for one rectangle run, in ms. Only a guard against a gross slowdown: CI runners are slower and noisy
+ * (one 18 ms run was seen), so it is far above a local run yet far under the real FR-PAT-04 budget of 500 ms,
+ * which #147 measures properly.
+ */
+const PIPELINE_SMOKE_BUDGET_MS = 100;
+/** Timed runs after one warm-up; the median ignores a single slow run (GC pause, busy runner). */
+const SMOKE_RUNS = 20;
+
 describe("generatePattern with the rectangle module", () => {
   it("returns a schema-valid result with one piece and a passing FR-VAL-06", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
@@ -36,9 +45,12 @@ describe("generatePattern with the rectangle module", () => {
 
   it("finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)", () => {
     generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-    const start = performance.now();
-    generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-    expect(performance.now() - start).toBeLessThan(5);
+    const timesMs = Array.from({ length: SMOKE_RUNS }, () => {
+      const start = performance.now();
+      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+      return performance.now() - start;
+    }).sort((a, b) => a - b);
+    expect(timesMs[Math.floor(SMOKE_RUNS / 2)]!).toBeLessThan(PIPELINE_SMOKE_BUDGET_MS);
   });
 
   it("uses default options and the empty default registry", () => {
