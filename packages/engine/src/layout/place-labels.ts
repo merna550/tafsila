@@ -91,12 +91,18 @@ function rectAround(centre: Point, size: BlockSize): Rect {
  *
  * @param box - Area to cover.
  * @param stepMm - Grid step.
+ * @param insetX - Horizontal inset; used to skip centres whose rectangle cannot fit in the outline bounds.
+ * @param insetY - Vertical inset; used to skip centres whose rectangle cannot fit in the outline bounds.
  * @returns Points.
  */
-function gridPoints(box: Rect, stepMm: number): Point[] {
+function gridPoints(box: Rect, stepMm: number, insetX: number = 0, insetY: number = 0): Point[] {
   const points: Point[] = [];
-  for (let y = box.minY; y <= box.maxY; y += stepMm) {
-    for (let x = box.minX; x <= box.maxX; x += stepMm) points.push({ x, y });
+  const firstX = box.minX + Math.ceil(insetX / stepMm) * stepMm;
+  const firstY = box.minY + Math.ceil(insetY / stepMm) * stepMm;
+  const lastX = box.maxX - insetX;
+  const lastY = box.maxY - insetY;
+  for (let y = firstY; y <= lastY; y += stepMm) {
+    for (let x = firstX; x <= lastX; x += stepMm) points.push({ x, y });
   }
   return points;
 }
@@ -116,9 +122,12 @@ function bestFit(
 ): { centre: Point; score: number } | undefined {
   let best: { centre: Point; score: number } | undefined;
   for (const centre of candidates) {
-    if (!isClear(rectAround(centre, size), obstacles, LABEL_CLEARANCE_MM)) continue;
     const score = distancePointToPolyline(centre, obstacles.outline);
-    if (!best || score > best.score) best = { centre, score };
+    // Clearance is the expensive check. A candidate no farther from the outline cannot replace the current best,
+    // and equal scores deliberately keep the first candidate, so reject it before testing every obstacle stretch.
+    if (best && score <= best.score) continue;
+    if (!isClear(rectAround(centre, size), obstacles, LABEL_CLEARANCE_MM)) continue;
+    best = { centre, score };
   }
   return best;
 }
@@ -132,7 +141,9 @@ function bestFit(
  */
 function findCentre(size: BlockSize, obstacles: PieceObstacles): Point | undefined {
   const box = bbox(obstacles.outline);
-  let best = bestFit(gridPoints(box, LABEL_GRID_MM), size, obstacles);
+  // A block whose centre is closer than half its width or height to the outline's bounding box cannot have all
+  // four corners inside the outline. Keep the original grid phase while omitting those impossible candidates.
+  let best = bestFit(gridPoints(box, LABEL_GRID_MM, size.widthMm / 2, size.heightMm / 2), size, obstacles);
   let step = LABEL_GRID_MM;
   for (let round = 0; best && round < LABEL_REFINE_ROUNDS; round += 1) {
     step /= 2;

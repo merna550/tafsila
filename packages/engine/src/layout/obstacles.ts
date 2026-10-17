@@ -86,10 +86,13 @@ export function labelRect(label: Label): Rect {
  * @returns Whether the box is clear.
  */
 export function isClear(rect: Rect, obstacles: PieceObstacles, clearanceMm: number): boolean {
-  return (
-    rectCorners(rect).every((c) => pointInPolygon(c, obstacles.outline)) &&
-    obstacles.stretches.every(([a, b]) => distanceSegmentToRect(rect, a, b) >= clearanceMm)
-  );
+  for (const corner of rectCorners(rect)) {
+    if (!pointInPolygon(corner, obstacles.outline)) return false;
+  }
+  for (const [start, end] of obstacles.stretches) {
+    if (distanceSegmentToRect(rect, start, end) < clearanceMm) return false;
+  }
+  return true;
 }
 
 /**
