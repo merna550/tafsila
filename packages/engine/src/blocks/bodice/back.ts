@@ -117,6 +117,10 @@ export function backPiece(
     stitchPath: outline,
     edges,
     notches: [],
+    bodyLines: [
+      { id: "bodice-bust", measurement: "bust", kind: "horizontal", atMm: k.underarm.y },
+      { id: "bodice-waist", measurement: "waist", kind: "edge", edgeId: "waist" },
+    ],
     grainLine: grainLine(k.nape.y, k.waistCB.y),
     darts,
   };

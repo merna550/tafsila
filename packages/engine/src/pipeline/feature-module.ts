@@ -2,7 +2,7 @@
 import type { DesignSpec, ValidationCheck } from "@tafsila/schemas";
 import type { DraftContext } from "./draft-context";
 
-/** One validation rule (FR-VAL-xx): runs on the finished context and reports a single check. */
+/** One validation rule (FR-VAL-xx): runs on the finished context and reports checks. */
 export interface ValidationRule {
   /** The check id this rule reports. */
   readonly id: ValidationCheck["id"];
@@ -12,6 +12,8 @@ export interface ValidationRule {
   appliesTo(ctx: DraftContext): boolean;
   /** Runs the rule; never throws for bad geometry, reports `fail` instead. */
   run(ctx: DraftContext): ValidationCheck;
+  /** Optional multi-row runner for rules that report once per seam, line, notch or dart. */
+  runMany?(ctx: DraftContext): readonly ValidationCheck[];
 }
 
 /** A garment feature (neckline, sleeve, closure...). Pure: returns a new context and never edits another module's work. */

@@ -171,18 +171,20 @@ The block is drafted at its built-in ease and widened at the side seam by the st
 
 ## Validation rules (SRS §4.5)
 
-| ID        | Check                                      | Tolerance           | Code                                                                                             |
-| --------- | ------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------ |
-| FR-VAL-01 | Paired seam lengths match                  | ≤ 2 mm unless eased | planned                                                                                          |
-| FR-VAL-02 | Sleeve cap ease (woven set-in)             | 10–40 mm            | planned                                                                                          |
-| FR-VAL-03 | Circumference = measurement + ease         | ± 5 mm              | planned                                                                                          |
-| FR-VAL-04 | Notches align on paired edges              | ± 2 mm              | planned                                                                                          |
-| FR-VAL-05 | Closed outlines, no self-intersection, SA  | exact               | [`validation/rules/structural.ts`](../../packages/engine/src/validation/rules/structural.ts)     |
-| FR-VAL-06 | Grain line, name, cut quantity per piece   | present             | [`validation/rules/labels.ts`](../../packages/engine/src/validation/rules/labels.ts)             |
-| FR-VAL-07 | Dart legs equal, point within limit        | ± 1 mm              | planned                                                                                          |
-| FR-VAL-08 | Plausibility (negative ease, fabric width) | warning             | [`validation/rules/plausibility.ts`](../../packages/engine/src/validation/rules/plausibility.ts) |
+| ID        | Check                                      | Tolerance           | Code                                                                                               |
+| --------- | ------------------------------------------ | ------------------- | -------------------------------------------------------------------------------------------------- |
+| FR-VAL-01 | Paired seam lengths match                  | ≤ 2 mm unless eased | [`validation/rules/seam-match.ts`](../../packages/engine/src/validation/rules/seam-match.ts)       |
+| FR-VAL-02 | Sleeve cap ease (woven set-in)             | 10–40 mm            | [`validation/rules/sleeve-cap.ts`](../../packages/engine/src/validation/rules/sleeve-cap.ts)       |
+| FR-VAL-03 | Circumference = measurement + ease         | ± 5 mm              | [`validation/rules/circumference.ts`](../../packages/engine/src/validation/rules/circumference.ts) |
+| FR-VAL-04 | Notches align on paired edges              | ± 2 mm              | [`validation/rules/notches.ts`](../../packages/engine/src/validation/rules/notches.ts)             |
+| FR-VAL-05 | Closed outlines, no self-intersection, SA  | exact               | [`validation/rules/structural.ts`](../../packages/engine/src/validation/rules/structural.ts)       |
+| FR-VAL-06 | Grain line, name, cut quantity per piece   | present             | [`validation/rules/labels.ts`](../../packages/engine/src/validation/rules/labels.ts)               |
+| FR-VAL-07 | Dart legs equal, point within limit        | ± 1 mm              | [`validation/rules/darts.ts`](../../packages/engine/src/validation/rules/darts.ts)                 |
+| FR-VAL-08 | Plausibility (negative ease, fabric width) | warning             | [`validation/rules/plausibility.ts`](../../packages/engine/src/validation/rules/plausibility.ts)   |
 
 Core rules are registered before garment-module rules and sorted by requirement id, then stable failure code. A rule returns one bilingual report row and never edits geometry. To add a rule, add its stable Arabic/English code to [`validation/messages.ts`](../../packages/engine/src/validation/messages.ts), implement and test the pure `ValidationRule`, then register it in [`validation/core-rules.ts`](../../packages/engine/src/validation/core-rules.ts) or in its owning feature module.
+
+Fit rules may return several deterministic rows through `runMany`: one per unique seam pair, declared sleeve cap, garment body line, notch pair or dart. Body lines are measured from stitch geometry; edge-backed lines close dart intake, and fold pieces count twice.
 
 ## Measurement validation (FR-MEAS-01, -03, -05)
 

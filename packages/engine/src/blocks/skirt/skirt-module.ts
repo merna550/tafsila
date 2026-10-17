@@ -54,6 +54,10 @@ function skirtPiece(
     stitchPath: draft.stitchPath,
     edges: draft.edges,
     notches: [],
+    bodyLines: [
+      { id: "skirt-waist", measurement: "waist", kind: "edge", edgeId: "waist" },
+      { id: "skirt-hip", measurement: "hip", kind: "horizontal", atMm: hip.y },
+    ],
     grainLine: [
       pt(grainXMm, hip.y + span * SKIRT_GRAIN_LINE_SHARE.from),
       pt(grainXMm, hip.y + span * SKIRT_GRAIN_LINE_SHARE.to),

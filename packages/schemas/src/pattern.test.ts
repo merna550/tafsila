@@ -29,6 +29,7 @@ const rectanglePattern: PatternResult = {
       cutPath: rect,
       edges: [{ id: "side", fromSegment: 1, toSegment: 1, seamAllowanceMm: 15 }],
       notches: [],
+      bodyLines: [],
       grainLine: [
         { x: 100, y: 50 },
         { x: 100, y: 250 },

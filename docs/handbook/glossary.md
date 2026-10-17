@@ -300,6 +300,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Chosen during triage to save tokens; rubric in [WORKFLOW section 2](../WORKFLOW.md). **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels>
 
+<a id="body-line-declaration"></a>
+
+### Body-line declaration
+
+**Plain words:** A named place on a pattern piece where the engine measures the finished bust, waist or hip instead of trusting a stored total.
+**In Tafsila:** `Piece.bodyLines` points to a stitch edge or horizontal cross-section; FR-VAL-03 closes dart intake and applies fold/cut multiplicity before comparing with measurement plus ease ([decision 133](../decisions/133-fit-validation.md)). **Level:** intermediate
+**Learn:** [Engine validation](../engine/README.md#validation-rules-srs-45)
+
 <a id="build"></a>
 
 ### Build (compile)

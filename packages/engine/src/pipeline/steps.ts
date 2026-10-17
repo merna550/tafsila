@@ -63,7 +63,11 @@ export function modulesStep(registry: ModuleRegistry): Step {
  * @returns A step that appends one check per rule.
  */
 export function validateStep(registry: ModuleRegistry): Step {
-  return (ctx) => registry.rulesFor(ctx).reduce((acc, rule) => withCheck(acc, rule.run(ctx)), ctx);
+  return (ctx) =>
+    registry.rulesFor(ctx).reduce((acc, rule) => {
+      const checks = rule.runMany ? rule.runMany(ctx) : [rule.run(ctx)];
+      return checks.reduce((checked, check) => withCheck(checked, check), acc);
+    }, ctx);
 }
 
 /**

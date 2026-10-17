@@ -41,6 +41,7 @@ export const rectangleModule: FeatureModule = {
       stitchPath: rectanglePath,
       edges: rectangleEdges,
       notches: [],
+      bodyLines: [],
       grainLine: [
         { x: 100, y: 50 },
         { x: 100, y: 250 },

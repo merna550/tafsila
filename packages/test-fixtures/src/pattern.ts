@@ -48,6 +48,7 @@ export const rectanglePattern: PatternResult = {
         },
       ],
       notches: [{ id: "n1", edgeId: "side", atMm: 150 }],
+      bodyLines: [],
       grainLine: [
         { x: 100, y: 50 },
         { x: 100, y: 250 },
