@@ -40,7 +40,7 @@ export const DEFAULT_ENGINE_OPTIONS = {
  * @param piece - A piece in progress.
  * @returns A complete piece.
  */
-function completePiece(piece: PieceDraft): Piece {
+export function completePiece(piece: PieceDraft): Piece {
   const cutPath = piece.cutPath ?? piece.stitchPath;
   const box = bbox(samplePath(cutPath));
   return {

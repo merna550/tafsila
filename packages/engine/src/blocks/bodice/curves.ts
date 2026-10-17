@@ -1,14 +1,30 @@
 /** Neck and armhole curves of the bodice block (issue #128, decision 128, 5). */
 import type { Point } from "@tafsila/schemas";
-import { add, curveThroughPoints, pt, scale, type CubicSegment } from "../../geometry";
+import { NECK_CURVE_HANDLE_RATIO } from "../../constants/bodice";
+import { CATMULL_ROM_HANDLE_RATIO } from "../../constants/geometry";
+import {
+  add,
+  cubicSeg,
+  curveThroughPoints,
+  distance,
+  normalize,
+  pt,
+  scale,
+  sub,
+  type CubicSegment,
+} from "../../geometry";
 
 /** 1 / sqrt(2): the unit step along a 45 degree diagonal. */
 const DIAGONAL_UNIT = Math.SQRT1_2;
 
+/** Direction of the armhole at the guide point: square to the 45 degree diagonal, heading down to the side. */
+const GUIDE_TANGENT = pt(1, 1);
+
 /**
- * Neckline from the centre line to the neck point: square to the centre line at the centre and square to the
- * shoulder at the neck point. Aldrich 6th ed., ch. 2, bodice block, back step 2 / front step 2
- * (docs/engine/drafting-method.md).
+ * Neckline from the centre line to the neck point as one explicit cubic: square to the centre line at the
+ * centre and square to the shoulder at the neck point, with handles of `NECK_CURVE_HANDLE_RATIO` of the neck
+ * width and depth, so the curve stays inside its box. Aldrich 6th ed., ch. 2, bodice block, back step 2 /
+ * front step 2 (docs/engine/drafting-method.md).
  *
  * @param centre - Neck point on the centre line (nape or centre front neck).
  * @param neckPoint - Neck point on the HPS level.
@@ -16,7 +32,11 @@ const DIAGONAL_UNIT = Math.SQRT1_2;
  * @returns One cubic, centre to neck point.
  */
 export function neckCurve(centre: Point, neckPoint: Point, shoulderSlope: number): CubicSegment[] {
-  return curveThroughPoints([centre, neckPoint], pt(1, 0), pt(shoulderSlope, -1));
+  const square = normalize(pt(shoulderSlope, -1));
+  const depthMm = centre.y - neckPoint.y;
+  const c1 = add(centre, pt((neckPoint.x - centre.x) * NECK_CURVE_HANDLE_RATIO, 0));
+  const c2 = sub(neckPoint, scale(square, (depthMm * NECK_CURVE_HANDLE_RATIO) / -square.y));
+  return [cubicSeg(centre, c1, c2, neckPoint)];
 }
 
 /**
@@ -32,9 +52,26 @@ export function armholeGuidePoint(widthPoint: Point, underarm: Point, diagonalMm
 }
 
 /**
+ * Lower armhole, guide point to underarm, as one explicit cubic. The first handle runs square to the diagonal
+ * and is never longer than the diagonal distance, so the curve cannot dip below the armscye line; the second
+ * runs square to the side seam (decision 128, 5).
+ *
+ * @param guide - Armhole guide point.
+ * @param underarm - Underarm point.
+ * @param diagonalMm - Guide point distance along the diagonal.
+ * @returns The cubic.
+ */
+function lowerArmhole(guide: Point, underarm: Point, diagonalMm: number): CubicSegment {
+  const handle = distance(guide, underarm) * CATMULL_ROM_HANDLE_RATIO;
+  const c1 = add(guide, scale(normalize(GUIDE_TANGENT), Math.min(handle, diagonalMm)));
+  return cubicSeg(guide, c1, sub(underarm, pt(handle, 0)), underarm);
+}
+
+/**
  * Armhole from the shoulder tip through the width point and the guide point to the underarm: square to the
- * shoulder at the tip and square to the side seam at the underarm. Aldrich 6th ed., ch. 2, bodice block,
- * back steps 5-6 / front steps 4-5 (docs/engine/drafting-method.md); guide point per decision 128, 5.
+ * shoulder at the tip, square to the diagonal at the guide point and square to the side seam at the underarm.
+ * Aldrich 6th ed., ch. 2, bodice block, back steps 5-6 / front steps 4-5 (docs/engine/drafting-method.md);
+ * guide point per decision 128, 5.
  *
  * @param points - Shoulder tip, width point and underarm.
  * @param points.tip - Shoulder tip.
@@ -50,9 +87,10 @@ export function armholeCurve(
   diagonalMm: number,
 ): CubicSegment[] {
   const guide = armholeGuidePoint(points.widthPoint, points.underarm, diagonalMm);
-  return curveThroughPoints(
-    [points.tip, points.widthPoint, guide, points.underarm],
+  const upper = curveThroughPoints(
+    [points.tip, points.widthPoint, guide],
     pt(-shoulderSlope, 1),
-    pt(1, 0),
+    GUIDE_TANGENT,
   );
+  return [...upper, lowerArmhole(guide, points.underarm, diagonalMm)];
 }
