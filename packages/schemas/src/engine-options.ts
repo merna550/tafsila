@@ -32,6 +32,8 @@ export const engineOptionsSchema = z.object({
   }),
   fabricWidthMm: z.number().positive(),
   sizeLabel: z.string().min(1),
+  /** Client name or code printed on the pieces; omitted when empty (FR-PAT-02). */
+  clientLabel: z.string().min(1).optional(),
 });
 
 /** Everything the caller can tune for one engine run. */

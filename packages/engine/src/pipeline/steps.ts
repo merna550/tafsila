@@ -1,12 +1,13 @@
 /** The seven pipeline steps, each a pure function over a frozen context. */
 import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
 import { finishing } from "../finishing";
+import { layout } from "../layout";
 import type { Step } from "./draft-context";
 import { withCheck } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
 export type { Step } from "./draft-context";
-export { finishing };
+export { finishing, layout };
 
 /**
  * Step 1: derive the named drafting inputs from measurements and ease. Filled by #126.
@@ -23,14 +24,6 @@ export const resolve: Step = (ctx) => ctx;
  * @returns The same context for now.
  */
 export const blocks: Step = (ctx) => ctx;
-
-/**
- * Step 5: collision-free label placement. Filled by #131.
- *
- * @param ctx - Current context.
- * @returns The same context for now.
- */
-export const layout: Step = (ctx) => ctx;
 
 /**
  * Step 7: assembly steps. Filled by #146.
