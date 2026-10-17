@@ -66,8 +66,13 @@ export const MIN_DART_LENGTH_MM = 60;
 /** Least room between the front waist dart and the side seam at the waist. */
 export const MIN_DART_TO_SIDE_MM = 20;
 /**
- * Neck curve handles as a share of the neck width (centre handle) and of the neck depth (shoulder handle):
- * about the quarter-ellipse Bezier constant 0.552, so the neck reads as a smooth quarter ellipse and every
- * control point stays inside the neck box (decision 128, 5; a Catmull-Rom curve dipped below the back nape).
+ * Neck curve, centre handle as a share of the neck width: about the quarter-ellipse Bezier constant 0.552, so
+ * the neck leaves the centre line square and smooth (decision 128, 5).
  */
 export const NECK_CURVE_HANDLE_RATIO = 0.55;
+/**
+ * Neck curve, shoulder handle: its control point drops this share of the neck depth below the HPS level. Below
+ * 1 keeps the curve inside its box; 0.55 bent the back neck so tightly near the neck point that the 10 mm seam
+ * allowance offset crossed itself (#128 with #130's finishing), 0.8 does not.
+ */
+export const NECK_SHOULDER_HANDLE_SHARE = 0.8;

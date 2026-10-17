@@ -427,11 +427,11 @@ interface Piece {
   labels: Label[];
   bbox: { widthMm: number; heightMm: number };
 }
-interface Edge { id: string; fromSegment: number; toSegment: number; seamAllowanceMm: number; pairsWith?: { pieceId: string; edgeId: string; intendedEaseMm?: number } }
+interface Edge { id: string; fromSegment: number; toSegment: number; kind?: 'side' | 'neckline' | 'armhole' | 'hem' | 'other' | 'fold'; seamAllowanceMm: number; pairsWith?: { pieceId: string; edgeId: string; intendedEaseMm?: number } }
 interface SewingStep { order: number; action: 'sew' | 'press' | 'finish' | 'attach'; edges: string[]; text: { ar: string; en: string } }
 interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ id: 'FR-VAL-01'..'FR-VAL-08' | 'FR-MEAS-01'; code?: string; status: 'pass' | 'warn' | 'fail'; message: { ar: string; en: string }; measuredMm?: number; expectedMm?: number; refs?: string[] }> }
 ```
-`Path` = array of segments (`line` | `cubic`) in mm; each segment stores `from` and `to`, and the stitch and cut paths must be closed (tolerance 0.01 mm). Zod schemas: `packages/schemas/src/pattern.ts`; JSON Schema: `packages/schemas/json/pattern-result.schema.json` (`pnpm schemas:json`; it does not carry the continuity and closure refinements, which Zod checks). This JSON is the contract for exports, nesting, 3D, and the v2 Python sim service.
+`Edge.kind` picks the default seam allowance (FR-PAT-03); `fold` edges never get one, and no kind means `other` (decision 130). `Path` = array of segments (`line` | `cubic`) in mm; each segment stores `from` and `to`, and the stitch and cut paths must be closed (tolerance 0.01 mm). Zod schemas: `packages/schemas/src/pattern.ts`; JSON Schema: `packages/schemas/json/pattern-result.schema.json` (`pnpm schemas:json`; it does not carry the continuity and closure refinements, which Zod checks). This JSON is the contract for exports, nesting, 3D, and the v2 Python sim service.
 
 ---
 

@@ -24,6 +24,9 @@ export interface DraftContext {
   readonly checks: readonly ValidationCheck[];
 }
 
+/** One pipeline step: a pure function from a frozen context to a new one. */
+export type Step = (ctx: DraftContext) => DraftContext;
+
 /**
  * Starts a context for one run.
  *
@@ -60,6 +63,17 @@ export function createContext(
 export function withPiece(ctx: DraftContext, piece: PieceDraft): DraftContext {
   const kept = ctx.pieces.filter((p) => p.id !== piece.id);
   return Object.freeze({ ...ctx, pieces: Object.freeze([...kept, piece]) });
+}
+
+/**
+ * Returns a context whose pieces are replaced by the given list, in that order (used by the finishing steps).
+ *
+ * @param ctx - Current context.
+ * @param pieces - The new pieces.
+ * @returns A new frozen context.
+ */
+export function withPieces(ctx: DraftContext, pieces: readonly PieceDraft[]): DraftContext {
+  return Object.freeze({ ...ctx, pieces: Object.freeze([...pieces]) });
 }
 
 /**

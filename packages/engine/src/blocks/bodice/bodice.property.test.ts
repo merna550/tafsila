@@ -182,6 +182,17 @@ describe("bodice properties across the size matrix (225 cases)", () => {
   });
 });
 
+describe("bodice through the whole pipeline", () => {
+  it("every matrix body gets closed, simple cutting lines with seam allowance", () => {
+    for (const entry of SIZE_MATRIX) {
+      const pieces = generatePattern(dartedBlouse, entry.measurements).pieces;
+      expect(pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+      const simple = pieces.every((p) => isClosed(p.cutPath) && selfIntersections(p.cutPath).length === 0);
+      expect(simple, entry.id).toBe(true);
+    }
+  });
+});
+
 describe("bodice on random bodies", () => {
   it("never throws: two valid pieces, or a fail with a BODICE_ or MEAS_ code", () => {
     fc.assert(

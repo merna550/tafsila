@@ -3,7 +3,8 @@ import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { dartedBlouse, rectanglePattern, SIZE_MATRIX, vNeckHalfCircleDress } from "@tafsila/test-fixtures";
 import type { PatternResult } from "@tafsila/schemas";
-import { generatePattern } from "../src/pipeline";
+import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../src/pipeline";
+import { rectangleRegistry } from "../src/pipeline/test-support/rectangle-module";
 import { renderPrintSheet } from "../src/render";
 
 /** Exit code: success. */
@@ -18,6 +19,9 @@ const DESIGN_FIXTURES = { dartedBlouse, vNeckHalfCircleDress } as const;
 
 /** Name of the ready-made rectangle test pattern. */
 const RECTANGLE = "rectangle";
+
+/** Name of the test rectangle run through the pipeline, so its cut line shows the seam allowances (#130). */
+const SEAM_RECTANGLE = "seam-rectangle";
 
 /** Where the script writes its messages; replaced in tests. */
 export interface PrintIo {
@@ -46,7 +50,7 @@ interface Parsed {
  * @returns The help lines.
  */
 function usage(): string {
-  const names = [RECTANGLE, ...Object.keys(DESIGN_FIXTURES)].join(" | ");
+  const names = [RECTANGLE, SEAM_RECTANGLE, ...Object.keys(DESIGN_FIXTURES)].join(" | ");
   const sizes = SIZE_MATRIX.map((e) => e.id).join(" ");
   return `Usage: pnpm engine:print <fixture> <size> [--out file.svg]\n  fixture: ${names}\n  size: ${sizes}`;
 }
@@ -76,6 +80,10 @@ function buildPattern(fixture: string, sizeId: string): PatternResult | undefine
   const entry = SIZE_MATRIX.find((e) => e.id === sizeId);
   if (!entry) return undefined;
   if (fixture === RECTANGLE) return rectanglePattern;
+  if (fixture === SEAM_RECTANGLE) {
+    const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: entry.id };
+    return generatePattern(vNeckHalfCircleDress, entry.measurements, options, rectangleRegistry);
+  }
   const spec = DESIGN_FIXTURES[fixture as keyof typeof DESIGN_FIXTURES];
   return spec ? generatePattern(spec, entry.measurements, { sizeLabel: entry.id }) : undefined;
 }

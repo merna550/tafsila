@@ -1237,6 +1237,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## M
 
+<a id="mirrored-hem-corner"></a>
+
+### Mirrored hem corner
+
+**Plain words:** The shape of the cutting line where a hem meets a side seam. The side cut line is reflected across the hem fold line, so when you turn the hem up its edge sits exactly on the side seam allowance and the seam sews through it cleanly.  
+**In Tafsila:** `mirrorHemCorner` in `packages/engine/src/geometry/mirror-corner.ts`, chosen by the seam allowance step in `packages/engine/src/finishing/seam-allowance.ts` ([decision 130](../decisions/130-seam-allowance.md), [engine README](../engine/README.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Hem>
+
 <a id="mitre-corner"></a>
 
 ### Mitre corner

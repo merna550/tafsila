@@ -1,6 +1,6 @@
 /** Neck and armhole curves of the bodice block (issue #128, decision 128, 5). */
 import type { Point } from "@tafsila/schemas";
-import { NECK_CURVE_HANDLE_RATIO } from "../../constants/bodice";
+import { NECK_CURVE_HANDLE_RATIO, NECK_SHOULDER_HANDLE_SHARE } from "../../constants/bodice";
 import { CATMULL_ROM_HANDLE_RATIO } from "../../constants/geometry";
 import {
   add,
@@ -23,7 +23,7 @@ const GUIDE_TANGENT = pt(1, 1);
 /**
  * Neckline from the centre line to the neck point as one explicit cubic: square to the centre line at the
  * centre and square to the shoulder at the neck point, with handles of `NECK_CURVE_HANDLE_RATIO` of the neck
- * width and depth, so the curve stays inside its box. Aldrich 6th ed., ch. 2, bodice block, back step 2 /
+ * width and `NECK_SHOULDER_HANDLE_SHARE` of its depth, so the curve stays inside its box. Aldrich 6th ed., ch. 2, bodice block, back step 2 /
  * front step 2 (docs/engine/drafting-method.md).
  *
  * @param centre - Neck point on the centre line (nape or centre front neck).
@@ -35,7 +35,7 @@ export function neckCurve(centre: Point, neckPoint: Point, shoulderSlope: number
   const square = normalize(pt(shoulderSlope, -1));
   const depthMm = centre.y - neckPoint.y;
   const c1 = add(centre, pt((neckPoint.x - centre.x) * NECK_CURVE_HANDLE_RATIO, 0));
-  const c2 = sub(neckPoint, scale(square, (depthMm * NECK_CURVE_HANDLE_RATIO) / -square.y));
+  const c2 = sub(neckPoint, scale(square, (depthMm * NECK_SHOULDER_HANDLE_SHARE) / -square.y));
   return [cubicSeg(centre, c1, c2, neckPoint)];
 }
 

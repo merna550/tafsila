@@ -1,14 +1,15 @@
 /** The seven pipeline steps, each a pure function over a frozen context. */
 import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
-import type { DraftContext } from "./draft-context";
 import { BLOCK_DRAFTERS } from "../blocks";
+import { finishing } from "../finishing";
 import { resolveDraftInputs } from "../resolve/resolve-draft-inputs";
 import { CATEGORY_BLOCKS } from "./category-rules";
+import type { Step } from "./draft-context";
 import { withCheck, withInputs } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
-/** One pipeline step. */
-export type Step = (ctx: DraftContext) => DraftContext;
+export type { Step } from "./draft-context";
+export { finishing };
 
 /**
  * Step 1: derive the block inputs (widths with ease, lengths) from measurements and ease (#126).
@@ -28,14 +29,6 @@ export const resolve: Step = (ctx) =>
  */
 export const blocks: Step = (ctx) =>
   CATEGORY_BLOCKS[ctx.spec.category].reduce((acc, name) => BLOCK_DRAFTERS[name](acc), ctx);
-
-/**
- * Step 4: seam allowance, notches, grain, darts, cut info. Filled by #130 and #131.
- *
- * @param ctx - Current context.
- * @returns The same context for now.
- */
-export const finishing: Step = (ctx) => ctx;
 
 /**
  * Step 5: collision-free label placement. Filled by #131.

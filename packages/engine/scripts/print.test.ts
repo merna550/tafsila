@@ -27,6 +27,13 @@ describe("engine:print", () => {
     expect(readFileSync(file, "utf8")).toBe(renderPrintSheet(rectanglePattern));
   });
 
+  it("writes the seam-rectangle sheet with its cutting line outside the stitch line", () => {
+    const file = join(mkdtempSync(join(tmpdir(), "print-")), "seam.svg");
+    const { code } = runCli(["seam-rectangle", "size-m", "--out", file]);
+    expect(code).toBe(0);
+    expect(readFileSync(file, "utf8")).toContain("piece-front-panel");
+  });
+
   it("answers wrong arguments with usage and code 2", () => {
     for (const argv of [
       [],
