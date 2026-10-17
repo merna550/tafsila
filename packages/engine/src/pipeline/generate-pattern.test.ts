@@ -16,6 +16,8 @@ const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
  * which #147 measures properly.
  */
 const PIPELINE_SMOKE_BUDGET_MS = 100;
+/** Wall-clock allowance for the many warm-up runs on a busy shared CI runner. */
+const PIPELINE_SMOKE_TEST_TIMEOUT_MS = 30_000;
 /** Untimed runs first, so the timing is the steady-state cost and not JIT compilation (#128). */
 const SMOKE_WARM_UPS = 50;
 /** Timed runs after the warm-ups; the median ignores a single slow run (GC pause, busy runner). */
@@ -48,18 +50,22 @@ describe("generatePattern with the rectangle module", () => {
     expect(Object.isFrozen(a)).toBe(true);
   });
 
-  it("finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)", () => {
-    // Since #128 the dress also drafts the bodice block: warm up so the JIT has compiled the drafting code
-    // before timing (a cold run on a loaded CI runner was 7-8 ms, a warm one well under 1 ms).
-    for (let i = 0; i < SMOKE_WARM_UPS; i += 1)
-      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-    const timesMs = Array.from({ length: SMOKE_RUNS }, () => {
-      const start = performance.now();
-      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-      return performance.now() - start;
-    }).sort((a, b) => a - b);
-    expect(timesMs[Math.floor(SMOKE_RUNS / 2)]!).toBeLessThan(PIPELINE_SMOKE_BUDGET_MS);
-  });
+  it(
+    "finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)",
+    () => {
+      // Since #128 the dress also drafts the bodice block: warm up so the JIT has compiled the drafting code
+      // before timing. The median budget still guards speed; the test timeout only allows slow shared runners.
+      for (let i = 0; i < SMOKE_WARM_UPS; i += 1)
+        generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+      const timesMs = Array.from({ length: SMOKE_RUNS }, () => {
+        const start = performance.now();
+        generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+        return performance.now() - start;
+      }).sort((a, b) => a - b);
+      expect(timesMs[Math.floor(SMOKE_RUNS / 2)]!).toBeLessThan(PIPELINE_SMOKE_BUDGET_MS);
+    },
+    PIPELINE_SMOKE_TEST_TIMEOUT_MS,
+  );
 
   it("uses default options and the default registry to draft the bodice and skirt blocks", () => {
     const result = generatePattern(vNeckHalfCircleDress, sizeM);

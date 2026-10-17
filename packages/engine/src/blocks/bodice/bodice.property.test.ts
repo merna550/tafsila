@@ -25,6 +25,8 @@ const CASES = SIZE_MATRIX.flatMap((e) =>
 );
 const arbCase = fc.constantFrom(...CASES);
 const ALL = { numRuns: CASES.length };
+/** Wall-clock allowance for 200 complete pipeline runs with core validation on a busy CI runner. */
+const RANDOM_PIPELINE_TEST_TIMEOUT_MS = 30_000;
 
 /** SRS tolerances. */
 const SEAM_MM = 2;
@@ -194,18 +196,22 @@ describe("bodice through the whole pipeline", () => {
 });
 
 describe("bodice on random bodies", () => {
-  it("never throws: two valid pieces, or a fail with a BODICE_ or MEAS_ code", () => {
-    fc.assert(
-      fc.property(arbMeasurements(), (m) => {
-        const r = generatePattern(dartedBlouse, m);
-        if (r.pieces.length > 0) {
-          expect(r.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
-          return;
-        }
-        expect(r.validation.status).toBe("fail");
-        expect(r.validation.checks.some((x) => /^(BODICE_|MEAS_)/.test(x.code ?? ""))).toBe(true);
-      }),
-      { numRuns: 200 },
-    );
-  });
+  it(
+    "never throws: two valid pieces, or a fail with a BODICE_ or MEAS_ code",
+    () => {
+      fc.assert(
+        fc.property(arbMeasurements(), (m) => {
+          const r = generatePattern(dartedBlouse, m);
+          if (r.pieces.length > 0) {
+            expect(r.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+            return;
+          }
+          expect(r.validation.status).toBe("fail");
+          expect(r.validation.checks.some((x) => /^(BODICE_|MEAS_)/.test(x.code ?? ""))).toBe(true);
+        }),
+        { numRuns: 200 },
+      );
+    },
+    RANDOM_PIPELINE_TEST_TIMEOUT_MS,
+  );
 });
