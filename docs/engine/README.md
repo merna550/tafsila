@@ -16,8 +16,8 @@ The function is pure and deterministic and runs the same in the browser and on t
 
 | Step          | Does                                                             | Filled by  |
 | ------------- | ---------------------------------------------------------------- | ---------- |
-| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | #126       |
-| `blocks`      | Base blocks: bodice, skirt, sleeve                               | #128, #129 |
+| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | real now   |
+| `blocks`      | Base blocks: bodice (real now), skirt                            | #128, #129 |
 | `modules`     | Registered `FeatureModule`s transform the blocks                 | real now   |
 | `finishing`   | Seam allowance, notches, grain, darts, cut info                  | #130, #131 |
 | `layout`      | Collision-free label placement                                   | #131       |
@@ -28,7 +28,8 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 
 | File                  | Holds                                                                                                                                                                |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `resolved`, `pieces`, `checks`) and `withPiece`/`withCheck`                                                             |
+| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `inputs`, `resolved`, `pieces`, `checks`) and `withPiece`/`withCheck`/`withInputs`/`withResolved`                       |
+| `input-errors.ts`     | `INPUT_ERROR_MESSAGES` (ar/en) and `isInputError`: input-type `DraftingError`s (`BODICE_*`, `SKIRT_LENGTH_*`) become a `fail` result                                 |
 | `feature-module.ts`   | `FeatureModule` and `ValidationRule` interfaces                                                                                                                      |
 | `registry.ts`         | `createRegistry`: order by `order` then `id`, duplicate id throws `PIPELINE_DUPLICATE_MODULE`                                                                        |
 | `default-registry.ts` | The registry used by default; each real module adds one line                                                                                                         |
@@ -37,7 +38,7 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 | `input-hash.ts`       | `canonicalJson` and `inputHash` (FNV-1a 64-bit) for `meta.createdFrom`                                                                                               |
 | `steps.ts`            | The seven steps and `buildReport` (worst status wins, `pass` when empty)                                                                                             |
 
-Bad input never throws: it returns a `fail` result with no pieces. Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
+Bad input never throws: it returns a `fail` result with no pieces, including body proportions a block cannot draft (an `FR-MEAS-01` check with the `BODICE_*` or `SKIRT_LENGTH_*` code, [decision 128](../decisions/128-bodice-block.md)). Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
 
 ## Ease tables and resolve (`src/constants/ease.ts`, `src/resolve/`)
 
@@ -58,6 +59,19 @@ Total ease, mm over the whole circumference (regular is SRS §6.2; the rest are 
 `bodice.fit` modifier on bust, waist and hip (total floored at 0): fitted -10, semi-fitted 0, loose +30. No bodice means 0.
 
 Skirt length: `skirt.lengthMm` wins; otherwise from `waistToKnee` (K) and `waistToFloor` (F): mini K - 180, knee K, midi K + 0.40 (F - K), ankle K + 0.85 (F - K), floor F - 20. Errors: `SKIRT_LENGTH_INVALID_BODY` (F - K below 150), `SKIRT_LENGTH_OUT_OF_BODY` (explicit length below 100 or above F), `FABRIC_NOT_SUPPORTED` (non-woven).
+
+## Blocks: bodice (`src/blocks/`)
+
+The `blocks` step folds `BLOCK_DRAFTERS[name]` over `CATEGORY_BLOCKS[category]` (bodice, then skirt for a dress). Blocks are pipeline steps, not `FeatureModule`s; they import `pipeline/draft-context` and `pipeline/category-rules` directly, never `pipeline/index` ([decision 128](../decisions/128-bodice-block.md)).
+
+- `draftBodice(input, options?)` (pure) drafts the back and front halves with the Aldrich method of [drafting-method.md](drafting-method.md). `bodiceBlock` is its step: it reads `ctx.inputs` (throws `PIPELINE_STEP_ORDER` when resolve has not run) and adds the pieces.
+- **Pieces:** `bodice-back` (الظهر / Back bodice) and `bodice-front` (الصدر الأمامي / Front bodice), each cut once on the fold.
+- **Edges** in path order: `neck` (neckline), `shoulder` (other), `armhole` (armhole), `side` (side), `waist` (other), `cb` / `cf` (fold, no allowance). `shoulder` and `side` pair with the other piece; the back shoulder declares `intendedEaseMm` (`BACK_SHOULDER_EASE_MM`, 0 until the toile).
+- **Darts:** `waist-dart` on both pieces (dropped below 6 mm or for `shaping: "none"`), `bust-dart` on the front `side` edge; legs in path order. The front waist dart is trued.
+- **`resolved` keys** for the sleeve (#134): `bodice.armholeBackMm`, `bodice.armholeFrontMm`, `bodice.scyeDepthMm`.
+- **Input codes:** `BODICE_SHOULDER_INVALID`, `BODICE_LENGTHS_INVALID`, `BODICE_BUST_POINT_OUT_OF_BLOCK` (limits in `src/constants/bodice.ts`).
+- **Shared helpers** for later blocks: `blocks/shared/edges.ts` (`buildEdges`, `seamAllowanceFor`), `blocks/shared/darts.ts` (`trueDartLegs`, `dartMouthIndex`) and `pieces/measure.ts` (`edgeLengthMm` with `closeDarts`, `dartLegLengthsMm`) for #133's rules.
+- Seed design: `dartedBlouse` (`pnpm engine:print dartedBlouse size-m`).
 
 ## Geometry kit (`src/geometry/`)
 

@@ -120,6 +120,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** The sleeve cap must be slightly longer than the armhole seam so it can be eased in; checked by FR-VAL-02 ([engine docs](../engine/README.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
+<a id="armscye-depth"></a>
+
+### Armscye depth
+
+**Plain words:** How far down from the back neck the armhole goes; the horizontal line at that depth is the armscye line (Arabic: عمق الإبط).  
+**In Tafsila:** Bust / 8 + 100 mm in the bodice block; the bust width is measured on this line and the sleeve block reads it from `resolved["bodice.scyeDepthMm"]` ([drafting method](../engine/drafting-method.md), #128). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Armscye>
+
 <a id="supply-chain"></a>
 
 ### Attestation
@@ -490,6 +498,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 **Plain words:** A folded wedge sewn to a point that shapes flat fabric around the body (at the bust or waist). Arabic: بنسة.  
 **In Tafsila:** `darts` on each piece; FR-VAL-07 checks equal legs (within 1 mm). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
+<a id="dart-truing"></a>
+
+### Dart truing
+
+**Plain words:** Making both legs of a dart the same length so they sew together edge to edge; usually the shorter leg is extended along its own line (Arabic: تسوية البنسة).  
+**In Tafsila:** `trueDartLegs` in `packages/engine/src/blocks/shared/darts.ts`; the front waist dart of the bodice is trued because its legs sit on a sloping waist line (decision 128, #128). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
 
 <a id="debounce"></a>
@@ -961,6 +977,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** The finished bottom edge of a garment, folded and stitched.  
 **In Tafsila:** Default hem seam allowance is 30 mm ([engine docs](../engine/README.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Hem>
+
+<a id="high-point-of-shoulder-hps"></a>
+
+### High point of shoulder (HPS)
+
+**Plain words:** The point where the shoulder seam meets the neck, the highest point of the shoulder (Arabic: أعلى نقطة في الكتف).  
+**In Tafsila:** y = 0 of both bodice halves is the horizontal through the HPS; `frontLength` and `bustHeight` are measured from it ([drafting method](../engine/drafting-method.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="hexagonal"></a>
 
