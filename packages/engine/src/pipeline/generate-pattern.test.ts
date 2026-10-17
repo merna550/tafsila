@@ -38,10 +38,16 @@ describe("generatePattern with the rectangle module", () => {
   });
 
   it("finishes the rectangle pipeline quickly (guard; the real target is FR-PAT-04)", () => {
-    generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-    const start = performance.now();
-    generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
-    expect(performance.now() - start).toBeLessThan(5);
+    // Since #128 the dress also drafts the bodice block, so one cold timing under a parallel, coverage-instrumented
+    // run is noise (6-7 ms seen once, 0.7 ms median alone). Warm up, then take the median of several runs.
+    const runs = 21;
+    for (let i = 0; i < 3; i += 1) generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+    const timesMs = Array.from({ length: runs }, () => {
+      const start = performance.now();
+      generatePattern(vNeckHalfCircleDress, sizeM, options, rectangleRegistry);
+      return performance.now() - start;
+    }).sort((a, b) => a - b);
+    expect(timesMs[Math.floor(runs / 2)]).toBeLessThan(5);
   });
 
   it("uses default options and the empty default registry: only the bodice block pieces", () => {
