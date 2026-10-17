@@ -1,5 +1,5 @@
 /** Distances between points, segments and axis-aligned rectangles, used to keep labels clear of lines. */
-import { distance, dot, lerp, sub, type Point } from "./point";
+import type { Point } from "./point";
 
 /** An axis-aligned rectangle, in mm. */
 export interface Rect {
@@ -22,11 +22,27 @@ export interface Rect {
  * @returns Distance in mm (to the nearer end when the foot of the perpendicular falls outside).
  */
 export function distancePointToSegment(p: Point, start: Point, end: Point): number {
-  const along = sub(end, start);
-  const lengthSq = dot(along, along);
-  if (lengthSq === 0) return distance(p, start);
-  const t = Math.min(1, Math.max(0, dot(sub(p, start), along) / lengthSq));
-  return distance(p, lerp(start, end, t));
+  return distanceCoordinatesToSegment(p.x, p.y, start, end);
+}
+
+/**
+ * Allocation-free point-to-segment distance used by the label grid's inner loop.
+ *
+ * @param px - Point x coordinate.
+ * @param py - Point y coordinate.
+ * @param start - Segment start.
+ * @param end - Segment end.
+ * @returns Distance in mm.
+ */
+function distanceCoordinatesToSegment(px: number, py: number, start: Point, end: Point): number {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const lengthSq = dx * dx + dy * dy;
+  if (lengthSq === 0) return Math.sqrt((px - start.x) ** 2 + (py - start.y) ** 2);
+  const t = Math.min(1, Math.max(0, ((px - start.x) * dx + (py - start.y) * dy) / lengthSq));
+  const offsetX = px - (start.x + t * dx);
+  const offsetY = py - (start.y + t * dy);
+  return Math.sqrt(offsetX * offsetX + offsetY * offsetY);
 }
 
 /**
@@ -64,12 +80,13 @@ export function rectContains(r: Rect, p: Point): boolean {
  * @returns Whether the segment and the rectangle share a point.
  */
 export function segmentTouchesRect(r: Rect, start: Point, end: Point): boolean {
-  const d = sub(end, start);
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
   const sides: readonly (readonly [number, number])[] = [
-    [-d.x, start.x - r.minX],
-    [d.x, r.maxX - start.x],
-    [-d.y, start.y - r.minY],
-    [d.y, r.maxY - start.y],
+    [-dx, start.x - r.minX],
+    [dx, r.maxX - start.x],
+    [-dy, start.y - r.minY],
+    [dy, r.maxY - start.y],
   ];
   let t0 = 0;
   let t1 = 1;
@@ -86,14 +103,16 @@ export function segmentTouchesRect(r: Rect, start: Point, end: Point): boolean {
 }
 
 /**
- * The point of a rectangle nearest to a point.
+ * Allocation-free distance from a point to the nearest point of a rectangle.
  *
- * @param r - The rectangle.
- * @param p - The point.
- * @returns The point itself when inside, else the nearest point on the border.
+ * @param r - Rectangle.
+ * @param p - Point.
+ * @returns Distance in mm.
  */
-function clampToRect(r: Rect, p: Point): Point {
-  return { x: Math.min(r.maxX, Math.max(r.minX, p.x)), y: Math.min(r.maxY, Math.max(r.minY, p.y)) };
+function distancePointToRect(r: Rect, p: Point): number {
+  const dx = Math.max(r.minX - p.x, 0, p.x - r.maxX);
+  const dy = Math.max(r.minY - p.y, 0, p.y - r.maxY);
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 /**
@@ -106,8 +125,14 @@ function clampToRect(r: Rect, p: Point): Point {
  */
 export function distanceSegmentToRect(r: Rect, start: Point, end: Point): number {
   if (segmentTouchesRect(r, start, end)) return 0;
-  const fromCorners = rectCorners(r).map((c) => distancePointToSegment(c, start, end));
-  return Math.min(...fromCorners, distance(start, clampToRect(r, start)), distance(end, clampToRect(r, end)));
+  return Math.min(
+    distanceCoordinatesToSegment(r.minX, r.minY, start, end),
+    distanceCoordinatesToSegment(r.maxX, r.minY, start, end),
+    distanceCoordinatesToSegment(r.maxX, r.maxY, start, end),
+    distanceCoordinatesToSegment(r.minX, r.maxY, start, end),
+    distancePointToRect(r, start),
+    distancePointToRect(r, end),
+  );
 }
 
 /**
@@ -118,5 +143,9 @@ export function distanceSegmentToRect(r: Rect, start: Point, end: Point): number
  * @returns Distance in mm.
  */
 export function distancePointToPolyline(p: Point, line: readonly Point[]): number {
-  return Math.min(...line.slice(1).map((b, i) => distancePointToSegment(p, line[i]!, b)));
+  let best = Number.POSITIVE_INFINITY;
+  for (let i = 1; i < line.length; i += 1) {
+    best = Math.min(best, distancePointToSegment(p, line[i - 1]!, line[i]!));
+  }
+  return best;
 }

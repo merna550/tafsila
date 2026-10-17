@@ -81,7 +81,7 @@ export function cross(a: Point, b: Point): number {
  * @returns |v| in mm.
  */
 export function norm(v: Point): number {
-  return Math.hypot(v.x, v.y);
+  return Math.sqrt(v.x * v.x + v.y * v.y);
 }
 
 /**
@@ -92,7 +92,11 @@ export function norm(v: Point): number {
  * @returns Distance in mm.
  */
 export function distance(a: Point, b: Point): number {
-  return Math.hypot(b.x - a.x, b.y - a.y);
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  // Coordinates are pattern-scale millimetres, so direct Euclidean arithmetic cannot overflow and is
+  // substantially cheaper than Math.hypot in the label-placement candidate loops.
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 /**
