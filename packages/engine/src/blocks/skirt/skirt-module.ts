@@ -1,6 +1,7 @@
 /** The straight skirt block as a feature module (issue #129): adds `skirt-front` and `skirt-back` to the context. */
 import type { Piece } from "@tafsila/schemas";
 import { SKIRT_GRAIN_LINE_SHARE } from "../../constants/skirt-block";
+import { isPanelSkirt } from "../../constants/skirt-fullness";
 import { pt } from "../../geometry";
 import { type DraftContext, type PieceDraft, withPiece } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
@@ -62,12 +63,13 @@ function skirtPiece(
 
 /**
  * Straight skirt block module. Calls `resolveDraftInputs` itself while the pipeline's resolve step is a stub
- * (decision 129-skirt-block, 2). Applies to every design with a skirt: later skirt modules start from this block.
+ * (decision 129-skirt-block, 2). Applies to every design with a skirt except the panel skirts (gathered, pleated,
+ * tiered), which are rectangles and do not start from this block (decision 137).
  */
 export const skirtBlockModule: FeatureModule = {
   id: "block-skirt",
   order: 10,
-  appliesTo: (spec) => spec.skirt !== undefined,
+  appliesTo: (spec) => spec.skirt !== undefined && !isPanelSkirt(spec.skirt.type),
   draft: (ctx) => {
     const inputs = resolveDraftInputs(ctx.spec, ctx.measurements, ctx.options);
     const centreSeam = ctx.spec.closure.position === "center-back";

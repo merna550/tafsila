@@ -1,5 +1,5 @@
 /** One small function per SVG layer: each returns the inner markup of its `<g>` (decision 127). */
-import type { Piece, Point } from "@tafsila/schemas";
+import type { Mark, MarkKind, Piece, Point } from "@tafsila/schemas";
 import { DraftingError } from "../errors/drafting-error";
 import {
   add,
@@ -218,7 +218,11 @@ export function dartsLayer(layout: SheetLayout): string {
  * @param id - Element id.
  * @returns The `<text>` markup.
  */
-function textElement(label: Piece["labels"][number], at: Point, id: string): string {
+function textElement(
+  label: Pick<Piece["labels"][number], "text" | "rotationDeg" | "sizeMm">,
+  at: Point,
+  id: string,
+): string {
   const rotate =
     label.rotationDeg === 0 ? "" : ` transform="rotate(${fmt(label.rotationDeg)} ${fmtPoint(at)})"`;
   return `<text id="${id}" x="${fmt(at.x)}" y="${fmt(at.y)}"${rotate} font-family='${SVG_FONT_FAMILY}' font-size="${fmt(label.sizeMm ?? DEFAULT_LABEL_SIZE_MM)}" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">${escapeXml(label.text.ar)}</text>`;
@@ -318,4 +322,88 @@ export function scaleLayer(layout: SheetLayout): string {
   );
   const own = layout.scaleSquare ? [scaleSquare(layout.scaleSquare, "", { ar: "١٠ سم", en: "10 cm" })] : [];
   return [...onPieces, ...own].join("\n");
+}
+
+/** Dash pattern of each mark kind: fold lines and arrows solid, placement lines dashed, gathers dotted. */
+export const MARK_DASH: Readonly<Record<MarkKind, string>> = {
+  "pleat-fold": "",
+  "pleat-placement": "6 2",
+  "pleat-direction": "",
+  gather: "1 1.5",
+};
+
+/** Radius of a point mark, in mm. */
+export const MARK_POINT_RADIUS_MM = 1.5;
+
+/** How far a gather line is drawn inside its edge so it does not hide the stitch line, in mm. */
+export const GATHER_MARK_INSET_MM = 6;
+
+/** Text height of a mark's words, in mm. */
+export const MARK_TEXT_SIZE_MM = 5;
+
+/**
+ * Path data of one line or arrow mark, in piece coordinates (gathers are moved inside the piece).
+ *
+ * @param mark - A line or arrow mark.
+ * @param pl - Where its piece sits.
+ * @returns Path commands; arrows get a head at their tip.
+ */
+function markLineData(mark: Extract<Mark, { shape: "line" | "arrow" }>, pl: PiecePlacement): string {
+  const inset = mark.kind === "gather" ? { x: 0, y: GATHER_MARK_INSET_MM } : { x: 0, y: 0 };
+  const from = onSheet(add(mark.from, inset), pl);
+  const to = onSheet(add(mark.to, inset), pl);
+  const line = `M ${fmtPoint(from)} L ${fmtPoint(to)}`;
+  if (mark.shape === "line" || distance(from, to) <= ARROW_LENGTH_MM) return line;
+  return `${line} ${arrowhead(to, normalize(sub(to, from)))}`;
+}
+
+/**
+ * One mark as an SVG element: a circle for a point, a path for a line or an arrow.
+ *
+ * @param mark - The mark.
+ * @param pl - Where its piece sits.
+ * @param id - Element id.
+ * @returns The markup.
+ */
+function markElement(mark: Mark, pl: PiecePlacement, id: string): string {
+  if (mark.shape === "point") {
+    const at = onSheet(mark.at, pl);
+    return `<circle id="${id}" cx="${fmt(at.x)}" cy="${fmt(at.y)}" r="${fmt(MARK_POINT_RADIUS_MM)}" fill="#000000"/>`;
+  }
+  const dash = MARK_DASH[mark.kind];
+  const dashAttr = dash === "" ? "" : ` stroke-dasharray="${dash}"`;
+  return `<path id="${id}" d="${markLineData(mark, pl)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"${dashAttr}/>`;
+}
+
+/**
+ * Where a mark's words go: the middle of a line or arrow, just below it; a point's own position.
+ *
+ * @param mark - The mark.
+ * @returns Anchor in piece coordinates.
+ */
+function markTextAnchor(mark: Mark): Point {
+  if (mark.shape === "point") return mark.at;
+  const mid = scale(add(mark.from, mark.to), 1 / 2);
+  const drop = mark.kind === "gather" ? GATHER_MARK_INSET_MM : 0;
+  return add(mid, { x: 0, y: drop + MARK_TEXT_SIZE_MM * 2 });
+}
+
+/**
+ * Construction marks of every piece (pleat lines, fold arrows, gathers), with their Arabic words (decision 137).
+ *
+ * @param layout - The sheet.
+ * @returns One element per mark, plus one text per mark that has words.
+ */
+export function marksLayer(layout: SheetLayout): string {
+  return layout.placements
+    .flatMap((pl) =>
+      (pl.piece.marks ?? []).flatMap((mark) => {
+        const id = `piece-${escapeXml(pl.piece.id)}-mark-${escapeXml(mark.id)}`;
+        const shape = markElement(mark, pl, id);
+        if (!mark.text) return [shape];
+        const label = { text: mark.text, rotationDeg: 0, sizeMm: MARK_TEXT_SIZE_MM };
+        return [shape, textElement(label, onSheet(markTextAnchor(mark), pl), `${id}-text`)];
+      }),
+    )
+    .join("\n");
 }

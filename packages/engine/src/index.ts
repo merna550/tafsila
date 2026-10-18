@@ -13,6 +13,7 @@ export * from "./sleeve/sleeve-cap";
 export * from "./version";
 export * from "./measurements";
 export * from "./modules/circle-skirt/draft";
+export * from "./modules/skirt";
 export * from "./pieces/fabric-width";
 export * from "./pieces/measure";
 export * from "./pipeline";

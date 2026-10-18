@@ -105,6 +105,14 @@ export const VALIDATION_MESSAGES = {
     ar: "الفتحة غير متاحة لتنورة {type} ولم تُرسم",
     en: "A slit is not available for a {type} skirt and was not drafted",
   },
+  FULLNESS_CLOSURE_OK: {
+    ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم كما هو مطلوب",
+    en: "Waist after gathers or pleats is {mm} mm, as expected",
+  },
+  FULLNESS_CLOSURE_MISMATCH: {
+    ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم؛ المتوقع {expected} مم",
+    en: "Waist after gathers or pleats is {mm} mm; expected {expected} mm",
+  },
 } as const;
 
 /** A stable code accepted by {@link formatMessage}. */

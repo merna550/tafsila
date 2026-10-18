@@ -178,6 +178,37 @@ export const labelSchema = z.object({
 /** A label on a piece. */
 export type Label = z.infer<typeof labelSchema>;
 
+/**
+ * What a construction mark tells the sewist (decision 137). Pleats: fold here, lay the fold on the placement line, in
+ * the arrow's direction. Gather: gather this run to `lengthMm`. Closures (#143) add their kinds here.
+ */
+export const markKindSchema = z.enum(["pleat-fold", "pleat-placement", "pleat-direction", "gather"]);
+
+/** What a construction mark tells the sewist. */
+export type MarkKind = z.infer<typeof markKindSchema>;
+
+/**
+ * Fields every construction mark has. `edgeId` names the edge whose sewn length the mark changes (a gather run, a
+ * pleat intake); `lengthMm` is the length a gather run is gathered to.
+ */
+const markBaseShape = {
+  id: z.string().min(1),
+  kind: markKindSchema,
+  edgeId: z.string().min(1).optional(),
+  text: localizedTextSchema.optional(),
+  lengthMm: z.number().positive().optional(),
+};
+
+/** A construction mark drawn on a piece, in piece coordinates: a line, an arrow (from tail to tip) or a point. */
+export const markSchema = z.discriminatedUnion("shape", [
+  z.object({ ...markBaseShape, shape: z.literal("line"), from: pointSchema, to: pointSchema }),
+  z.object({ ...markBaseShape, shape: z.literal("arrow"), from: pointSchema, to: pointSchema }),
+  z.object({ ...markBaseShape, shape: z.literal("point"), at: pointSchema }),
+]);
+
+/** A construction mark on a piece. */
+export type Mark = z.infer<typeof markSchema>;
+
 /** One pattern piece with everything needed to cut and sew it. */
 export const pieceSchema = z.object({
   id: z.string().min(1),
@@ -202,6 +233,7 @@ export const pieceSchema = z.object({
     .optional(),
   grainLine: z.tuple([pointSchema, pointSchema]),
   darts: z.array(dartSchema),
+  marks: z.array(markSchema).optional(),
   labels: z.array(labelSchema),
   bbox: z.object({ widthMm: z.number().min(0), heightMm: z.number().min(0) }),
 });
