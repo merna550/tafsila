@@ -57,7 +57,7 @@ describe("FR-VAL-02 sleeve cap", () => {
         ],
         edges: [{ ...validationPiece().edges[0]!, id: "cap" }],
         sleeveCap: {
-          edgeId: "cap",
+          edgeIds: ["cap"],
           armholeRefs: [
             { pieceId: "front", edgeId: "armhole" },
             { pieceId: "back", edgeId: "armhole" },
@@ -106,6 +106,27 @@ describe("FR-VAL-04 notches", () => {
     const run = (partnerAtMm: number) =>
       notchAlignmentRule.runMany!(
         validationContext([piece("front", "back", 50, true), piece("back", "front", partnerAtMm, true)]),
+      )[0]!;
+    expect(run(150)).toMatchObject({ status: "pass", measuredMm: 0 });
+    expect(run(147)).toMatchObject({ status: "fail", measuredMm: 3 });
+  });
+
+  it("compares from the edge ends when the source notch aligns from its end (decision 134)", () => {
+    const piece = (id: string, partner: string, atMm: number, alignFrom?: "end") =>
+      validationPiece({
+        id,
+        notches: [
+          {
+            id: "balance",
+            edgeId: "side",
+            atMm,
+            pairsWith: { pieceId: partner, edgeId: "side", ...(alignFrom ? { alignFrom } : {}) },
+          },
+        ],
+      });
+    const run = (partnerAtMm: number) =>
+      notchAlignmentRule.runMany!(
+        validationContext([piece("back", "front", 150, "end"), piece("front", "back", partnerAtMm, "end")]),
       )[0]!;
     expect(run(150)).toMatchObject({ status: "pass", measuredMm: 0 });
     expect(run(147)).toMatchObject({ status: "fail", measuredMm: 3 });

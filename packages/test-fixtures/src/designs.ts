@@ -33,6 +33,15 @@ export const dartedBlouse: DesignSpec = {
   lining: false,
 };
 
+/**
+ * The set-in sleeve seed design (issue #134): the seed blouse with long set-in sleeves. Tests set the other
+ * lengths on it; used by the sleeve snapshots and `pnpm engine:print setInSleeveBlouse size-m`.
+ */
+export const setInSleeveBlouse: DesignSpec = {
+  ...dartedBlouse,
+  sleeve: { type: "set-in", length: "long", cuff: "none" },
+};
+
 /** A plain straight skirt at the knee with a side zip: front and back both cut on the fold (issue #129). */
 export const straightKneeSkirt: DesignSpec = {
   schemaVersion: 1,

@@ -5,6 +5,7 @@ export * from "./constants/bodice";
 export * from "./constants/circle-skirt";
 export * from "./constants/ease";
 export * from "./constants/geometry";
+export * from "./constants/sleeve-block";
 export * from "./errors/drafting-error";
 export * from "./geometry";
 export * from "./sleeve/sleeve-cap";

@@ -21,6 +21,19 @@ function referencedEdge(ctx: DraftContext, pieceId: string, edgeId: string) {
 }
 
 /**
+ * Sum of the lengths of found edges, with darts closed.
+ *
+ * @param refs - Resolved edge references (all found).
+ * @returns Total length in mm.
+ */
+function totalLengthMm(refs: readonly { readonly found: ReturnType<typeof referencedEdge> }[]): number {
+  return refs.reduce(
+    (sum, { found }) => sum + edgeLengthMm(found!.piece, found!.edge.id, { closeDarts: true }),
+    0,
+  );
+}
+
+/**
  * Builds one report row per declared sleeve cap.
  *
  * @param ctx - Finished drafting context.
@@ -32,14 +45,16 @@ function sleeveCapChecks(ctx: DraftContext): readonly ValidationCheck[] {
     .sort((a, b) => a.id.localeCompare(b.id, "en"))
     .map((piece) => {
       const declaration = piece.sleeveCap!;
-      const capRef = `${piece.id}/${declaration.edgeId}`;
-      const capEdge = referencedEdge(ctx, piece.id, declaration.edgeId);
+      const caps = declaration.edgeIds.map((edgeId) => ({
+        ref: `${piece.id}/${edgeId}`,
+        found: referencedEdge(ctx, piece.id, edgeId),
+      }));
       const armholes = declaration.armholeRefs.map((ref) => ({
         ref: `${ref.pieceId}/${ref.edgeId}`,
         found: referencedEdge(ctx, ref.pieceId, ref.edgeId),
       }));
-      const broken = !capEdge ? capRef : armholes.find(({ found }) => !found)?.ref;
-      const refs = [capRef, ...armholes.map(({ ref }) => ref)];
+      const broken = [...caps, ...armholes].find(({ found }) => !found)?.ref;
+      const refs = [...caps, ...armholes].map(({ ref }) => ref);
       if (broken) {
         return {
           id: "FR-VAL-02",
@@ -49,12 +64,8 @@ function sleeveCapChecks(ctx: DraftContext): readonly ValidationCheck[] {
           refs,
         };
       }
-      const capLengthMm = edgeLengthMm(capEdge!.piece, capEdge!.edge.id, { closeDarts: true });
-      const armholeLengthMm = armholes.reduce(
-        (sum, armhole) =>
-          sum + edgeLengthMm(armhole.found!.piece, armhole.found!.edge.id, { closeDarts: true }),
-        0,
-      );
+      const capLengthMm = totalLengthMm(caps);
+      const armholeLengthMm = totalLengthMm(armholes);
       const measuredMm = capLengthMm - armholeLengthMm;
       const passes = measuredMm >= SLEEVE_CAP_EASE_MIN_MM && measuredMm <= SLEEVE_CAP_EASE_MAX_MM;
       const code = passes ? "SLEEVE_CAP_OK" : "SLEEVE_CAP_OUT_OF_RANGE";

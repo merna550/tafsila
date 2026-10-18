@@ -636,6 +636,13 @@
                 "pairsWith": {
                   "additionalProperties": false,
                   "properties": {
+                    "alignFrom": {
+                      "enum": [
+                        "start",
+                        "end"
+                      ],
+                      "type": "string"
+                    },
                     "edgeId": {
                       "minLength": 1,
                       "type": "string"
@@ -689,13 +696,17 @@
                 "minItems": 1,
                 "type": "array"
               },
-              "edgeId": {
-                "minLength": 1,
-                "type": "string"
+              "edgeIds": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
               }
             },
             "required": [
-              "edgeId",
+              "edgeIds",
               "armholeRefs"
             ],
             "type": "object"

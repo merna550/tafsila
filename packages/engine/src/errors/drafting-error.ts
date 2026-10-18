@@ -24,6 +24,12 @@ export const BODICE_ERROR_CODES = [
 /** One of the bodice block's error codes. */
 export type BodiceErrorCode = (typeof BODICE_ERROR_CODES)[number];
 
+/** Stable codes for bodies the set-in sleeve block cannot draft (issue #134); input errors like the bodice codes. */
+export const SLEEVE_ERROR_CODES = ["SLEEVE_CAP_UNSOLVABLE", "SLEEVE_LENGTH_TOO_SHORT"] as const;
+
+/** One of the sleeve block's error codes. */
+export type SleeveErrorCode = (typeof SLEEVE_ERROR_CODES)[number];
+
 /** Thrown when a pattern cannot be drafted for the given design and measurements. */
 export class DraftingError extends Error {
   /**
