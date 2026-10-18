@@ -10,7 +10,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
 ## One-time setup (about 15 minutes)
 
 1. **Connect GitHub to claude.ai/code.** In a terminal inside the repo, run `claude`, then `/web-setup`. It uses your existing `gh` login; no App is installed.
-2. **Create the claude.ai/code environment.** Open claude.ai/code → environments → new environment for `merna550/tafsila` with network access set to **Trusted**. Cloud sessions set `CLAUDE_CODE_REMOTE=true`, which makes the SessionStart hook install dependencies (`scripts/agent-setup.sh`: corepack + `pnpm install --frozen-lockfile`; on your laptop it does nothing).
+2. **Create the claude.ai/code environment.** Open claude.ai/code → environments → new environment for `merna550/tafsila` with network access set to **Trusted**. Cloud sessions set `CLAUDE_CODE_REMOTE=true`, which makes the SessionStart hook install dependencies (`scripts/agent-setup.sh`: checks Node, corepack + `pnpm install --frozen-lockfile`; on your laptop it does nothing).
 3. **Create `AGENT_GITHUB_TOKEN`** (GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens**):
    - Resource owner: you. Repository access: **Only select repositories** → `tafsila`.
    - Permissions: Contents, Pull requests, Issues: **Read and write**. Nothing else. In particular **Actions must stay at No access** (not read, not write), so agents cannot dispatch workflows or release to production (issue #58). `.claude/settings.json` also denies `gh workflow run` on deploy/production workflows, `gh release create` and `vercel --prod`/`promote`/`rollback`.
@@ -18,6 +18,27 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
    - Save it: repo → Settings → Secrets and variables → Actions → New repository secret `AGENT_GITHUB_TOKEN`.
    - Why not the default token: PRs opened with `GITHUB_TOKEN` do not start CI, so quality checks would never run on agent PRs.
 4. **Create `CLAUDE_CODE_OAUTH_TOKEN`.** Run `claude setup-token` in a terminal, copy the token it prints, and save it as the repo secret `CLAUDE_CODE_OAUTH_TOKEN`. Never paste either token in an issue, comment or commit.
+
+## Fix the Node version
+
+The repo needs Node `>=22.22.2 <23` (`engines`, `.nvmrc` says `22`). Some cloud images ship an older 22.x. `scripts/agent-setup.sh` checks this first. If Node is too old it downloads the newest Node 22 from nodejs.org (SHA-256 checked) and puts it on `PATH` for the session; if that is blocked it prints `agent-setup: FAILED (wrong Node ...)` and builders stop with `BLOCKED: environment`. Nothing is skipped silently and `--config.engine-strict=false` is no longer used.
+
+Merna, one-time, to make it instant and independent of the network policy:
+
+1. Open claude.ai/code, then environments, then the `tafsila` environment, then **Setup script**.
+2. Paste this and save:
+
+   ```bash
+   #!/bin/bash
+   set -e
+   V=$(curl -fsSL https://nodejs.org/dist/latest-v22.x/SHASUMS256.txt | grep -o 'node-v[0-9.]*-linux-x64.tar.xz' | head -1)
+   curl -fsSL "https://nodejs.org/dist/latest-v22.x/$V" | tar -xJ -C /usr/local --strip-components=1
+   node -v
+   ```
+
+3. Start a new session and check that `node -v` prints 22.22.2 or newer and that the first line says `agent-setup: ready`.
+
+If the setup script cannot reach nodejs.org, set the environment network to **Trusted** or add `nodejs.org` to the allowed hosts.
 
 ## Start a task
 
