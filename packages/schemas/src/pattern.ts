@@ -98,7 +98,17 @@ export const notchSchema = z.object({
   id: z.string().min(1),
   edgeId: z.string().min(1),
   atMm: z.number().min(0),
-  pairsWith: edgePairSchema.omit({ intendedEaseMm: true }).optional(),
+  pairsWith: edgePairSchema
+    .omit({ intendedEaseMm: true })
+    .extend({
+      /**
+       * The end of this notch's edge its distance is compared from (default `start`); the partner is measured
+       * from the end that sews to it (`reversed` flips it). A sleeve uses `end` to match from the underarm,
+       * where the cap carries no ease (decision 134).
+       */
+      alignFrom: z.enum(["start", "end"]).optional(),
+    })
+    .optional(),
 });
 
 /** A balance mark on an edge. */
@@ -172,7 +182,8 @@ export const pieceSchema = z.object({
   bodyLines: z.array(bodyLineSchema),
   sleeveCap: z
     .object({
-      edgeId: z.string().min(1),
+      /** The cap edges, in path order; their lengths add up to the cap (decision 134). */
+      edgeIds: z.array(z.string().min(1)).min(1),
       armholeRefs: z.array(edgePairSchema.pick({ pieceId: true, edgeId: true })).min(1),
     })
     .optional(),

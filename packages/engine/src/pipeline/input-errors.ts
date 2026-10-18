@@ -26,6 +26,14 @@ export const INPUT_ERROR_MESSAGES = {
     ar: "مكان نقطة الصدر لا يتوافق مع أطوال الجسم. راجعي القيم المدخلة.",
     en: "The bust point does not fit these body lengths",
   },
+  SLEEVE_CAP_UNSOLVABLE: {
+    ar: "لا يمكن رسم رأس كم يناسب الإبط بهذه المقاسات. راجعي محيط الذراع والقيم المدخلة.",
+    en: "No sleeve cap fits this armhole with this upper arm",
+  },
+  SLEEVE_LENGTH_TOO_SHORT: {
+    ar: "طول الكم المختار قصير جدًا بالنسبة لعمق الإبط. اختاري طولًا أطول.",
+    en: "The chosen sleeve length is too short for the armhole depth",
+  },
   SKIRT_LENGTH_OUT_OF_BODY: {
     ar: "طول الجيبة خارج حدود الجسم. راجعي القيم المدخلة.",
     en: "Skirt length must be between the shortest skirt and waist-to-floor",

@@ -2,7 +2,7 @@
 import { DraftingError } from "../errors/drafting-error";
 import { sampleCubic } from "../geometry/bezier";
 import { type Point, polylineLength, pt } from "../geometry/point";
-import { cubicSeg } from "../geometry/segment";
+import { type CubicSegment, cubicSeg } from "../geometry/segment";
 
 /** Lowest and highest sleeve-cap heights the solver will consider, in mm. */
 export const MIN_CAP_HEIGHT_MM = 50;
@@ -25,14 +25,14 @@ const CAP_SHAPE = {
 };
 
 /**
- * Builds one half of a sleeve cap (underarm → shoulder point) as two cubic curves forming an S shape.
- * The full cap is this half mirrored; both halves have the same length.
+ * One half of a sleeve cap (underarm → cap top) as two cubic curves forming an S shape, square to the grain
+ * line at the top. The full cap is this half mirrored; both halves have the same length.
  *
  * @param halfBicepMm - Half of the sleeve width at the bicep line, in mm.
  * @param capHeightMm - Vertical distance from bicep line to cap top, in mm.
- * @returns Sampled points from the underarm (x = halfBicep, y = capHeight) to the cap top (0, 0).
+ * @returns The lower and upper cubic, from the underarm (x = halfBicep, y = capHeight) to the cap top (0, 0).
  */
-export function buildHalfCap(halfBicepMm: number, capHeightMm: number): Point[] {
+export function halfCapSegments(halfBicepMm: number, capHeightMm: number): [CubicSegment, CubicSegment] {
   const w = halfBicepMm;
   const h = capHeightMm;
   const mid = pt(w * CAP_SHAPE.midX, h * CAP_SHAPE.midY);
@@ -48,6 +48,18 @@ export function buildHalfCap(halfBicepMm: number, capHeightMm: number): Point[] 
     pt(w * CAP_SHAPE.upperX, 0),
     pt(0, 0),
   );
+  return [lower, upper];
+}
+
+/**
+ * Samples one half of a sleeve cap (see {@link halfCapSegments}).
+ *
+ * @param halfBicepMm - Half of the sleeve width at the bicep line, in mm.
+ * @param capHeightMm - Vertical distance from bicep line to cap top, in mm.
+ * @returns Sampled points from the underarm (x = halfBicep, y = capHeight) to the cap top (0, 0).
+ */
+export function buildHalfCap(halfBicepMm: number, capHeightMm: number): Point[] {
+  const [lower, upper] = halfCapSegments(halfBicepMm, capHeightMm);
   return [...sampleCubic(lower), ...sampleCubic(upper).slice(1)];
 }
 

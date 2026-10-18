@@ -695,6 +695,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `EaseProfile` (`fitted`, `regular`, `loose`) in `measurements.ts`; ease tables live in `packages/engine/src/constants/ease.ts`; the resolve step subtracts the ease already inside each block ([decision 126](../decisions/126-ease-tables.md)). FR-VAL-03 checks that circumference equals measurement plus ease. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Ease_(sewing)>
 
+<a id="eased-cap"></a>
+
+### Eased cap
+
+**Plain words:** A sleeve cap cut a little longer than the armhole it is sewn into; the extra length is eased in (gathered without pleats) so the sleeve has room over the shoulder. Arabic: راحة رأس الكم.  
+**In Tafsila:** The set-in sleeve solves its cap height for 25 mm of ease, shares it between back and front, and keeps the balance notches below the ease so they match the armhole from the underarm ([decision 134](../decisions/134-set-in-sleeve.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Sleeve>
+
 <a id="egp"></a>
 
 ### EGP

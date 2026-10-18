@@ -5,6 +5,7 @@ import { bodiceBlock } from "./bodice";
 
 export * from "./bodice";
 export * from "./shared";
+export * from "./sleeve";
 
 /** A block drafter: one pipeline step over the context. */
 export type BlockDrafter = (ctx: DraftContext) => DraftContext;

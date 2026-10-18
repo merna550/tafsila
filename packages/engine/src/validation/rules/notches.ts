@@ -99,6 +99,24 @@ function brokenNotchCheck(source: OwnedNotch): ValidationCheck {
 }
 
 /**
+ * Distance of a notch from the common sewing end of a pair, as declared by the pair's source notch: the source
+ * edge's start, or its end with `alignFrom: "end"`; the partner from the matching end (`reversed` flips it).
+ *
+ * @param item - The notch to measure (the source or its partner).
+ * @param source - The source notch, whose declaration decides the ends.
+ * @returns Distance along the stitch line, in mm.
+ */
+function alignedAtMm(item: OwnedNotch, source: OwnedNotch): number {
+  const notchPair = source.notch.pairsWith;
+  const fromSourceEnd = notchPair?.alignFrom === "end";
+  const reversed = Boolean((notchPair ?? source.edge.pairsWith)?.reversed);
+  const fromEnd = item === source ? fromSourceEnd : fromSourceEnd !== reversed;
+  return fromEnd
+    ? edgeLengthMm(item.piece, item.edge.id, { closeDarts: true }) - item.notch.atMm
+    : item.notch.atMm;
+}
+
+/**
  * Builds the measured check for two existing notches.
  *
  * @param source - Source notch.
@@ -108,11 +126,7 @@ function brokenNotchCheck(source: OwnedNotch): ValidationCheck {
 function measuredNotchCheck(source: OwnedNotch, target: OwnedNotch): ValidationCheck {
   const sourceRef = notchRef(source);
   const targetRef = notchRef(target);
-  const pair = source.notch.pairsWith ?? source.edge.pairsWith;
-  const targetAtMm = pair?.reversed
-    ? edgeLengthMm(target.piece, target.edge.id, { closeDarts: true }) - target.notch.atMm
-    : target.notch.atMm;
-  const measuredMm = Math.abs(source.notch.atMm - targetAtMm);
+  const measuredMm = Math.abs(alignedAtMm(source, source) - alignedAtMm(target, source));
   const passes = measuredMm <= NOTCH_ALIGNMENT_TOLERANCE_MM;
   const code = passes ? "NOTCH_OK" : "NOTCH_MISMATCH";
   return {
