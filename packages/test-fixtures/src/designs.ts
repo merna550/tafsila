@@ -42,6 +42,30 @@ export const setInSleeveBlouse: DesignSpec = {
   sleeve: { type: "set-in", length: "long", cuff: "none" },
 };
 
+/**
+ * The shoulder princess seed design (issue #138): the seed blouse, fitted, shaped by princess seams from mid-shoulder
+ * through the bust point instead of darts. Used by the princess snapshots and `pnpm engine:print princessShoulderBlouse size-m`.
+ */
+export const princessShoulderBlouse: DesignSpec = {
+  ...dartedBlouse,
+  bodice: { fit: "fitted", shaping: "princess-shoulder", waistSeam: false },
+};
+
+/**
+ * The armhole princess seed design (issue #138): fitted, princess seams from the armhole, long set-in sleeves (the
+ * armhole is split between the centre and side panels, so the sleeve sews to both).
+ */
+export const princessArmholeBlouse: DesignSpec = {
+  ...setInSleeveBlouse,
+  bodice: { fit: "fitted", shaping: "princess-armhole", waistSeam: false },
+};
+
+/** The dart-free seed design (issue #138): a loose blouse with no darts; the dart intake becomes ease. */
+export const dartFreeLooseBlouse: DesignSpec = {
+  ...dartedBlouse,
+  bodice: { fit: "loose", shaping: "none", waistSeam: false },
+};
+
 /** A plain straight skirt at the knee with a side zip: front and back both cut on the fold (issue #129). */
 export const straightKneeSkirt: DesignSpec = {
   schemaVersion: 1,

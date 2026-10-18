@@ -540,6 +540,22 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `darts` on each piece; FR-VAL-07 checks equal legs (within 1 mm). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
 
+<a id="dart-manipulation"></a>
+
+### Dart manipulation
+
+**Plain words:** Moving a dart's shaping somewhere else by closing it and opening a new one (or a seam) that meets the same point; the pivot method turns part of the pattern about the bust point (Arabic: نقل البنسة).  
+**In Tafsila:** `bustDartPivot` in `packages/engine/src/modules/bodice/dart-pivot.ts` closes the side bust dart into the princess line (decision 138, #138). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
+<a id="dart-free-bodice"></a>
+
+### Dart-free bodice
+
+**Plain words:** A bodice with no darts or shaping seams; the room the darts would take in is left as ease, so it suits loose fits only (Arabic: صدر بدون بنس).  
+**In Tafsila:** `bodice.shaping: none`, module `bodice/none`; a fitted design gets the FR-VAL-08 warning `BODICE_DART_FREE_FITTED` (decision 138, #138). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
 <a id="dart-truing"></a>
 
 ### Dart truing
@@ -1710,7 +1726,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Princess seam
 
 **Plain words:** A long curved seam from the shoulder or armhole down over the bust that shapes the garment without darts.  
-**In Tafsila:** `bodice.shaping` values `princess-shoulder` and `princess-armhole`. **Level:** intermediate  
+**In Tafsila:** `bodice.shaping` values `princess-shoulder` and `princess-armhole`, drafted by `src/modules/bodice/` into centre and side panels whose `style` edges pair and carry a `princess-bust` notch ([decision 138](../decisions/138-bodice-shaping.md), #138). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Princess_line>
 
 <a id="projector-mode"></a>

@@ -16,7 +16,7 @@ import { deepFreeze } from "../../test-utils/deep-freeze";
 import { sleeveCase } from "../../test-utils/sleeve-input";
 import { draftSleeve, elbowYMm, sleeveHemYMm } from "./draft-sleeve";
 import { SLEEVE_EDGE, SLEEVE_NOTCH } from "./ids";
-import { backArmholeNotches, frontArmholeNotches } from "./notches";
+import { backArmholeNotches, frontArmholeNotch, shoulderArmholeNotch } from "./notches";
 import type { SleeveLength } from "./types";
 
 /** NFR-01 tolerance. */
@@ -158,7 +158,11 @@ describe("balance notches", () => {
     notches.map((n) => n.id).sort((a, b) => a.localeCompare(b, "en"));
 
   it("uses the same ids on the sleeve and on the bodice armholes", () => {
-    const bodice = [...backArmholeNotches(input.armholeBackMm), ...frontArmholeNotches(input.armholeFrontMm)];
+    const bodice = [
+      ...backArmholeNotches(input.armholeBackMm),
+      frontArmholeNotch(input.armholeFrontMm),
+      shoulderArmholeNotch(),
+    ];
     expect(ids(piece.notches)).toEqual(ids(bodice));
     expect(ids(piece.notches)).toEqual(
       [...Object.values(SLEEVE_NOTCH)].sort((a, b) => a.localeCompare(b, "en")),
@@ -176,7 +180,7 @@ describe("balance notches", () => {
       expect(n.atMm).toBeGreaterThan(0);
       expect(n.atMm).toBeLessThan(input.armholeBackMm);
     }
-    for (const n of frontArmholeNotches(input.armholeFrontMm)) {
+    for (const n of [frontArmholeNotch(input.armholeFrontMm), shoulderArmholeNotch()]) {
       expect(n.atMm).toBeGreaterThanOrEqual(0);
       expect(n.atMm).toBeLessThan(input.armholeFrontMm);
     }

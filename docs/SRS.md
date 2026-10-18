@@ -343,7 +343,7 @@ interface DesignSpec {
   fabricType: 'woven';                     // v1 only
   bodice?: {
     fit: 'fitted' | 'semi-fitted' | 'loose';
-    shaping: 'darts' | 'princess-shoulder' | 'princess-armhole' | 'none';
+    shaping: 'darts' | 'princess-shoulder' | 'princess-armhole' | 'none'; // none: darts become ease; fitted + none warns (FR-VAL-08, #138)
     waistSeam: boolean;                    // dress: separate bodice + skirt
   };
   neckline?: {
