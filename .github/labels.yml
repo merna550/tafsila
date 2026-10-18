@@ -116,6 +116,16 @@
     description: "Must be validated by sewing a physical toile before release",
   }
 - {
+    name: "needs:link",
+    color: "fbca04",
+    description: "PR says Part of #N and does not close its issue: use Closes #N (issue #186)",
+  }
+- {
+    name: "stacked",
+    color: "bfdadc",
+    description: "PR deliberately targets a branch other than main (pr-link allows it)",
+  }
+- {
     name: "agent:auto",
     color: "000000",
     description: "Merna opted this issue in: the dispatcher may build it unattended. Without it the dispatcher builds nothing (ADR-86)",

@@ -1,0 +1,21 @@
+{
+  "pull_request": {
+    "number": 8,
+    "title": "chore: test",
+    "body": "Part of #186\n\nmore",
+    "draft": true,
+    "labels": [],
+    "head": {
+      "ref": "chore/186-test",
+      "repo": {
+        "full_name": "o/r"
+      }
+    },
+    "base": {
+      "ref": "main",
+      "repo": {
+        "full_name": "o/r"
+      }
+    }
+  }
+}

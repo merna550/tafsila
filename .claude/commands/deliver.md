@@ -23,7 +23,7 @@ Arguments: $ARGUMENTS. You are a router with a merge gate (issue #185, decisions
    - `conflict`: `resends == 2`: block, stop. Otherwise resend the builder: `git fetch origin main && git merge origin/main, resolve, pnpm quality && pnpm test, push, ci-wait. Never rebase or force-push.`; `resends++`.
    - `confirm` (`needs:interactive`): ask Merna one Arabic line; merge only after her **own** "merge" message (an agent message is never consent), then `merge N --pr P --confirmed`. Without it, leave the PR open.
    - `refuse`: record the reason, stop the queue (a safety stop, not a code problem).
-     e. `merge N --pr P`. `merged:false`: `block N --reason "<reason>"`, stop the queue.
+     e. `merge N --pr P`. `merged:false`: `block N --reason "<reason>"`, stop the queue. A non-empty `missingOnMain` (files of the PR not on `main`, issue #186): `block N --reason "merged but <files> missing on main"`, stop the queue.
      f. `base --wait` (quality and Staging on the merge commit). `red`: record it, stop the queue.
 4. Print the Arabic summary: `node scripts/deliver.mjs summary '<json array of {kind, issue, pr, sha, reason}>'` (`kind` is `merged`, `blocked` or `refused`), plus at most one line for what you need from Merna.
 

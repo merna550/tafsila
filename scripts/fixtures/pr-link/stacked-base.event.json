@@ -1,0 +1,21 @@
+{
+  "pull_request": {
+    "number": 9,
+    "title": "feat: marks",
+    "body": "Closes #131",
+    "draft": true,
+    "labels": [],
+    "head": {
+      "ref": "feat/131-marks",
+      "repo": {
+        "full_name": "o/r"
+      }
+    },
+    "base": {
+      "ref": "feat/130-seam-allowance",
+      "repo": {
+        "full_name": "o/r"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+name: PR link
+# Every PR for an issue closes it (issue #186): adds `Closes #N` when missing, explains `Part of #N`, and fails
+# only when the base is not `main` (label `stacked` allows a deliberate stack). Not a required check: it passes
+# (with a notice) in every ordinary case.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  pr-link:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc }
+      - name: Link the PR to its issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/pr-link.mjs
