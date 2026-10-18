@@ -110,6 +110,18 @@ Both halves share the steps; only the dart share and length differ (front 50 % a
 | 3   | Waist: shaping is the hip quarter minus the waist quarter; the dart takes its share, the side seam the rest | waistQ = W / 4 + 5; shaping = hipX - waistQ; dart = share x shaping; waistSide = (hipX - (shaping - dart), 0) | `skirt.*.waistSide`                       |      |
 | 4   | Dart centred half way across the waist, pointing down to its length                                         | legs = (waistSide.x / 2 +- dart / 2, 0); apex = (waistSide.x / 2, length)                                     | `skirt.*.dartLeft/dartRight/dartApex`     |      |
 
+### Circle skirts, half and full (Chapter 3, "Flared and circular skirts")
+
+One drafted piece is a quarter of the skirt: front and back, each on the fold or as a mirrored pair ([decision 136](../decisions/136-circle-skirts.md)). W = waist + total waist ease, L = skirt length.
+
+| #   | Step (paraphrased)                                                                                | Formula (mm)                                    | Key point                                   | Page |
+| --- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------- | ---- |
+| 1   | Sweep of one quarter: a quarter of the skirt's circle                                             | half: π / 4; full: π / 2                        |                                             |      |
+| 2   | Waist radius from the quarter waist arc, then corrected on the drawn curve to 0.01 mm             | r = (W / 4) / sweep (half: W / π; full: W / 2π) | `circle.centre` = (0, -r)                   |      |
+| 3   | Waist arc from the centre line to the side; hem arc one skirt length further out                  | waist radius r, hem radius R = r + L            | `circle.waistCentre/waistSide`              |      |
+| 4   | Side seam along the radius at the sweep; centre line straight down                                | side length = L                                 | `circle.hemSide`, `circle.hemCentre` (0, L) |      |
+| 5   | Grain parallel to the centre line, through the middle of the piece; hang 24 h, then level the hem | grain length L / 2                              |                                             |      |
+
 ### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
 
 | #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |
