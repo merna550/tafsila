@@ -110,6 +110,18 @@ Both halves share the steps; only the dart share and length differ (front 50 % a
 | 3   | Waist: shaping is the hip quarter minus the waist quarter; the dart takes its share, the side seam the rest | waistQ = W / 4 + 5; shaping = hipX - waistQ; dart = share x shaping; waistSide = (hipX - (shaping - dart), 0) | `skirt.*.waistSide`                       |      |
 | 4   | Dart centred half way across the waist, pointing down to its length                                         | legs = (waistSide.x / 2 +- dart / 2, 0); apex = (waistSide.x / 2, length)                                     | `skirt.*.dartLeft/dartRight/dartApex`     |      |
 
+### Straight and A-line skirts, slits (Chapter 2 "Skirt block", Chapter 3 "A-line skirt", "Vents and slits")
+
+The straight skirt is the block at the resolved length. The A-line and the slit start from it ([decision 135](../decisions/135-straight-a-line-skirt.md)). HD = hip depth, L = skirt length.
+
+| #   | Step (paraphrased)                                                                                      | Formula (mm)                                                      | Key point        | Page |
+| --- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------- | ---- |
+| 1   | A-line: extend the dart axis to the hip line; that is the pivot. Slash square down from it to the hem   | pivot = dart axis at y = HD; slash x = pivot.x                    | pivot            |      |
+| 2   | Turn the side panel about the pivot until the dart legs meet; the hem opens by the chord at the slash   | angle = dart angle at the pivot; gain = 2 (L − HD) sin(angle / 2) | `aLineHemGainMm` |      |
+| 3   | Redraw the waist as one smooth curve through the closed dart; bridge the opened hem with a smooth curve | waist length kept within 2 mm                                     |                  |      |
+| 4   | Slit: sew the seam to the slit top; below it add a self-facing extension with a 45° top; notch the top  | extension 40; top ≥ 10 below the hip line along the seam          | `slit-top` notch |      |
+| 5   | A front or back slit needs a centre seam: cut that half as a mirrored pair                              |                                                                   |                  |      |
+
 ### Circle skirts, half and full (Chapter 3, "Flared and circular skirts")
 
 One drafted piece is a quarter of the skirt: front and back, each on the fold or as a mirrored pair ([decision 136](../decisions/136-circle-skirts.md)). W = waist + total waist ease, L = skirt length.

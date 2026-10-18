@@ -1,7 +1,19 @@
 /** Geometry-based body-line measurements used by the circumference validator (FR-VAL-03). */
 import type { BodyLine, Piece, Point } from "@tafsila/schemas";
 import { GEOMETRY_EPSILON_MM } from "../constants/geometry";
-import { intersectSegments, lineSeg, samplePath } from "../geometry";
+import {
+  add,
+  bbox,
+  distance,
+  intersectSegments,
+  lineSeg,
+  normalize,
+  pt,
+  type ReadonlyPath,
+  samplePath,
+  scale,
+  sub,
+} from "../geometry";
 import { edgeLengthMm } from "./measure";
 
 /** The piece fields needed to measure a declared body line. */
@@ -18,26 +30,48 @@ export function bodyLineMultiplier(piece: Pick<Piece, "cut">): number {
 }
 
 /**
- * Keeps geometrically identical intersection points only once.
+ * Moves a probe's end points outwards along its first and last legs, so the probe always crosses the outline.
  *
- * @param points - Raw crossings, often duplicated at adjacent segment joints.
- * @returns Distinct points in x order.
+ * @param points - Probe points, at least two.
+ * @param reachMm - How far to extend each end.
+ * @returns The extended probe.
  */
-function distinctPoints(points: readonly Point[]): Point[] {
-  return [...points]
-    .sort((a, b) => a.x - b.x || a.y - b.y)
-    .filter((point, index, all) =>
-      all
-        .slice(0, index)
-        .every((other) => Math.hypot(point.x - other.x, point.y - other.y) > GEOMETRY_EPSILON_MM),
-    );
+function extendProbe(points: readonly Point[], reachMm: number): Point[] {
+  const first = points[0]!;
+  const last = points.at(-1)!;
+  const start = sub(first, scale(normalize(sub(points[1]!, first)), reachMm));
+  const end = add(last, scale(normalize(sub(last, points[points.length - 2]!)), reachMm));
+  return [start, ...points.slice(1, -1), end];
+}
+
+/**
+ * Length of a probe polyline inside an outline: from its first to its last crossing, measured along the probe.
+ *
+ * @param path - Closed stitch path.
+ * @param probe - Probe points, already reaching past the outline at both ends.
+ * @returns The length in mm, or undefined when the probe crosses the outline fewer than twice.
+ */
+export function probeLengthMm(path: ReadonlyPath, probe: readonly Point[]): number | undefined {
+  let startMm = 0;
+  const along: number[] = [];
+  for (let i = 1; i < probe.length; i += 1) {
+    const leg = lineSeg(probe[i - 1]!, probe[i]!);
+    const legMm = distance(leg.from, leg.to);
+    for (const segment of path) {
+      for (const hit of intersectSegments(leg, segment)) along.push(startMm + hit.t1 * legMm);
+    }
+    startMm += legMm;
+  }
+  if (along.length < 2) return undefined;
+  const lengthMm = Math.max(...along) - Math.min(...along);
+  return lengthMm > GEOMETRY_EPSILON_MM ? lengthMm : undefined;
 }
 
 /**
  * Measures one declared body line from the piece geometry.
  *
  * @param piece - Drafted piece.
- * @param line - Edge-backed or horizontal body-line declaration.
+ * @param line - Edge-backed, horizontal or polyline body-line declaration.
  * @returns The line length in mm, or undefined when the declaration cannot be measured.
  */
 export function bodyLineLengthMm(piece: BodyLinePiece, line: BodyLine): number | undefined {
@@ -45,14 +79,10 @@ export function bodyLineLengthMm(piece: BodyLinePiece, line: BodyLine): number |
     if (!piece.edges.some((edge) => edge.id === line.edgeId)) return undefined;
     return edgeLengthMm(piece, line.edgeId, { closeDarts: true });
   }
-  const sampled = samplePath(piece.stitchPath);
-  const xs = sampled.map((point) => point.x);
-  const minX = Math.min(...xs) - 1;
-  const maxX = Math.max(...xs) + 1;
-  const probe = lineSeg({ x: minX, y: line.atMm }, { x: maxX, y: line.atMm });
-  const crossings = distinctPoints(
-    piece.stitchPath.flatMap((segment) => intersectSegments(probe, segment).map((hit) => hit.point)),
-  );
-  if (crossings.length < 2) return undefined;
-  return crossings.at(-1)!.x - crossings[0]!.x;
+  const box = bbox(samplePath(piece.stitchPath));
+  const reachMm = box.maxX - box.minX + box.maxY - box.minY + 1;
+  if (line.kind === "horizontal") {
+    return probeLengthMm(piece.stitchPath, [pt(box.minX - 1, line.atMm), pt(box.maxX + 1, line.atMm)]);
+  }
+  return probeLengthMm(piece.stitchPath, extendProbe(line.points, reachMm));
 }

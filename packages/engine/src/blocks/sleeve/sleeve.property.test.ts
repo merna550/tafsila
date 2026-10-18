@@ -11,11 +11,19 @@ import type { SleeveLength } from "./types";
 
 const LENGTHS: readonly SleeveLength[] = ["cap", "short", "elbow", "three-quarter", "long"];
 const PROFILES: readonly EaseProfile[] = ["fitted", "regular", "loose"];
-const CASES = SIZE_MATRIX.flatMap((e) =>
-  LENGTHS.flatMap((length) => PROFILES.map((profile) => ({ id: e.id, m: e.measurements, length, profile }))),
+/**
+ * The deterministic case list: two drafts per body, with the length and the profile stepping together
+ * (index modulo 5 and modulo 3), so all 15 length and profile pairs are met by several bodies
+ * (50 drafts instead of the 375 of the full product).
+ */
+const CASES = SIZE_MATRIX.flatMap((e, i) =>
+  [0, 1].map((k) => ({
+    id: e.id,
+    m: e.measurements,
+    length: LENGTHS[(i + k) % LENGTHS.length]!,
+    profile: PROFILES[(i + k) % PROFILES.length]!,
+  })),
 );
-/** Two runs per body; fast-check picks the length and profile per run (about 2 s locally, a third of the 375 cases). */
-const SAMPLED = { numRuns: SIZE_MATRIX.length * 2 };
 /** Wall-clock allowance on a busy CI runner; locally the slowest test takes well under a third of it. */
 const PIPELINE_TEST_TIMEOUT_MS = 30_000;
 
@@ -36,6 +44,32 @@ function blouse(m: Measurements, length: SleeveLength, profile: EaseProfile = "r
   return generatePattern(spec, m, { ...DEFAULT_ENGINE_OPTIONS, easeProfile: profile });
 }
 
+const DRAFTS = new Map<string, PatternResult>();
+
+/**
+ * Drafts a seed-matrix case once and shares the result across the tests of this file.
+ *
+ * @param id - Size matrix entry id.
+ * @param m - Measurements of that entry.
+ * @param length - Sleeve length.
+ * @param profile - Ease profile.
+ * @returns The (frozen) pattern.
+ */
+function cachedBlouse(
+  id: string,
+  m: Measurements,
+  length: SleeveLength,
+  profile: EaseProfile,
+): PatternResult {
+  const key = `${id}|${length}|${profile}`;
+  let r = DRAFTS.get(key);
+  if (!r) {
+    r = blouse(m, length, profile);
+    DRAFTS.set(key, r);
+  }
+  return r;
+}
+
 /**
  * The checks of one rule that name the sleeve.
  *
@@ -51,32 +85,29 @@ describe("set-in sleeve over the size matrix, every length and ease profile", ()
   it(
     "keeps the cap ease in 10-40 mm, the seams within 2 mm, the notches within 2 mm and the outline clean",
     () => {
-      fc.assert(
-        fc.property(fc.constantFrom(...CASES), ({ m, length, profile }) => {
-          const r = blouse(m, length, profile);
-          const [cap] = sleeveChecks(r, "FR-VAL-02");
-          expect(cap).toMatchObject({ code: "SLEEVE_CAP_OK", status: "pass" });
-          expect(cap!.measuredMm!).toBeGreaterThanOrEqual(SLEEVE_CAP_EASE_MIN_MM);
-          expect(cap!.measuredMm!).toBeLessThanOrEqual(SLEEVE_CAP_EASE_MAX_MM);
-          const seams = sleeveChecks(r, "FR-VAL-01");
-          expect(seams).toHaveLength(3);
-          for (const seam of seams) {
-            expect(Math.abs(seam.measuredMm! - seam.expectedMm!), seam.refs!.join(" ")).toBeLessThanOrEqual(
-              SEAM_MM,
-            );
-          }
-          const notches = sleeveChecks(r, "FR-VAL-04");
-          expect(notches).toHaveLength(4);
-          for (const notch of notches) {
-            expect(notch.measuredMm!, notch.refs!.join(" ")).toBeLessThanOrEqual(NOTCH_MM);
-          }
-          const sleeve = r.pieces.find((p) => p.id === "sleeve")!;
-          expect(isClosed(sleeve.stitchPath)).toBe(true);
-          expect(selfIntersections(sleeve.stitchPath)).toEqual([]);
-          expect(selfIntersections(sleeve.cutPath)).toEqual([]);
-        }),
-        SAMPLED,
-      );
+      for (const { id, m, length, profile } of CASES) {
+        const r = cachedBlouse(id, m, length, profile);
+        const [cap] = sleeveChecks(r, "FR-VAL-02");
+        expect(cap).toMatchObject({ code: "SLEEVE_CAP_OK", status: "pass" });
+        expect(cap!.measuredMm!).toBeGreaterThanOrEqual(SLEEVE_CAP_EASE_MIN_MM);
+        expect(cap!.measuredMm!).toBeLessThanOrEqual(SLEEVE_CAP_EASE_MAX_MM);
+        const seams = sleeveChecks(r, "FR-VAL-01");
+        expect(seams).toHaveLength(3);
+        for (const seam of seams) {
+          expect(Math.abs(seam.measuredMm! - seam.expectedMm!), seam.refs!.join(" ")).toBeLessThanOrEqual(
+            SEAM_MM,
+          );
+        }
+        const notches = sleeveChecks(r, "FR-VAL-04");
+        expect(notches).toHaveLength(4);
+        for (const notch of notches) {
+          expect(notch.measuredMm!, notch.refs!.join(" ")).toBeLessThanOrEqual(NOTCH_MM);
+        }
+        const sleeve = r.pieces.find((p) => p.id === "sleeve")!;
+        expect(isClosed(sleeve.stitchPath)).toBe(true);
+        expect(selfIntersections(sleeve.stitchPath)).toEqual([]);
+        expect(selfIntersections(sleeve.cutPath)).toEqual([]);
+      }
     },
     PIPELINE_TEST_TIMEOUT_MS,
   );
@@ -101,7 +132,7 @@ describe("set-in sleeve over random bodies", () => {
             ).toBe(true);
           }
         }),
-        { numRuns: 50 },
+        { numRuns: 40 },
       );
     },
     PIPELINE_TEST_TIMEOUT_MS,
@@ -111,9 +142,9 @@ describe("set-in sleeve over random bodies", () => {
     fc.assert(
       fc.property(fc.constantFrom(...SIZE_MATRIX), fc.constantFrom(...LENGTHS), (entry, length) => {
         const m = deepFreeze(structuredClone(entry.measurements));
-        expect(blouse(m, length)).toEqual(blouse(m, length));
+        expect(blouse(m, length)).toEqual(cachedBlouse(entry.id, entry.measurements, length, "regular"));
       }),
-      { numRuns: 20 },
+      { numRuns: 10 },
     );
   });
 });

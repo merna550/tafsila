@@ -1,0 +1,14 @@
+# ADR-135 · 2026-10-18 · Straight and A-line skirts, lengths and slits
+
+**Context:** Issue #135 (FR-PAT-05, FR-VAL-01, -03, -08). Plan: [`docs/plans/135-straight-a-line-skirt.md`](../plans/135-straight-a-line-skirt.md). Method: "Straight and A-line skirts, slits" in [`drafting-method.md`](../engine/drafting-method.md).
+**Decision:**
+
+1. **A-line is a dart transfer, pivoted on the hip line.** The whole waist dart closes; the side panel turns about a pivot where the dart axis meets the hip line, and the slash runs square down from it to the hem. Pivoting at the dart apex (above the hip) would open the hip too and break FR-VAL-03. The flare is therefore the closed dart, set by the block's `SKIRT_DART_SHARE`; there is no separate flare constant. The hem gain of each piece (the chord the turn opens at the hem) is recorded as `skirt.front|back.aLineHemGainMm` in `DraftContext.resolved`. The waist is redrawn as one smooth curve through the closed dart (within 2 mm of the block's waist, inside the ±5 mm of FR-VAL-03); the hem bridges the opened slash with a smooth curve. A block with no dart (hip not wider than the waist) stays straight.
+2. **`polyline` body line.** The pivoted hip line bends on the flat pattern, so a horizontal probe measures it wrong. `bodyLineSchema` gains `kind: "polyline"` with `points`; it is measured along the points between the first and last place the outline crosses them (end legs extended). The JSON Schema is regenerated.
+3. **Lengths** come from the existing resolver (#126): `lengthMm` wins after the body check.
+4. **Slits** are cut after the shape (`skirt-slit`, order 30) into the straight part of the seam: the seam is sewn to the slit top (notched, `slit-top`), below it a 40 mm self-facing extension (`SLIT_EXTENSION_MM`) with a 45° top, edge `slit` (kind `other`). A front or back slit turns that fold into a centre seam cut as a mirrored pair, instead of rejecting it as the plan suggested; a side slit goes into both side seams. A slit longer than the seam below the hip line less 10 mm (`SLIT_HIP_CLEARANCE_MM`) is not cut and FR-VAL-08 `SLIT_ABOVE_HIP` fails. A slit on another skirt type warns `SLIT_NOT_DRAFTED`.
+5. **Walking ease** (FR-VAL-08 `PLAUS_WALKING_EASE`, warn): a straight skirt below the knee with no slit and a finished hem under `WALKING_HEM_MIN_MM` (1300 mm). Only the straight type, as in the issue.
+6. **Modules:** `skirt-straight-a-line` (order 20; straight is the block unchanged) and `skirt-slit` (order 30) in `src/modules/skirt/`; they do not import each other and work on the block's shared piece and edge ids.
+7. **`ENGINE_VERSION` 0.5.0 → 0.6.0:** A-line designs now get A-line geometry.
+
+**Consequences:** Straight and A-line skirts draft and validate for the whole size matrix, every length and slit. `needs:sew-test` stays until an A-line midi toile is sewn in 3 sizes and logged in `docs/test-cases/engine/sew-tests.md`.

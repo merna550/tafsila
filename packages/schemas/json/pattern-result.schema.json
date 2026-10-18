@@ -120,6 +120,54 @@
                     "atMm"
                   ],
                   "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "const": "polyline",
+                      "type": "string"
+                    },
+                    "measurement": {
+                      "enum": [
+                        "bust",
+                        "waist",
+                        "hip"
+                      ],
+                      "type": "string"
+                    },
+                    "points": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "type": "object"
+                      },
+                      "minItems": 2,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "measurement",
+                    "kind",
+                    "points"
+                  ],
+                  "type": "object"
                 }
               ]
             },
