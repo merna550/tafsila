@@ -22,6 +22,7 @@
     "jscpd": "jscpd .",
     "depcruise": "depcruise apps packages --config .dependency-cruiser.cjs",
     "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm jscpd && pnpm depcruise && pnpm tokens:check && pnpm docs:check && pnpm api:check",
+    "learning-log:index": "node scripts/learning-log-index.mjs",
     "docs:check": "node scripts/check-handbook.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",

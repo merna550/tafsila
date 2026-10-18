@@ -103,7 +103,7 @@ The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mj
 - [ ] Docs updated: SRS (behaviour), a decision file in `docs/decisions/` (choices), CLAUDE.md status when the milestone, next step or an open decision changed.
 - [ ] Manual test cases: `docs/test-cases/<area>/<N>-<slug>.md` (happy path, errors, permissions, edge sizes, RTL, mobile), each marked automated or manual-only.
 - [ ] Plan saved to `docs/plans/<N>-<slug>.md`.
-- [ ] New concepts added to `docs/handbook/` (glossary / tech card / pattern) and listed in `learning-log.md`; the PR has a "Concepts introduced" section; `pnpm docs:check` passes.
+- [ ] New concepts added to `docs/handbook/` (glossary / tech card / pattern) and listed as a file in `docs/handbook/learning-log/` (then `pnpm learning-log:index`); the PR has a "Concepts introduced" section; `pnpm docs:check` passes.
 - [ ] Docker: image still builds, passes hadolint/Trivy and the container smoke test (CI `Docker image` workflow; it and Storybook run only when the change can affect them, see [ADR-86](decisions/86-cut-actions-minutes.md) and [what costs minutes](backend/ci-minutes.md)). New env vars added to `.env.example`, `.env.docker.example` and `.github/ci.env` (placeholder).
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
 - [ ] Every acceptance criterion is ticked in the issue (`scripts/gh-ac.sh check <issue> <n…>`) as soon as it is met and verified; an issue is not moved to In review with unticked criteria unless the PR explains why. The PR body includes `scripts/gh-ac.sh progress <issue>`.

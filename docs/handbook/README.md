@@ -31,14 +31,14 @@ Tafsila is built mostly by AI agents and reviewed by a human. The handbook exist
 
 ## How to add to it
 
-| You did…                                      | Update                                                                                                               |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Used a new term anywhere in `docs/` or code   | Add an entry to [glossary.md](glossary.md) (A to Z, with an anchor, same format as the others)                       |
-| Added or replaced a technology                | Add or edit its card in `tech/` from [tech/_TEMPLATE.md](tech/_TEMPLATE.md); update [tech/README.md](tech/README.md) |
-| Introduced a new architecture or code pattern | Add a page in [patterns/](patterns/) with a "where in our code" section                                              |
-| Added a top-level folder or config file       | Add it to [map/repo-tour.md](map/repo-tour.md)                                                                       |
-| Hit and solved a real problem                 | Add an entry to [troubleshooting.md](troubleshooting.md) (Symptom, Cause, Fix, How to avoid)                         |
-| Merged a PR that teaches a new concept        | Add a line at the top of [learning-log.md](learning-log.md)                                                          |
+| You did…                                      | Update                                                                                                                    |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Used a new term anywhere in `docs/` or code   | Add an entry to [glossary.md](glossary.md) (A to Z, with an anchor, same format as the others)                            |
+| Added or replaced a technology                | Add or edit its card in `tech/` from [tech/_TEMPLATE.md](tech/_TEMPLATE.md); update [tech/README.md](tech/README.md)      |
+| Introduced a new architecture or code pattern | Add a page in [patterns/](patterns/) with a "where in our code" section                                                   |
+| Added a top-level folder or config file       | Add it to [map/repo-tour.md](map/repo-tour.md)                                                                            |
+| Hit and solved a real problem                 | Add an entry to [troubleshooting.md](troubleshooting.md) (Symptom, Cause, Fix, How to avoid)                              |
+| Merged a PR that teaches a new concept        | Add `learning-log/<issue>-<slug>.md`, then run `pnpm learning-log:index` (regenerates [learning-log.md](learning-log.md)) |
 
 Every link in the handbook must resolve (relative links to files that exist, official URLs for the outside world). Small additions are fine for the cheapest model; accuracy matters more than length.
 
