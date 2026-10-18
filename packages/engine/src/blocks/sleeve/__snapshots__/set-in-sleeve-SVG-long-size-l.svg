@@ -34,16 +34,19 @@
 <path id="piece-bodice-front-dart-bust-dart" d="M 646.81 307.64 L 491.81 322.41 L 646.81 337.19" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-bodice-front-dart-waist-dart" d="M 480.57 487.49 L 466.81 322.64 L 453.06 487.49" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>
+<g id="layer-marks">
+
+</g>
 <g id="layer-labels">
 <text id="piece-bodice-back-label-name" x="140.75" y="321.35" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">خلف الصدر</text>
 <text id="piece-bodice-back-label-cut" x="140.75" y="332.55" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 على الثنية</text>
-<text id="piece-bodice-back-label-size" x="140.75" y="343.75" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.6.0</text>
+<text id="piece-bodice-back-label-size" x="140.75" y="343.75" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.7.0</text>
 <text id="piece-bodice-front-label-name" x="529.94" y="368.62" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">أمام الصدر</text>
 <text id="piece-bodice-front-label-cut" x="529.94" y="379.82" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 على الثنية</text>
-<text id="piece-bodice-front-label-size" x="529.94" y="391.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.6.0</text>
+<text id="piece-bodice-front-label-size" x="529.94" y="391.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.7.0</text>
 <text id="piece-sleeve-label-name" x="971.05" y="256.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">الكم</text>
 <text id="piece-sleeve-label-cut" x="971.05" y="267.22" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 2 (مع مقلوبها)</text>
-<text id="piece-sleeve-label-size" x="971.05" y="278.42" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.6.0</text>
+<text id="piece-sleeve-label-size" x="971.05" y="278.42" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.7.0</text>
 </g>
 <g id="layer-scale">
 <rect id="piece-sleeve-scale-square" x="811.38" y="132.00" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>
