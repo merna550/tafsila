@@ -8,6 +8,7 @@ import {
   gridLayer,
   grainLayer,
   labelsLayer,
+  marksLayer,
   notchesLayer,
   scaleLayer,
   stitchLayer,
@@ -15,7 +16,17 @@ import {
 import { layoutSheet, type SheetLayout } from "./sheet-layout";
 
 /** Names of the layers a render can include. */
-export const SVG_LAYERS = ["grid", "cut", "stitch", "notches", "grain", "darts", "labels", "scale"] as const;
+export const SVG_LAYERS = [
+  "grid",
+  "cut",
+  "stitch",
+  "notches",
+  "grain",
+  "darts",
+  "marks",
+  "labels",
+  "scale",
+] as const;
 
 /** One layer name. */
 export type SvgLayer = (typeof SVG_LAYERS)[number];
@@ -36,6 +47,7 @@ const LAYER_RENDERERS: Readonly<Record<SvgLayer, (layout: SheetLayout) => string
   notches: notchesLayer,
   grain: grainLayer,
   darts: dartsLayer,
+  marks: marksLayer,
   labels: labelsLayer,
   scale: scaleLayer,
 };

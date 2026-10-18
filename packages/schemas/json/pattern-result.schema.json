@@ -647,6 +647,260 @@
             },
             "type": "array"
           },
+          "marks": {
+            "items": {
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": [
+                        "pleat-fold",
+                        "pleat-placement",
+                        "pleat-direction",
+                        "gather"
+                      ],
+                      "type": "string"
+                    },
+                    "lengthMm": {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    "shape": {
+                      "const": "line",
+                      "type": "string"
+                    },
+                    "text": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "ar": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "en": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "ar",
+                        "en"
+                      ],
+                      "type": "object"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "shape",
+                    "from",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "from": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": [
+                        "pleat-fold",
+                        "pleat-placement",
+                        "pleat-direction",
+                        "gather"
+                      ],
+                      "type": "string"
+                    },
+                    "lengthMm": {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    "shape": {
+                      "const": "arrow",
+                      "type": "string"
+                    },
+                    "text": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "ar": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "en": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "ar",
+                        "en"
+                      ],
+                      "type": "object"
+                    },
+                    "to": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "shape",
+                    "from",
+                    "to"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "at": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": [
+                        "pleat-fold",
+                        "pleat-placement",
+                        "pleat-direction",
+                        "gather"
+                      ],
+                      "type": "string"
+                    },
+                    "lengthMm": {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    "shape": {
+                      "const": "point",
+                      "type": "string"
+                    },
+                    "text": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "ar": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "en": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "ar",
+                        "en"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "shape",
+                    "at"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "type": "array"
+          },
           "name": {
             "additionalProperties": false,
             "properties": {

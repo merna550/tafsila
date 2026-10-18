@@ -134,6 +134,17 @@ One drafted piece is a quarter of the skirt: front and back, each on the fold or
 | 4   | Side seam along the radius at the sweep; centre line straight down                                | side length = L                                 | `circle.hemSide`, `circle.hemCentre` (0, L) |      |
 | 5   | Grain parallel to the centre line, through the middle of the piece; hang 24 h, then level the hem | grain length L / 2                              |                                             |      |
 
+### Gathered, knife-pleated and tiered skirts (Chapter 3, "Skirts with gathers", "Pleated skirts", "Tiered skirts")
+
+Rectangles of the finished length; no block is traced ([decision 137](../decisions/137-gathered-pleated-tiered.md)). W = waist + total waist ease, L = skirt length, n = panels round the body (4 for front and back on the fold, else 2 × panels per half).
+
+| #   | Step (paraphrased)                                                                  | Formula (mm)                                                                | Key point                     | Page |
+| --- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------- | ---- |
+| 1   | Gathered: flat width is the finished waist times the gather ratio                   | width = 1.8 × W (light 2, heavy 1.5); panel = width / n                     | `gather` mark on `waist`      |      |
+| 2   | Knife pleats: flat width adds twice the pleat depth per pleat; pleats spaced evenly | width = W + pleats × 2 × 30; spacing = (W / n) / pleats per panel           | fold, placement, arrow        |      |
+| 3   | Tiered: three tiers, each 1.5 × the one above; tier 1 is 1.5 × W                    | tier k width = W × 1.5^k; heights 30 %, 33 %, 37 % of L                     | `top` / `bottom` paired       |      |
+| 4   | Split at the fabric width: fewest equal panels per half (up to 8)                   | fits when width / (2 × panels per half) + 2 × side allowance ≤ fabric width | `skirt-panel`, `tier-k-panel` |      |
+
 ### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
 
 | #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |

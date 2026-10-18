@@ -63,9 +63,10 @@ describe("engine:print", () => {
     expect(existsSync(file)).toBe(false);
   });
 
-  it("exits 1 for a design with no modules yet", () => {
-    const { code, err } = runCli(["vNeckHalfCircleDress", "size-m"]);
-    expect(code).toBe(1);
-    expect(err.join("\n")).toContain("no pieces");
+  it("writes a design fixture's toile with the default engine options (pleated skirt, #137)", () => {
+    const file = join(mkdtempSync(join(tmpdir(), "print-")), "pleated.svg");
+    const { code } = runCli(["pleatedKneeSkirt", "size-m", "--out", file]);
+    expect(code).toBe(0);
+    expect(readFileSync(file, "utf8")).toContain("piece-skirt-front-mark-pleat-1-fold");
   });
 });
