@@ -44,3 +44,21 @@ export const straightKneeSkirt: DesignSpec = {
   pockets: [],
   lining: false,
 };
+
+/** A half-circle skirt at the knee with a side zip: front and back on the fold when the fabric is wide enough (issue #136). */
+export const halfCircleKneeSkirt: DesignSpec = {
+  schemaVersion: 1,
+  category: "skirt",
+  fabricType: "woven",
+  skirt: { type: "circle-half", length: "knee" },
+  waistband: "none",
+  closure: { type: "zip", position: "side" },
+  pockets: [],
+  lining: false,
+};
+
+/** A full-circle skirt at the knee with a side zip; split into four pieces on narrow fabric (issue #136). */
+export const fullCircleKneeSkirt: DesignSpec = {
+  ...halfCircleKneeSkirt,
+  skirt: { type: "circle-full", length: "knee" },
+};

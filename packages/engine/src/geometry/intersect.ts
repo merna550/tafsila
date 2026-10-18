@@ -6,6 +6,7 @@ import {
   INTERSECTION_TOLERANCE_MM,
   MAX_INTERSECTION_STEPS,
   MAX_SUBDIVISION_DEPTH,
+  PARALLEL_SIN_EPSILON,
 } from "../constants/geometry";
 import { DraftingError } from "../errors/drafting-error";
 import { pointOnCubic, splitCubic } from "./bezier";
@@ -65,7 +66,7 @@ export function lineLine(a: LineLike, b: LineLike, infinite = false): Crossing |
   const r = sub(a.to, a.from);
   const s = sub(b.to, b.from);
   const denominator = cross(r, s);
-  if (Math.abs(denominator) <= Number.EPSILON * norm(r) * norm(s)) return null;
+  if (Math.abs(denominator) <= PARALLEL_SIN_EPSILON * norm(r) * norm(s)) return null;
   const qp = sub(b.from, a.from);
   const t1 = cross(qp, s) / denominator;
   const t2 = cross(qp, r) / denominator;

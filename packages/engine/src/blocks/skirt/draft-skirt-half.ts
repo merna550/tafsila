@@ -227,6 +227,6 @@ export function draftSkirtHalf(args: SkirtHalfArgs): SkirtHalfDraft {
       [`${k}.hemSide`]: hemSide,
     },
     darts,
-    edges: skirtEdges(half, args.centreSeam ?? false),
+    edges: skirtEdges(half, half === "back" && (args.centreSeam ?? false)),
   };
 }
