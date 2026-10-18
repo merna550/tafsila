@@ -30,7 +30,7 @@ If the team grows to need a heavier planning tool. The labels and scripts would 
 ## Where it lives in our code
 
 - `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`), `.github/labels.yml`, `.github/pull_request_template.md`, `.github/ISSUE_TEMPLATE/`.
-- `scripts/gh-project.sh`, `scripts/gh-ac.sh`, `scripts/setup-labels.sh`.
+- `scripts/gh-project.sh`, `scripts/gh-ac.sh`, `scripts/setup-labels.sh`, `scripts/ci-wait.mjs`.
 - Slash commands: `.claude/commands/` ([claude-code](claude-code.md)).
 
 ## The 20% you need
@@ -38,6 +38,7 @@ If the team grows to need a heavier planning tool. The labels and scripts would 
 - `Closes #N` in a PR body closes the issue on merge.
 - Never commit or push to `main`; branch, PR, review ([CLAUDE.md](../../../CLAUDE.md) rule 1).
 - Tick acceptance criteria as they are verified: `scripts/gh-ac.sh check <issue> <n>`.
+- A builder waits for every check on its PR head with `scripts/ci-wait.mjs <pr-number>`; failed job logs are reduced to matching failure lines before they reach the agent context.
 
 ## Commands you'll use
 
