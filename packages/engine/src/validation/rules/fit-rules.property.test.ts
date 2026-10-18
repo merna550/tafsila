@@ -23,7 +23,7 @@ describe("fit rules over generated blocks", () => {
           expect(checks.every((check) => check.status === "pass")).toBe(true);
         }
       }),
-      { numRuns: 50 },
+      { numRuns: SIZE_MATRIX.length * 2 },
     );
   }, 10_000);
 });

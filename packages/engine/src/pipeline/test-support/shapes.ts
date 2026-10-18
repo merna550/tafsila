@@ -36,6 +36,7 @@ export function polygonPiece(id: string, points: readonly Point[]): PieceDraft {
     notches: [],
     grainLine: defaultGrainLine(path),
     darts: [],
+    bodyLines: [],
   };
 }
 

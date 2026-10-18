@@ -68,6 +68,7 @@ export const marksModule: FeatureModule = {
           { x: 150, y: 80 },
           { x: 150, y: 320 },
         ],
+        bodyLines: [],
         darts: [
           {
             id: "d1",
@@ -89,6 +90,7 @@ export const marksModule: FeatureModule = {
         notches: [],
         grainLine: defaultGrainLine(path),
         darts: [],
+        bodyLines: [],
       },
     ),
 };

@@ -26,6 +26,8 @@ export const LABEL_DESCENT_RATIO = 0.3;
 export const LABEL_GRID_MM = 5;
 /** Number of times the best grid point is refined with a half step. */
 export const LABEL_REFINE_ROUNDS = 2;
+/** Most grid cells along the longer side of a piece in the first scan; larger pieces get a coarser first step. */
+export const LABEL_MAX_GRID_CELLS = 60;
 /** Least distance, in mm, between a label box and any stitch, cut or grain line. */
 export const LABEL_CLEARANCE_MM = 3;
 

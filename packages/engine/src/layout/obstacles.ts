@@ -78,6 +78,23 @@ export function labelRect(label: Label): Rect {
 }
 
 /**
+ * True when a stretch's bounding box lies wholly outside a box, so the stretch cannot touch it.
+ *
+ * @param box - The box (already grown by any clearance).
+ * @param start - One end of the stretch.
+ * @param end - The other end.
+ * @returns Whether the stretch is certainly outside.
+ */
+function stretchMissesRect(box: Rect, start: Point, end: Point): boolean {
+  return (
+    (start.x < box.minX && end.x < box.minX) ||
+    (start.x > box.maxX && end.x > box.maxX) ||
+    (start.y < box.minY && end.y < box.minY) ||
+    (start.y > box.maxY && end.y > box.maxY)
+  );
+}
+
+/**
  * True when the box is inside the outline and at least `clearanceMm` from every line.
  *
  * @param rect - The box to test.
@@ -89,7 +106,14 @@ export function isClear(rect: Rect, obstacles: PieceObstacles, clearanceMm: numb
   for (const corner of rectCorners(rect)) {
     if (!pointInPolygon(corner, obstacles.outline)) return false;
   }
+  const grown: Rect = {
+    minX: rect.minX - clearanceMm,
+    minY: rect.minY - clearanceMm,
+    maxX: rect.maxX + clearanceMm,
+    maxY: rect.maxY + clearanceMm,
+  };
   for (const [start, end] of obstacles.stretches) {
+    if (stretchMissesRect(grown, start, end)) continue;
     if (distanceSegmentToRect(rect, start, end) < clearanceMm) return false;
   }
   return true;

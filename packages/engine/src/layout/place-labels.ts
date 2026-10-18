@@ -9,11 +9,12 @@ import {
   LABEL_GRID_MM,
   LABEL_LINE_PITCH_RATIO,
   LABEL_MIN_SIZE_MM,
+  LABEL_MAX_GRID_CELLS,
   LABEL_REFINE_ROUNDS,
   LABEL_SIZE_MM,
   LABEL_SIZE_STEP_MM,
 } from "../constants/labels";
-import { bbox, distancePointToPolyline, samplePath, type Rect } from "../geometry";
+import { bbox, distancePointToSegment, samplePath, type Rect } from "../geometry";
 import { cutInfoText, pieceNameText, sizeLabelText, type Bilingual } from "../i18n/pieces";
 import { type DraftContext, type PieceDraft, type Step, withPieces } from "../pipeline/draft-context";
 import { isClear, obstaclesOf, textWidthMm, type PieceObstacles } from "./obstacles";
@@ -108,6 +109,29 @@ function gridPoints(box: Rect, stepMm: number, insetX: number = 0, insetY: numbe
 }
 
 /**
+ * Distance from a point to the outline, or undefined as soon as it is found not to exceed a bound.
+ *
+ * @param p - The point.
+ * @param outline - The sampled outline.
+ * @param bound - The distance must be above this (or equal to it when `strict` is false).
+ * @param strict - True when equal to the bound is not enough.
+ * @returns The distance, or undefined when it does not pass the bound.
+ */
+function outlineDistanceAbove(
+  p: Point,
+  outline: readonly Point[],
+  bound: number,
+  strict: boolean,
+): number | undefined {
+  let nearest = Number.POSITIVE_INFINITY;
+  for (let i = 1; i < outline.length; i += 1) {
+    nearest = Math.min(nearest, distancePointToSegment(p, outline[i - 1]!, outline[i]!));
+    if (strict ? nearest <= bound : nearest < bound) return undefined;
+  }
+  return nearest;
+}
+
+/**
  * The fitting centre farthest from the outline (the best pole of inaccessibility that holds the whole block).
  *
  * @param candidates - Centres to try, in order; the first of equal scores wins.
@@ -121,11 +145,19 @@ function bestFit(
   obstacles: PieceObstacles,
 ): { centre: Point; score: number } | undefined {
   let best: { centre: Point; score: number } | undefined;
+  // The box holds the disc of its half-shorter side around the centre, and the outline must stay a clearance
+  // away from the box, so a centre nearer to the outline than that cannot fit (the same verdict as isClear).
+  const least = Math.min(size.widthMm, size.heightMm) / 2 + LABEL_CLEARANCE_MM;
   for (const centre of candidates) {
-    const score = distancePointToPolyline(centre, obstacles.outline);
-    // Clearance is the expensive check. A candidate no farther from the outline cannot replace the current best,
-    // and equal scores deliberately keep the first candidate, so reject it before testing every obstacle stretch.
-    if (best && score <= best.score) continue;
+    // A candidate no farther from the outline cannot replace the current best (equal scores keep the first), so
+    // the outline scan stops as soon as it finds a segment that close.
+    const score = outlineDistanceAbove(
+      centre,
+      obstacles.outline,
+      best ? Math.max(best.score, least) : least,
+      best !== undefined,
+    );
+    if (score === undefined) continue;
     if (!isClear(rectAround(centre, size), obstacles, LABEL_CLEARANCE_MM)) continue;
     best = { centre, score };
   }
@@ -143,9 +175,14 @@ function findCentre(size: BlockSize, obstacles: PieceObstacles): Point | undefin
   const box = bbox(obstacles.outline);
   // A block whose centre is closer than half its width or height to the outline's bounding box cannot have all
   // four corners inside the outline. Keep the original grid phase while omitting those impossible candidates.
-  let best = bestFit(gridPoints(box, LABEL_GRID_MM, size.widthMm / 2, size.heightMm / 2), size, obstacles);
-  let step = LABEL_GRID_MM;
-  for (let round = 0; best && round < LABEL_REFINE_ROUNDS; round += 1) {
+  // Large pieces (a circle skirt is over a metre wide) get a coarser first grid so the scan stays a few thousand
+  // candidates; the extra halving rounds below bring the result back to the same final resolution.
+  const longSide = Math.max(box.maxX - box.minX, box.maxY - box.minY);
+  const coarseStep = Math.max(LABEL_GRID_MM, longSide / LABEL_MAX_GRID_CELLS);
+  let best = bestFit(gridPoints(box, coarseStep, size.widthMm / 2, size.heightMm / 2), size, obstacles);
+  let step = coarseStep;
+  const finalStep = LABEL_GRID_MM / 2 ** LABEL_REFINE_ROUNDS;
+  while (best && step / 2 >= finalStep) {
     step /= 2;
     const around = gridPoints(
       {
