@@ -24,6 +24,7 @@ const allWorkflows = [
   "docs-links.yml",
   "agent-report.yml",
   "supabase.yml",
+  "pr-link.yml",
 ];
 
 describe("claude.yml", () => {
