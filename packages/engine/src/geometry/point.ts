@@ -94,8 +94,7 @@ export function norm(v: Point): number {
 export function distance(a: Point, b: Point): number {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
-  // Coordinates are pattern-scale millimetres, so direct Euclidean arithmetic cannot overflow and is
-  // substantially cheaper than Math.hypot in the label-placement candidate loops.
+  // Math.sqrt over Math.hypot: hypot is several times slower and lengths here never overflow (#128).
   return Math.sqrt(dx * dx + dy * dy);
 }
 

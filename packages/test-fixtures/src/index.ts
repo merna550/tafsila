@@ -8,3 +8,4 @@ export * from "./size-chart-sql";
 export * from "./pattern";
 export * from "./reference-drafts";
 export * from "./reference-drafts-sizes";
+export { DRAFT_CONSTANTS } from "./reference-drafts-calc";

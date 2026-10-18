@@ -1,0 +1,15 @@
+# ADR-136 · 2026-10-18 · Half- and full-circle skirts
+
+**Context:** Issue #136 (FR-PAT-05, FR-VAL-03, FR-VAL-08). Plan: [`docs/plans/136-circle-skirts.md`](../plans/136-circle-skirts.md). Method: "Circle skirts" in [`drafting-method.md`](../engine/drafting-method.md).
+**Decision:**
+
+1. **The radius comes from the assembled waist arc, not a fixed formula.** The issue's shorthand (`W / π` full, `2W / π` half) mixes up how many arcs are cut. Each drafted piece is a quarter of the skirt (front and back, each cut on the fold or as a mirrored pair), so its sweep is π/4 (half circle) or π/2 (full circle) and its waist arc is `(waist + total ease) / 4`. The radius starts at arc / sweep (`r = W / π` for the half circle, `W / 2π` for the full circle) and is corrected by the measured ratio of the drawn Bézier arc until it is within 0.01 mm. FR-VAL-03 then reads the waist from the geometry.
+2. **Fewest pieces that fit.** Front and back are first cut on the fold (2 pieces). When either is wider across the grain than `fabricWidthMm`, with its seam allowances, both get a centre seam and are cut as mirrored pairs (4 pieces). The width is measured with the same finishing and measuring code as the FR-VAL-08 rule (`withSeamAllowance`, `widthAcrossGrainMm`), so the choice and the check agree. When even 4 pieces do not fit, the 4-piece layout is kept and FR-VAL-08 warns. A zip on a centre line (`center-back`, `center-front`) always puts a seam there.
+3. **Straight grain at CF / CB.** The grain line is parallel to the centre line on every piece, so a split skirt hangs like the uncut one; the sides are on the bias.
+4. **Hem levelling is sewing guidance, not geometry.** The bias hem drops; the engine does not shorten it. `CIRCLE_SKIRT_HEM_LEVELLING_NOTE` (hang 24 h, `CIRCLE_SKIRT_HANG_HOURS`, then level from the floor) is exported for the sewing-order step (#146), which prints it.
+5. **Same ids as the block.** The module (`skirt-circle`, order 20) runs after the straight block and replaces `skirt-front` and `skirt-back` with circle pieces using the same piece and edge ids, so the waist seam (#143) and later modules need no special case. `skirtEdges` now takes the segment runs and a "this centre is a seam" flag; piece names are shared.
+6. **Geometry kit:** `arcToCubics` (four-point cubic arc, at most π/4 per cubic) is added to `src/geometry/`. `lineLine` treats lines whose direction sine is below `PARALLEL_SIN_EPSILON` (1e-9) as parallel: rounding left a 45° side seam and its mirrored hem corner 1e-13 apart and reported a false self-crossing.
+7. **Code lives in `src/modules/circle-skirt/`**: the lint rule forbids imports three folders up, so the plan's `modules/skirt/circle/` was flattened.
+8. **`ENGINE_VERSION` 0.3.0 → 0.4.0:** the demo dress (half circle) now gets a circle skirt instead of the straight block.
+
+**Consequences:** Every circle-skirt design drafts and validates for the size matrix; the demo dress uses the half circle. `needs:sew-test` stays until toiles in 3 sizes are sewn and logged in `docs/test-cases/engine/sew-tests.md`.

@@ -120,6 +120,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** The sleeve cap must be slightly longer than the armhole seam so it can be eased in; checked by FR-VAL-02 ([engine docs](../engine/README.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
+<a id="armscye-depth"></a>
+
+### Armscye depth
+
+**Plain words:** How far down from the back neck the armhole goes; the horizontal line at that depth is the armscye line (Arabic: عمق الإبط).  
+**In Tafsila:** Bust / 8 + 100 mm in the bodice block; the bust width is measured on this line and the sleeve block reads it from `resolved["bodice.scyeDepthMm"]` ([drafting method](../engine/drafting-method.md), #128). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Armscye>
+
 <a id="supply-chain"></a>
 
 ### Attestation
@@ -292,6 +300,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Chosen during triage to save tokens; rubric in [WORKFLOW section 2](../WORKFLOW.md). **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels>
 
+<a id="body-line-declaration"></a>
+
+### Body-line declaration
+
+**Plain words:** A named place on a pattern piece where the engine measures the finished bust, waist or hip instead of trusting a stored total.
+**In Tafsila:** `Piece.bodyLines` points to a stitch edge or horizontal cross-section; FR-VAL-03 closes dart intake and applies fold/cut multiplicity before comparing with measurement plus ease ([decision 133](../decisions/133-fit-validation.md)). **Level:** intermediate
+**Learn:** [Engine validation](../engine/README.md#validation-rules-srs-45)
+
 <a id="build"></a>
 
 ### Build (compile)
@@ -299,6 +315,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Turning source code into the files that actually run, checking types and optimising along the way.  
 **In Tafsila:** `pnpm build` runs `turbo run build`; the web app builds with `next build` into a standalone output ([ADR-004](../DECISIONS.md)). **Card:** [Turborepo](tech/turborepo.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs/app/getting-started/deploying>
+
+<a id="built-in-ease"></a>
+
+### Built-in ease and style ease
+
+**Plain words:** A drafting block already has some room drawn into it (built-in ease); style ease is whatever extra (or less) room the chosen fit adds on top. Adding both by mistake makes the garment too big.
+**In Tafsila:** `BLOCK_BUILT_IN_EASE_MM` holds the block's own ease; `resolveDraftInputs` returns `styleEaseMm` = total minus built-in. The skirt block is drafted at its built-in ease and then widened at the side seam by the style ease ([decision 129](../decisions/129-skirt-block.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Ease_(sewing)>
 
 <a id="bust-point"></a>
 
@@ -335,6 +359,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Robots that run on every change: **CI** runs checks and tests; **CD** ships the result to an environment.  
 **In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
 **Learn:** <https://docs.github.com/en/actions>
+
+<a id="circle-skirt"></a>
+
+### Circle skirt (half, full)
+
+**Plain words:** A skirt cut as a ring: the waist is a small circle, the hem a big one. A full circle skirt spreads to a whole circle when laid flat; a half circle to half of one. Its sides fall on the bias, so the hem drops after hanging and is levelled before hemming.
+**In Tafsila:** `circleSkirtModule` in `packages/engine/src/modules/circle-skirt/` drafts a quarter whose waist radius is solved so the sewn waist equals waist + ease, then cuts front and back on the fold or, on narrow fabric, as mirrored pairs ([decision 136](../decisions/136-circle-skirts.md)). Arcs are cubic Béziers from `arcToCubics`. **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Circle_skirt>
 
 <a id="claude-md"></a>
 
@@ -490,6 +522,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 **Plain words:** A folded wedge sewn to a point that shapes flat fabric around the body (at the bust or waist). Arabic: بنسة.  
 **In Tafsila:** `darts` on each piece; FR-VAL-07 checks equal legs (within 1 mm). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
+<a id="dart-truing"></a>
+
+### Dart truing
+
+**Plain words:** Making both legs of a dart the same length so they sew together edge to edge; usually the shorter leg is extended along its own line (Arabic: تسوية البنسة).  
+**In Tafsila:** `trueDartLegs` in `packages/engine/src/blocks/shared/darts.ts`; the front waist dart of the bodice is trued because its legs sit on a sloping waist line (decision 128, #128). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
 
 <a id="debounce"></a>
@@ -961,6 +1001,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** The finished bottom edge of a garment, folded and stitched.  
 **In Tafsila:** Default hem seam allowance is 30 mm ([engine docs](../engine/README.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Hem>
+
+<a id="high-point-of-shoulder-hps"></a>
+
+### High point of shoulder (HPS)
+
+**Plain words:** The point where the shoulder seam meets the neck, the highest point of the shoulder (Arabic: أعلى نقطة في الكتف).  
+**In Tafsila:** y = 0 of both bodice halves is the horizontal through the HPS; `frontLength` and `bustHeight` are measured from it ([drafting method](../engine/drafting-method.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="hexagonal"></a>
 
@@ -2144,6 +2192,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Runs in the Docker workflow ([WORKFLOW section 5](../WORKFLOW.md)). **Card:** [Docker](tech/docker.md) · **Level:** advanced  
 **Learn:** <https://trivy.dev/latest/docs/>
 
+<a id="truing"></a>
+
+### Truing (seams)
+
+**Plain words:** Adjusting the ends of two seams that are sewn together so they have exactly the same length before cutting.
+**In Tafsila:** The straight skirt block moves the front waist side point down and the back one up by the same small amount until the side seams match, so FR-VAL-01 passes for every body ([decision 129](../decisions/129-skirt-block.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Pattern_(sewing)>
+
 <a id="turborepo"></a>
 
 ### Turborepo
@@ -2215,6 +2271,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 <a id="letter-v"></a>
 
 ## V
+
+<a id="validation-rule"></a>
+
+### Validation rule
+
+**Plain words:** One repeatable check that says whether a generated pattern passes, needs a warning, or has a problem.
+**In Tafsila:** Core rules check every piece for sound outlines, seam allowance, grain and cutting information, ease and fabric width; garment modules can add their own rules. Each result has a stable code and Arabic/English message ([engine docs](../engine/README.md#validation-rules-srs-45)). **Level:** intermediate
+**Learn:** <https://en.wikipedia.org/wiki/Software_verification_and_validation>
 
 <a id="validation-report"></a>
 

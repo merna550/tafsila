@@ -1,12 +1,18 @@
 import { designSpecSchema, measurementsSchema, patternResultSchema } from "@tafsila/schemas";
 import { describe, expect, it } from "vitest";
-import { vNeckHalfCircleDress } from "./designs";
+import { fullCircleKneeSkirt, halfCircleKneeSkirt, vNeckHalfCircleDress } from "./designs";
 import { sizeM } from "./measurements";
 import { rectanglePattern } from "./pattern";
 
 describe("fixtures stay valid against the shared schemas", () => {
   it("the demo dress is a valid DesignSpec", () => {
     expect(designSpecSchema.safeParse(vNeckHalfCircleDress).success).toBe(true);
+  });
+
+  it("the circle skirt designs are valid DesignSpecs", () => {
+    for (const spec of [halfCircleKneeSkirt, fullCircleKneeSkirt]) {
+      expect(designSpecSchema.safeParse(spec).success).toBe(true);
+    }
   });
 
   it("size M is a valid Measurements object", () => {

@@ -1,29 +1,35 @@
 /** The seven pipeline steps, each a pure function over a frozen context. */
 import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
+import { BLOCK_DRAFTERS } from "../blocks";
 import { finishing } from "../finishing";
 import { layout } from "../layout";
+import { resolveDraftInputs } from "../resolve/resolve-draft-inputs";
+import { CATEGORY_BLOCKS } from "./category-rules";
 import type { Step } from "./draft-context";
-import { withCheck } from "./draft-context";
+import { withCheck, withInputs } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
 export type { Step } from "./draft-context";
 export { finishing, layout };
 
 /**
- * Step 1: derive the named drafting inputs from measurements and ease. Filled by #126.
+ * Step 1: derive the block inputs (widths with ease, lengths) from measurements and ease (#126).
  *
  * @param ctx - Current context.
- * @returns The same context for now.
+ * @returns The context with `inputs` set.
+ * @throws {DraftingError} A `SKIRT_LENGTH_*` input code when the skirt length does not fit the body.
  */
-export const resolve: Step = (ctx) => ctx;
+export const resolve: Step = (ctx) =>
+  withInputs(ctx, resolveDraftInputs(ctx.spec, ctx.measurements, ctx.options));
 
 /**
- * Step 2: draft the base blocks (bodice, skirt, sleeve). Filled by #128 and #129.
+ * Step 2: draft the base blocks the category needs, in `CATEGORY_BLOCKS` order (bodice #128, skirt #129).
  *
- * @param ctx - Current context.
- * @returns The same context for now.
+ * @param ctx - Context after the resolve step.
+ * @returns The context with the block pieces.
  */
-export const blocks: Step = (ctx) => ctx;
+export const blocks: Step = (ctx) =>
+  CATEGORY_BLOCKS[ctx.spec.category].reduce((acc, name) => BLOCK_DRAFTERS[name](acc), ctx);
 
 /**
  * Step 7: assembly steps. Filled by #146.
@@ -50,7 +56,11 @@ export function modulesStep(registry: ModuleRegistry): Step {
  * @returns A step that appends one check per rule.
  */
 export function validateStep(registry: ModuleRegistry): Step {
-  return (ctx) => registry.rulesFor(ctx).reduce((acc, rule) => withCheck(acc, rule.run(ctx)), ctx);
+  return (ctx) =>
+    registry.rulesFor(ctx).reduce((acc, rule) => {
+      const checks = rule.runMany ? rule.runMany(ctx) : [rule.run(ctx)];
+      return checks.reduce((checked, check) => withCheck(checked, check), acc);
+    }, ctx);
 }
 
 /**

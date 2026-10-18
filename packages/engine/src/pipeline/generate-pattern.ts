@@ -13,6 +13,7 @@ import { defaultRegistry } from "./default-registry";
 import { createContext, type DraftContext, type PieceDraft } from "./draft-context";
 import { checkInput } from "./input-check";
 import { inputHash, rawInputHash } from "./input-hash";
+import { INPUT_ERROR_MESSAGES, isInputError } from "./input-errors";
 import type { ModuleRegistry } from "./registry";
 import {
   blocks,
@@ -39,7 +40,7 @@ export const DEFAULT_ENGINE_OPTIONS = {
  * @param piece - A piece in progress.
  * @returns A complete piece.
  */
-function completePiece(piece: PieceDraft): Piece {
+export function completePiece(piece: PieceDraft): Piece {
   const cutPath = piece.cutPath ?? piece.stitchPath;
   const box = bbox(samplePath(cutPath));
   return {
@@ -99,7 +100,9 @@ function refusedResult(
 
 /**
  * Drafts a pattern. Pure and deterministic. Bad input gives a `fail` result with no pieces; it never throws.
- * Only programming errors (unsupported part combinations, duplicate modules) throw `DraftingError`.
+ * That includes body proportions a block cannot draft and a skirt length outside the body (input codes of
+ * `INPUT_ERROR_MESSAGES`, decision 128, 10). Only programming errors (unsupported part combinations,
+ * duplicate modules, step order) throw `DraftingError`.
  *
  * @param spec - The design (checked with `designSpecSchema`).
  * @param measurements - The body measurements in mm.
@@ -128,6 +131,18 @@ export function generatePattern(
     validateStep(registry),
     sewingOrder,
   ];
-  const done = steps.reduce((ctx, step) => step(ctx), createContext(s, m, o, checked.checks));
-  return toResult(done, inputHash(s, m, o));
+  const hash = inputHash(s, m, o);
+  try {
+    const done = steps.reduce((ctx, step) => step(ctx), createContext(s, m, o, checked.checks));
+    return toResult(done, hash);
+  } catch (error) {
+    if (!isInputError(error)) throw error;
+    const check: ValidationCheck = {
+      id: "FR-MEAS-01",
+      code: error.code,
+      status: "fail",
+      message: { ...INPUT_ERROR_MESSAGES[error.code] },
+    };
+    return refusedResult(s, o, [...checked.checks, check], hash);
+  }
 }

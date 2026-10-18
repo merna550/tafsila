@@ -105,19 +105,54 @@ export function sampleCubic(curve: CubicSegment, samples: number = DEFAULT_CURVE
   return Array.from({ length: samples + 1 }, (_, i) => pointOnCubic(curve, i / samples));
 }
 
+/** Control polygon of a cubic as flat numbers: x0, y0, x1, y1, x2, y2, x3, y3. */
+type FlatCubic = readonly [number, number, number, number, number, number, number, number];
+
 /**
- * Length of a cubic piece, splitting it until chord and control net agree (Gravesen's estimate).
+ * Distance between two points given as coordinates (same arithmetic as `distance`).
  *
- * @param curve - The piece.
+ * @param ax - First x.
+ * @param ay - First y.
+ * @param bx - Second x.
+ * @param by - Second y.
+ * @returns The distance in mm.
+ */
+function flatDistance(ax: number, ay: number, bx: number, by: number): number {
+  const dx = bx - ax;
+  const dy = by - ay;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+/**
+ * Length of a cubic piece, splitting it until chord and control net agree (Gravesen's estimate). Works on flat
+ * numbers with the same arithmetic as `splitCubic` and `distance`, so results are unchanged while the
+ * points and segments it used to allocate per split are gone (the bodice block's hot spot, #128).
+ *
+ * @param c - The piece as flat numbers.
  * @param depth - Current recursion depth.
  * @returns Length in mm.
  */
-function adaptiveLength(curve: CubicSegment, depth: number): number {
-  const chord = distance(curve.from, curve.to);
-  const net = distance(curve.from, curve.c1) + distance(curve.c1, curve.c2) + distance(curve.c2, curve.to);
+function adaptiveLength(c: FlatCubic, depth: number): number {
+  const [x0, y0, x1, y1, x2, y2, x3, y3] = c;
+  const chord = flatDistance(x0, y0, x3, y3);
+  const net = flatDistance(x0, y0, x1, y1) + flatDistance(x1, y1, x2, y2) + flatDistance(x2, y2, x3, y3);
   if (net - chord <= CURVE_LENGTH_TOLERANCE_MM || depth >= MAX_SUBDIVISION_DEPTH) return (chord + net) / 2;
-  const [left, right] = splitCubic(curve, HALF);
-  return adaptiveLength(left, depth + 1) + adaptiveLength(right, depth + 1);
+  const abx = x0 + (x1 - x0) * HALF;
+  const aby = y0 + (y1 - y0) * HALF;
+  const bcx = x1 + (x2 - x1) * HALF;
+  const bcy = y1 + (y2 - y1) * HALF;
+  const cdx = x2 + (x3 - x2) * HALF;
+  const cdy = y2 + (y3 - y2) * HALF;
+  const abcx = abx + (bcx - abx) * HALF;
+  const abcy = aby + (bcy - aby) * HALF;
+  const bcdx = bcx + (cdx - bcx) * HALF;
+  const bcdy = bcy + (cdy - bcy) * HALF;
+  const mx = abcx + (bcdx - abcx) * HALF;
+  const my = abcy + (bcdy - abcy) * HALF;
+  return (
+    adaptiveLength([x0, y0, abx, aby, abcx, abcy, mx, my], depth + 1) +
+    adaptiveLength([mx, my, bcdx, bcdy, cdx, cdy, x3, y3], depth + 1)
+  );
 }
 
 /**
@@ -129,7 +164,8 @@ function adaptiveLength(curve: CubicSegment, depth: number): number {
  * cubicLength(cubicSeg(pt(0, 0), pt(10, 0), pt(20, 0), pt(30, 0))) // 30
  */
 export function cubicLength(curve: CubicSegment): number {
-  return adaptiveLength(curve, 0);
+  const { from, c1, c2, to } = curve;
+  return adaptiveLength([from.x, from.y, c1.x, c1.y, c2.x, c2.y, to.x, to.y], 0);
 }
 
 /**

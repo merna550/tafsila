@@ -113,10 +113,37 @@ export const dartSchema = z.object({
   edgeId: z.string().min(1),
   apex: pointSchema,
   legs: z.tuple([pointSchema, pointSchema]),
+  bustPointLimit: z
+    .object({
+      point: pointSchema,
+      axis: z.enum(["x", "y"]),
+      direction: z.enum(["positive", "negative"]),
+      setbackMm: z.number().min(0),
+    })
+    .optional(),
 });
 
 /** A dart on a piece. */
 export type Dart = z.infer<typeof dartSchema>;
+
+/** A geometric declaration used to measure one garment circumference from finished pieces. */
+export const bodyLineSchema = z.discriminatedUnion("kind", [
+  z.object({
+    id: z.string().min(1),
+    measurement: z.enum(["bust", "waist", "hip"]),
+    kind: z.literal("edge"),
+    edgeId: z.string().min(1),
+  }),
+  z.object({
+    id: z.string().min(1),
+    measurement: z.enum(["bust", "waist", "hip"]),
+    kind: z.literal("horizontal"),
+    atMm: z.number(),
+  }),
+]);
+
+/** One body line declared by a pattern piece. */
+export type BodyLine = z.infer<typeof bodyLineSchema>;
 
 /** A text or mark printed on a piece. */
 export const labelSchema = z.object({
@@ -145,6 +172,13 @@ export const pieceSchema = z.object({
   cutPath: closedPathSchema,
   edges: z.array(edgeSchema),
   notches: z.array(notchSchema),
+  bodyLines: z.array(bodyLineSchema),
+  sleeveCap: z
+    .object({
+      edgeId: z.string().min(1),
+      armholeRefs: z.array(edgePairSchema.pick({ pieceId: true, edgeId: true })).min(1),
+    })
+    .optional(),
   grainLine: z.tuple([pointSchema, pointSchema]),
   darts: z.array(dartSchema),
   labels: z.array(labelSchema),

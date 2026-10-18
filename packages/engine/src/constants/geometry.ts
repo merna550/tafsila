@@ -38,3 +38,21 @@ export const MAX_INTERSECTION_STEPS = 200_000;
 
 /** Deepest subdivision when offsetting one cubic (2^10 = 1024 pieces); deeper means the offset has a cusp. */
 export const OFFSET_MAX_DEPTH = 10;
+
+/**
+ * Largest sweep one cubic covers when a circular arc is drawn, in radians (π/4). The four-point approximation
+ * then strays from the circle by under 5e-6 of the radius: below 0.01 mm for any radius under 2 m (issue #136).
+ */
+export const ARC_MAX_SWEEP_PER_CUBIC_RAD = 0.7853981633974483;
+
+/** Handle length of a cubic arc is `ARC_HANDLE_FACTOR · tan(sweep / ARC_HANDLE_ANGLE_DIVISOR) · radius` (4/3). */
+export const ARC_HANDLE_FACTOR = 1.3333333333333333;
+
+/** Divisor of the sweep inside the tangent of the cubic-arc handle formula (a quarter of the sweep). */
+export const ARC_HANDLE_ANGLE_DIVISOR = 4;
+
+/**
+ * Two lines whose directions differ by less than this sine (1e-9 rad) are parallel. Rounding leaves collinear
+ * diagonal lines, such as a circle skirt's side seam and its mirrored hem corner, about 1e-13 apart (issue #136).
+ */
+export const PARALLEL_SIN_EPSILON = 1e-9;

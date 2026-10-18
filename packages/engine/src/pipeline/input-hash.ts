@@ -64,7 +64,8 @@ function hexLimb(n: number): string {
 }
 
 /**
- * Canonical JSON of a plain object: keys sorted by UTF-16 code units, with `undefined` values left out.
+ * Canonical JSON of a plain object: keys sorted by UTF-16 code units, `undefined` values left out. One pass
+ * with string concatenation (the array chain it replaced was a hot spot of the pipeline, #128).
  *
  * @param obj - The object.
  * @returns The JSON text.
@@ -73,9 +74,9 @@ function canonicalObject(obj: Record<string, unknown>): string {
   const keys = Object.keys(obj).sort(compareText);
   let out = "";
   for (const key of keys) {
-    const value = obj[key];
-    if (value === undefined) continue;
-    out += `${out === "" ? "" : ","}${JSON.stringify(key)}:${canonicalJson(value)}`;
+    const v = obj[key];
+    if (v === undefined) continue;
+    out += `${out === "" ? "" : ","}${JSON.stringify(key)}:${canonicalJson(v)}`;
   }
   return `{${out}}`;
 }
@@ -87,7 +88,8 @@ function canonicalObject(obj: Record<string, unknown>): string {
  * @returns 16 lowercase hex digits.
  */
 function fnv1a64(text: string): string {
-  // Four 16-bit limbs preserve the exact 64-bit FNV result without allocating a BigInt for every byte.
+  // 64-bit state as four 16-bit limbs so every step is small-integer arithmetic (BigInt per byte was the
+  // pipeline's hot spot, #128). Multiplying by 2^40 + 0x1b3 adds limb i << 8 into limb i + 2.
   let h0 = FNV_OFFSET_0;
   let h1 = FNV_OFFSET_1;
   let h2 = FNV_OFFSET_2;

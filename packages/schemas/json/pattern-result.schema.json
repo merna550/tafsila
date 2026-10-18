@@ -55,6 +55,76 @@
             ],
             "type": "object"
           },
+          "bodyLines": {
+            "items": {
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "const": "edge",
+                      "type": "string"
+                    },
+                    "measurement": {
+                      "enum": [
+                        "bust",
+                        "waist",
+                        "hip"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "measurement",
+                    "kind",
+                    "edgeId"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "atMm": {
+                      "type": "number"
+                    },
+                    "id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "kind": {
+                      "const": "horizontal",
+                      "type": "string"
+                    },
+                    "measurement": {
+                      "enum": [
+                        "bust",
+                        "waist",
+                        "hip"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "measurement",
+                    "kind",
+                    "atMm"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "type": "array"
+          },
           "cut": {
             "additionalProperties": false,
             "properties": {
@@ -239,6 +309,52 @@
                   "required": [
                     "x",
                     "y"
+                  ],
+                  "type": "object"
+                },
+                "bustPointLimit": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "axis": {
+                      "enum": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "string"
+                    },
+                    "direction": {
+                      "enum": [
+                        "positive",
+                        "negative"
+                      ],
+                      "type": "string"
+                    },
+                    "point": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "type": "object"
+                    },
+                    "setbackMm": {
+                      "minimum": 0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "point",
+                    "axis",
+                    "direction",
+                    "setbackMm"
                   ],
                   "type": "object"
                 },
@@ -560,6 +676,42 @@
             },
             "type": "array"
           },
+          "sleeveCap": {
+            "additionalProperties": false,
+            "properties": {
+              "armholeRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "pieceId": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pieceId",
+                    "edgeId"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "edgeId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "edgeId",
+              "armholeRefs"
+            ],
+            "type": "object"
+          },
           "stitchPath": {
             "items": {
               "oneOf": [
@@ -705,6 +857,7 @@
           "cutPath",
           "edges",
           "notches",
+          "bodyLines",
           "grainLine",
           "darts",
           "labels",

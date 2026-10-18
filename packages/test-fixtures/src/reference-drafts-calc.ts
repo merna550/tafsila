@@ -45,6 +45,16 @@ export const DRAFT_CONSTANTS = {
   bustDartBelowUnderarmMm: 20,
   /** The front waist dart ends this far below the bust point. */
   frontDartBelowBustMm: 25,
+  /**
+   * Back shoulder length minus front shoulder length (issue #128). 0 until the toile: the back shoulder then
+   * matches the front exactly; Aldrich eases or darts a longer back shoulder, a 5-7 mm value is one change.
+   */
+  backShoulderEaseMm: 0,
+  /**
+   * The bust dart apex sits this far from the bust point towards the side seam, on the horizontal through the
+   * middle of the dart mouth (issue #128), so both legs are equal and the apex stays clear of the waist dart.
+   */
+  bustDartApexSetbackMm: 25,
   /** Share of the armscye depth used as sleeve cap height. */
   sleeveCapHeightShare: 2 / 3,
   /** Sleeve ease at the upper arm line (total). */
@@ -163,6 +173,59 @@ function bodiceWaist(m: Measurements, centreFactor: "back" | "front") {
 }
 
 /**
+ * Horizontal shoulder run: from the neck point to half the shoulder width.
+ *
+ * @param m - Measurements of the size.
+ * @param d - Unrounded derived lengths.
+ * @returns The run in mm.
+ */
+function shoulderRunOf(m: Measurements, d: Pick<DerivedLengths, "neckWidth">): number {
+  return m.shoulderWidth / 2 - d.neckWidth;
+}
+
+/**
+ * Back shoulder tip (issue #128): the front shoulder length plus the back shoulder ease, laid along the back
+ * slope from the neck point, so the shoulder seams match. The front tip stays at SW / 2.
+ *
+ * @param m - Measurements of the size.
+ * @param d - Unrounded derived lengths.
+ * @returns The unrounded tip.
+ */
+function backShoulderTip(m: Measurements, d: Pick<DerivedLengths, "neckWidth">): Point {
+  const run = shoulderRunOf(m, d);
+  const length = Math.hypot(run, run * C.frontShoulderSlope) + C.backShoulderEaseMm;
+  const unit = Math.hypot(1, C.backShoulderSlope);
+  return { x: d.neckWidth + length / unit, y: (length * C.backShoulderSlope) / unit };
+}
+
+/**
+ * Trues a dart (issue #128): the shorter leg is extended along its own line from the apex until it is as long
+ * as the longer leg.
+ *
+ * @param apex - Dart apex.
+ * @param a - First leg end.
+ * @param b - Second leg end.
+ * @returns The two leg ends, trued.
+ */
+function trueLegs(apex: Point, a: Point, b: Point): [Point, Point] {
+  const la = Math.hypot(a.x - apex.x, a.y - apex.y);
+  const lb = Math.hypot(b.x - apex.x, b.y - apex.y);
+  /**
+   * Extends a leg to the given length.
+   *
+   * @param leg - Leg end.
+   * @param from - Its current length.
+   * @param to - The target length.
+   * @returns The moved leg end.
+   */
+  const extend = (leg: Point, from: number, to: number): Point => ({
+    x: apex.x + ((leg.x - apex.x) * to) / from,
+    y: apex.y + ((leg.y - apex.y) * to) / from,
+  });
+  return la < lb ? [extend(a, la, lb), b] : [a, extend(b, lb, la)];
+}
+
+/**
  * Drafts the back bodice.
  *
  * @param m - Measurements of the size.
@@ -172,8 +235,8 @@ function bodiceWaist(m: Measurements, centreFactor: "back" | "front") {
 function draftBodiceBack(m: Measurements, d: DerivedLengths): BlockPoints {
   const nape = p(0, C.backNeckRiseMm);
   const neckPoint = p(d.neckWidth, 0);
-  const runMm = m.shoulderWidth / 2 - d.neckWidth;
-  const tipY = C.backShoulderSlope * runMm;
+  const tip = backShoulderTip(m, d);
+  const tipY = tip.y;
   const underarmY = C.backNeckRiseMm + d.scyeDepth;
   const w = bodiceWaist(m, "back");
   const waistY = C.backNeckRiseMm + m.backLength;
@@ -181,7 +244,7 @@ function draftBodiceBack(m: Measurements, d: DerivedLengths): BlockPoints {
   return {
     "bodice.back.nape": nape,
     "bodice.back.neckPoint": neckPoint,
-    "bodice.back.shoulderTip": p(m.shoulderWidth / 2, tipY),
+    "bodice.back.shoulderTip": p(tip.x, tip.y),
     "bodice.back.backWidthPoint": p(d.backWidth / 2, tipY + (underarmY - tipY) / 3),
     "bodice.back.scyeLineCB": p(0, underarmY),
     "bodice.back.underarm": p(w.bustHalf, underarmY),
@@ -201,8 +264,7 @@ function draftBodiceBack(m: Measurements, d: DerivedLengths): BlockPoints {
  * @returns Key points of the front bodice.
  */
 function draftBodiceFront(m: Measurements, d: DerivedLengths): BlockPoints {
-  const runMm = m.shoulderWidth / 2 - d.neckWidth;
-  const tipY = C.frontShoulderSlope * runMm;
+  const tipY = C.frontShoulderSlope * shoulderRunOf(m, d);
   const underarmY = C.backNeckRiseMm + d.scyeDepth;
   const w = bodiceWaist(m, "front");
   const waistCF = p(0, m.frontLength);
@@ -216,6 +278,12 @@ function draftBodiceFront(m: Measurements, d: DerivedLengths): BlockPoints {
   const waistLineY = (x: number): number => yOnLine(waistCF, sideWaist, x);
   const bust = p(m.bustPointDistance / 2, m.bustHeight);
   const upperY = underarmY + C.bustDartBelowUnderarmMm;
+  const apex = { x: w.centreX, y: bust.y + C.frontDartBelowBustMm };
+  const [left, right] = trueLegs(
+    apex,
+    { x: w.centreX - w.dart / 2, y: waistLineY(w.centreX - w.dart / 2) },
+    { x: w.centreX + w.dart / 2, y: waistLineY(w.centreX + w.dart / 2) },
+  );
   return {
     "bodice.front.neckPoint": p(d.neckWidth, 0),
     "bodice.front.neckCF": p(0, d.frontNeckDepth),
@@ -226,11 +294,12 @@ function draftBodiceFront(m: Measurements, d: DerivedLengths): BlockPoints {
     "bodice.front.bustPoint": bust,
     "bodice.front.bustDartUpper": p(w.bustHalf, upperY),
     "bodice.front.bustDartLower": p(w.bustHalf, upperY + d.bustDart),
+    "bodice.front.bustDartApex": p(bust.x + C.bustDartApexSetbackMm, upperY + d.bustDart / 2),
     "bodice.front.waistCF": waistCF,
     "bodice.front.sideWaist": sideWaist,
-    "bodice.front.waistDartLeft": p(w.centreX - w.dart / 2, waistLineY(w.centreX - w.dart / 2)),
-    "bodice.front.waistDartRight": p(w.centreX + w.dart / 2, waistLineY(w.centreX + w.dart / 2)),
-    "bodice.front.waistDartApex": p(w.centreX, bust.y + C.frontDartBelowBustMm),
+    "bodice.front.waistDartLeft": p(left.x, left.y),
+    "bodice.front.waistDartRight": p(right.x, right.y),
+    "bodice.front.waistDartApex": p(apex.x, apex.y),
   };
 }
 
@@ -301,7 +370,7 @@ function scyeDepthOf(m: Measurements): number {
  */
 function deriveLengths(m: Measurements): DerivedLengths {
   const neckWidth = m.neck / 5 - C.neckWidthDeductMm;
-  const run = m.shoulderWidth / 2 - neckWidth;
+  const run = shoulderRunOf(m, { neckWidth });
   const scyeDepth = scyeDepthOf(m);
   const bustHalf = m.bust / 4 + C.bustEaseQuarterMm;
   const shaping = bustHalf - (m.waist / 4 + C.bodiceWaistEaseQuarterMm);
@@ -311,7 +380,7 @@ function deriveLengths(m: Measurements): DerivedLengths {
     chestWidth: r1(m.bust * C.chestWidthRatio),
     neckWidth: r1(neckWidth),
     frontNeckDepth: r1(m.neck / 5 + C.frontNeckDepthAddMm),
-    backShoulderLength: r1(Math.hypot(run, run * C.backShoulderSlope)),
+    backShoulderLength: r1(Math.hypot(run, run * C.frontShoulderSlope) + C.backShoulderEaseMm),
     frontShoulderLength: r1(Math.hypot(run, run * C.frontShoulderSlope)),
     bustDart: r1(m.bust * C.bustDartRatio),
     backWaistDart: r1(shaping * C.bodiceDartShare),

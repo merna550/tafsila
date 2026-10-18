@@ -16,8 +16,8 @@ The function is pure and deterministic and runs the same in the browser and on t
 
 | Step          | Does                                                             | Filled by  |
 | ------------- | ---------------------------------------------------------------- | ---------- |
-| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | #126       |
-| `blocks`      | Base blocks: bodice, skirt, sleeve                               | #128, #129 |
+| `resolve`     | Drafting inputs from measurements + ease tables (`src/resolve/`) | real now   |
+| `blocks`      | Base blocks: bodice (real now), skirt                            | #128, #129 |
 | `modules`     | Registered `FeatureModule`s transform the blocks                 | real now   |
 | `finishing`   | Seam allowance (real now), notches, grain, darts, cut info       | #130, #131 |
 | `layout`      | Collision-free label placement                                   | #131       |
@@ -28,7 +28,8 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 
 | File                  | Holds                                                                                                                                                                |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `resolved`, `pieces`, `checks`) `Step`, and `withPiece`/`withPieces`/`withCheck`                                        |
+| `draft-context.ts`    | `DraftContext` (spec, measurements, options, `inputs`, `resolved`, `pieces`, `checks`), `Step`, and `withPiece`/`withPieces`/`withCheck`/`withInputs`/`withResolved` |
+| `input-errors.ts`     | `INPUT_ERROR_MESSAGES` (ar/en) and `isInputError`: input-type `DraftingError`s (`BODICE_*`, `SKIRT_LENGTH_*`) become a `fail` result                                 |
 | `feature-module.ts`   | `FeatureModule` and `ValidationRule` interfaces                                                                                                                      |
 | `registry.ts`         | `createRegistry`: order by `order` then `id`, duplicate id throws `PIPELINE_DUPLICATE_MODULE`                                                                        |
 | `default-registry.ts` | The registry used by default; each real module adds one line                                                                                                         |
@@ -37,7 +38,7 @@ Empty steps are identity functions whose JSDoc names the issue that fills them.
 | `input-hash.ts`       | `canonicalJson` and `inputHash` (FNV-1a 64-bit) for `meta.createdFrom`                                                                                               |
 | `steps.ts`            | The seven steps and `buildReport` (worst status wins, `pass` when empty)                                                                                             |
 
-Bad input never throws: it returns a `fail` result with no pieces. Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
+Bad input never throws: it returns a `fail` result with no pieces, including body proportions a block cannot draft (an `FR-MEAS-01` check with the `BODICE_*` or `SKIRT_LENGTH_*` code, [decision 128](../decisions/128-bodice-block.md)). Only programming errors throw `DraftingError`. `test-support/rectangle-module.ts` is a test-only module (one piece, one `FR-VAL-06` rule).
 
 ## Ease tables and resolve (`src/constants/ease.ts`, `src/resolve/`)
 
@@ -58,6 +59,19 @@ Total ease, mm over the whole circumference (regular is SRS §6.2; the rest are 
 `bodice.fit` modifier on bust, waist and hip (total floored at 0): fitted -10, semi-fitted 0, loose +30. No bodice means 0.
 
 Skirt length: `skirt.lengthMm` wins; otherwise from `waistToKnee` (K) and `waistToFloor` (F): mini K - 180, knee K, midi K + 0.40 (F - K), ankle K + 0.85 (F - K), floor F - 20. Errors: `SKIRT_LENGTH_INVALID_BODY` (F - K below 150), `SKIRT_LENGTH_OUT_OF_BODY` (explicit length below 100 or above F), `FABRIC_NOT_SUPPORTED` (non-woven).
+
+## Blocks: bodice (`src/blocks/`)
+
+The `blocks` step folds `BLOCK_DRAFTERS[name]` over `CATEGORY_BLOCKS[category]` (bodice, then skirt for a dress). Blocks are pipeline steps, not `FeatureModule`s; they import `pipeline/draft-context` and `pipeline/category-rules` directly, never `pipeline/index` ([decision 128](../decisions/128-bodice-block.md)).
+
+- `draftBodice(input, options?)` (pure) drafts the back and front halves with the Aldrich method of [drafting-method.md](drafting-method.md). `bodiceBlock` is its step: it reads `ctx.inputs` (throws `PIPELINE_STEP_ORDER` when resolve has not run) and adds the pieces.
+- **Pieces:** `bodice-back` (الظهر / Back bodice) and `bodice-front` (الصدر الأمامي / Front bodice), each cut once on the fold.
+- **Edges** in path order: `neck` (neckline), `shoulder` (other), `armhole` (armhole), `side` (side), `waist` (other), `cb` / `cf` (fold, no allowance). `shoulder` and `side` pair with the other piece; the back shoulder declares `intendedEaseMm` (`BACK_SHOULDER_EASE_MM`, 0 until the toile).
+- **Darts:** `waist-dart` on both pieces (dropped below 6 mm or for `shaping: "none"`), `bust-dart` on the front `side` edge; legs in path order. The front waist dart is trued.
+- **`resolved` keys** for the sleeve (#134): `bodice.armholeBackMm`, `bodice.armholeFrontMm`, `bodice.scyeDepthMm`.
+- **Input codes:** `BODICE_SHOULDER_INVALID`, `BODICE_LENGTHS_INVALID`, `BODICE_BUST_POINT_OUT_OF_BLOCK` (limits in `src/constants/bodice.ts`).
+- **Shared helpers** for later blocks: `blocks/shared/edges.ts` (`buildEdges`, which sets each edge `kind` and takes its allowance from `allowanceFor` of #130), `blocks/shared/darts.ts` (`trueDartLegs`, `dartMouthIndex`) and `pieces/measure.ts` (`edgeLengthMm` with `closeDarts`, `dartLegLengthsMm`) for #133's rules.
+- Seed design: `dartedBlouse` (`pnpm engine:print dartedBlouse size-m`).
 
 ## Geometry kit (`src/geometry/`)
 
@@ -147,22 +161,42 @@ Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich
 
 Target catalogue: SRS §6.1 (`DesignSpec`). Implemented modules:
 
-| Module id | DesignSpec path | Status        | Sew-tested |
-| --------- | --------------- | ------------- | ---------- |
-| —         | —               | none yet (M1) | —          |
+| Module id      | DesignSpec path                           | Status                                                                                                                                                                                             | Sew-tested |
+| -------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `block-skirt`  | `skirt` (any type; the base)              | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`)                                                                                                                                                | not yet    |
+| `skirt-circle` | `skirt.type` `circle-half`, `circle-full` | built (#136, `src/modules/circle-skirt/`, `draftCircleQuarter`); split to 4 pieces when wider than the fabric; bias hem: hang 24 h, then level ([decision 136](../decisions/136-circle-skirts.md)) | not yet    |
+
+**Skirt block names** ([decision 129](../decisions/129-skirt-block.md)); #135 to #140 and #143 use the same ones:
+
+| Piece         | Edge    | Kind                                     | Pairs with         |
+| ------------- | ------- | ---------------------------------------- | ------------------ |
+| `skirt-front` | `waist` | `other`                                  | (waistband, later) |
+| `skirt-front` | `side`  | `side`                                   | `skirt-back/side`  |
+| `skirt-front` | `hem`   | `hem`                                    | —                  |
+| `skirt-front` | `cf`    | `fold`                                   | —                  |
+| `skirt-back`  | `waist` | `other`                                  | (waistband, later) |
+| `skirt-back`  | `side`  | `side`                                   | `skirt-front/side` |
+| `skirt-back`  | `hem`   | `hem`                                    | —                  |
+| `skirt-back`  | `cb`    | `fold`, or `other` for a centre-back zip | `skirt-back/cb`    |
+
+The block is drafted at its built-in ease and widened at the side seam by the style ease; the front and back side seams are trued to equal length by moving the waist side points (front down, back up). Errors: `SKIRT_SHORTER_THAN_HIP_DEPTH`, `SKIRT_LENGTH_MISSING`. Print: `pnpm engine:print straightKneeSkirt size-m`.
 
 ## Validation rules (SRS §4.5)
 
-| ID        | Check                                      | Tolerance           |
-| --------- | ------------------------------------------ | ------------------- |
-| FR-VAL-01 | Paired seam lengths match                  | ≤ 2 mm unless eased |
-| FR-VAL-02 | Sleeve cap ease (woven set-in)             | 10–40 mm            |
-| FR-VAL-03 | Circumference = measurement + ease         | ± 5 mm              |
-| FR-VAL-04 | Notches align on paired edges              | ± 2 mm              |
-| FR-VAL-05 | Closed outlines, no self-intersection, SA  | exact               |
-| FR-VAL-06 | Grain line, name, cut quantity per piece   | present             |
-| FR-VAL-07 | Dart legs equal, point within limit        | ± 1 mm              |
-| FR-VAL-08 | Plausibility (negative ease, fabric width) | warning             |
+| ID        | Check                                      | Tolerance           | Code                                                                                               |
+| --------- | ------------------------------------------ | ------------------- | -------------------------------------------------------------------------------------------------- |
+| FR-VAL-01 | Paired seam lengths match                  | ≤ 2 mm unless eased | [`validation/rules/seam-match.ts`](../../packages/engine/src/validation/rules/seam-match.ts)       |
+| FR-VAL-02 | Sleeve cap ease (woven set-in)             | 10–40 mm            | [`validation/rules/sleeve-cap.ts`](../../packages/engine/src/validation/rules/sleeve-cap.ts)       |
+| FR-VAL-03 | Circumference = measurement + ease         | ± 5 mm              | [`validation/rules/circumference.ts`](../../packages/engine/src/validation/rules/circumference.ts) |
+| FR-VAL-04 | Notches align on paired edges              | ± 2 mm              | [`validation/rules/notches.ts`](../../packages/engine/src/validation/rules/notches.ts)             |
+| FR-VAL-05 | Closed outlines, no self-intersection, SA  | exact               | [`validation/rules/structural.ts`](../../packages/engine/src/validation/rules/structural.ts)       |
+| FR-VAL-06 | Grain line, name, cut quantity per piece   | present             | [`validation/rules/labels.ts`](../../packages/engine/src/validation/rules/labels.ts)               |
+| FR-VAL-07 | Dart legs equal, point within limit        | ± 1 mm              | [`validation/rules/darts.ts`](../../packages/engine/src/validation/rules/darts.ts)                 |
+| FR-VAL-08 | Plausibility (negative ease, fabric width) | warning             | [`validation/rules/plausibility.ts`](../../packages/engine/src/validation/rules/plausibility.ts)   |
+
+Core rules are registered before garment-module rules and sorted by requirement id, then stable failure code. A rule returns one bilingual report row and never edits geometry. To add a rule, add its stable Arabic/English code to [`validation/messages.ts`](../../packages/engine/src/validation/messages.ts), implement and test the pure `ValidationRule`, then register it in [`validation/core-rules.ts`](../../packages/engine/src/validation/core-rules.ts) or in its owning feature module.
+
+Fit rules may return several deterministic rows through `runMany`: one per unique seam pair, declared sleeve cap, garment body line, notch pair or dart. Body lines are measured from stitch geometry; edge-backed lines close dart intake, and fold pieces count twice.
 
 ## Measurement validation (FR-MEAS-01, -03, -05)
 

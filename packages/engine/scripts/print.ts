@@ -1,7 +1,13 @@
 /** `pnpm engine:print <fixture> <size> [--out file.svg]`: writes a 1:1 SVG toile sheet for a plotter print shop. */
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { rectanglePattern, SIZE_MATRIX, vNeckHalfCircleDress } from "@tafsila/test-fixtures";
+import {
+  dartedBlouse,
+  rectanglePattern,
+  SIZE_MATRIX,
+  straightKneeSkirt,
+  vNeckHalfCircleDress,
+} from "@tafsila/test-fixtures";
 import type { PatternResult } from "@tafsila/schemas";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../src/pipeline";
 import { marksRegistry } from "../src/pipeline/test-support/marks-module";
@@ -16,7 +22,7 @@ const EXIT_NO_PIECES = 1;
 const EXIT_USAGE = 2;
 
 /** Design fixtures the script can draft, by name. */
-const DESIGN_FIXTURES = { vNeckHalfCircleDress } as const;
+const DESIGN_FIXTURES = { dartedBlouse, straightKneeSkirt, vNeckHalfCircleDress } as const;
 
 /** Name of the ready-made rectangle test pattern. */
 const RECTANGLE = "rectangle";
