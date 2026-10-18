@@ -204,6 +204,23 @@ describe("fake client flows", () => {
     expect(client.writes.map((w) => w.method)).toEqual(["PUT", "POST", "PATCH", "DELETE"]);
   });
 
+  it("reports files of the merged PR that are missing on main (issue #186)", async () => {
+    const state = fixture("green");
+    state.routes["repos/o/r/pulls/210/files?per_page=100"] = [
+      { filename: "a.mjs", status: "added" },
+      { filename: "b.mjs", status: "modified" },
+      { filename: "gone.mjs", status: "removed" },
+    ];
+    state.routes["repos/o/r/contents/a.mjs?ref=main"] = { type: "file" };
+    const result = await merge(createFakeClient(state), 185, 210, timers);
+    expect(result.missingOnMain).toEqual(["b.mjs"]);
+  });
+
+  it("reports no missing files when the PR file list cannot be read", async () => {
+    const result = await merge(createFakeClient(fixture("green")), 185, 210, timers);
+    expect(result.missingOnMain).toEqual([]);
+  });
+
   it("does not retry when the head moved (409)", async () => {
     const client = createFakeClient(fixture("head-moved"));
     const result = await merge(client, 185, 210, timers);

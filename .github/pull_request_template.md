@@ -1,4 +1,5 @@
-Closes #
+Closes #<N>
+<!-- First line, exactly this form (issue #186). Never "Part of #N": split a multi-part issue into child issues. Base must be main. -->
 
 **SRS:** <!-- FR-... -->
 **Model used:** <!-- plan: opus|sonnet|none · build: opus|sonnet|haiku -->

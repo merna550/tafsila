@@ -1,0 +1,25 @@
+{
+  "pull_request": {
+    "number": 10,
+    "title": "feat: x",
+    "body": "Closes #186\n\nok",
+    "draft": true,
+    "labels": [
+      {
+        "name": "needs:link"
+      }
+    ],
+    "head": {
+      "ref": "feat/186-x",
+      "repo": {
+        "full_name": "o/r"
+      }
+    },
+    "base": {
+      "ref": "main",
+      "repo": {
+        "full_name": "o/r"
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ const POLL_MS = 20_000;
 const TIMEOUT_MS = 25 * 60_000;
 const CLOSE_POLL_MS = 5_000;
 const CLOSE_POLL_TRIES = 12;
+const MAX_FILES_CHECKED = 30;
 const REAL_STATUS = /^status:/;
 
 /**
@@ -131,7 +132,34 @@ export async function merge(client, number, prNumber, options) {
   }
   const closedBy = await ensureClosed(client, number, prNumber, options);
   deleteBranch(client, pr);
-  return { merged: true, sha: String(result.sha ?? verdict.sha).slice(0, 7), closedBy };
+  const missingOnMain = missingFilesOnMain(client, prNumber);
+  return { merged: true, sha: String(result.sha ?? verdict.sha).slice(0, 7), closedBy, missingOnMain };
+}
+
+/**
+ * Lists files the merged pull request added or changed that cannot be found on `main` (issue #186: a PR once
+ * merged into an already-merged branch closed its issue but never reached `main`).
+ *
+ * @param {object} client Client.
+ * @param {number} prNumber Pull request number.
+ * @returns {string[]} Paths missing on `main`; empty when all exist or the files cannot be read.
+ */
+export function missingFilesOnMain(client, prNumber) {
+  let files;
+  try {
+    files = client.get(rp(client, `pulls/${prNumber}/files?per_page=100`));
+  } catch {
+    return [];
+  }
+  const paths = files.filter((f) => f.status !== "removed").map((f) => f.filename);
+  return paths.slice(0, MAX_FILES_CHECKED).filter((path) => {
+    try {
+      client.get(rp(client, `contents/${path}?ref=main`));
+      return false;
+    } catch (error) {
+      return error.status === 404;
+    }
+  });
 }
 
 /**

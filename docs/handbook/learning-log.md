@@ -6,6 +6,7 @@ Dated list of concepts introduced by pull requests, newest first. Add one file p
 
 | Date | PR / issue | Concept introduced | Read |
 | ---- | ---------- | ------------------ | ---- |
+| 2026-10-18 | #186 | A merged PR closes its issue only through a closing keyword, so `Closes #N` is the first body line and a small workflow repairs a missing one. A PR whose base is another branch can merge "successfully" and still never reach `main`, so the same check fails any base other than `main`. | [GitHub](tech/github.md) |
 | 2026-10-18 | #185 | `/deliver` lets one command take an approved issue to a merged PR, but every merge decision is a tested function (`gateVerdict`) and the merge itself pins the head SHA, so a late push makes GitHub refuse instead of merging unchecked code. Ownership is explicit: `agent:auto` belongs to the dispatcher, everything else to `/deliver`. | [Claude Code](tech/claude-code.md) |
 | 2026-10-18 | #184 | Physical toiles get their own issue, so the code issue closes with `Closes #N` while the sewing work stays visible; a warning-only CI step flags engine PRs that name no follow-up. | [Sew test](glossary.md#sew-test) |
 | 2026-10-18 | #183 | Board sync and criteria ticking without GraphQL: REST-only scripts, a label-driven `board-sync.yml` workflow and a fake `gh` in tests | [GitHub](tech/github.md) |

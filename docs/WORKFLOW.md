@@ -77,7 +77,7 @@ The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mj
 
 ### Who builds an issue: `/deliver` or the dispatcher (issue #185)
 
-An issue is built by exactly one of them. `agent:auto` = the dispatcher (`dispatch.mjs`); every other issue = `/deliver` (or `/build`). `/deliver` refuses `agent:auto` issues. The dispatcher only considers an issue whose single status label is `status:ready` and which has no open PR (found by `Closes #N` or the branch name `<type>/N-...`, never by a plain mention). `/deliver` merges only through `scripts/deliver.mjs merge`: the gate re-checks the required checks (`REQUIRED_CHECKS` in `scripts/deliver-rules.mjs`), the closing keyword, `needs:decision` and the criteria, and pins the head SHA. Decisions: [185-deliver-merge-gate](decisions/185-deliver-merge-gate.md).
+An issue is built by exactly one of them. `agent:auto` = the dispatcher (`dispatch.mjs`); every other issue = `/deliver` (or `/build`). `/deliver` refuses `agent:auto` issues. The dispatcher only considers an issue whose single status label is `status:ready` and which has no open PR (found by `Closes #N` or the branch name `<type>/N-...`, never by a plain mention). `/deliver` merges only through `scripts/deliver.mjs merge`: the gate re-checks the required checks (`REQUIRED_CHECKS` in `scripts/deliver-rules.mjs`), the closing keyword, `needs:decision` and the criteria, and pins the head SHA. `/deliver` refuses a PR whose base is not `main` and, after merging, reports files of the PR that are missing on `main` (`missingOnMain`) and blocks. Decisions: [185-deliver-merge-gate](decisions/185-deliver-merge-gate.md), [186-pr-issue-link](decisions/186-pr-issue-link.md).
 
 ### Repository settings for /deliver (Merna, optional second guard)
 
@@ -120,7 +120,7 @@ An issue is built by exactly one of them. `agent:auto` = the dispatcher (`dispat
 - [ ] Docker: image still builds, passes hadolint/Trivy and the container smoke test (CI `Docker image` workflow; it and Storybook run only when the change can affect them, see [ADR-86](decisions/86-cut-actions-minutes.md) and [what costs minutes](backend/ci-minutes.md)). New env vars added to `.env.example`, `.env.docker.example` and `.github/ci.env` (placeholder).
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
 - [ ] Every acceptance criterion is ticked in the issue (`scripts/gh-ac.sh check <issue> <n…>`) as soon as it is met and verified; an issue is not moved to In review with unticked criteria unless the PR explains why. The PR body includes `scripts/gh-ac.sh progress <issue>`.
-- [ ] Conventional commits referencing the issue; PR body has `Closes #N`.
+- [ ] Conventional commits referencing the issue; PR body has `Closes #N` as its first line (never `Part of #N`) and the PR base is `main` (issue #186; `.github/workflows/pr-link.yml` adds a missing keyword, comments and labels `needs:link` on `Part of #N`, and fails a base other than `main` unless the PR has the label `stacked`).
 - [ ] `needs:sew-test` issues have **no** toile acceptance criterion (the PR's `Closes #N` would close the issue while it is open). Instead the builder opens (or updates) one follow-up issue `test(engine): sew-test toiles for #N` and puts `Sew-test follow-up: #M` in the PR body (CI warns when it is missing, `scripts/sew-test-followup.mjs`). See "Sew-test follow-up issues" below.
 
 ### Sew-test follow-up issues
