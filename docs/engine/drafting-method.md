@@ -145,6 +145,20 @@ Rectangles of the finished length; no block is traced ([decision 137](../decisio
 | 3   | Tiered: three tiers, each 1.5 × the one above; tier 1 is 1.5 × W                    | tier k width = W × 1.5^k; heights 30 %, 33 %, 37 % of L                     | `top` / `bottom` paired       |      |
 | 4   | Split at the fabric width: fewest equal panels per half (up to 8)                   | fits when width / (2 × panels per half) + 2 × side allowance ≤ fabric width | `skirt-panel`, `tier-k-panel` |      |
 
+### Princess seams and dart-free bodice (Chapter 3, "Dart manipulation", "Princess line bodice")
+
+Starts from the darted bodice block above; nothing is re-measured ([decision 138](../decisions/138-bodice-shaping.md)). BP = bust point, U / L = upper / lower bust dart legs on the side seam.
+
+| #   | Step (paraphrased)                                                                                                               | Formula (mm)                                                                   | Key point                      | Page |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------ | ---- |
+| 1   | Pivot point on the bust point's vertical, level with the middle of the bust dart                                                 | P = (BP.x, (U.y + L.y) / 2)                                                    | pivot                          |      |
+| 2   | Style line start: middle of the shoulder, or about a third down the armhole                                                      | shoulder: 0.5 × shoulder length; armhole: min(0.35 × armhole, armhole − 110)   | `style` start                  |      |
+| 3   | Close the bust dart: turn the upper side panel about P until U lies on L; the dart opens at the style line                       | angle = ∠(L − P) − ∠(U − P)                                                    | side panel                     |      |
+| 4   | Extend the waist dart legs up to P and true them                                                                                 | legs trued about P                                                             | `waist` / `style` corner       |      |
+| 5   | Draw each stretch of the seam as one curve, square to the bust level at P; true the side panel to the centre                     | handle 1/3 of the chord; side handle by bisection to equal length              | `princess-bust` notch at P     |      |
+| 6   | Back: style line from the shoulder (same distance from the neck point) or the armhole to the waist dart apex, then the dart legs | as steps 2, 4 and 5, nothing turns                                             | `bodice-back-centre` / `-side` |      |
+| 7   | Dart-free front: no bust dart; side waist where the side seam equals the back's and the waist keeps its length                   | circle–circle crossing (underarm, back side length) × (CF waist, waist length) | `bodice-front` side waist      |      |
+
 ### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
 
 | #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |
