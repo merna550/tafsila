@@ -3,6 +3,7 @@ import { skirtBlockModule } from "../blocks/skirt/skirt-module";
 import { setInSleeveModule } from "../blocks/sleeve/module";
 import { dartFreeBodiceModule, princessArmholeModule, princessShoulderModule } from "../modules/bodice";
 import { circleSkirtModule } from "../modules/circle-skirt/module";
+import { necklineModule } from "../modules/neckline";
 import { gatheredSkirtModule, pleatedSkirtModule, tieredSkirtModule } from "../modules/skirt";
 import { skirtShapeModule } from "../modules/skirt/shape-module";
 import { skirtSlitModule } from "../modules/skirt/slit-module";
@@ -15,6 +16,7 @@ export const defaultRegistry = createRegistry(
     princessShoulderModule,
     princessArmholeModule,
     dartFreeBodiceModule,
+    necklineModule,
     skirtBlockModule,
     circleSkirtModule,
     skirtShapeModule,

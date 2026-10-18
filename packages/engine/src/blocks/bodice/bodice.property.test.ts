@@ -17,6 +17,7 @@ import { completePiece, generatePattern } from "../../pipeline/generate-pattern"
 import { dartLegLengthsMm, edgeLengthMm } from "../../pieces/measure";
 import { bodiceCase } from "../../test-utils/bodice-input";
 import { draftBodice } from "./draft-bodice";
+import { sortedIds, withFacings } from "../../test-utils/piece-ids";
 
 const PROFILES: EaseProfile[] = ["fitted", "regular", "loose"];
 const FITS: BodiceFit[] = ["fitted", "semi-fitted", "loose"];
@@ -188,7 +189,7 @@ describe("bodice through the whole pipeline", () => {
   it("every matrix body gets closed, simple cutting lines with seam allowance", () => {
     for (const entry of SIZE_MATRIX) {
       const pieces = generatePattern(dartedBlouse, entry.measurements).pieces;
-      expect(pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+      expect(sortedIds(pieces)).toEqual(withFacings(["bodice-back", "bodice-front"]));
       const simple = pieces.every((p) => isClosed(p.cutPath) && selfIntersections(p.cutPath).length === 0);
       expect(simple, entry.id).toBe(true);
     }
@@ -203,7 +204,7 @@ describe("bodice on random bodies", () => {
         fc.property(arbMeasurements(), (m) => {
           const r = generatePattern(dartedBlouse, m);
           if (r.pieces.length > 0) {
-            expect(r.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+            expect(sortedIds(r.pieces)).toEqual(withFacings(["bodice-back", "bodice-front"]));
             return;
           }
           expect(r.validation.status).toBe("fail");
