@@ -1,6 +1,6 @@
 /** Tests for the PatternResult contract. */
 import { describe, expect, it } from "vitest";
-import { patternResultSchema, type PatternResult, type Point } from "./pattern";
+import { markSchema, patternResultSchema, type PatternResult, type Point } from "./pattern";
 
 /** Corners of a 200 x 300 mm rectangle (schemas cannot import the fixtures package: it depends on schemas). */
 const corners: Point[] = [
@@ -95,5 +95,40 @@ describe("patternResultSchema", () => {
     const p = fixture();
     p.pieces[0]!.cut = { ...p.pieces[0]!.cut, onFold: true, quantity: 0 };
     expect(patternResultSchema.safeParse(p).success).toBe(false);
+  });
+});
+
+describe("markSchema (issue #137)", () => {
+  it("accepts a gather line, a pleat arrow and a point", () => {
+    const line = {
+      id: "g",
+      kind: "gather",
+      shape: "line",
+      edgeId: "waist",
+      from: corners[0],
+      to: corners[1],
+      lengthMm: 100,
+    };
+    const arrow = {
+      id: "p",
+      kind: "pleat-direction",
+      shape: "arrow",
+      from: corners[1],
+      to: corners[0],
+      text: { ar: "اطوي", en: "Fold" },
+    };
+    const point = { id: "d", kind: "pleat-fold", shape: "point", at: corners[2] };
+    for (const mark of [line, arrow, point]) expect(markSchema.safeParse(mark).success).toBe(true);
+  });
+
+  it("rejects an unknown kind, a line without an end and a gather length that is not positive", () => {
+    expect(markSchema.safeParse({ id: "x", kind: "zip", shape: "point", at: corners[0] }).success).toBe(
+      false,
+    );
+    expect(markSchema.safeParse({ id: "x", kind: "gather", shape: "line", from: corners[0] }).success).toBe(
+      false,
+    );
+    const zero = { id: "x", kind: "gather", shape: "line", from: corners[0], to: corners[1], lengthMm: 0 };
+    expect(markSchema.safeParse(zero).success).toBe(false);
   });
 });

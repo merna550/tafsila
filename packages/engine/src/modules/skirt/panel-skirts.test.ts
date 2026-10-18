@@ -187,7 +187,7 @@ describe("panel skirt properties across the size matrix", () => {
         const { design, result } = sample(i, s, l, w);
         const m = SIZE_MATRIX[i]!.measurements;
         const expectedMm = m.waist + resolveDraftInputs(design, m, DEFAULT_ENGINE_OPTIONS).totalEaseMm.waist;
-        const check = result.validation.checks.find((c) => c.code.startsWith("FULLNESS_CLOSURE"))!;
+        const check = result.validation.checks.find((c) => c.code?.startsWith("FULLNESS_CLOSURE"))!;
         expect(check.status).toBe("pass");
         expect(Math.abs(check.measuredMm! - expectedMm)).toBeLessThanOrEqual(CIRCUMFERENCE_TOLERANCE_MM);
       }),
