@@ -1964,7 +1964,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Sew test (needs:sew-test, toile)
 
 **Plain words:** Physically sewing a garment (a toile, a cheap test version) to confirm the pattern really fits. Arabic: تجربة (توال).  
-**In Tafsila:** Each garment type is sewn in at least 3 sizes before release; the label `needs:sew-test` keeps the issue open until done ([engine docs](../engine/README.md)). **Level:** beginner  
+**In Tafsila:** Each garment type is sewn in at least 3 sizes before release; the label `needs:sew-test` stays on the code issue until a separate follow-up issue `test(engine): sew-test toiles for #N` is done ([engine docs](../engine/README.md), [WORKFLOW](../WORKFLOW.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Toile>
 
 <a id="sewing-order"></a>
