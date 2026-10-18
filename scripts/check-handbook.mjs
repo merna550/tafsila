@@ -6,6 +6,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
+import { checkLearningLogIndex } from "./learning-log-index.mjs";
 
 const CARD_DIR = "docs/handbook/tech";
 const NON_CARDS = new Set(["README.md", "_TEMPLATE.md"]);
@@ -318,7 +319,12 @@ export function checkAdrNumbers(root) {
  * @returns {string[]} All error messages (empty when everything passes).
  */
 export function checkHandbook(root) {
-  return [...checkDependencyCards(root), ...checkRelativeLinks(root), ...checkAdrNumbers(root)];
+  return [
+    ...checkDependencyCards(root),
+    ...checkRelativeLinks(root),
+    ...checkAdrNumbers(root),
+    ...checkLearningLogIndex(root),
+  ];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -329,6 +335,6 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     process.exit(1);
   }
   console.log(
-    "docs:check OK (every dependency has a card; every relative link resolves; ADR numbers are unique)",
+    "docs:check OK (every dependency has a card; every relative link resolves; ADR numbers are unique; learning-log index is fresh)",
   );
 }

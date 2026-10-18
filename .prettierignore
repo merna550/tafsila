@@ -14,3 +14,4 @@ packages/api/openapi.json
 docs/design/screens/*.dc.html
 packages/schemas/json/
 turbo/generators/templates
+docs/handbook/learning-log.md

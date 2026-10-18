@@ -45,3 +45,4 @@ Pick the path that matches you. Each path is an ordered list; the time is an est
 3. [CODING_STANDARDS.md](../CODING_STANDARDS.md) when you write code (read by section)
 4. [Glossary](glossary.md) for any term you do not know; do not guess, look it up and keep new terms consistent with it
 5. [troubleshooting.md](troubleshooting.md) when a command fails; [find a bug from a report](find-a-bug-from-a-report.md) when a user reports a problem
+6. [learning-log.md](learning-log.md): generated list of concepts per PR; add a file in `learning-log/` (never edit the table) and run `pnpm learning-log:index`
