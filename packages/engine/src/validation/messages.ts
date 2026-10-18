@@ -92,6 +92,19 @@ export const VALIDATION_MESSAGES = {
     ar: "القطعة {piece} أعرض من القماش: {mm} مم مقابل {fabric} مم",
     en: "Piece {piece} is wider than the fabric: {mm} mm versus {fabric} mm",
   },
+  PLAUS_WALKING_EASE: {
+    ar: "ذيل التنورة {mm} مم أضيق من {expected} مم اللازمة للمشي: أضيفي فتحة أو شقًّا",
+    en: "The skirt hem is {mm} mm, narrower than the {expected} mm needed to walk: add a slit or a vent",
+  },
+  SLIT_OK: { ar: "الفتحة {mm} مم تحت خط الأرداف", en: "The {mm} mm slit stays below the hip line" },
+  SLIT_ABOVE_HIP: {
+    ar: "الفتحة {mm} مم تصل فوق خط الأرداف؛ أقصى طول {expected} مم",
+    en: "The {mm} mm slit reaches above the hip line; the longest is {expected} mm",
+  },
+  SLIT_NOT_DRAFTED: {
+    ar: "الفتحة غير متاحة لتنورة {type} ولم تُرسم",
+    en: "A slit is not available for a {type} skirt and was not drafted",
+  },
 } as const;
 
 /** A stable code accepted by {@link formatMessage}. */

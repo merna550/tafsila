@@ -147,6 +147,16 @@ export const bodyLineSchema = z.discriminatedUnion("kind", [
     kind: z.literal("horizontal"),
     atMm: z.number(),
   }),
+  z.object({
+    id: z.string().min(1),
+    measurement: z.enum(["bust", "waist", "hip"]),
+    /**
+     * A body line that bends on the flat pattern, such as the hip line of a pivoted panel (decision 135): measured
+     * along these points, between the first and last place the outline crosses them (the end legs are extended).
+     */
+    kind: z.literal("polyline"),
+    points: z.array(pointSchema).min(2),
+  }),
 ]);
 
 /** One body line declared by a pattern piece. */

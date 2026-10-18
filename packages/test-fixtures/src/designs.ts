@@ -71,3 +71,28 @@ export const fullCircleKneeSkirt: DesignSpec = {
   ...halfCircleKneeSkirt,
   skirt: { type: "circle-full", length: "knee" },
 };
+
+/** An A-line skirt at midi length with a side zip: each waist dart closed into the hem (issue #135). */
+export const aLineMidiSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "a-line", length: "midi" },
+};
+
+/** A straight midi skirt with no slit: too narrow to walk in, so FR-VAL-08 warns (issue #135). */
+export const straightMidiSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "straight", length: "midi" },
+};
+
+/** A straight midi skirt with a 200 mm back slit and a centre-back zip (issue #135). */
+export const straightMidiBackSlitSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "straight", length: "midi", slit: { position: "back", lengthMm: 200 } },
+  closure: { type: "zip", position: "center-back" },
+};
+
+/** An A-line ankle skirt with a 300 mm side slit (issue #135). */
+export const aLineAnkleSideSlitSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "a-line", length: "ankle", slit: { position: "side", lengthMm: 300 } },
+};
