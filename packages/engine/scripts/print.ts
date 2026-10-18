@@ -3,6 +3,7 @@ import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   dartedBlouse,
+  setInSleeveBlouse,
   rectanglePattern,
   SIZE_MATRIX,
   straightKneeSkirt,
@@ -22,7 +23,7 @@ const EXIT_NO_PIECES = 1;
 const EXIT_USAGE = 2;
 
 /** Design fixtures the script can draft, by name. */
-const DESIGN_FIXTURES = { dartedBlouse, straightKneeSkirt, vNeckHalfCircleDress } as const;
+const DESIGN_FIXTURES = { dartedBlouse, setInSleeveBlouse, straightKneeSkirt, vNeckHalfCircleDress } as const;
 
 /** Name of the ready-made rectangle test pattern. */
 const RECTANGLE = "rectangle";

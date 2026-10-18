@@ -130,7 +130,7 @@ One drafted piece is a quarter of the skirt: front and back, each on the fold or
 | 2   | Upper-arm line: cap height below the top, half the upper arm plus ease each side | capH = (2/3) x (B / 8 + 100); half = (UA + 50) / 2; (+-half, capH) | `sleeve.underarmBack/Front`               |      |
 | 3   | Wrist: the sleeve length down the grain line, half the wrist plus ease each side | (0, AL), (+-(WR + 30) / 2, AL)                                     | `sleeve.wristCentre/wristBack/wristFront` |      |
 
-The cap curve runs from the underarm points up through the cap top; FR-VAL-02 checks that its length exceeds the armhole by 10-40 mm. The engine's cap-height bisection (README, "Drafting methods") is a later refinement and must still start from, and be compared with, these reference points.
+The cap curve runs from the underarm points up through the cap top; FR-VAL-02 checks that its length exceeds the armhole by 10-40 mm. The engine (#134) keeps steps 1 and 3 and the half-widths of step 2, but solves the cap height by bisection for 25 mm of ease over its own armhole: the 2/3 height gives a cap shorter than that armhole, so it cannot pass FR-VAL-02. The reference value stays as the starting point to compare with on paper ([decision 134](../decisions/134-set-in-sleeve.md), 1).
 
 ## Reference key points
 

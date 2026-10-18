@@ -42,7 +42,7 @@ describe("fit rules awaiting generated sleeve and notch metadata", () => {
           stitchPath: rectanglePath(200 + easeMm, 200),
           edges: [{ id: "cap", fromSegment: 0, toSegment: 0, seamAllowanceMm: 10 }],
           sleeveCap: {
-            edgeId: "cap",
+            edgeIds: ["cap"],
             armholeRefs: [
               { pieceId: "front", edgeId: "armhole" },
               { pieceId: "back", edgeId: "armhole" },

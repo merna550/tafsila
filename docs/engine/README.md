@@ -69,7 +69,7 @@ The `blocks` step folds `BLOCK_DRAFTERS[name]` over `CATEGORY_BLOCKS[category]` 
 - **Edges** in path order: `neck` (neckline), `shoulder` (other), `armhole` (armhole), `side` (side), `waist` (other), `cb` / `cf` (fold, no allowance). `shoulder` and `side` pair with the other piece; the back shoulder declares `intendedEaseMm` (`BACK_SHOULDER_EASE_MM`, 0 until the toile).
 - **Darts:** `waist-dart` on both pieces (dropped below 6 mm or for `shaping: "none"`), `bust-dart` on the front `side` edge; legs in path order. The front waist dart is trued.
 - **`resolved` keys** for the sleeve (#134): `bodice.armholeBackMm`, `bodice.armholeFrontMm`, `bodice.scyeDepthMm`.
-- **Input codes:** `BODICE_SHOULDER_INVALID`, `BODICE_LENGTHS_INVALID`, `BODICE_BUST_POINT_OUT_OF_BLOCK` (limits in `src/constants/bodice.ts`).
+- **Input codes:** `BODICE_SHOULDER_INVALID`, `BODICE_LENGTHS_INVALID`, `BODICE_BUST_POINT_OUT_OF_BLOCK` (limits in `src/constants/bodice.ts`); `SLEEVE_CAP_UNSOLVABLE`, `SLEEVE_LENGTH_TOO_SHORT` (`src/constants/sleeve-block.ts`, #134).
 - **Shared helpers** for later blocks: `blocks/shared/edges.ts` (`buildEdges`, which sets each edge `kind` and takes its allowance from `allowanceFor` of #130), `blocks/shared/darts.ts` (`trueDartLegs`, `dartMouthIndex`) and `pieces/measure.ts` (`edgeLengthMm` with `closeDarts`, `dartLegLengthsMm`) for #133's rules.
 - Seed design: `dartedBlouse` (`pnpm engine:print dartedBlouse size-m`).
 
@@ -161,10 +161,11 @@ Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich
 
 Target catalogue: SRS §6.1 (`DesignSpec`). Implemented modules:
 
-| Module id      | DesignSpec path                           | Status                                                                                                                                                                                             | Sew-tested |
-| -------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `block-skirt`  | `skirt` (any type; the base)              | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`)                                                                                                                                                | not yet    |
-| `skirt-circle` | `skirt.type` `circle-half`, `circle-full` | built (#136, `src/modules/circle-skirt/`, `draftCircleQuarter`); split to 4 pieces when wider than the fabric; bias hem: hang 24 h, then level ([decision 136](../decisions/136-circle-skirts.md)) | not yet    |
+| Module id       | DesignSpec path                               | Status                                                                                                                                                                                                      | Sew-tested |
+| --------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `block-skirt`   | `skirt` (any type; the base)                  | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`)                                                                                                                                                         | not yet    |
+| `skirt-circle`  | `skirt.type` `circle-half`, `circle-full`     | built (#136, `src/modules/circle-skirt/`, `draftCircleQuarter`); split to 4 pieces when wider than the fabric; bias hem: hang 24 h, then level ([decision 136](../decisions/136-circle-skirts.md))          | not yet    |
+| `sleeve/set-in` | `sleeve.type` `set-in`, every `sleeve.length` | built (#134, `src/blocks/sleeve/`, `draftSleeve`); cap height solved for 25 mm ease, notches matched from the underarm, adds the bodice armhole notches ([decision 134](../decisions/134-set-in-sleeve.md)) | not yet    |
 
 **Skirt block names** ([decision 129](../decisions/129-skirt-block.md)); #135 to #140 and #143 use the same ones:
 
