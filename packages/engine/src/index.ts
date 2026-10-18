@@ -2,6 +2,7 @@
 export * from "./blocks";
 export * from "./blocks/skirt/draft-skirt-half";
 export * from "./constants/bodice";
+export * from "./constants/circle-skirt";
 export * from "./constants/ease";
 export * from "./constants/geometry";
 export * from "./errors/drafting-error";
@@ -9,6 +10,8 @@ export * from "./geometry";
 export * from "./sleeve/sleeve-cap";
 export * from "./version";
 export * from "./measurements";
+export * from "./modules/circle-skirt/draft";
+export * from "./pieces/fabric-width";
 export * from "./pieces/measure";
 export * from "./pipeline";
 export * from "./render";

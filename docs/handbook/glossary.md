@@ -360,6 +360,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
 **Learn:** <https://docs.github.com/en/actions>
 
+<a id="circle-skirt"></a>
+
+### Circle skirt (half, full)
+
+**Plain words:** A skirt cut as a ring: the waist is a small circle, the hem a big one. A full circle skirt spreads to a whole circle when laid flat; a half circle to half of one. Its sides fall on the bias, so the hem drops after hanging and is levelled before hemming.
+**In Tafsila:** `circleSkirtModule` in `packages/engine/src/modules/circle-skirt/` drafts a quarter whose waist radius is solved so the sewn waist equals waist + ease, then cuts front and back on the fold or, on narrow fabric, as mirrored pairs ([decision 136](../decisions/136-circle-skirts.md)). Arcs are cubic Béziers from `arcToCubics`. **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Circle_skirt>
+
 <a id="claude-md"></a>
 
 ### CLAUDE.md

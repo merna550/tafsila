@@ -9,6 +9,18 @@ const rising = cubicSeg(pt(0, 0), pt(30, 0), pt(70, 100), pt(100, 100));
 const falling = cubicSeg(pt(0, 100), pt(30, 100), pt(70, 0), pt(100, 0));
 
 describe("intersections", () => {
+  it("treats rounding-level collinear diagonal lines as parallel (issue #136 regression)", () => {
+    const side = lineSeg(
+      pt(213.1777728531471, -94.51432814786097),
+      pt(1047.5637746532732, 739.8716736522651),
+    );
+    const corner = lineSeg(
+      pt(1047.5637746532723, 739.8716736522642),
+      pt(1068.7769780888739, 761.0848770878555),
+    );
+    expect(lineLine(side, corner)).toBeNull();
+  });
+
   it("crosses the x-axis with a vertical line at a known point", () => {
     const hit = lineLine(lineSeg(pt(0, 0), pt(10, 0)), lineSeg(pt(4, -5), pt(4, 5)));
     expect(hit).not.toBeNull();

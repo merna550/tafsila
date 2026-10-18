@@ -5,14 +5,8 @@ import { pt } from "../../geometry";
 import { type DraftContext, type PieceDraft, withPiece } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
-import { type SkirtHalf, SKIRT_PIECE_ID } from "./edges";
+import { type SkirtHalf, SKIRT_PIECE_ID, SKIRT_PIECE_NAME } from "./edges";
 import { draftSkirtHalf, type SkirtDraftInputs } from "./draft-skirt-half";
-
-/** Bilingual piece names (copy glossary: تنورة = skirt). */
-const PIECE_NAME: Readonly<Record<SkirtHalf, Piece["name"]>> = {
-  front: { ar: "أمام التنورة", en: "Skirt front" },
-  back: { ar: "خلف التنورة", en: "Skirt back" },
-};
 
 /**
  * How a half is cut: the front always on the fold; the back on the fold, or as a mirrored pair with a centre-back seam.
@@ -49,7 +43,7 @@ function skirtPiece(
   const span = hem.y - hip.y;
   return {
     id: SKIRT_PIECE_ID[half],
-    name: PIECE_NAME[half],
+    name: SKIRT_PIECE_NAME[half],
     cut: cutFor(half, centreSeam),
     stitchPath: draft.stitchPath,
     edges: draft.edges,

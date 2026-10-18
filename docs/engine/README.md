@@ -150,9 +150,10 @@ Each module cites its method in JSDoc. Basis: the blocks follow Winifred Aldrich
 
 Target catalogue: SRS §6.1 (`DesignSpec`). Implemented modules:
 
-| Module id     | DesignSpec path              | Status                                              | Sew-tested |
-| ------------- | ---------------------------- | --------------------------------------------------- | ---------- |
-| `block-skirt` | `skirt` (any type; the base) | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`) | not yet    |
+| Module id      | DesignSpec path                           | Status                                                                                                                                                                                             | Sew-tested |
+| -------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `block-skirt`  | `skirt` (any type; the base)              | built (#129, `src/blocks/skirt/`, `draftSkirtHalf`)                                                                                                                                                | not yet    |
+| `skirt-circle` | `skirt.type` `circle-half`, `circle-full` | built (#136, `src/modules/circle-skirt/`, `draftCircleQuarter`); split to 4 pieces when wider than the fabric; bias hem: hang 24 h, then level ([decision 136](../decisions/136-circle-skirts.md)) | not yet    |
 
 **Skirt block names** ([decision 129](../decisions/129-skirt-block.md)); #135 to #140 and #143 use the same ones:
 
