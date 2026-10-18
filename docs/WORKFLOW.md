@@ -138,16 +138,16 @@ All config goes through `packages/config/env.ts` (Zod-validated); the app refuse
 ## 8. GitHub board and milestones
 
 Board: **Tafsila** project (`merna550`, project #4). Columns: Backlog → Ready → In progress → In review → Done.
-Helper: `scripts/gh-project.sh add <url> [column]` and `scripts/gh-project.sh status <url> <column>` (needs `gh auth refresh -s project` once).
-Acceptance criteria: `scripts/gh-ac.sh list|check|uncheck|progress <issue> [n…]` reads and ticks the `## Acceptance criteria` checkboxes in the issue body. `/build` ticks, `/review` and `/ship` require N/N, `/status` shows `x/y criteria`.
+The workflow `.github/workflows/board-sync.yml` moves the card from the `status:*` label (and on close/merge); it needs the secret `PROJECT_TOKEN` (a token with the `project` scope, because the board is user-owned). By hand: `scripts/gh-project.sh add <url> [column]` and `status <url> <column>` (needs `gh auth refresh -s project` once); in cloud sessions it is a no-op because GraphQL is blocked there.
+Acceptance criteria: `scripts/gh-ac.sh list|check|uncheck|progress <issue> [n…]` reads and ticks the `## Acceptance criteria` checkboxes in the issue body, through the REST API only (works where GraphQL is blocked). `/build` ticks, `/review` and `/ship` require N/N, `/status` shows `x/y criteria`.
 
-| Status label                                               | Board column | Set by                     |
-| ---------------------------------------------------------- | ------------ | -------------------------- |
-| `status:triage`, `status:needs-plan`, `status:plan-review` | Backlog      | `/triage`, `/plan`         |
-| `status:ready`                                             | Ready        | `/triage` or `/plan`       |
-| `status:in-progress`, `status:changes-requested`           | In progress  | `/build`                   |
-| `status:in-review` (issue) and its PR                      | In review    | `/build`                   |
-| closed / merged                                            | Done         | board workflow (automatic) |
+| Status label                                               | Board column | Set by                       |
+| ---------------------------------------------------------- | ------------ | ---------------------------- |
+| `status:triage`, `status:needs-plan`, `status:plan-review` | Backlog      | `/triage`, `/plan`           |
+| `status:ready`                                             | Ready        | `/triage` or `/plan`         |
+| `status:in-progress`, `status:changes-requested`           | In progress  | `/build`                     |
+| `status:in-review` (issue) and its PR                      | In review    | `/build`                     |
+| closed / merged                                            | Done         | `board-sync.yml` (automatic) |
 
 Every issue and its PR carry the same milestone. Each active milestone has a one-page brief in [docs/milestones/](milestones/README.md). Rule: write the next milestone's brief when the current one is about 70% done. `/plan-milestone M<n>` (Opus, once per milestone) writes the brief and drafts its issues as `status:plan-review` in Backlog; `/plan-wave` (Opus, with Merna present) then plans every `needs-plan` issue whose dependencies are all closed, in one session, posts each plan on its issue (comment only: no plan file, branch or PR; the build PR commits `docs/plans/<N>-<slug>.md`), gives Merna one short Arabic summary of the decisions, and after she replies "approved" (or "approved except #N") sets them to `status:ready`. Milestone map (SRS §12; titles match GitHub exactly):
 

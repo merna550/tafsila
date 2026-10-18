@@ -12,6 +12,5 @@ Start from `docs/CONTEXT_MAP.md` and use the `code-search` subagent instead of o
    - Run `node scripts/needs-interactive.mjs <files to create/change>`; on `yes`, add `needs:interactive` (the dispatcher never builds it; say so in the plan).
 3. If the plan requires a costly or irreversible decision not in the docs, add `needs:decision` and ask ONE precise question in the comment; otherwise decide, and list the decision; the build writes it as `docs/decisions/<issue>-<slug>.md`.
 4. The plan lives on the issue only. Do not create `docs/plans/<N>-<slug>.md`, a branch or a PR: the build copies the approved comment into its own PR.
-5. Set status: `status:plan-review` if plan:opus or size:L, else `status:ready`; move the board card to match:
-   `scripts/gh-project.sh status <issue-url> Ready` (plan-review stays in Backlog until Merna approves).
+5. Set status: `status:plan-review` if plan:opus or size:L, else `status:ready`. The label moves the board card (`board-sync.yml`); plan-review stays in Backlog until Merna approves.
 6. Return a summary for Merna in Arabic (max 4 lines): the plan comment link and what is needed from her, if anything. Approval is the label `status:ready`, set by Merna.
