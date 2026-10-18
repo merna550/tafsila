@@ -6,6 +6,7 @@ Dated list of concepts introduced by pull requests, newest first. Add one file p
 
 | Date | PR / issue | Concept introduced | Read |
 | ---- | ---------- | ------------------ | ---- |
+| 2026-10-18 | #182 | The cloud setup script now checks Node against `engines`, downloads a matching Node 22 (SHA-256 checked) when the image is too old, and fails loudly with the fix otherwise; builders run `pnpm quality && pnpm test` as written and stop with `BLOCKED: environment` instead of skipping checks. | [Node.js](tech/nodejs.md) |
 | 2026-10-18 | #181 | Token diet: padded markdown tables become short bullet lists in auto-loaded files, builders get higher turn limits and stop at milestone boundaries, and whole logs are never printed |  |
 | 2026-10-18 | #180 | Removing a shared-file conflict hot spot: one file per issue instead of a row in a shared table, a script that generates the index, a CI check that fails when it is stale, and `merge=ours` for the generated file | [decision 180](../decisions/180-learning-log-files.md) · [handbook README](README.md) |
 | 2026-10-18 | #179 | Single source for a plan: the issue comment is the plan and the approval is a label, while the build PR copies it to `docs/plans/` with a Deviations section, so planning needs no branch, PR or merge | [workflow](../WORKFLOW.md#1-lifecycle) |

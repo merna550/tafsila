@@ -40,6 +40,8 @@ pnpm dev
 
 If `nvm use` selects an older 22.x than required, run `nvm install 22` to get the newest 22.x and `nvm use` again.
 
+**In a cloud session:** `scripts/agent-setup.sh` installs a matching Node itself or fails with the fix; see [Fix the Node version](../backend/tutorials/run-agents-in-cloud.md#fix-the-node-version).
+
 **How to avoid:** make zsh switch automatically when you `cd` into the project. Add this to `~/.zshrc` (from the [nvm documentation](https://github.com/nvm-sh/nvm#zsh), "Calling nvm use automatically in a directory with a .nvmrc file"):
 
 ```bash
