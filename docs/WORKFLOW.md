@@ -21,7 +21,7 @@ any step ─► status:blocked (+ reason)          any open question ─► need
 | Triage        | `/triage <idea or #issue>`             | Agent                        | Issue with all labels, size, model recommendation, SRS IDs, acceptance criteria                                 |
 | Plan wave     | `/plan-wave [M<n>]`                    | Agent (Opus, Merna present)  | Plans every needs-plan issue whose dependencies are closed; one Arabic summary; `status:ready` after "approved" |
 | Plan          | `/plan #N`                             | Agent (model from `plan:*`)  | Plan comment: files, steps, tests, risks, docs to update                                                        |
-| Approve plan  | comment "approved"                     | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved                                                       |
+| Approve plan  | label `status:ready`                   | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved. Claude sets it only after Merna says "approved"      |
 | Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link and green CI                                                    |
 | Review        | PR review                              | Merna                        | Approve or request changes                                                                                      |
 | Ship          | `/ship #N` (merge)                     | Agent after approval         | Merge → staging deploy → smoke tests                                                                            |
@@ -102,7 +102,7 @@ The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mj
 - [ ] Preview deployment link in the PR, with screenshots for visual changes.
 - [ ] Docs updated: SRS (behaviour), a decision file in `docs/decisions/` (choices), CLAUDE.md status when the milestone, next step or an open decision changed.
 - [ ] Manual test cases: `docs/test-cases/<area>/<N>-<slug>.md` (happy path, errors, permissions, edge sizes, RTL, mobile), each marked automated or manual-only.
-- [ ] Plan saved to `docs/plans/<N>-<slug>.md`.
+- [ ] Plan copied from the approved issue comment to `docs/plans/<N>-<slug>.md` in the build PR, with a "Deviations" section.
 - [ ] New concepts added to `docs/handbook/` (glossary / tech card / pattern) and listed as a file in `docs/handbook/learning-log/` (then `pnpm learning-log:index`); the PR has a "Concepts introduced" section; `pnpm docs:check` passes.
 - [ ] Docker: image still builds, passes hadolint/Trivy and the container smoke test (CI `Docker image` workflow; it and Storybook run only when the change can affect them, see [ADR-86](decisions/86-cut-actions-minutes.md) and [what costs minutes](backend/ci-minutes.md)). New env vars added to `.env.example`, `.env.docker.example` and `.github/ci.env` (placeholder).
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
@@ -116,7 +116,7 @@ The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mj
 | ----------------------------------- | -------------------------------------------------------------------------------------------------- |
 | What we build                       | `docs/SRS.md`                                                                                      |
 | Why we chose X                      | `docs/DECISIONS.md`                                                                                |
-| How a feature was planned           | `docs/plans/`                                                                                      |
+| How a feature was planned           | `docs/plans/` (written by the build PR from the issue's plan comment)                              |
 | How to test by hand                 | `docs/test-cases/` (+ generated `index.md`)                                                        |
 | Learn a term / technology / pattern | `docs/handbook/` (start at `START_HERE.md`; glossary, maps, patterns, tech cards, troubleshooting) |
 | Backend how-tos                     | `docs/backend/` and `docs/backend/tutorials/`                                                      |
@@ -149,7 +149,7 @@ Acceptance criteria: `scripts/gh-ac.sh list|check|uncheck|progress <issue> [n…
 | `status:in-review` (issue) and its PR                      | In review    | `/build`                   |
 | closed / merged                                            | Done         | board workflow (automatic) |
 
-Every issue and its PR carry the same milestone. Each active milestone has a one-page brief in [docs/milestones/](milestones/README.md). Rule: write the next milestone's brief when the current one is about 70% done. `/plan-milestone M<n>` (Opus, once per milestone) writes the brief and drafts its issues as `status:plan-review` in Backlog; `/plan-wave` (Opus, with Merna present) then plans every `needs-plan` issue whose dependencies are all closed, in one session, posts each plan on its issue, gives Merna one short Arabic summary of the decisions, and after she replies "approved" (or "approved except #N") sets them to `status:ready`. Milestone map (SRS §12; titles match GitHub exactly):
+Every issue and its PR carry the same milestone. Each active milestone has a one-page brief in [docs/milestones/](milestones/README.md). Rule: write the next milestone's brief when the current one is about 70% done. `/plan-milestone M<n>` (Opus, once per milestone) writes the brief and drafts its issues as `status:plan-review` in Backlog; `/plan-wave` (Opus, with Merna present) then plans every `needs-plan` issue whose dependencies are all closed, in one session, posts each plan on its issue (comment only: no plan file, branch or PR; the build PR commits `docs/plans/<N>-<slug>.md`), gives Merna one short Arabic summary of the decisions, and after she replies "approved" (or "approved except #N") sets them to `status:ready`. Milestone map (SRS §12; titles match GitHub exactly):
 
 | Milestone                      | Work that belongs there                                                                                                 |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |

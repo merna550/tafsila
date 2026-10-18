@@ -317,3 +317,24 @@ describe("expensive checks run only when needed (issue #86)", () => {
     }
   });
 });
+
+describe("plans live on the issue only (issue #179)", () => {
+  const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+
+  it("no procedure or command mentions a plan PR or plan branch", () => {
+    for (const path of [
+      ".claude/procedures/plan.md",
+      ".claude/commands/plan.md",
+      ".claude/commands/plan-wave.md",
+      ".claude/commands/plan-milestone.md",
+    ]) {
+      expect(read(path)).not.toMatch(/plan-wave-<milestone>|plan PR|plan branch|open one PR/);
+    }
+  });
+
+  it("only the build procedure writes the plan file", () => {
+    expect(read(".claude/procedures/plan.md")).not.toMatch(/Save the same plan/);
+    expect(read(".claude/commands/plan-wave.md")).not.toMatch(/save `docs\/plans/);
+    expect(read(".claude/procedures/build.md")).toContain("Deviations");
+  });
+});
