@@ -6,6 +6,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
+import { TABLE_END, TABLE_START, normalizeTable, ruleTable } from "./ci-paths.mjs";
 import { checkLearningLogIndex } from "./learning-log-index.mjs";
 
 const CARD_DIR = "docs/handbook/tech";
@@ -313,6 +314,27 @@ export function checkAdrNumbers(root) {
 }
 
 /**
+ * Checks that the "which check runs for which paths" table in docs/WORKFLOW.md matches the CI rule tables (issue #188).
+ *
+ * @param {string} root Repo root.
+ * @returns {string[]} An error message list (empty when the table is fresh or the file has no table).
+ */
+export function checkCiTable(root) {
+  const file = join(root, "docs/WORKFLOW.md");
+  if (!existsSync(file)) return [];
+  const text = readFileSync(file, "utf8");
+  const start = text.indexOf(TABLE_START);
+  const end = text.indexOf(TABLE_END);
+  if (start === -1 || end === -1) return [];
+  const current = text.slice(start + TABLE_START.length, end);
+  return normalizeTable(current) === normalizeTable(ruleTable())
+    ? []
+    : [
+        "Stale CI table in docs/WORKFLOW.md. Run: node scripts/ci-paths.mjs --write-table && pnpm prettier --write docs/WORKFLOW.md",
+      ];
+}
+
+/**
  * Runs all handbook checks.
  *
  * @param {string} root Repo root.
@@ -324,6 +346,7 @@ export function checkHandbook(root) {
     ...checkRelativeLinks(root),
     ...checkAdrNumbers(root),
     ...checkLearningLogIndex(root),
+    ...checkCiTable(root),
   ];
 }
 

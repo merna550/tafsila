@@ -271,12 +271,12 @@ describe("expensive checks run only when needed (issue #86)", () => {
 
   it("gates the API checks with step-level ifs inside the quality job, never a new job or on.paths (issue #94)", () => {
     const steps = quality.jobs.quality.steps;
-    const pathsIndex = steps.findIndex((step) => step.id === "api-paths");
+    const pathsIndex = steps.findIndex((step) => step.id === "paths");
     expect(pathsIndex).toBeGreaterThan(-1);
-    expect(steps[pathsIndex].run).toContain("node scripts/ci-paths.mjs api ");
+    expect(steps[pathsIndex].run).toContain("node scripts/ci-paths.mjs steps ");
     for (const command of ["pnpm api:check", "pnpm api:test"]) {
       const step = steps.find((candidate) => candidate.run === command);
-      expect(step.if).toBe("steps.api-paths.outputs.run == 'true'");
+      expect(step.if).toBe("steps.paths.outputs.api == 'true'");
       expect(steps.indexOf(step)).toBeGreaterThan(pathsIndex);
     }
     expect(Object.keys(quality.jobs)).not.toContain("api");
