@@ -19,7 +19,7 @@ Two ways, no Claude GitHub App ([ADR-016](../../DECISIONS.md)):
    - Why not the default token: PRs opened with `GITHUB_TOKEN` do not start CI, so quality checks would never run on agent PRs.
 4. **Create `CLAUDE_CODE_OAUTH_TOKEN`.** Run `claude setup-token` in a terminal, copy the token it prints, and save it as the repo secret `CLAUDE_CODE_OAUTH_TOKEN`. Never paste either token in an issue, comment or commit.
 
-## Fix the Node version (issue #182)
+## Fix the Node version
 
 The repo needs Node `>=22.22.2 <23` (`engines`, `.nvmrc` says `22`). Some cloud images ship an older 22.x. `scripts/agent-setup.sh` checks this first. If Node is too old it downloads the newest Node 22 from nodejs.org (SHA-256 checked) and puts it on `PATH` for the session; if that is blocked it prints `agent-setup: FAILED (wrong Node ...)` and builders stop with `BLOCKED: environment`. Nothing is skipped silently and `--config.engine-strict=false` is no longer used.
 
