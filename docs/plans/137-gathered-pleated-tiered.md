@@ -41,3 +41,4 @@ Implement gathered, knife-pleated and tiered skirts as separate modules over pan
 - The new `marks` SVG layer adds an empty group to every snapshot, so all existing snapshots were refreshed with `ENGINE_VERSION` 0.7.0.
 - Seed data: design fixtures `gatheredKneeSkirt`, `pleatedKneeSkirt`, `tieredMidiSkirt` in `@tafsila/test-fixtures`; no database seed or API change.
 - Toile criterion moved to a follow-up issue (rule #184).
+- `pnpm engine:print` drafted design fixtures with incomplete options (no fabric width or ease profile), so every design printed "no pieces". It now uses `DEFAULT_ENGINE_OPTIONS` and knows the three panel skirt fixtures, so the sew-test follow-up (#206) can print them; the "no pieces" path is tested with a mocked pipeline.

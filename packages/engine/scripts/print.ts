@@ -3,10 +3,13 @@ import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   dartedBlouse,
+  gatheredKneeSkirt,
+  pleatedKneeSkirt,
   setInSleeveBlouse,
   rectanglePattern,
   SIZE_MATRIX,
   straightKneeSkirt,
+  tieredMidiSkirt,
   vNeckHalfCircleDress,
 } from "@tafsila/test-fixtures";
 import type { PatternResult } from "@tafsila/schemas";
@@ -23,7 +26,15 @@ const EXIT_NO_PIECES = 1;
 const EXIT_USAGE = 2;
 
 /** Design fixtures the script can draft, by name. */
-const DESIGN_FIXTURES = { dartedBlouse, setInSleeveBlouse, straightKneeSkirt, vNeckHalfCircleDress } as const;
+const DESIGN_FIXTURES = {
+  dartedBlouse,
+  gatheredKneeSkirt,
+  pleatedKneeSkirt,
+  setInSleeveBlouse,
+  straightKneeSkirt,
+  tieredMidiSkirt,
+  vNeckHalfCircleDress,
+} as const;
 
 /** Name of the ready-made rectangle test pattern. */
 const RECTANGLE = "rectangle";
@@ -100,7 +111,9 @@ function buildPattern(fixture: string, sizeId: string): PatternResult | undefine
     return generatePattern(vNeckHalfCircleDress, entry.measurements, options, marksRegistry);
   }
   const spec = DESIGN_FIXTURES[fixture as keyof typeof DESIGN_FIXTURES];
-  return spec ? generatePattern(spec, entry.measurements, { sizeLabel: entry.id }) : undefined;
+  return spec
+    ? generatePattern(spec, entry.measurements, { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: entry.id })
+    : undefined;
 }
 
 /**
