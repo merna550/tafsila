@@ -108,7 +108,16 @@ The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mj
 - [ ] Backend changes: OpenAPI + Postman regenerated (`pnpm api:openapi && pnpm api:postman`), `pnpm api:test` passes on local, seed data + `seed-data.md` updated, the relevant tutorial updated (or a new one added).
 - [ ] Every acceptance criterion is ticked in the issue (`scripts/gh-ac.sh check <issue> <n…>`) as soon as it is met and verified; an issue is not moved to In review with unticked criteria unless the PR explains why. The PR body includes `scripts/gh-ac.sh progress <issue>`.
 - [ ] Conventional commits referencing the issue; PR body has `Closes #N`.
-- [ ] `needs:sew-test` issues: note what was physically tested, or keep the flag open.
+- [ ] `needs:sew-test` issues have **no** toile acceptance criterion (the PR's `Closes #N` would close the issue while it is open). Instead the builder opens (or updates) one follow-up issue `test(engine): sew-test toiles for #N` and puts `Sew-test follow-up: #M` in the PR body (CI warns when it is missing, `scripts/sew-test-followup.mjs`). See "Sew-test follow-up issues" below.
+
+### Sew-test follow-up issues
+
+Physical toiles are tracked in their own issue so code issues close cleanly and nothing physical is forgotten (issue #184).
+
+- Follow-up issue: title `test(engine): sew-test toiles for #N`, labels `type:test`, `needs:sew-test`, `area:engine`, `plan:none`, `status:ready`, the same milestone as #N.
+- Body checklist: print each size with `pnpm engine:print` (1:1 SVG), sew three sizes (S, M, XXL or as Merna picks), log one row per size in `docs/test-cases/engine/sew-tests.md`, open a bug per fit problem, then remove `needs:sew-test` from #N.
+- The milestone exit issue lists the follow-ups under "Depends on".
+- Merna logs the results; the builder does not.
 
 ## 6. Documentation map
 

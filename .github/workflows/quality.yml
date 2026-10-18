@@ -47,6 +47,12 @@ jobs:
         run: pnpm tokens:check
       - name: Scripts and handbook check tests
         run: pnpm test:docs
+      - name: Sew-test follow-up issue (warning only, issue #184)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: node scripts/sew-test-followup.mjs
       # OpenAPI and Postman checks run only when the API, its schemas or the Postman files change (issue #94, ADR-86 pattern).
       # They are steps of this job, not a new job, so no required check can disappear.
       - name: API paths (are the OpenAPI and Postman checks needed?)
