@@ -4,6 +4,7 @@ import { appendFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolveModel } from "./agent-model.mjs";
+import { findIssuePr } from "./issue-link.mjs";
 
 const MAX_REVIEW_PRS = 3;
 const DEFAULT_DAILY_LIMIT = 4;
@@ -75,7 +76,7 @@ const areasOf = (labels) => labels.filter((l) => l.startsWith("area:"));
  * @param b Second issue.
  * @returns Sort order.
  */
-function byPriority(a, b) {
+export function byPriority(a, b) {
   const rank = (i) => Math.min(...i.labels.map((l) => PRIORITY_RANK[l] ?? 9), 9);
   return rank(a) - rank(b) || a.number - b.number;
 }
@@ -94,6 +95,20 @@ function canStart(candidate, ctx) {
   const busy = new Set(ctx.inProgress.flatMap((i) => areasOf(i.labels)));
   return !areasOf(candidate.labels).some((a) => busy.has(a));
 }
+
+/**
+ * Builds the filter for issues the dispatcher may consider (issue #185): `status:ready` is the only status label
+ * and no open pull request works on the issue, so an issue that `/deliver` or `/build` is handling is skipped.
+ *
+ * @param openPrs Open pull requests (`body`, `headRefName`).
+ * @returns Predicate over issues.
+ */
+const isStartable =
+  (openPrs = []) =>
+  (issue) =>
+    issue.labels.includes("status:ready") &&
+    !issue.labels.some((l) => l.startsWith("status:") && l !== "status:ready") &&
+    findIssuePr(issue.number, openPrs) === null;
 
 /**
  * Chooses the next issue to build, or explains why none is chosen.
@@ -117,7 +132,7 @@ export function selectIssue(input) {
   if (inProgress.length >= maxParallel) {
     return none(`${inProgress.length} issue(s) in progress (limit ${maxParallel}).`);
   }
-  const ready = issues.filter((i) => i.labels.includes("status:ready"));
+  const ready = issues.filter(isStartable(input.openPrs));
   const optedIn = ready.filter((i) => i.labels.includes(AUTO_LABEL));
   if (ready.length > 0 && optedIn.length === 0) {
     return none(
@@ -177,10 +192,20 @@ function main() {
   const closed = new Set(
     gh(["issue", "list", "--state", "closed", "--limit", "300", "--json", "number"]).map((i) => i.number),
   );
-  const prs = gh(["pr", "list", "--state", "open", "--limit", "100", "--json", "isDraft"]);
+  const prs = gh([
+    "pr",
+    "list",
+    "--state",
+    "open",
+    "--limit",
+    "100",
+    "--json",
+    "isDraft,headRefName,body,number",
+  ]);
   const result = selectIssue({
     issues,
     closed,
+    openPrs: prs,
     openReviewPrs: prs.filter((p) => !p.isDraft).length,
     maxParallel: Number(process.env.DISPATCH_MAX_PARALLEL || 1),
     enabled: process.env.DISPATCH_ENABLED !== "false",

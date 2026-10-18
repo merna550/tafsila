@@ -7,7 +7,7 @@ import { stripVTControlCharacters } from "node:util";
 const DEFAULT_POLL_MS = 20_000;
 const DEFAULT_TIMEOUT_MS = 25 * 60_000;
 const FAILURE_LINE_LIMIT = 40;
-const GREEN_CONCLUSIONS = new Set(["success", "neutral", "skipped"]);
+export const GREEN_CONCLUSIONS = new Set(["success", "neutral", "skipped"]);
 const FAILURE_LINE = /FAIL|Error|AssertionError|error TS|✘|×|threshold/;
 
 /**
@@ -186,14 +186,17 @@ function pollingOptions(options) {
 }
 
 /**
- * Classifies a snapshot once every check has completed.
+ * Classifies check runs as pending, green or red (shared with scripts/deliver.mjs, issue #185).
  *
  * @param {object[]} checks Current check runs.
- * @returns {object[] | null} Failed checks, or null while CI is pending.
+ * @returns {{state: "pending" | "green" | "red", failed: object[]}} `failed` lists the red check runs.
  */
-function completedFailures(checks) {
-  if (checks.length === 0 || checks.some((check) => check.status !== "completed")) return null;
-  return checks.filter((check) => !GREEN_CONCLUSIONS.has(check.conclusion));
+export function classifyChecks(checks) {
+  if (checks.length === 0 || checks.some((check) => check.status !== "completed")) {
+    return { state: "pending", failed: [] };
+  }
+  const failed = checks.filter((check) => !GREEN_CONCLUSIONS.has(check.conclusion));
+  return { state: failed.length > 0 ? "red" : "green", failed };
 }
 
 /**
@@ -208,10 +211,10 @@ export async function waitForCi(options) {
   for (;;) {
     const current = await snapshot();
     reportSnapshot(current, writeLine);
-    const failed = completedFailures(current.checks);
-    if (failed !== null) {
-      if (failed.length > 0) await reportFailureLogs(failed, readLog, writeLine);
-      return failed.length > 0 ? 1 : 0;
+    const { state, failed } = classifyChecks(current.checks);
+    if (state !== "pending") {
+      if (state === "red") await reportFailureLogs(failed, readLog, writeLine);
+      return state === "red" ? 1 : 0;
     }
     const elapsed = now() - startedAt;
     if (elapsed >= timeoutMs) return 2;
