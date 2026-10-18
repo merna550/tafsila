@@ -27,6 +27,8 @@ export const STITCH_STROKE_MM = 0.25;
 export const STITCH_DASH = "3 1.5";
 /** Length of a notch tick across the stitch line, in mm. */
 export const NOTCH_LENGTH_MM = 5;
+/** Distance between the two ticks of a back notch, in mm. */
+export const NOTCH_MARK_GAP_MM = 3;
 /** Length of a grain-line arrowhead, in mm. */
 export const ARROW_LENGTH_MM = 6;
 /** Half width of a grain-line arrowhead, in mm. */
@@ -107,22 +109,26 @@ export function stitchLayer(layout: SheetLayout): string {
 }
 
 /**
- * One notch as a short tick across the stitch line.
+ * One notch as short ticks across the stitch line: one for a front notch, two for a back notch (`marks: 2`).
  *
  * @param piece - The piece the notch belongs to.
  * @param notch - The notch.
- * @returns The tick start and end in piece coordinates.
+ * @returns Each tick's start and end in piece coordinates.
  * @throws {DraftingError} RENDER_EDGE_NOT_FOUND when the notch names an unknown edge.
  */
-function notchTick(piece: Piece, notch: Piece["notches"][number]): [Point, Point] {
+function notchTicks(piece: Piece, notch: Piece["notches"][number]): [Point, Point][] {
   const edge = piece.edges.find((e) => e.id === notch.edgeId);
   if (!edge) {
     throw new DraftingError("RENDER_EDGE_NOT_FOUND", `Notch ${notch.id} names unknown edge ${notch.edgeId}`);
   }
   const edgePath = piece.stitchPath.slice(edge.fromSegment, edge.toSegment + 1);
-  const at = pointAtLength(edgePath, notch.atMm);
-  const half = scale(perpendicular(tangentAtLength(edgePath, notch.atMm)), NOTCH_LENGTH_MM / 2);
-  return [sub(at, half), add(at, half)];
+  const marks = notch.marks ?? 1;
+  return Array.from({ length: marks }, (_, i) => {
+    const along = notch.atMm + (i - (marks - 1) / 2) * NOTCH_MARK_GAP_MM;
+    const at = pointAtLength(edgePath, along);
+    const half = scale(perpendicular(tangentAtLength(edgePath, along)), NOTCH_LENGTH_MM / 2);
+    return [sub(at, half), add(at, half)];
+  });
 }
 
 /**
@@ -135,8 +141,10 @@ export function notchesLayer(layout: SheetLayout): string {
   return layout.placements
     .flatMap((pl) =>
       pl.piece.notches.map((notch) => {
-        const [a, b] = notchTick(pl.piece, notch).map((p) => onSheet(p, pl));
-        return `<path id="piece-${escapeXml(pl.piece.id)}-notch-${escapeXml(notch.id)}" d="M ${fmtPoint(a!)} L ${fmtPoint(b!)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`;
+        const d = notchTicks(pl.piece, notch)
+          .map(([a, b]) => `M ${fmtPoint(onSheet(a, pl))} L ${fmtPoint(onSheet(b, pl))}`)
+          .join(" ");
+        return `<path id="piece-${escapeXml(pl.piece.id)}-notch-${escapeXml(notch.id)}" d="${d}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`;
       }),
     )
     .join("\n");
@@ -225,13 +233,15 @@ function textElement(label: Piece["labels"][number], at: Point, id: string): str
 export function labelsLayer(layout: SheetLayout): string {
   return layout.placements
     .flatMap((pl) =>
-      pl.piece.labels.map((label) =>
-        textElement(
-          label,
-          onSheet(label.at, pl),
-          `piece-${escapeXml(pl.piece.id)}-label-${escapeXml(label.id)}`,
+      pl.piece.labels
+        .filter((label) => label.kind !== "scale-square")
+        .map((label) =>
+          textElement(
+            label,
+            onSheet(label.at, pl),
+            `piece-${escapeXml(pl.piece.id)}-label-${escapeXml(label.id)}`,
+          ),
         ),
-      ),
     )
     .join("\n");
 }
@@ -266,18 +276,46 @@ function caption(text: string, id: string, at: Point, direction: "rtl" | "ltr"):
 }
 
 /**
- * The 100 x 100 mm scale check square with centimetre ticks and a caption (FR-PAT-02).
+ * One scale check square with centimetre ticks and a caption.
+ *
+ * @param o - Top-left of the square on the sheet.
+ * @param prefix - Element id prefix.
+ * @param text - Caption in both languages.
+ * @returns Markup of the square, ticks and captions.
+ */
+function scaleSquare(o: Point, prefix: string, text: { ar: string; en: string }): string {
+  const centre = { x: o.x + SCALE_SQUARE_MM / 2, y: o.y + SCALE_SQUARE_MM / 2 };
+  return [
+    `<rect id="${prefix}scale-square" x="${fmt(o.x)}" y="${fmt(o.y)}" width="${fmt(SCALE_SQUARE_MM)}" height="${fmt(SCALE_SQUARE_MM)}" fill="none" stroke="#000000" stroke-width="${fmt(CUT_STROKE_MM)}"/>`,
+    `<path id="${prefix}scale-ticks" d="${scaleTicks(o)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`,
+    caption(
+      escapeXml(text.ar),
+      `${prefix}scale-caption-ar`,
+      { x: centre.x, y: centre.y - SCALE_CAPTION_MM / 2 },
+      "rtl",
+    ),
+    caption(
+      escapeXml(text.en),
+      `${prefix}scale-caption-en`,
+      { x: centre.x, y: centre.y + SCALE_CAPTION_MM },
+      "ltr",
+    ),
+  ].join("\n");
+}
+
+/**
+ * The 100 x 100 mm scale check square (FR-PAT-02): the one a piece carries as a `scale-square` label, else the
+ * sheet's own below the pieces. Never both, so a print shows one square.
  *
  * @param layout - The sheet.
  * @returns Markup of the square, ticks and captions.
  */
 export function scaleLayer(layout: SheetLayout): string {
-  const o = layout.scaleSquare;
-  const centre = { x: o.x + SCALE_SQUARE_MM / 2, y: o.y + SCALE_SQUARE_MM / 2 };
-  return [
-    `<rect id="scale-square" x="${fmt(o.x)}" y="${fmt(o.y)}" width="${fmt(SCALE_SQUARE_MM)}" height="${fmt(SCALE_SQUARE_MM)}" fill="none" stroke="#000000" stroke-width="${fmt(CUT_STROKE_MM)}"/>`,
-    `<path id="scale-ticks" d="${scaleTicks(o)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`,
-    caption("١٠ سم", "scale-caption-ar", { x: centre.x, y: centre.y - SCALE_CAPTION_MM / 2 }, "rtl"),
-    caption("10 cm", "scale-caption-en", { x: centre.x, y: centre.y + SCALE_CAPTION_MM }, "ltr"),
-  ].join("\n");
+  const onPieces = layout.placements.flatMap((pl) =>
+    pl.piece.labels
+      .filter((label) => label.kind === "scale-square")
+      .map((label) => scaleSquare(onSheet(label.at, pl), `piece-${escapeXml(pl.piece.id)}-`, label.text)),
+  );
+  const own = layout.scaleSquare ? [scaleSquare(layout.scaleSquare, "", { ar: "١٠ سم", en: "10 cm" })] : [];
+  return [...onPieces, ...own].join("\n");
 }

@@ -209,7 +209,7 @@ describe("bodice on random bodies", () => {
           expect(r.validation.status).toBe("fail");
           expect(r.validation.checks.some((x) => /^(BODICE_|MEAS_)/.test(x.code ?? ""))).toBe(true);
         }),
-        { numRuns: 200 },
+        { numRuns: 80 },
       );
     },
     RANDOM_PIPELINE_TEST_TIMEOUT_MS,

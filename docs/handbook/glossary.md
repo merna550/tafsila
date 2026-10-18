@@ -979,7 +979,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Grainline (grain line)
 
 **Plain words:** An arrow on a pattern piece showing how to align it with the fabric's straight grain (parallel to the selvedge). Arabic: اتجاه القماش.  
-**In Tafsila:** `Piece.grainLine`; FR-VAL-06 requires one on every piece. **Level:** beginner  
+**In Tafsila:** `Piece.grainLine`; FR-VAL-06 requires one on every piece. `defaultGrainLine` centres it, 60 % of the piece height. **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="letter-h"></a>
@@ -1183,7 +1183,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Label placement (polylabel)
 
 **Plain words:** Choosing where to print a piece's name and info so it fits inside the piece without hitting lines. `polylabel` finds the point farthest from the edges.  
-**In Tafsila:** Pipeline step 5, `layout` ([ARCHITECTURE section 3](../ARCHITECTURE.md)). **Level:** advanced  
+**In Tafsila:** Pipeline step 5, `layout` ([ARCHITECTURE section 3](../ARCHITECTURE.md)); `src/layout/place-labels.ts` uses an own grid search for the point farthest from the edges instead of the `polylabel` library ([decision 131](../decisions/131-marks-and-labels.md)). **Level:** advanced  
 **Learn:** <https://github.com/mapbox/polylabel>
 
 <a id="layer-arch"></a>
@@ -1478,7 +1478,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Notch
 
 **Plain words:** A small mark on the edge of a piece that must meet the matching mark on the piece it is sewn to. Arabic: علامة تطابق.  
-**In Tafsila:** `Piece.notches`; FR-VAL-04 checks matching notches are at the same distance (within 2 mm). **Level:** beginner  
+**In Tafsila:** `Piece.notches`; FR-VAL-04 checks matching notches are at the same distance (within 2 mm). One tick = front, two ticks = back (`marks`); the engine writes the partner on the paired edge ([decision 131](../decisions/131-marks-and-labels.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="nvm"></a>

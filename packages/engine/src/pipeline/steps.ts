@@ -2,6 +2,7 @@
 import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
 import { BLOCK_DRAFTERS } from "../blocks";
 import { finishing } from "../finishing";
+import { layout } from "../layout";
 import { resolveDraftInputs } from "../resolve/resolve-draft-inputs";
 import { CATEGORY_BLOCKS } from "./category-rules";
 import type { Step } from "./draft-context";
@@ -9,7 +10,7 @@ import { withCheck, withInputs } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
 export type { Step } from "./draft-context";
-export { finishing };
+export { finishing, layout };
 
 /**
  * Step 1: derive the block inputs (widths with ease, lengths) from measurements and ease (#126).
@@ -29,14 +30,6 @@ export const resolve: Step = (ctx) =>
  */
 export const blocks: Step = (ctx) =>
   CATEGORY_BLOCKS[ctx.spec.category].reduce((acc, name) => BLOCK_DRAFTERS[name](acc), ctx);
-
-/**
- * Step 5: collision-free label placement. Filled by #131.
- *
- * @param ctx - Current context.
- * @returns The same context for now.
- */
-export const layout: Step = (ctx) => ctx;
 
 /**
  * Step 7: assembly steps. Filled by #146.

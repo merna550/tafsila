@@ -6,6 +6,7 @@ export * from "./offset";
 export * from "./path";
 export * from "./point";
 export * from "./polygon";
+export * from "./proximity";
 export * from "./roots";
 export * from "./segment";
 export * from "./transform";

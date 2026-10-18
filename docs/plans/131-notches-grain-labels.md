@@ -4,6 +4,8 @@ Plan comment: <https://github.com/merna550/tafsila/issues/131#issuecomment-62373
 
 Plan wave M2, 2026-10-17. Depends on #124 and #125, both merged. Best built after #130: both append to `finishing/index.ts` (one line each), and the label placement needs `cutPath`.
 
+**Built 2026-10-17.** Deviations, recorded in [decision 131](../decisions/131-marks-and-labels.md): `clientLabel` is a new optional `EngineOptions` field; the engine stamp is part of the size label (the label kinds have no `stamp`); the rectangle fixture is unchanged and a new two-panel test module carries the marks; the plan's `place-labels` also keeps clear of darts; point and rectangle distances live in `geometry/proximity.ts`.
+
 ## Approach
 
 Two steps fill the existing stubs.

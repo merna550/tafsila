@@ -136,7 +136,7 @@ describe("circle skirt properties across the size matrix", () => {
       }),
       { numRuns: 60 },
     );
-  }, 20_000);
+  });
 
   it("draws closed outlines without crossings and passes every structural and seam check", () => {
     fc.assert(
@@ -148,7 +148,7 @@ describe("circle skirt properties across the size matrix", () => {
       }),
       { numRuns: 60 },
     );
-  }, 20_000);
+  });
 
   it("fits every piece across the fabric, or reports the FR-VAL-08 width warning", () => {
     fc.assert(
@@ -160,7 +160,7 @@ describe("circle skirt properties across the size matrix", () => {
       }),
       { numRuns: 60 },
     );
-  }, 20_000);
+  });
 
   it("fits the default 1500 mm fabric for every chart size and length", () => {
     for (const entry of CHART) {
@@ -171,7 +171,7 @@ describe("circle skirt properties across the size matrix", () => {
         }
       }
     }
-  }, 20_000);
+  });
 });
 
 describe("circle skirt SVG snapshot", () => {

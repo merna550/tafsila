@@ -246,7 +246,8 @@ describe("straight and A-line properties across the size matrix", () => {
           2 * (ctx.resolved[A_LINE_HEM_GAIN_KEY.front]! + ctx.resolved[A_LINE_HEM_GAIN_KEY.back]!);
         const grownMm = hemMm(aLine) - hemMm(straight);
         expect(grownMm).toBeGreaterThanOrEqual(declaredMm - 0.1);
-        expect(grownMm).toBeLessThanOrEqual(declaredMm + 4);
+        // The four smooth hem bridges are slightly longer than their declared opening chords.
+        expect(grownMm).toBeLessThanOrEqual(declaredMm + CIRCUMFERENCE_TOLERANCE_MM);
         const waist = (r: PatternResult) =>
           r.validation.checks.find((c) => c.refs?.[0]?.endsWith("skirt-waist"))!;
         expect(Math.abs(waist(aLine).measuredMm! - waist(straight).measuredMm!)).toBeLessThanOrEqual(

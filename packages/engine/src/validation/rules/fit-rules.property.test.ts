@@ -12,20 +12,17 @@ const CURRENT_BLOCK_CHECKS = new Set(["FR-VAL-01", "FR-VAL-03", "FR-VAL-07"]);
 
 describe("fit rules over generated blocks", () => {
   it("keeps seam, circumference and dart rules passing across the size matrix", () => {
-    fc.assert(
-      fc.property(fc.integer({ min: 0, max: SIZE_MATRIX.length - 1 }), (index) => {
-        const measurements = SIZE_MATRIX[index]!.measurements;
-        for (const spec of [vNeckHalfCircleDress, straightKneeSkirt]) {
-          const checks = generatePattern(spec, measurements).validation.checks.filter((check) =>
-            CURRENT_BLOCK_CHECKS.has(check.id),
-          );
-          expect(checks.length).toBeGreaterThan(0);
-          expect(checks.every((check) => check.status === "pass")).toBe(true);
-        }
-      }),
-      { numRuns: 50 },
-    );
-  }, 10_000);
+    // The size matrix has only a handful of entries, so each is generated once instead of drawing random indexes.
+    for (const { measurements } of SIZE_MATRIX) {
+      for (const spec of [vNeckHalfCircleDress, straightKneeSkirt]) {
+        const checks = generatePattern(spec, measurements).validation.checks.filter((check) =>
+          CURRENT_BLOCK_CHECKS.has(check.id),
+        );
+        expect(checks.length).toBeGreaterThan(0);
+        expect(checks.every((check) => check.status === "pass")).toBe(true);
+      }
+    }
+  });
 });
 
 describe("fit rules awaiting generated sleeve and notch metadata", () => {

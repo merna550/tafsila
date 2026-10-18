@@ -71,6 +71,7 @@ const edgePairSchema = z.object({
   pieceId: z.string().min(1),
   edgeId: z.string().min(1),
   intendedEaseMm: z.number().optional(),
+  /** True when the two edges run in opposite directions, so a distance from the start on one is a distance from the end on the other. */
   reversed: z.boolean().optional(),
 });
 
@@ -98,6 +99,8 @@ export const notchSchema = z.object({
   id: z.string().min(1),
   edgeId: z.string().min(1),
   atMm: z.number().min(0),
+  /** Number of ticks: 1 = front (default), 2 = back (decision 131). */
+  marks: z.union([z.literal(1), z.literal(2)]).optional(),
   pairsWith: edgePairSchema
     .omit({ intendedEaseMm: true })
     .extend({

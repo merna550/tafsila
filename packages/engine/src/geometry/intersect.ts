@@ -270,8 +270,11 @@ export function selfIntersections(path: ReadonlyPath): Point[] {
   assertPath(path);
   if (!isClosed(path)) throw new DraftingError("GEOMETRY_PATH_NOT_CLOSED", "Outline is not closed");
   const found: Crossing[] = [];
+  const boxes = path.map((segment) => bbox(segmentPoints(segment)));
   path.forEach((first, i) => {
     path.slice(i + 1).forEach((second, offset) => {
+      // A curve stays inside the box of its control points, so segments with apart boxes cannot cross.
+      if (!bboxOverlap(boxes[i]!, boxes[i + 1 + offset]!)) return;
       const joints = sharedJoints(path, i, i + 1 + offset);
       const crossings = intersectSegments(first, second);
       found.push(...crossings.filter((c) => !joints.some((joint) => samePoint(joint, c.point))));

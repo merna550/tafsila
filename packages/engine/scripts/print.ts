@@ -11,6 +11,7 @@ import {
 } from "@tafsila/test-fixtures";
 import type { PatternResult } from "@tafsila/schemas";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../src/pipeline";
+import { marksRegistry } from "../src/pipeline/test-support/marks-module";
 import { rectangleRegistry } from "../src/pipeline/test-support/rectangle-module";
 import { renderPrintSheet } from "../src/render";
 
@@ -29,6 +30,9 @@ const RECTANGLE = "rectangle";
 
 /** Name of the test rectangle run through the pipeline, so its cut line shows the seam allowances (#130). */
 const SEAM_RECTANGLE = "seam-rectangle";
+
+/** Name of the front and back test panels with every mark: notches, dart, grain line, labels, scale square (#131). */
+const MARKS_PAIR = "marks-pair";
 
 /** Where the script writes its messages; replaced in tests. */
 export interface PrintIo {
@@ -57,7 +61,7 @@ interface Parsed {
  * @returns The help lines.
  */
 function usage(): string {
-  const names = [RECTANGLE, SEAM_RECTANGLE, ...Object.keys(DESIGN_FIXTURES)].join(" | ");
+  const names = [RECTANGLE, SEAM_RECTANGLE, MARKS_PAIR, ...Object.keys(DESIGN_FIXTURES)].join(" | ");
   const sizes = SIZE_MATRIX.map((e) => e.id).join(" ");
   return `Usage: pnpm engine:print <fixture> <size> [--out file.svg]\n  fixture: ${names}\n  size: ${sizes}`;
 }
@@ -90,6 +94,10 @@ function buildPattern(fixture: string, sizeId: string): PatternResult | undefine
   if (fixture === SEAM_RECTANGLE) {
     const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: entry.id };
     return generatePattern(vNeckHalfCircleDress, entry.measurements, options, rectangleRegistry);
+  }
+  if (fixture === MARKS_PAIR) {
+    const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: entry.id };
+    return generatePattern(vNeckHalfCircleDress, entry.measurements, options, marksRegistry);
   }
   const spec = DESIGN_FIXTURES[fixture as keyof typeof DESIGN_FIXTURES];
   return spec ? generatePattern(spec, entry.measurements, { sizeLabel: entry.id }) : undefined;

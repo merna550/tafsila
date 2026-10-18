@@ -2,7 +2,13 @@ import type { Piece } from "@tafsila/schemas";
 import { rectanglePattern } from "@tafsila/test-fixtures";
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import { layoutSheet, SCALE_SQUARE_MM, SHEET_MARGIN_MM, SHEET_MAX_WIDTH_MM } from "./sheet-layout";
+import {
+  layoutSheet,
+  SCALE_SQUARE_MM,
+  SHEET_GAP_MM,
+  SHEET_MARGIN_MM,
+  SHEET_MAX_WIDTH_MM,
+} from "./sheet-layout";
 
 /**
  * A rectangle piece of the given size with its corner at the origin.
@@ -44,6 +50,21 @@ describe("layoutSheet", () => {
     expect(layout.heightMm).toBe(SHEET_MARGIN_MM * 2 + SCALE_SQUARE_MM);
   });
 
+  it("has no sheet square when a piece carries the scale square label", () => {
+    const piece = box("p0", 300, 400);
+    const label = {
+      id: "scale-square",
+      kind: "scale-square" as const,
+      text: { ar: "10 سم", en: "10 cm" },
+      at: { x: 5, y: 5 },
+      rotationDeg: 0,
+      sizeMm: 100,
+    };
+    const layout = layoutSheet([{ ...piece, labels: [label] }]);
+    expect(layout.scaleSquare).toBeNull();
+    expect(layout.heightMm).toBe(layoutSheet([piece]).heightMm - SCALE_SQUARE_MM - SHEET_GAP_MM);
+  });
+
   it("never overlaps cells or the scale square, and keeps the order", () => {
     const size = fc.record({ w: fc.integer({ min: 10, max: 900 }), h: fc.integer({ min: 10, max: 900 }) });
     fc.assert(
@@ -55,7 +76,7 @@ describe("layoutSheet", () => {
           w: p.size.widthMm,
           h: p.size.heightMm,
         }));
-        rects.push({ ...layout.scaleSquare, w: SCALE_SQUARE_MM, h: SCALE_SQUARE_MM });
+        rects.push({ ...layout.scaleSquare!, w: SCALE_SQUARE_MM, h: SCALE_SQUARE_MM });
         const overlap = (a: (typeof rects)[number], b: (typeof rects)[number]): boolean =>
           a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
         const clash = rects.some((a, i) => rects.some((b, j) => i < j && overlap(a, b)));
