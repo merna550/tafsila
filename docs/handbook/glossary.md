@@ -448,6 +448,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `Container` interface and `createContainer()` in `packages/api/src/container.ts`. **Level:** intermediate  
 **Learn:** <https://martinfowler.com/articles/injection.html>
 
+<a id="construction-mark"></a>
+
+### Construction mark
+
+**Plain words:** A line, arrow or dot drawn on a pattern piece that tells the sewist what to do there: fold a pleat on this line, lay it on that line in the arrow's direction, gather this run to a length.
+**In Tafsila:** `Piece.marks` in `packages/schemas/src/pattern.ts` (`markSchema`: kinds `pleat-fold`, `pleat-placement`, `pleat-direction`, `gather`; shapes line, arrow, point), drawn by `marksLayer` in `packages/engine/src/render/layers.ts` ([decision 137](../decisions/137-gathered-pleated-tiered.md)). Closures (#143) add their kinds to the same schema. **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Pattern_(sewing)>
+
 <a id="context-map"></a>
 
 ### Context map
@@ -942,6 +950,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Basis for the v2 `services/sim` ([SRS section 1.4](../SRS.md)). **Card:** [Python, FastAPI and GarmentCode](tech/python-fastapi-garmentcode.md) · **Level:** advanced  
 **Learn:** <https://arxiv.org/html/2306.03642v2>
 
+<a id="gathers"></a>
+
+### Gathers, gather ratio
+
+**Plain words:** Gathering pulls a wide edge in with two rows of long stitches until it is as short as the edge it is sewn to. The gather ratio is the flat width over the gathered width: 1.8 means 1.8 m of fabric is pulled in to 1 m.
+**In Tafsila:** `GATHER_RATIO_BY_WEIGHT` in `packages/engine/src/constants/skirt-fullness.ts` (light 2, medium 1.8, heavy 1.5); the gathered and tiered skirts put a `gather` mark on the gathered edge, and a gathered tier seam declares the extra length as `intendedEaseMm` so FR-VAL-01 checks it ([decision 137](../decisions/137-gathered-pleated-tiered.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Gather_(sewing)>
+
 <a id="ghcr"></a>
 
 ### GHCR (GitHub Container Registry)
@@ -1173,6 +1189,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Adjusting a projected image so a trapezoid caused by an angled projector becomes a rectangle again.  
 **In Tafsila:** FR-PROJ-06 (priority "could") with 4-corner adjustment. **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Keystone_effect>
+
+<a id="knife-pleat"></a>
+
+### Knife pleat
+
+**Plain words:** A pleat folded to one side: the fabric is folded on the fold line and laid on the placement line, so each pleat takes twice its depth out of the width. A row of knife pleats all face the same way.
+**In Tafsila:** `pleatedSkirtModule` in `packages/engine/src/modules/skirt/pleated.ts`: 16 pleats of 30 mm depth (`KNIFE_PLEAT_COUNT`, `KNIFE_PLEAT_DEPTH_MM`), spaced evenly, each drawn as a fold line, a placement line and an arrow ([decision 137](../decisions/137-gathered-pleated-tiered.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Pleat>
 
 <a id="letter-l"></a>
 
@@ -2183,6 +2207,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Libraries for drawing 3D scenes in the browser.  
 **In Tafsila:** Planned for the 3D assembly preview, now post-launch ([ADR-009](../DECISIONS.md)). **Level:** advanced  
 **Learn:** <https://threejs.org/docs/>
+
+<a id="tiered-skirt"></a>
+
+### Tiered skirt
+
+**Plain words:** A skirt of stacked bands (tiers), each wider than the one above and gathered onto it, so the skirt flares in steps.
+**In Tafsila:** `tieredSkirtModule` in `packages/engine/src/modules/skirt/tiered.ts`: three tiers, each `TIER_WIDTH_RATIO` (1.5) times wider; every tier panel is a rectangle and every tier seam is paired with its gathering as intended ease ([decision 137](../decisions/137-gathered-pleated-tiered.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Tiered_skirt>
 
 <a id="transpile"></a>
 
