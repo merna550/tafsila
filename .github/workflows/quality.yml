@@ -1,10 +1,15 @@
 name: Code quality
-# Pull requests lint, typecheck and test only what changed since the base branch (plus the packages that
-# depend on it); a change to root config checks everything. Pushes to main check everything (issue #17).
+# Pull requests and pushes to main lint, typecheck and test only what changed (plus the packages that depend on it);
+# a change to root config checks everything (issues #17, #188). Every other check is an `if`-gated step that
+# scripts/ci-paths.mjs decides, so the required check name `quality` stays and a skipped step reports success.
+# A nightly run checks everything: the safety net for the scoped runs.
 on:
   pull_request:
   push:
     branches: [main]
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
 # A new push to a pull request cancels the older run of the same workflow (issue #86); main and tags never cancel.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -20,14 +25,35 @@ jobs:
       - uses: actions/setup-node@v5
         with: { node-version-file: .nvmrc, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - name: Scope (PR = affected only, main = everything)
+      # Turborepo cache (issue #188): unchanged tasks are cache hits ("FULL TURBO"). Local to the repo, no remote cache.
+      - name: Turborepo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-
+      - name: Scope (PR and main push = affected only, nightly = everything)
         id: scope
         env:
           EVENT: ${{ github.event_name }}
           BASE_REF: ${{ github.base_ref }}
-        run: bash scripts/ci-scope.sh "$EVENT" "$BASE_REF" >> "$GITHUB_OUTPUT"
-      - name: Format
-        run: pnpm prettier --check .
+          BEFORE: ${{ github.event.before }}
+        run: bash scripts/ci-scope.sh "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      # Which of the gated steps below are needed; a skipped one is listed in the job summary (issue #188).
+      - name: Paths (which checks are needed?)
+        id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: node scripts/ci-paths.mjs steps "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" | tee -a "$GITHUB_OUTPUT"
+      - name: Format (changed files only; everything on the nightly run)
+        env:
+          FORMAT_FILES: ${{ steps.scope.outputs.format_files }}
+        run: |
+          if [ "$FORMAT_FILES" = "all" ]; then pnpm prettier --check .
+          elif [ -n "$FORMAT_FILES" ]; then xargs -d '\n' -a "$FORMAT_FILES" pnpm prettier --check --ignore-unknown
+          else echo "No changed files to format."; fi
       - name: Lint (complexity, JSDoc on every function, no any, cycles)
         env:
           LINT_FILES: ${{ steps.scope.outputs.lint_files }}
@@ -38,14 +64,19 @@ jobs:
       - name: Types and tests
         run: pnpm turbo run typecheck test ${{ steps.scope.outputs.filter }}
       - name: Duplicate code
+        if: steps.paths.outputs.jscpd == 'true'
         run: pnpm jscpd .
       - name: Architecture rules
+        if: steps.paths.outputs.depcruise == 'true'
         run: pnpm depcruise apps packages --config .dependency-cruiser.cjs
       - name: Handbook (every dependency has a tech card, relative links resolve)
+        if: steps.paths.outputs.docs == 'true'
         run: pnpm docs:check
       - name: Design tokens (no raw colours, tokens.css matches docs/design-system/tokens.json)
+        if: steps.paths.outputs.tokens == 'true'
         run: pnpm tokens:check
       - name: Scripts and handbook check tests
+        if: steps.paths.outputs.scripts == 'true'
         run: pnpm test:docs
       - name: Sew-test follow-up issue (warning only, issue #184)
         if: github.event_name == 'pull_request'
@@ -55,18 +86,11 @@ jobs:
         run: node scripts/sew-test-followup.mjs
       # OpenAPI and Postman checks run only when the API, its schemas or the Postman files change (issue #94, ADR-86 pattern).
       # They are steps of this job, not a new job, so no required check can disappear.
-      - name: API paths (are the OpenAPI and Postman checks needed?)
-        id: api-paths
-        env:
-          EVENT: ${{ github.event_name }}
-          BASE_REF: ${{ github.base_ref }}
-          BEFORE: ${{ github.event.before }}
-        run: node scripts/ci-paths.mjs api "$EVENT" "$BASE_REF" "$BEFORE" "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
       - name: OpenAPI document and Postman collection are up to date
-        if: steps.api-paths.outputs.run == 'true'
+        if: steps.paths.outputs.api == 'true'
         run: pnpm api:check
       - name: Newman against a local API
-        if: steps.api-paths.outputs.run == 'true'
+        if: steps.paths.outputs.api == 'true'
         run: pnpm api:test
 
   # Decides whether Storybook is needed (issue #86). A skipped `storybook` job counts as passed for a required check.
