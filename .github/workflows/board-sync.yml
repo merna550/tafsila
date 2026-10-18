@@ -1,0 +1,35 @@
+name: Board sync
+# Moves the project card to the column of the status:* label (issue #183). Cloud agent sessions cannot call GraphQL,
+# so this workflow does it. A user-owned project needs a token with the "project" scope in secret PROJECT_TOKEN (skipped with a warning while it is missing).
+on:
+  issues:
+    types: [labeled, unlabeled, closed]
+  pull_request:
+    types: [opened, closed]
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  move:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move the card
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+          CLOSED: ${{ github.event.issue.state == 'closed' || github.event.pull_request.merged == true }}
+          LABELS: ${{ toJSON(github.event.issue.labels.*.name) }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "::warning::Secret PROJECT_TOKEN is not set; board not moved."; exit 0; fi
+          if [ "$IS_PR" = "true" ]; then
+            if [ "$CLOSED" = "true" ]; then column=Done; else column="In review"; fi
+          else
+            mapfile -t labels < <(echo "$LABELS" | jq -r '.[]')
+            column="$(node scripts/board-column.mjs "$CLOSED" "${labels[@]}")"
+          fi
+          [ -n "$column" ] || { echo "No board column for this event."; exit 0; }
+          scripts/gh-project.sh status "$URL" "$column"

@@ -9,7 +9,15 @@
 #
 # Status names are matched case-insensitively: Backlog | Ready | In progress | In review | Done
 # Requires: gh authenticated with the "project" scope (gh auth refresh -s project).
+#
+# In cloud agent sessions (CLAUDE_CODE_REMOTE=true) GitHub GraphQL is blocked, so this is a no-op:
+# the board-sync workflow moves the card from the status:* label (issue #183).
 set -euo pipefail
+
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${1:-}" != "columns" ]; then
+  echo "ℹ board move skipped: cloud session has no GraphQL. The board-sync workflow moves the card from the status:* label."
+  exit 0
+fi
 
 OWNER="${TAFSILA_PROJECT_OWNER:-merna550}"
 NUMBER="${TAFSILA_PROJECT_NUMBER:-4}"
@@ -50,5 +58,5 @@ case "${1:-}" in
     gh project field-list "$NUMBER" --owner "$OWNER" --format json \
       --jq ".fields[] | select(.name==\"$FIELD\") | .options[].name"
     ;;
-  *) sed -n '2,13p' "$0"; exit 1 ;;
+  *) sed -n '2,16p' "$0"; exit 1 ;;
 esac

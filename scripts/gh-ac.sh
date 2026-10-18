@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Acceptance-criteria checklist helper for GitHub issues.
+# Uses the REST API only, so it works where GraphQL is blocked (set TAFSILA_REPO to override owner/repo).
 # Reads the "## Acceptance criteria" section of an issue and ticks items when they are met.
 #
 # Usage:
@@ -10,10 +11,13 @@
 set -euo pipefail
 
 cmd="${1:-}"; issue="${2:-}"
-[ -n "$cmd" ] && [ -n "$issue" ] || { sed -n '2,9p' "$0"; exit 1; }
+[ -n "$cmd" ] && [ -n "$issue" ] || { sed -n '2,10p' "$0"; exit 1; }
 shift 2 || true
 
-body="$(gh issue view "$issue" --json body --jq '.body')"
+# REST only: `gh issue view|edit` use GraphQL, which cloud agent sessions cannot call (HTTP 403, issue #183).
+repo="${TAFSILA_REPO:-merna550/tafsila}"
+fetch_body() { gh api "repos/$repo/issues/$issue" --jq '.body // ""'; }
+body="$(fetch_body)"
 
 # Prints "<index>\t<state>\t<text>" for each checkbox inside the Acceptance criteria section.
 criteria() {
@@ -54,8 +58,8 @@ case "$cmd" in
   check|uncheck)
     [ "$#" -gt 0 ] || { echo "✘ give the criterion numbers (see: $0 list $issue)" >&2; exit 1; }
     mark="x"; [ "$cmd" = "uncheck" ] && mark=" "
-    set_marks "$mark" "$@" | gh issue edit "$issue" --body-file - >/dev/null
-    body="$(gh issue view "$issue" --json body --jq '.body')"
+    set_marks "$mark" "$@" | gh api -X PATCH "repos/$repo/issues/$issue" -F "body=@-" >/dev/null
+    body="$(fetch_body)"
     "$0" list "$issue"; "$0" progress "$issue" ;;
-  *) sed -n '2,9p' "$0"; exit 1 ;;
+  *) sed -n '2,10p' "$0"; exit 1 ;;
 esac
