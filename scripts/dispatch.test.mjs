@@ -161,3 +161,20 @@ describe("daily limit (DISPATCH_DAILY_LIMIT)", () => {
     expect(selectIssue({ ...base, issues: [ready(1)], buildsToday: 0, dailyLimit: 0 }).pick).toBeNull();
   });
 });
+
+describe("selectIssue ownership with /deliver (issue #185)", () => {
+  it("does not pick an issue that also carries another status label", () => {
+    const busy = ready(1, ["status:in-progress"]);
+    expect(selectIssue({ ...base, maxParallel: 5, issues: [busy] }).pick).toBeNull();
+  });
+
+  it("skips a ready issue with an open pull request and picks the next one", () => {
+    const openPrs = [{ number: 50, body: "Closes #1", headRefName: "feat/9-other" }];
+    expect(selectIssue({ ...base, issues: [ready(1), ready(2)], openPrs }).pick.number).toBe(2);
+  });
+
+  it("does not skip an issue that a pull request only mentions", () => {
+    const openPrs = [{ number: 151, body: "Part of #134, see #134", headRefName: "feat/133-x" }];
+    expect(selectIssue({ ...base, issues: [ready(134)], openPrs }).pick.number).toBe(134);
+  });
+});

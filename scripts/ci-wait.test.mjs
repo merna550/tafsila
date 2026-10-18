@@ -1,7 +1,7 @@
 // Tests for the PR CI waiter and its deliberately small failure output (issue #178).
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { extractFailureLines, stripAnsi, waitForCi } from "./ci-wait.mjs";
+import { classifyChecks, extractFailureLines, stripAnsi, waitForCi } from "./ci-wait.mjs";
 
 const fixture = readFileSync(new URL("./fixtures/ci-failure.log.txt", import.meta.url), "utf8");
 const green = { id: 1, name: "Quality", status: "completed", conclusion: "success" };
@@ -74,5 +74,24 @@ describe("waitForCi", () => {
     });
     expect(code).toBe(2);
     expect(lines).toContain("check pending: no checks found");
+  });
+});
+
+describe("classifyChecks", () => {
+  const run = (name, status, conclusion) => ({ name, status, conclusion });
+
+  it("is pending without checks or while one runs", () => {
+    expect(classifyChecks([]).state).toBe("pending");
+    expect(classifyChecks([run("a", "in_progress", null)]).state).toBe("pending");
+  });
+
+  it("is green for success, neutral and skipped", () => {
+    const checks = [run("a", "completed", "success"), run("b", "completed", "skipped")];
+    expect(classifyChecks(checks)).toEqual({ state: "green", failed: [] });
+  });
+
+  it("is red and lists the failed runs", () => {
+    const bad = run("b", "completed", "failure");
+    expect(classifyChecks([run("a", "completed", "success"), bad])).toEqual({ state: "red", failed: [bad] });
   });
 });

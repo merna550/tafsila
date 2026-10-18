@@ -25,7 +25,7 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 - Path-scoped rules and task skills: `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)
 - Learn a term / technology / pattern (glossary, maps, reading paths): `docs/handbook/START_HERE.md`
 - Manual test cases: `docs/test-cases/`
-- Saved prompts: `.claude/commands/` (`/triage`, `/plan`, `/plan-milestone`, `/plan-wave`, `/build`, `/review`, `/ship`, `/status`, `/release-check`, `/explain`, `/learn`, `/onboard`)
+- Saved prompts: `.claude/commands/` (`/triage`, `/plan`, `/plan-milestone`, `/plan-wave`, `/build`, `/deliver`, `/review`, `/ship`, `/status`, `/release-check`, `/explain`, `/learn`, `/onboard`)
 
 ## Non-negotiable rules
 

@@ -11,6 +11,7 @@ Agents must follow this file. Merna only: writes ideas, approves plans (when ask
 idea ─► /triage ─► status:needs-plan ─► /plan ─► status:plan-review ─► (Merna approves) ─► status:ready
                                    └──── plan:none ───────────────────────────────────────────┘
 status:ready ─► /build ─► status:in-progress ─► PR + CI green + preview ─► status:in-review
+status:ready ─► /deliver ─► in-progress ─► PR ─► gate ─► merge ─► on-staging   (build, CI, fix and merge in one command)
 status:in-review ─► (Merna: approve) ─► merge ─► status:on-staging ─► (Merna: deploy) ─► status:released
                 └► (Merna: changes) ─► status:changes-requested ─► /build (fix) ─► status:in-review
 any step ─► status:blocked (+ reason)          any open question ─► needs:decision
@@ -23,6 +24,7 @@ any step ─► status:blocked (+ reason)          any open question ─► need
 | Plan          | `/plan #N`                             | Agent (model from `plan:*`)  | Plan comment: files, steps, tests, risks, docs to update                                                        |
 | Approve plan  | label `status:ready`                   | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved. Claude sets it only after Merna says "approved"      |
 | Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link and green CI                                                    |
+| Deliver       | `/deliver #N` or `/deliver next`       | Agent after `status:ready`   | Build, CI wait, fixes (2 resends), gate, squash merge, next issue; Arabic summary; never approves a plan        |
 | Review        | PR review                              | Merna                        | Approve or request changes                                                                                      |
 | Ship          | `/ship #N` (merge)                     | Agent after approval         | Merge → staging deploy → smoke tests                                                                            |
 | Release check | `/release-check`                       | Agent                        | List of High manual cases to run on staging + automated results                                                 |
@@ -73,17 +75,28 @@ Every Sunday `agent-report.yml` opens or updates the issue "Agent usage report �
 
 The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mjs <pr-number>`, waits for every check on the current head, fixes a red result and pushes again for at most three rounds. The script reports the PR's mergeable state and only the matching failure lines from a failed job, so the builder sees the cause without loading the complete log. A timeout or a third red round blocks the issue instead of leaving CI polling to Merna.
 
+### Who builds an issue: `/deliver` or the dispatcher (issue #185)
+
+An issue is built by exactly one of them. `agent:auto` = the dispatcher (`dispatch.mjs`); every other issue = `/deliver` (or `/build`). `/deliver` refuses `agent:auto` issues. The dispatcher only considers an issue whose single status label is `status:ready` and which has no open PR (found by `Closes #N` or the branch name `<type>/N-...`, never by a plain mention). `/deliver` merges only through `scripts/deliver.mjs merge`: the gate re-checks the required checks (`REQUIRED_CHECKS` in `scripts/deliver-rules.mjs`), the closing keyword, `needs:decision` and the criteria, and pins the head SHA. Decisions: [185-deliver-merge-gate](decisions/185-deliver-merge-gate.md).
+
+### Repository settings for /deliver (Merna, optional second guard)
+
+`/deliver` works without these; they stop any other merge path too. Everything below is free (the repo is public).
+
+1. Settings, Branches, add a rule for `main`: "Require a pull request before merging" (0 approvals); "Require status checks to pass": `quality`, `build`, `e2e`, `db-reset`, `storybook` (do not tick "Require branches to be up to date"); "Do not allow bypassing the above settings"; block force pushes and deletion.
+2. Settings, General, Pull Requests: keep "Allow squash merging" on, turn on "Automatically delete head branches", leave "Allow auto-merge" off.
+
 ## 3. Labels (full list in `.github/labels.yml`)
 
-| Group    | Labels                                                                              | Rule                               |
-| -------- | ----------------------------------------------------------------------------------- | ---------------------------------- |
-| Status   | `status:triage` … `status:released`                                                 | Exactly one; automation updates it |
-| Model    | `plan:opus/sonnet/none`, `build:opus/sonnet/haiku`                                  | Exactly one of each                |
-| Size     | `size:XS … XL`                                                                      | Exactly one; XL must be split      |
-| Type     | `type:feature/bug/chore/docs/test/spike`                                            | Exactly one                        |
-| Priority | `priority:P0 … P3`                                                                  | Exactly one                        |
-| Area     | `area:engine/ui/api/db/ai/payments/3d/infra/docs`                                   | One or more                        |
-| Flags    | `needs:decision`, `needs:interactive`, `needs:sew-test`, `agent:auto`, `good-first` | Optional                           |
+| Group    | Labels                                                                              | Rule                                                                                        |
+| -------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Status   | `status:triage` … `status:released`                                                 | Exactly one; automation updates it (`/build` and `/deliver` swap `ready` for `in-progress`) |
+| Model    | `plan:opus/sonnet/none`, `build:opus/sonnet/haiku`                                  | Exactly one of each                                                                         |
+| Size     | `size:XS … XL`                                                                      | Exactly one; XL must be split                                                               |
+| Type     | `type:feature/bug/chore/docs/test/spike`                                            | Exactly one                                                                                 |
+| Priority | `priority:P0 … P3`                                                                  | Exactly one                                                                                 |
+| Area     | `area:engine/ui/api/db/ai/payments/3d/infra/docs`                                   | One or more                                                                                 |
+| Flags    | `needs:decision`, `needs:interactive`, `needs:sew-test`, `agent:auto`, `good-first` | Optional                                                                                    |
 
 ## 4. Definition of Ready (before /build)
 

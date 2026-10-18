@@ -1,0 +1,88 @@
+{
+  "routes": {
+    "repos/o/r/issues/185": {
+      "number": 185,
+      "state": "open",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        }
+      ],
+      "body": ""
+    },
+    "repos/o/r/pulls/210": {
+      "number": 210,
+      "title": "feat(agents): /deliver",
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "body": "Part of #185",
+      "labels": [],
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "base": {
+        "ref": "main",
+        "repo": {
+          "full_name": "o/r"
+        }
+      },
+      "head": {
+        "ref": "feat/185-deliver",
+        "sha": "abc1234def",
+        "repo": {
+          "full_name": "o/r"
+        }
+      }
+    },
+    "repos/o/r/commits/abc1234def/check-runs?per_page=100&page=1": {
+      "check_runs": [
+        {
+          "id": 1,
+          "name": "quality",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 2,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 3,
+          "name": "e2e",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 4,
+          "name": "db-reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 5,
+          "name": "storybook",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "repos/o/r/commits/abc1234def/status": {
+      "statuses": []
+    },
+    "repos/o/r/pulls?state=open&per_page=100": [
+      {
+        "number": 210,
+        "state": "open",
+        "body": "Part of #185",
+        "head": {
+          "ref": "feat/185-deliver"
+        }
+      }
+    ]
+  },
+  "logs": {
+    "3": "AssertionError: expected 1 to be 2\nother"
+  }
+}
