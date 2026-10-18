@@ -81,7 +81,8 @@ export const tieredSkirtModule: FeatureModule = {
   appliesTo: (spec) => spec.skirt?.type === "tiered",
   draft: (ctx) => {
     const bands = tierBands(finishedWaistMm(ctx), skirtLengthMm(ctx));
-    const plan = panelPlan(ctx, bands.at(-1)!.circumferenceMm);
+    const widestMm = bands.at(-1)!.circumferenceMm;
+    const plan = panelPlan(ctx, () => widestMm);
     return bands.reduce((outer, band, i) => {
       const widthMm = panelWidthMm(band, plan);
       const marks: Mark[] = [gatherMark(band.topEdgeId, widthMm, widthMm / TIER_WIDTH_RATIO)];

@@ -27,15 +27,16 @@ export const gatheredSkirtModule: FeatureModule = {
   order: 10,
   appliesTo: (spec) => spec.skirt?.type === "gathered",
   draft: (ctx) => {
+    const circumferenceMm = finishedWaistMm(ctx) * GATHERED_SKIRT_RATIO;
     const band: Band = {
       id: "skirt",
       names: SKIRT_PANEL_NAMES,
-      circumferenceMm: finishedWaistMm(ctx) * GATHERED_SKIRT_RATIO,
+      circumferenceMm,
       heightMm: skirtLengthMm(ctx),
       topEdgeId: "waist",
       bottomEdgeId: "hem",
     };
-    const plan = panelPlan(ctx, band.circumferenceMm);
+    const plan = panelPlan(ctx, () => circumferenceMm);
     const widthMm = panelWidthMm(band, plan);
     const marks = [gatherMark(band.topEdgeId, widthMm, widthMm / GATHERED_SKIRT_RATIO)];
     return slotsOf(plan).reduce((acc, slot) => withPiece(acc, panelPiece(band, slot, plan, { marks })), ctx);

@@ -96,3 +96,22 @@ export const aLineAnkleSideSlitSkirt: DesignSpec = {
   ...straightKneeSkirt,
   skirt: { type: "a-line", length: "ankle", slit: { position: "side", lengthMm: 300 } },
 };
+
+/** A gathered knee skirt with a side zip: rectangle panels gathered 1.8 times to the waist (issue #137). */
+export const gatheredKneeSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "gathered", length: "knee" },
+};
+
+/** A knife-pleated knee skirt with a side zip: 16 pleats spaced evenly round the waist (issue #137). */
+export const pleatedKneeSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "pleated", length: "knee" },
+};
+
+/** A three-tier midi skirt with a centre-back zip: each tier gathered onto the one above (issue #137). */
+export const tieredMidiSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  skirt: { type: "tiered", length: "midi" },
+  closure: { type: "zip", position: "center-back" },
+};

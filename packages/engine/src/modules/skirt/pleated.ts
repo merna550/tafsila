@@ -38,6 +38,17 @@ export function pleatsPerPanel(round: number): number {
   return Math.max(MIN_PLEATS_PER_PANEL, Math.round(KNIFE_PLEAT_COUNT / round));
 }
 
+/**
+ * Flat width of the pleated skirt all round the body before pleating: finished waist plus every pleat's intake.
+ *
+ * @param finishedMm - Finished waist.
+ * @param round - How many panels make the full circumference.
+ * @returns Width in mm.
+ */
+export function pleatedCircumferenceMm(finishedMm: number, round: number): number {
+  return finishedMm + round * pleatsPerPanel(round) * PLEAT_INTAKE_MM;
+}
+
 /** Where one pleat sits on a panel, x from the panel's centre (or left) edge, in mm. */
 export interface PleatPosition {
   /** The placement line the fold is laid on. */
@@ -96,13 +107,13 @@ export const pleatedSkirtModule: FeatureModule = {
   draft: (ctx) => {
     const finishedMm = finishedWaistMm(ctx);
     const heightMm = skirtLengthMm(ctx);
-    const plan = panelPlan(ctx, finishedMm + KNIFE_PLEAT_COUNT * PLEAT_INTAKE_MM);
+    const plan = panelPlan(ctx, (round) => pleatedCircumferenceMm(finishedMm, round));
     const round = panelsRound(plan);
     const count = pleatsPerPanel(round);
     const band: Band = {
       id: "skirt",
       names: SKIRT_PANEL_NAMES,
-      circumferenceMm: finishedMm + round * count * PLEAT_INTAKE_MM,
+      circumferenceMm: pleatedCircumferenceMm(finishedMm, round),
       heightMm,
       topEdgeId: "waist",
       bottomEdgeId: "hem",

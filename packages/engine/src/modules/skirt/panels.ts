@@ -15,6 +15,7 @@ import {
   PANEL_GRAIN_LINE_SHARE,
   PANEL_GRAIN_X_SHARE,
 } from "../../constants/skirt-fullness";
+import { SKIRT_PIECE_NAME } from "../../blocks/skirt/edges";
 import { DraftingError } from "../../errors/drafting-error";
 import { lineSeg, pt } from "../../geometry";
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
@@ -48,8 +49,7 @@ export interface Band {
 
 /** Piece names of the one-band skirts (copy glossary: تنورة = skirt). */
 export const SKIRT_PANEL_NAMES: Band["names"] = {
-  front: { ar: "أمام التنورة", en: "Skirt front" },
-  back: { ar: "خلف التنورة", en: "Skirt back" },
+  ...SKIRT_PIECE_NAME,
   panel: { ar: "قطعة التنورة", en: "Skirt panel" },
 };
 
@@ -117,35 +117,33 @@ function sideAllowanceMm(options: EngineOptions): number {
 }
 
 /**
- * The fewest panels per half so every panel, with its allowances, fits across the fabric. One panel means a half cut
- * on the fold (cut width = half the circumference plus two allowances). Past `MAX_PANELS_PER_HALF` the widest split
- * is kept and FR-VAL-08 warns.
+ * Whether one panel of a band, with both upright allowances, fits across the fabric. Mirrors `widthAcrossGrainMm`,
+ * which FR-VAL-08 uses: a half cut on the fold counts twice its width (half the circumference plus two allowances).
  *
- * @param widestMm - Circumference of the widest band.
+ * @param circumferenceMm - Circumference of the band.
+ * @param perHalf - Panels per half.
  * @param options - Engine options (fabric width and seam allowances).
- * @returns Panels per half.
+ * @returns True when the panel fits.
  */
-export function panelsPerHalf(widestMm: number, options: EngineOptions): number {
-  const twoAllowancesMm = 2 * sideAllowanceMm(options);
-  if (widestMm / 2 + twoAllowancesMm <= options.fabricWidthMm) return 1;
-  for (let n = 2; n <= MAX_PANELS_PER_HALF; n += 1) {
-    if (widestMm / (2 * n) + twoAllowancesMm <= options.fabricWidthMm) return n;
-  }
-  return MAX_PANELS_PER_HALF;
+function panelFits(circumferenceMm: number, perHalf: number, options: EngineOptions): boolean {
+  return circumferenceMm / (2 * perHalf) + 2 * sideAllowanceMm(options) <= options.fabricWidthMm;
 }
 
 /**
- * The cutting plan for a skirt whose widest band has the given circumference.
+ * The cutting plan: the fewest panels per half so every panel of the widest band fits across the fabric. Past
+ * `MAX_PANELS_PER_HALF` the widest split is kept and FR-VAL-08 warns.
  *
  * @param ctx - Current context.
- * @param widestMm - Circumference of the widest band.
+ * @param widestFor - Circumference of the widest band for a number of panels round the body (pleat counts depend on it).
  * @returns The plan.
  */
-export function panelPlan(ctx: DraftContext, widestMm: number): PanelPlan {
-  return {
-    panelsPerHalf: panelsPerHalf(widestMm, ctx.options),
-    centreBackSeam: ctx.spec.closure.position === "center-back",
-  };
+export function panelPlan(ctx: DraftContext, widestFor: (round: number) => number): PanelPlan {
+  const centreBackSeam = ctx.spec.closure.position === "center-back";
+  for (let perHalf = 1; perHalf <= MAX_PANELS_PER_HALF; perHalf += 1) {
+    const plan = { panelsPerHalf: perHalf, centreBackSeam };
+    if (panelFits(widestFor(panelsRound(plan)), perHalf, ctx.options)) return plan;
+  }
+  return { panelsPerHalf: MAX_PANELS_PER_HALF, centreBackSeam };
 }
 
 /**

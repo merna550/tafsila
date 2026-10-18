@@ -653,6 +653,10 @@
                 {
                   "additionalProperties": false,
                   "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
                     "from": {
                       "additionalProperties": false,
                       "properties": {
@@ -737,6 +741,10 @@
                 {
                   "additionalProperties": false,
                   "properties": {
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
                     "from": {
                       "additionalProperties": false,
                       "properties": {
@@ -836,6 +844,10 @@
                         "y"
                       ],
                       "type": "object"
+                    },
+                    "edgeId": {
+                      "minLength": 1,
+                      "type": "string"
                     },
                     "id": {
                       "minLength": 1,
