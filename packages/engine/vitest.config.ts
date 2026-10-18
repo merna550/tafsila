@@ -3,6 +3,9 @@ import { defineConfig } from "vitest/config";
 /** Engine tests; `test:coverage` enforces the 85% coverage floor of SRS NFR-10 (decision 124). */
 export default defineConfig({
   test: {
+    // Property tests over the size matrix run whole pipelines; with v8 coverage instrumentation on shared CI runners
+    // they are several times slower than locally, so the default 5 s is too tight.
+    testTimeout: 30_000,
     coverage: {
       provider: "v8",
       include: ["src/**/*.ts", "scripts/**/*.ts"],

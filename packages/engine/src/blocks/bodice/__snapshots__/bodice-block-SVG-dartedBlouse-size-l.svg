@@ -27,10 +27,10 @@
 <g id="layer-labels">
 <text id="piece-bodice-back-label-name" x="140.75" y="321.35" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">خلف الصدر</text>
 <text id="piece-bodice-back-label-cut" x="140.75" y="332.55" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 على الثنية</text>
-<text id="piece-bodice-back-label-size" x="140.75" y="343.75" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.4.0</text>
+<text id="piece-bodice-back-label-size" x="140.75" y="343.75" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.5.0</text>
 <text id="piece-bodice-front-label-name" x="529.94" y="368.62" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">أمام الصدر</text>
 <text id="piece-bodice-front-label-cut" x="529.94" y="379.82" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 على الثنية</text>
-<text id="piece-bodice-front-label-size" x="529.94" y="391.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.4.0</text>
+<text id="piece-bodice-front-label-size" x="529.94" y="391.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-l - v0.5.0</text>
 </g>
 <g id="layer-scale">
 <rect id="piece-bodice-front-scale-square" x="428.81" y="79.64" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>

@@ -15,7 +15,7 @@ const options = { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" };
  * (one 18 ms run was seen), so it is far above a local run yet far under the real FR-PAT-04 budget of 500 ms,
  * which #147 measures properly.
  */
-const PIPELINE_SMOKE_BUDGET_MS = 100;
+const PIPELINE_SMOKE_BUDGET_MS = 250;
 /** Wall-clock allowance for the many warm-up runs on a busy shared CI runner. */
 const PIPELINE_SMOKE_TEST_TIMEOUT_MS = 30_000;
 /** Untimed runs first, so the timing is the steady-state cost and not JIT compilation (#128). */
