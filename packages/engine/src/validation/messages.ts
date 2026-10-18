@@ -105,6 +105,14 @@ export const VALIDATION_MESSAGES = {
     ar: "الفتحة غير متاحة لتنورة {type} ولم تُرسم",
     en: "A slit is not available for a {type} skirt and was not drafted",
   },
+  BODICE_DART_FREE_OK: {
+    ar: "الصدر بدون بنس: تحولت البنسات إلى راحة تناسب القصة الواسعة أو شبه المحددة",
+    en: "Dart-free bodice: the darts became ease, which suits a loose or semi-fitted fit",
+  },
+  BODICE_DART_FREE_FITTED: {
+    ar: "القصة المحددة تحتاج بنسات أو قصة أميرة؛ الصدر بدون بنس لن يكون محددًا على الجسم",
+    en: "A fitted bodice needs darts or princess seams; without them it will not fit closely",
+  },
   FULLNESS_CLOSURE_OK: {
     ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم كما هو مطلوب",
     en: "Waist after gathers or pleats is {mm} mm, as expected",

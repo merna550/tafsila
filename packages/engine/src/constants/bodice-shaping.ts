@@ -22,6 +22,9 @@ export const PRINCESS_ARMHOLE_SHARE = 0.35;
  */
 export const PRINCESS_ARMHOLE_MIN_LOWER_MM = 110;
 
+/** Least armhole kept on the centre panel by an armhole princess line, so its top corner can be sewn. */
+export const PRINCESS_ARMHOLE_MIN_UPPER_MM = 30;
+
 /**
  * Handle length of the style-line cubics as a share of their chord (the Catmull-Rom third), on the centre panels.
  * The side panels start from this value and are trued to the centre panel's length (decision 138, 3).
