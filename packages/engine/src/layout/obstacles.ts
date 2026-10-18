@@ -103,9 +103,6 @@ function stretchMissesRect(box: Rect, start: Point, end: Point): boolean {
  * @returns Whether the box is clear.
  */
 export function isClear(rect: Rect, obstacles: PieceObstacles, clearanceMm: number): boolean {
-  for (const corner of rectCorners(rect)) {
-    if (!pointInPolygon(corner, obstacles.outline)) return false;
-  }
   const grown: Rect = {
     minX: rect.minX - clearanceMm,
     minY: rect.minY - clearanceMm,
@@ -116,7 +113,9 @@ export function isClear(rect: Rect, obstacles: PieceObstacles, clearanceMm: numb
     if (stretchMissesRect(grown, start, end)) continue;
     if (distanceSegmentToRect(rect, start, end) < clearanceMm) return false;
   }
-  return true;
+  // The outline is among the stretches, so a box that passed them all never crosses it: one corner inside
+  // means the whole box is inside.
+  return pointInPolygon(rectCorners(rect)[0]!, obstacles.outline);
 }
 
 /**
