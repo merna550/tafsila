@@ -19,7 +19,7 @@ import { lerp, lineSeg, mapSegment, pathLength, pt, reversePath, splitAtLength }
 import { halfCapSegments, solveSleeveCapHeight } from "../../sleeve/sleeve-cap";
 import type { PieceDraft } from "../../pipeline/draft-context";
 import { buildEdges, type EdgeSpec } from "../shared/edges";
-import { BACK_PIECE_ID, FRONT_PIECE_ID } from "../bodice/piece-parts";
+import { BLOCK_ARMHOLE_PARTS, type BodiceArmholeParts } from "../bodice/armhole-parts";
 import { BODICE_ARMHOLE_EDGE, SLEEVE_EDGE, SLEEVE_PIECE_ID } from "./ids";
 import { sleeveCapNotches } from "./notches";
 import type { SleeveDraft, SleeveInput, SleeveKeyPoint, SleeveLength } from "./types";
@@ -149,6 +149,30 @@ function underarmPair(edgeId: string): EdgeSpec["pairsWith"] {
 }
 
 /**
+ * The pairing of one cap half with its bodice armhole: only when that armhole is one edge. A princess armhole split
+ * between two panels has no single partner, so its length is checked by the cap-ease rule (FR-VAL-02) over every
+ * part instead (decision 138, 5).
+ *
+ * @param parts - Bodice pieces holding the armhole, shoulder tip first.
+ * @param intendedEaseMm - The cap half's share of the target ease.
+ * @param reversed - Whether the cap half runs the other way from the armhole.
+ * @returns The pair declaration, or undefined for a split armhole.
+ */
+function capPair(
+  parts: readonly string[],
+  intendedEaseMm: number,
+  reversed: boolean,
+): EdgeSpec["pairsWith"] | undefined {
+  if (parts.length !== 1) return undefined;
+  return {
+    pieceId: parts[0]!,
+    edgeId: BODICE_ARMHOLE_EDGE,
+    intendedEaseMm,
+    ...(reversed ? { reversed } : {}),
+  };
+}
+
+/**
  * Edges of the sleeve in path order. Each cap half declares to its bodice armhole the share of the target ease
  * that follows its armhole length; the two underarm seams pair with each other (decision 134, 2).
  *
@@ -156,15 +180,19 @@ function underarmPair(edgeId: string): EdgeSpec["pairsWith"] {
  * @param segments.capBack - Segments in the back cap.
  * @param segments.capFront - Segments in the front cap.
  * @param backShare - Back armhole length over the whole armhole.
+ * @param armholes - Bodice pieces holding each armhole.
  * @param options - Engine options, for the seam allowances.
  * @returns The five edges.
  */
 function sleeveEdges(
   segments: { readonly capBack: number; readonly capFront: number },
   backShare: number,
+  armholes: BodiceArmholeParts,
   options: Pick<EngineOptions, "seamAllowance">,
 ): Edge[] {
   const backEaseMm = SLEEVE_CAP_TARGET_EASE_MM * backShare;
+  const backPair = capPair(armholes.back, backEaseMm, true);
+  const frontPair = capPair(armholes.front, SLEEVE_CAP_TARGET_EASE_MM - backEaseMm, false);
   return buildEdges(
     SLEEVE_PIECE_ID,
     [
@@ -172,22 +200,13 @@ function sleeveEdges(
         id: SLEEVE_EDGE.capBack,
         kind: "armhole",
         segments: segments.capBack,
-        pairsWith: {
-          pieceId: BACK_PIECE_ID,
-          edgeId: BODICE_ARMHOLE_EDGE,
-          intendedEaseMm: backEaseMm,
-          reversed: true,
-        },
+        ...(backPair ? { pairsWith: backPair } : {}),
       },
       {
         id: SLEEVE_EDGE.capFront,
         kind: "armhole",
         segments: segments.capFront,
-        pairsWith: {
-          pieceId: FRONT_PIECE_ID,
-          edgeId: BODICE_ARMHOLE_EDGE,
-          intendedEaseMm: SLEEVE_CAP_TARGET_EASE_MM - backEaseMm,
-        },
+        ...(frontPair ? { pairsWith: frontPair } : {}),
       },
       {
         id: SLEEVE_EDGE.underarmFront,
@@ -212,25 +231,33 @@ function sleeveEdges(
  *
  * @param stitchPath - Outline from the back underarm.
  * @param edges - The edges.
- * @param capFrontMm - Front cap edge length, for the notches.
- * @param hemYMm - Hem line y, for the grain line.
+ * @param sizes - Front cap edge length (for the notches) and hem line y (for the grain line).
+ * @param sizes.capFrontMm - Front cap edge length.
+ * @param sizes.hemYMm - Hem line y.
+ * @param armholes - Bodice pieces holding each armhole.
  * @returns The piece in progress.
  */
-function sleevePiece(stitchPath: Segment[], edges: Edge[], capFrontMm: number, hemYMm: number): PieceDraft {
+function sleevePiece(
+  stitchPath: Segment[],
+  edges: Edge[],
+  sizes: { readonly capFrontMm: number; readonly hemYMm: number },
+  armholes: BodiceArmholeParts,
+): PieceDraft {
+  const { capFrontMm, hemYMm } = sizes;
   return {
     id: SLEEVE_PIECE_ID,
     name: { ar: "الكم", en: "Sleeve" },
     cut: { quantity: 2, onFold: false, mirror: true, fabric: "main" },
     stitchPath,
     edges,
-    notches: sleeveCapNotches(capFrontMm),
+    notches: sleeveCapNotches(capFrontMm, armholes),
     bodyLines: [],
     sleeveCap: {
       edgeIds: [SLEEVE_EDGE.capBack, SLEEVE_EDGE.capFront],
-      armholeRefs: [
-        { pieceId: BACK_PIECE_ID, edgeId: BODICE_ARMHOLE_EDGE },
-        { pieceId: FRONT_PIECE_ID, edgeId: BODICE_ARMHOLE_EDGE },
-      ],
+      armholeRefs: [...armholes.back, ...armholes.front].map((pieceId) => ({
+        pieceId,
+        edgeId: BODICE_ARMHOLE_EDGE,
+      })),
     },
     grainLine: [pt(0, SLEEVE_GRAIN_END_INSET_MM), pt(0, hemYMm - SLEEVE_GRAIN_END_INSET_MM)],
     darts: [],
@@ -272,11 +299,17 @@ export function draftSleeve(
     lineSeg(hemFront, hemBack),
     lineSeg(hemBack, keyPoints["sleeve.underarmBack"]),
   ];
-  const edges = sleeveEdges({ capBack: capBack.length, capFront: capFront.length }, backShare, options);
+  const armholes = input.armholes ?? BLOCK_ARMHOLE_PARTS;
+  const edges = sleeveEdges(
+    { capBack: capBack.length, capFront: capFront.length },
+    backShare,
+    armholes,
+    options,
+  );
   const capBackMm = pathLength(capBack);
   const capFrontMm = pathLength(capFront);
   return {
-    piece: sleevePiece(stitchPath, edges, capFrontMm, hemYMm),
+    piece: sleevePiece(stitchPath, edges, { capFrontMm, hemYMm }, armholes),
     keyPoints,
     capHeightMm,
     capEaseMm: {

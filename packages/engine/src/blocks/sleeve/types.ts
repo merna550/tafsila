@@ -1,6 +1,7 @@
 /** Types of the set-in sleeve block (issue #134). Lengths in mm, sleeve frame of docs/engine/drafting-method.md. */
 import type { DesignSpec, Point } from "@tafsila/schemas";
 import type { PieceDraft } from "../../pipeline/draft-context";
+import type { BodiceArmholeParts } from "../bodice/armhole-parts";
 
 /** A sleeve length option of the design. */
 export type SleeveLength = NonNullable<DesignSpec["sleeve"]>["length"];
@@ -19,6 +20,8 @@ export interface SleeveInput {
   readonly armholeFrontMm: number;
   /** Sleeve length option. */
   readonly length: SleeveLength;
+  /** The bodice pieces holding each armhole, shoulder tip first; the darted block's two pieces when left out (#138). */
+  readonly armholes?: BodiceArmholeParts;
 }
 
 /** Names of the sleeve key points, as in `referenceDrafts` plus the points this block adds. */

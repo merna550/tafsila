@@ -9,7 +9,7 @@ import {
   SLEEVE_DOUBLE_NOTCH_GAP_MM,
   SLEEVE_FRONT_NOTCH_FROM_UNDERARM_MM,
 } from "../../constants/sleeve-block";
-import { BACK_PIECE_ID, FRONT_PIECE_ID } from "../bodice/piece-parts";
+import type { BodiceArmholeParts } from "../bodice/armhole-parts";
 import { BODICE_ARMHOLE_EDGE, SLEEVE_EDGE, SLEEVE_NOTCH, SLEEVE_PIECE_ID } from "./ids";
 
 /** Distances of the back double notch from the underarm. */
@@ -38,41 +38,59 @@ export function backArmholeNotches(armholeMm: number): Notch[] {
 }
 
 /**
- * Notches of the front bodice armhole: the balance notch from the underarm, and the shoulder point at the tip.
+ * The front balance notch of the bodice armhole, measured from the underarm (on the armhole part at the underarm).
  *
- * @param armholeMm - Front armhole length.
- * @returns The front notch and the shoulder notch.
+ * @param armholeMm - Length of the front armhole part that ends at the underarm.
+ * @returns The front notch.
  */
-export function frontArmholeNotches(armholeMm: number): Notch[] {
-  return [
-    {
-      id: SLEEVE_NOTCH.front,
-      edgeId: BODICE_ARMHOLE_EDGE,
-      atMm: armholeMm - SLEEVE_FRONT_NOTCH_FROM_UNDERARM_MM,
-      pairsWith: { pieceId: SLEEVE_PIECE_ID, edgeId: SLEEVE_EDGE.capFront, alignFrom: "end" },
-    },
-    {
-      id: SLEEVE_NOTCH.shoulder,
-      edgeId: BODICE_ARMHOLE_EDGE,
-      atMm: 0,
-      pairsWith: { pieceId: SLEEVE_PIECE_ID, edgeId: SLEEVE_EDGE.capFront },
-    },
-  ];
+export function frontArmholeNotch(armholeMm: number): Notch {
+  return {
+    id: SLEEVE_NOTCH.front,
+    edgeId: BODICE_ARMHOLE_EDGE,
+    atMm: armholeMm - SLEEVE_FRONT_NOTCH_FROM_UNDERARM_MM,
+    pairsWith: { pieceId: SLEEVE_PIECE_ID, edgeId: SLEEVE_EDGE.capFront, alignFrom: "end" },
+  };
+}
+
+/**
+ * The shoulder-point notch at the tip of the front bodice armhole (on the armhole part at the shoulder tip).
+ *
+ * @returns The shoulder notch.
+ */
+export function shoulderArmholeNotch(): Notch {
+  return {
+    id: SLEEVE_NOTCH.shoulder,
+    edgeId: BODICE_ARMHOLE_EDGE,
+    atMm: 0,
+    pairsWith: { pieceId: SLEEVE_PIECE_ID, edgeId: SLEEVE_EDGE.capFront },
+  };
 }
 
 /**
  * Notches of the sleeve cap. The back cap edge runs underarm to shoulder point (opposite to the bodice), the
  * front one shoulder point to underarm (the same way as the bodice).
  *
+ * Each pairs with the bodice armhole part it sits on: the back and front notches with the part at the underarm, the
+ * shoulder notch with the part at the shoulder tip (decision 138, 5).
+ *
  * @param capFrontMm - Length of the front cap edge.
+ * @param armholes - Bodice pieces holding each armhole, shoulder tip first.
  * @returns The back double notch, the shoulder notch and the front notch.
  */
-export function sleeveCapNotches(capFrontMm: number): Notch[] {
+export function sleeveCapNotches(capFrontMm: number, armholes: BodiceArmholeParts): Notch[] {
+  const backUnderarmPiece = armholes.back.at(-1)!;
+  const frontUnderarmPiece = armholes.front.at(-1)!;
+  const frontTipPiece = armholes.front[0]!;
   const back: Notch[] = BACK_IDS.map((id, i) => ({
     id,
     edgeId: SLEEVE_EDGE.capBack,
     atMm: BACK_FROM_UNDERARM_MM[i]!,
-    pairsWith: { pieceId: BACK_PIECE_ID, edgeId: BODICE_ARMHOLE_EDGE, reversed: true, alignFrom: "start" },
+    pairsWith: {
+      pieceId: backUnderarmPiece,
+      edgeId: BODICE_ARMHOLE_EDGE,
+      reversed: true,
+      alignFrom: "start",
+    },
   }));
   return [
     ...back,
@@ -80,13 +98,13 @@ export function sleeveCapNotches(capFrontMm: number): Notch[] {
       id: SLEEVE_NOTCH.shoulder,
       edgeId: SLEEVE_EDGE.capFront,
       atMm: 0,
-      pairsWith: { pieceId: FRONT_PIECE_ID, edgeId: BODICE_ARMHOLE_EDGE },
+      pairsWith: { pieceId: frontTipPiece, edgeId: BODICE_ARMHOLE_EDGE },
     },
     {
       id: SLEEVE_NOTCH.front,
       edgeId: SLEEVE_EDGE.capFront,
       atMm: capFrontMm - SLEEVE_FRONT_NOTCH_FROM_UNDERARM_MM,
-      pairsWith: { pieceId: FRONT_PIECE_ID, edgeId: BODICE_ARMHOLE_EDGE, alignFrom: "end" },
+      pairsWith: { pieceId: frontUnderarmPiece, edgeId: BODICE_ARMHOLE_EDGE, alignFrom: "end" },
     },
   ];
 }

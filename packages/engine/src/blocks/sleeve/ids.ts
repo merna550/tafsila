@@ -1,4 +1,5 @@
 /** Ids shared by the sleeve piece and the bodice armhole notches it pairs with (issue #134). */
+import { ARMHOLE_EDGE_ID } from "../bodice/piece-parts";
 
 /** Id of the sleeve piece. */
 export const SLEEVE_PIECE_ID = "sleeve";
@@ -21,4 +22,4 @@ export const SLEEVE_NOTCH = {
 } as const;
 
 /** Id of the armhole edge on both bodice pieces. */
-export const BODICE_ARMHOLE_EDGE = "armhole";
+export const BODICE_ARMHOLE_EDGE = ARMHOLE_EDGE_ID;

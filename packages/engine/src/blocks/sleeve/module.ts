@@ -8,13 +8,16 @@ import type { FeatureModule } from "../../pipeline/feature-module";
 import { DraftingError } from "../../errors/drafting-error";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
 import { BODICE_RESOLVED_KEYS } from "../bodice/draft-bodice";
-import { BACK_PIECE_ID, FRONT_PIECE_ID } from "../bodice/piece-parts";
+import { armholeParts } from "../bodice/armhole-parts";
+import { edgeLengthMm } from "../../pieces/measure";
 import { draftSleeve } from "./draft-sleeve";
-import { backArmholeNotches, frontArmholeNotches } from "./notches";
+import { BODICE_ARMHOLE_EDGE } from "./ids";
+import { backArmholeNotches, frontArmholeNotch, shoulderArmholeNotch } from "./notches";
 import type { SleeveInput } from "./types";
 
 /**
- * The sleeve input from the run's context: the bodice armholes passed on by the bodice block (#128).
+ * The sleeve input from the run's context: the bodice armhole lengths passed on by the bodice block (#128) and the
+ * pieces holding them (one per half, or two for a princess armhole, #138).
  *
  * @param ctx - Context after the bodice block.
  * @returns The sleeve input.
@@ -26,6 +29,10 @@ export function sleeveInputFrom(ctx: DraftContext): SleeveInput {
   if (armholeBackMm === undefined || armholeFrontMm === undefined || !ctx.spec.sleeve) {
     throw new DraftingError("PIPELINE_STEP_ORDER", "The set-in sleeve needs the bodice block first");
   }
+  const armholes = armholeParts(ctx.pieces);
+  if (armholes.front.length === 0 || armholes.back.length === 0) {
+    throw new DraftingError("PIPELINE_STEP_ORDER", "The set-in sleeve needs the bodice armholes");
+  }
   const inputs = ctx.inputs ?? resolveDraftInputs(ctx.spec, ctx.measurements, ctx.options);
   return {
     bicepHalfMm: inputs.sleeveBicepHalfMm,
@@ -34,7 +41,22 @@ export function sleeveInputFrom(ctx: DraftContext): SleeveInput {
     armholeBackMm,
     armholeFrontMm,
     length: ctx.spec.sleeve.length,
+    armholes,
   };
+}
+
+/**
+ * The bodice piece with the given id, or a step-order error when the bodice has not been drafted.
+ *
+ * @param ctx - Current context.
+ * @param pieceId - Bodice piece id.
+ * @returns The piece.
+ * @throws {DraftingError} PIPELINE_STEP_ORDER when the piece is missing.
+ */
+function bodicePiece(ctx: DraftContext, pieceId: string | undefined): PieceDraft {
+  const piece = ctx.pieces.find((p) => p.id === pieceId);
+  if (!piece) throw new DraftingError("PIPELINE_STEP_ORDER", `The set-in sleeve needs the bodice armhole`);
+  return piece;
 }
 
 /**
@@ -43,17 +65,16 @@ export function sleeveInputFrom(ctx: DraftContext): SleeveInput {
  * @param ctx - Current context.
  * @param pieceId - Bodice piece id.
  * @param notches - Builds the notches from that piece's armhole length.
- * @param armholeMm - The armhole length.
  * @returns A new context.
+ * @throws {DraftingError} PIPELINE_STEP_ORDER when the piece is missing.
  */
 function withArmholeNotches(
   ctx: DraftContext,
-  pieceId: string,
+  pieceId: string | undefined,
   notches: (armholeMm: number) => PieceDraft["notches"],
-  armholeMm: number,
 ): DraftContext {
-  const piece = ctx.pieces.find((p) => p.id === pieceId);
-  if (!piece) throw new DraftingError("PIPELINE_STEP_ORDER", `The set-in sleeve needs ${pieceId}`);
+  const piece = bodicePiece(ctx, pieceId);
+  const armholeMm = edgeLengthMm(piece, BODICE_ARMHOLE_EDGE);
   return withPiece(ctx, { ...piece, notches: [...piece.notches, ...notches(armholeMm)] });
 }
 
@@ -67,12 +88,14 @@ function withArmholeNotches(
 function draftSetInSleeve(ctx: DraftContext): DraftContext {
   const input = sleeveInputFrom(ctx);
   const sleeve = draftSleeve(input, ctx.options);
-  const notchedBack = withArmholeNotches(ctx, BACK_PIECE_ID, backArmholeNotches, input.armholeBackMm);
-  const notched = withArmholeNotches(notchedBack, FRONT_PIECE_ID, frontArmholeNotches, input.armholeFrontMm);
+  const parts = input.armholes ?? armholeParts(ctx.pieces);
+  const notchedBack = withArmholeNotches(ctx, parts.back.at(-1), backArmholeNotches);
+  const notchedFront = withArmholeNotches(notchedBack, parts.front.at(-1), (mm) => [frontArmholeNotch(mm)]);
+  const notched = withArmholeNotches(notchedFront, parts.front[0], () => [shoulderArmholeNotch()]);
   return withPiece(notched, sleeve.piece);
 }
 
-/** One-piece set-in sleeve, every length. Runs after the skirt modules; order does not matter for the bodice. */
+/** One-piece set-in sleeve, every length. Runs after the skirt modules and after the bodice shaping modules (#138). */
 export const setInSleeveModule: FeatureModule = {
   id: "sleeve/set-in",
   order: 30,

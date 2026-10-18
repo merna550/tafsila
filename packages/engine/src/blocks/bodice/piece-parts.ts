@@ -7,6 +7,16 @@ import { lineSeg, pt } from "../../geometry";
 export const BACK_PIECE_ID = "bodice-back";
 /** Id of the front bodice piece. */
 export const FRONT_PIECE_ID = "bodice-front";
+/** Id of the centre front panel of a princess bodice (issue #138). */
+export const FRONT_CENTRE_PIECE_ID = "bodice-front-centre";
+/** Id of the side front panel of a princess bodice (issue #138). */
+export const FRONT_SIDE_PIECE_ID = "bodice-front-side";
+/** Id of the centre back panel of a princess bodice (issue #138). */
+export const BACK_CENTRE_PIECE_ID = "bodice-back-centre";
+/** Id of the side back panel of a princess bodice (issue #138). */
+export const BACK_SIDE_PIECE_ID = "bodice-back-side";
+/** Id of the armhole edge on every bodice piece that has one (the sleeve sews to it). */
+export const ARMHOLE_EDGE_ID = "armhole";
 
 /**
  * Cut info of a bodice half: one on the fold at the centre line (decision 128, 8; #143 turns the CB into a seam).
