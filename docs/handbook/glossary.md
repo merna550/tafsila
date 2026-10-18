@@ -360,6 +360,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
 **Learn:** <https://docs.github.com/en/actions>
 
+<a id="slash-and-spread"></a>
+
+### Slash and spread (dart transfer)
+
+**Plain words:** Cutting a pattern along a line and turning one part about a point, so a dart closes and its fullness opens somewhere else. An A-line skirt closes its waist darts this way, and the hem opens.
+**In Tafsila:** `aLinePiece` in `packages/engine/src/modules/skirt/a-line.ts` turns the side panel about a pivot on the hip line, so the waist and hip keep their size and only the hem widens; the bent hip line is measured as a `polyline` body line ([decision 135](../decisions/135-straight-a-line-skirt.md)). **Level:** beginner
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
 <a id="circle-skirt"></a>
 
 ### Circle skirt (half, full)

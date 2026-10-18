@@ -422,7 +422,7 @@ interface Piece {
   cutPath: Path;                          // stitchPath offset by SA
   edges: Edge[];                          // named edges with SA and pairing info
   notches: Notch[];
-  bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations
+  bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations: edge, horizontal or polyline (decision 135)
   sleeveCap?: { edgeId: string; armholeRefs: Array<{ pieceId: string; edgeId: string }> };
   grainLine: [Point, Point];
   darts: Dart[];
