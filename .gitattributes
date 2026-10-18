@@ -1,0 +1,2 @@
+# The generated learning-log index is rebuilt by CI (docs:check); a stale copy must never block a merge.
+docs/handbook/learning-log.md merge=ours
