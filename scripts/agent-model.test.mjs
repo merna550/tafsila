@@ -70,14 +70,21 @@ describe("parseArgs", () => {
 });
 
 describe("subagent files", () => {
-  const agents = ["builder-haiku", "builder-sonnet", "builder-opus", "planner-sonnet", "planner-opus"];
+  const turns = {
+    "builder-haiku": 50,
+    "builder-sonnet": 80,
+    "builder-opus": 120,
+    "planner-sonnet": 50,
+    "planner-opus": 50,
+  };
+  const agents = Object.keys(turns);
 
   it("exist for every model the resolver can return, with that model and a turn cap", () => {
     for (const name of agents) {
       const text = readFileSync(new URL(`../.claude/agents/${name}.md`, import.meta.url), "utf8");
       expect(text).toContain(`name: ${name}\n`);
       expect(text).toContain(`model: ${name.split("-")[1]}\n`);
-      expect(text).toContain("maxTurns: 50\n");
+      expect(text).toContain(`maxTurns: ${turns[name]}\n`);
     }
   });
 });
