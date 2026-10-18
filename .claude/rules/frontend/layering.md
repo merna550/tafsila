@@ -7,12 +7,10 @@ paths:
 
 Four layers per feature in `apps/web/src/features/<feature>/`. Data flows down, calls flow up. `pnpm depcruise` fails on a violation.
 
-| Layer       | Folder        | Contains                                                      | May import                                              |
-| ----------- | ------------- | ------------------------------------------------------------- | ------------------------------------------------------- |
-| UI          | `components/` | props in, JSX out; local UI state only (open, hover)          | `packages/ui`, `model/` types, i18n                     |
-| Application | `hooks/`      | TanStack Query, React Hook Form + Zod, Zustand, orchestration | `shared/api`, `model/`, `packages/schemas`              |
-| Domain      | `model/`      | pure TypeScript: view-models, mappers, formatting, rules      | `packages/engine`, `packages/schemas`, `packages/utils` |
-| Data        | `shared/api/` | the typed API client, error normalisation                     | `packages/schemas`                                      |
+- **UI** (`components/`): props in, JSX out; local UI state only (open, hover). May import: `packages/ui`, `model/` types, i18n
+- **Application** (`hooks/`): TanStack Query, React Hook Form + Zod, Zustand, orchestration. May import: `shared/api`, `model/`, `packages/schemas`
+- **Domain** (`model/`): pure TypeScript: view-models, mappers, formatting, rules. May import: `packages/engine`, `packages/schemas`, `packages/utils`
+- **Data** (`shared/api/`): the typed API client, error normalisation. May import: `packages/schemas`
 
 - `app/` routes are thin: compose features through their `index.ts`, no logic.
 - Another feature is imported only through its `index.ts`. `shared/` never imports a feature.

@@ -9,25 +9,23 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Where to look
 
-| Need                                                                | File                                                                                                                                                                   |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Screen designs (match these for any UI work)                        | `docs/design/screens/`                                                                                                                                                 |
-| UI copy rules and glossary (Arabic + English)                       | `docs/design/copy.md`                                                                                                                                                  |
-| Milestone briefs (goal, scope, issues per milestone)                | `docs/milestones/`                                                                                                                                                     |
-| Which files to read for each task type                              | `docs/CONTEXT_MAP.md`                                                                                                                                                  |
-| Requirements (IDs like FR-PAT-03)                                   | `docs/SRS.md`                                                                                                                                                          |
-| Decisions already made — do not re-ask                              | `docs/DECISIONS.md` (ADR-001 to ADR-035) and `docs/decisions/` (one file per later decision)                                                                           |
-| Lifecycle, labels, model choice, Definition of Done, milestones     | `docs/WORKFLOW.md`                                                                                                                                                     |
-| Architecture of each part (web, api, engine, sim)                   | `docs/ARCHITECTURE.md`                                                                                                                                                 |
-| Clean code rules, where code lives, JSDoc template                  | `docs/CODING_STANDARDS.md`                                                                                                                                             |
-| Backend docs, tutorials, Docker, environments                       | `docs/backend/`                                                                                                                                                        |
-| Frontend docs (design system, RTL, state)                           | `docs/frontend/README.md`                                                                                                                                              |
-| Engine docs (methods, modules, validation, units)                   | `docs/engine/README.md`                                                                                                                                                |
-| Per-area agent notes (loaded with those files)                      | `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`                                                                                            |
-| Path-scoped rules and task skills                                   | `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)                                                                              |
-| Learn a term / technology / pattern (glossary, maps, reading paths) | `docs/handbook/START_HERE.md`                                                                                                                                          |
-| Manual test cases                                                   | `docs/test-cases/`                                                                                                                                                     |
-| Saved prompts                                                       | `.claude/commands/` (`/triage`, `/plan`, `/plan-milestone`, `/plan-wave`, `/build`, `/review`, `/ship`, `/status`, `/release-check`, `/explain`, `/learn`, `/onboard`) |
+- Screen designs (match these for any UI work): `docs/design/screens/`
+- UI copy rules and glossary (Arabic + English): `docs/design/copy.md`
+- Milestone briefs (goal, scope, issues per milestone): `docs/milestones/`
+- Which files to read for each task type: `docs/CONTEXT_MAP.md`
+- Requirements (IDs like FR-PAT-03): `docs/SRS.md`
+- Decisions already made — do not re-ask: `docs/DECISIONS.md` (ADR-001 to ADR-035) and `docs/decisions/` (one file per later decision)
+- Lifecycle, labels, model choice, Definition of Done, milestones: `docs/WORKFLOW.md`
+- Architecture of each part (web, api, engine, sim): `docs/ARCHITECTURE.md`
+- Clean code rules, where code lives, JSDoc template: `docs/CODING_STANDARDS.md`
+- Backend docs, tutorials, Docker, environments: `docs/backend/`
+- Frontend docs (design system, RTL, state): `docs/frontend/README.md`
+- Engine docs (methods, modules, validation, units): `docs/engine/README.md`
+- Per-area agent notes (loaded with those files): `apps/web/CLAUDE.md`, `packages/api/CLAUDE.md`, `packages/engine/CLAUDE.md`
+- Path-scoped rules and task skills: `.claude/rules/**` · `.claude/skills/` (`add-page`, `add-endpoint`, `add-garment-module`)
+- Learn a term / technology / pattern (glossary, maps, reading paths): `docs/handbook/START_HERE.md`
+- Manual test cases: `docs/test-cases/`
+- Saved prompts: `.claude/commands/` (`/triage`, `/plan`, `/plan-milestone`, `/plan-wave`, `/build`, `/review`, `/ship`, `/status`, `/release-check`, `/explain`, `/learn`, `/onboard`)
 
 ## Non-negotiable rules
 
