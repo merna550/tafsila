@@ -357,7 +357,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### CI/CD (continuous integration / delivery)
 
 **Plain words:** Robots that run on every change: **CI** runs checks and tests; **CD** ships the result to an environment.  
-**In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); production deploy is a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner  
+**In Tafsila:** GitHub Actions in `.github/workflows/` (`quality.yml`, `docker.yml`, `status-labels.yml`); `scripts/ci-wait.mjs` keeps a builder on its PR until those checks finish, while production deploy remains a manual click by the owner ([WORKFLOW section 1](../WORKFLOW.md)). **Card:** [GitHub Actions](tech/github.md) · **Level:** beginner
 **Learn:** <https://docs.github.com/en/actions>
 
 <a id="slash-and-spread"></a>

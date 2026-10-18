@@ -22,7 +22,7 @@ any step ─► status:blocked (+ reason)          any open question ─► need
 | Plan wave     | `/plan-wave [M<n>]`                    | Agent (Opus, Merna present)  | Plans every needs-plan issue whose dependencies are closed; one Arabic summary; `status:ready` after "approved" |
 | Plan          | `/plan #N`                             | Agent (model from `plan:*`)  | Plan comment: files, steps, tests, risks, docs to update                                                        |
 | Approve plan  | comment "approved"                     | Merna                        | Only for `plan:opus` or `size:L`; otherwise auto-approved                                                       |
-| Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link                                                                 |
+| Build         | `/build #N`                            | Agent (model from `build:*`) | Branch, code, tests, docs, PR with preview link and green CI                                                    |
 | Review        | PR review                              | Merna                        | Approve or request changes                                                                                      |
 | Ship          | `/ship #N` (merge)                     | Agent after approval         | Merge → staging deploy → smoke tests                                                                            |
 | Release check | `/release-check`                       | Agent                        | List of High manual cases to run on staging + automated results                                                 |
@@ -70,6 +70,8 @@ Every Sunday `agent-report.yml` opens or updates the issue "Agent usage report �
 - **Claude Code on the web (claude.ai/code, also from the phone):** connect GitHub once with `/web-setup`, then run `/build #N`. It runs in Anthropic's cloud with the laptop off, pushes a branch and opens a PR. Uses the Claude subscription. Best for long tasks.
 - **GitHub Action (unattended):** `.github/workflows/claude.yml` runs on an `@claude` comment from Merna or on a call from the dispatcher (`.github/workflows/dispatch.yml`, started when an issue becomes ready or a slot frees up, plus every 12 hours as a safety net, one issue at a time, only issues labelled `agent:auto` (Merna opts each one in, ADR-86), at most `DISPATCH_DAILY_LIMIT` builds a day (default 4), paused when 3 PRs wait or `DISPATCH_ENABLED=false`). Every run stops after 50 turns (`--max-turns 50`). The model comes from the issue's `build:*` label; an `@claude` comment on a PR uses the label of the issue the PR closes (closing reference or `Closes #N`). No Claude GitHub App is installed, so auto-fix on PRs is not used. Setup, cost and stopping: [run-agents-in-cloud](backend/tutorials/run-agents-in-cloud.md) (ADR-016).
 - Model tiers map to the current versions of Opus / Sonnet / Haiku; update this line if the team pins exact model IDs.
+
+The builder does not stop after opening its PR. It runs `node scripts/ci-wait.mjs <pr-number>`, waits for every check on the current head, fixes a red result and pushes again for at most three rounds. The script reports the PR's mergeable state and only the matching failure lines from a failed job, so the builder sees the cause without loading the complete log. A timeout or a third red round blocks the issue instead of leaving CI polling to Merna.
 
 ## 3. Labels (full list in `.github/labels.yml`)
 

@@ -20,4 +20,7 @@ You are a subagent and cannot ask questions mid-run. Use the `code-search` subag
    - append the collapsed "Agent usage" block when `.agent-usage.json` exists (written by the Stop hook; skip silently when it does not): `node scripts/agent-usage.mjs block`
    - same labels as the issue (except status) and the **same milestone**: `gh pr create … --milestone "$(gh issue view N --json milestone --jq .milestone.title)"`
    - add the PR to the board and move the issue card: `scripts/gh-project.sh add <pr-url> "In review"` and `scripts/gh-project.sh status <issue-url> "In review"`.
+
+   Then run `node scripts/ci-wait.mjs <pr-number>`. Exit 0 means CI is green. On exit 1, fix the reported cause, push and wait again; never skip a test, loosen a threshold or add a wall-clock assertion under 100 ms to make CI pass. Allow at most 3 wait/fix rounds. After the third red result, or on exit 2 (timeout), comment the failure on the issue, set `status:blocked`, push the branch and end the summary with `BLOCKED: <one line>`. The final summary must say `CI green`, or why CI could not become green.
+
 7. Set `status:in-review` on the issue. Return a summary for Merna in Arabic (max 5 lines): PR link, preview link, what to check.
