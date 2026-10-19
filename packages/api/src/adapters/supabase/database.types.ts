@@ -66,6 +66,73 @@ export type Database = {
         };
         Update: { name?: string; sizes?: Json; is_default?: boolean; updated_by?: string | null };
       };
+      designs: {
+        Row: {
+          id: string;
+          owner_id: string;
+          category: "dress" | "skirt" | "blouse";
+          title: string;
+          photo_paths: string[];
+          analysis: Json | null;
+          current_version_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          owner_id?: string;
+          category: "dress" | "skirt" | "blouse";
+          title: string;
+          photo_paths?: string[];
+          analysis?: Json | null;
+          current_version_id?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          category?: "dress" | "skirt" | "blouse";
+          title?: string;
+          photo_paths?: string[];
+          analysis?: Json | null;
+          current_version_id?: string | null;
+          updated_at?: string;
+        };
+      };
+      pattern_versions: {
+        Row: {
+          id: string;
+          design_id: string;
+          owner_id: string;
+          version_no: number;
+          spec: Json;
+          measurement_set_id: string | null;
+          measurements: Json;
+          size_label: string | null;
+          ease_profile: "fitted" | "regular" | "loose";
+          options: Json;
+          engine_version: string;
+          validation_status: "pass" | "warn";
+          input_hash: string;
+          created_by: "user" | "chat";
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          design_id: string;
+          owner_id?: string;
+          version_no: number;
+          spec: Json;
+          measurement_set_id?: string | null;
+          measurements: Json;
+          size_label?: string | null;
+          ease_profile: "fitted" | "regular" | "loose";
+          options?: Json;
+          engine_version: string;
+          validation_status: "pass" | "warn";
+          input_hash: string;
+          created_by?: "user" | "chat";
+        };
+        Update: never;
+      };
       admin_audit: {
         Row: {
           id: string;
