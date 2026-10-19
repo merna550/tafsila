@@ -7,6 +7,7 @@
 import type { EngineOptions, Mark } from "@tafsila/schemas";
 import { buildEdges, type EdgeSpec } from "../../blocks/shared/edges";
 import type { BodiceArmholeParts } from "../../blocks/bodice/armhole-parts";
+import { sleeveCapDeclaration } from "../../blocks/sleeve/draft-sleeve";
 import { BODICE_ARMHOLE_EDGE, SLEEVE_EDGE } from "../../blocks/sleeve/ids";
 import { shoulderArmholeNotch, sleeveShoulderNotch } from "../../blocks/sleeve/notches";
 import { withArmholeNotches } from "../../blocks/sleeve/module";
@@ -72,14 +73,7 @@ export function partialSleevePiece(
     edges,
     notches: [sleeveShoulderNotch(armholes)],
     bodyLines: [],
-    sleeveCap: {
-      edgeIds: [SLEEVE_EDGE.capBack, SLEEVE_EDGE.capFront],
-      armholeRefs: [...armholes.back, ...armholes.front].map((pieceId) => ({
-        pieceId,
-        edgeId: BODICE_ARMHOLE_EDGE,
-      })),
-      armholeExcludedMm: PARTIAL_ARMHOLE_EXCLUDED_MM,
-    },
+    sleeveCap: { ...sleeveCapDeclaration(armholes), armholeExcludedMm: PARTIAL_ARMHOLE_EXCLUDED_MM },
     grainLine: [spec.grainLine[0], spec.grainLine[1]],
     darts: [],
   };

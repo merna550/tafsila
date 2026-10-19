@@ -227,6 +227,22 @@ function sleeveEdges(
 }
 
 /**
+ * The sleeve-cap declaration of a sleeve sewn into these armholes: both cap halves against every armhole part.
+ *
+ * @param armholes - Bodice pieces holding each armhole.
+ * @returns The declaration (FR-VAL-02).
+ */
+export function sleeveCapDeclaration(armholes: BodiceArmholeParts): NonNullable<PieceDraft["sleeveCap"]> {
+  return {
+    edgeIds: [SLEEVE_EDGE.capBack, SLEEVE_EDGE.capFront],
+    armholeRefs: [...armholes.back, ...armholes.front].map((pieceId) => ({
+      pieceId,
+      edgeId: BODICE_ARMHOLE_EDGE,
+    })),
+  };
+}
+
+/**
  * Builds the sleeve piece: cut as a mirrored pair, grain line on x = 0, cap declared against both armholes.
  *
  * @param stitchPath - Outline from the back underarm.
@@ -252,13 +268,7 @@ function sleevePiece(
     edges,
     notches: sleeveCapNotches(capFrontMm, armholes),
     bodyLines: [],
-    sleeveCap: {
-      edgeIds: [SLEEVE_EDGE.capBack, SLEEVE_EDGE.capFront],
-      armholeRefs: [...armholes.back, ...armholes.front].map((pieceId) => ({
-        pieceId,
-        edgeId: BODICE_ARMHOLE_EDGE,
-      })),
-    },
+    sleeveCap: sleeveCapDeclaration(armholes),
     grainLine: [pt(0, SLEEVE_GRAIN_END_INSET_MM), pt(0, hemYMm - SLEEVE_GRAIN_END_INSET_MM)],
     darts: [],
   };
