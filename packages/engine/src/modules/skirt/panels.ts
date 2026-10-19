@@ -17,6 +17,7 @@ import {
 } from "../../constants/skirt-fullness";
 import { SKIRT_PIECE_NAME } from "../../blocks/skirt/edges";
 import { DraftingError } from "../../errors/drafting-error";
+import { closureOpensAt } from "../../pieces/closure-opening";
 import { gatherLineMark } from "../../pieces/gather-mark";
 import { lineSeg, pt } from "../../geometry";
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
@@ -139,7 +140,7 @@ function panelFits(circumferenceMm: number, perHalf: number, options: EngineOpti
  * @returns The plan.
  */
 export function panelPlan(ctx: DraftContext, widestFor: (round: number) => number): PanelPlan {
-  const centreBackSeam = ctx.spec.closure.position === "center-back";
+  const centreBackSeam = closureOpensAt(ctx.spec.closure, "center-back");
   for (let perHalf = 1; perHalf <= MAX_PANELS_PER_HALF; perHalf += 1) {
     const plan = { panelsPerHalf: perHalf, centreBackSeam };
     if (panelFits(widestFor(panelsRound(plan)), perHalf, ctx.options)) return plan;

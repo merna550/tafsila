@@ -3,6 +3,12 @@ import { describe, expect, it } from "vitest";
 import {
   aLineAnkleSideSlitSkirt,
   aLineMidiSkirt,
+  buttonFrontBlouse,
+  buttonFrontDress,
+  centreBackZipDress,
+  centreFrontZipDress,
+  noClosureDress,
+  sideZipDress,
   fullCircleKneeSkirt,
   halfCircleKneeSkirt,
   setInSleeveBlouse,
@@ -42,6 +48,19 @@ describe("fixtures stay valid against the shared schemas", () => {
       straightMidiSkirt,
       straightMidiBackSlitSkirt,
       aLineAnkleSideSlitSkirt,
+    ]) {
+      expect(designSpecSchema.safeParse(spec).success).toBe(true);
+    }
+  });
+
+  it("the closure designs are valid DesignSpecs (#143)", () => {
+    for (const spec of [
+      centreBackZipDress,
+      sideZipDress,
+      centreFrontZipDress,
+      buttonFrontDress,
+      buttonFrontBlouse,
+      noClosureDress,
     ]) {
       expect(designSpecSchema.safeParse(spec).success).toBe(true);
     }

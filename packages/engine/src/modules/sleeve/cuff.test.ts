@@ -99,10 +99,11 @@ describe("elastic cuff", () => {
       capHeightMm,
       sizeM.armLength * SLEEVE_LENGTH_SHARE.threeQuarter,
     );
-    expect(r.notions).toEqual([
+    const elastic = r.notions!.filter((n) => n.kind === "elastic");
+    expect(elastic).toEqual([
       expect.objectContaining({ id: "sleeve-elastic", kind: "elastic", widthMm: 10, quantity: 2 }),
     ]);
-    expect(r.notions![0]!.lengthMm).toBeCloseTo(limbMm * ELASTIC_LENGTH_RATIO, 6);
+    expect(elastic[0]!.lengthMm).toBeCloseTo(limbMm * ELASTIC_LENGTH_RATIO, 6);
     expect(cuffRow(r)).toMatchObject({ status: "pass" });
   });
 

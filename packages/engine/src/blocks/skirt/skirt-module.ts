@@ -5,6 +5,7 @@ import { isPanelSkirt } from "../../constants/skirt-fullness";
 import { pt } from "../../geometry";
 import { type DraftContext, type PieceDraft, withPiece } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
+import { closureOpensAt } from "../../pieces/closure-opening";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
 import { type SkirtHalf, SKIRT_PIECE_ID, SKIRT_PIECE_NAME } from "./edges";
 import { draftSkirtHalf, type SkirtDraftInputs } from "./draft-skirt-half";
@@ -72,7 +73,7 @@ export const skirtBlockModule: FeatureModule = {
   appliesTo: (spec) => spec.skirt !== undefined && !isPanelSkirt(spec.skirt.type),
   draft: (ctx) => {
     const inputs = resolveDraftInputs(ctx.spec, ctx.measurements, ctx.options);
-    const centreSeam = ctx.spec.closure.position === "center-back";
+    const centreSeam = closureOpensAt(ctx.spec.closure, "center-back");
     const halves: readonly SkirtHalf[] = ["front", "back"];
     return halves.reduce(
       (acc, half) => withPiece(acc, skirtPiece(half, ctx.measurements, inputs, centreSeam)),

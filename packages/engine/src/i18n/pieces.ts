@@ -116,3 +116,18 @@ export function sizeLabelText(sizeLabel: string, clientLabel?: string): Bilingua
 
 /** Text of the scale check square. */
 export const SCALE_SQUARE_TEXT: Bilingual = { ar: "10 سم", en: "10 cm" };
+
+/**
+ * Name of the front facing traced from a piece (issue #143): "<piece> facing", or its interfacing.
+ *
+ * @param shell - Name of the piece the facing is traced from.
+ * @param interfacing - True for the facing's interfacing.
+ * @returns The bilingual name.
+ * @example
+ * facingNameText({ ar: "أمام الصدر", en: "Bodice front" }, false) // { ar: "تلبيس أمام الصدر", en: "Bodice front facing" }
+ */
+export function facingNameText(shell: Bilingual, interfacing: boolean): Bilingual {
+  return interfacing
+    ? { ar: `حشوة تلبيس ${shell.ar}`, en: `${shell.en} facing interfacing` }
+    : { ar: `تلبيس ${shell.ar}`, en: `${shell.en} facing` };
+}

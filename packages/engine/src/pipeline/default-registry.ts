@@ -2,6 +2,7 @@
 import { skirtBlockModule } from "../blocks/skirt/skirt-module";
 import { setInSleeveModule } from "../blocks/sleeve/module";
 import { dartFreeBodiceModule, princessArmholeModule, princessShoulderModule } from "../modules/bodice";
+import { closureModule } from "../modules/closure";
 import { collarModule } from "../modules/collar";
 import { circleSkirtModule } from "../modules/circle-skirt/module";
 import { necklineModule } from "../modules/neckline";
@@ -32,6 +33,7 @@ export const defaultRegistry = createRegistry(
     setInSleeveModule,
     sleeveStyleModule,
     cuffModule,
+    closureModule,
   ],
   CORE_RULES,
 );

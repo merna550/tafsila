@@ -229,7 +229,7 @@ describe("no band: waist facing", () => {
       intendedEaseMm: 0,
     });
     expect(piece(result, "waist-facing-interfacing-back").cut.fabric).toBe("interfacing");
-    expect(result.notions).toBeUndefined();
+    expect(result.notions?.filter((n) => n.kind === "elastic") ?? []).toEqual([]);
   });
 
   it("uses a flat facing on a pleated skirt, sewn to the pleated waist with the intake declared", () => {

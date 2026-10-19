@@ -30,18 +30,18 @@ describe("skirtBlockModule", () => {
     ]);
   });
 
-  it("cuts two mirrored backs with a cb seam for a centre-back zip", () => {
+  it("cuts two mirrored backs with a cb seam for a centre-back zip, at the zip allowance (#143)", () => {
     const result = generatePattern(centreBackZip, sizeM, DEFAULT_ENGINE_OPTIONS, defaultRegistry);
     const back = result.pieces.find((p) => p.id === "skirt-back")!;
     expect(back.cut).toEqual({ quantity: 2, onFold: false, mirror: true, fabric: "main" });
-    expect(back.edges.find((e) => e.id === "cb")).toMatchObject({ kind: "other", seamAllowanceMm: 15 });
+    expect(back.edges.find((e) => e.id === "cb")).toMatchObject({ kind: "other", seamAllowanceMm: 20 });
   });
 
-  it("leaves no seam allowance on the fold and the default allowance elsewhere", () => {
+  it("leaves no seam allowance on the fold and the default allowance elsewhere (20 on the side zip seam, #143)", () => {
     const result = generatePattern(straightKneeSkirt, sizeM, DEFAULT_ENGINE_OPTIONS, defaultRegistry);
     const front = result.pieces.find((p) => p.id === "skirt-front")!;
     const allowance = Object.fromEntries(front.edges.map((e) => [e.id, e.seamAllowanceMm]));
-    expect(allowance).toEqual({ waist: 15, side: 15, hem: 30, cf: 0 });
+    expect(allowance).toEqual({ waist: 15, side: 20, hem: 30, cf: 0 });
   });
 });
 

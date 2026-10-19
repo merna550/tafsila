@@ -56,12 +56,12 @@ describe("circleSkirtModule", () => {
     ]);
   });
 
-  it("cuts front and back on the fold when they fit, with no allowance on the fold", () => {
+  it("cuts front and back on the fold when they fit, with no allowance on the fold (20 on the side zip seam, #143)", () => {
     const front = draft(halfCircleKneeSkirt, sizeM).pieces[0]!;
     expect(front.cut).toEqual({ quantity: 1, onFold: true, mirror: false, fabric: "main" });
     expect(Object.fromEntries(front.edges.map((e) => [e.id, e.seamAllowanceMm]))).toEqual({
       waist: 15,
-      side: 15,
+      side: 20,
       hem: 30,
       cf: 0,
     });

@@ -133,7 +133,7 @@ describe("skirt slits", () => {
   it("cuts a back slit into the centre-back seam with a notch at its top", () => {
     const back = draft(straightMidiBackSlitSkirt).pieces.find((p) => p.id === "skirt-back")!;
     expect(back.edges.some((e) => e.id === SLIT_EDGE_ID)).toBe(true);
-    expect(back.notches.map((n) => n.edgeId)).toEqual(["cb"]);
+    expect(back.notches.filter((n) => n.id !== "zip-stop").map((n) => n.edgeId)).toEqual(["cb"]);
   });
 
   it("cuts a front slit by giving the front a centre seam", () => {
@@ -147,7 +147,8 @@ describe("skirt slits", () => {
     expect(withoutWaistFinish(result.pieces).every((p) => p.notches.some((n) => n.edgeId === "side"))).toBe(
       true,
     );
-    expect(result.validation.checks.filter((c) => c.code === "NOTCH_OK")).toHaveLength(1);
+    // The slit notch, and the side zip's stop notch (#143).
+    expect(result.validation.checks.filter((c) => c.code === "NOTCH_OK")).toHaveLength(2);
   });
 
   it("fails a slit that reaches above the hip line and does not cut it (FR-VAL-08)", () => {

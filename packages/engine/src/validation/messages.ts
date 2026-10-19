@@ -141,6 +141,14 @@ export const VALIDATION_MESSAGES = {
     ar: "فتحة الرقبة {mm} مم أصغر من الرأس (حوالي {expected} مم) ولا يوجد فتح عند الرقبة؛ يمكن إضافة سحاب أو أزرار أو اختيار فتحة أعمق",
     en: "The {mm} mm neck opening is smaller than the head (about {expected} mm) and nothing opens at the neck; add a zip or buttons, or choose a deeper neckline",
   },
+  CLOSURE_HIP_OPENING_OK: {
+    ar: "فتحة الوسط {mm} مم تمر من الأرداف ({expected} مم)",
+    en: "The {mm} mm waist opening fits over the hips ({expected} mm)",
+  },
+  CLOSURE_HIP_OPENING_TIGHT: {
+    ar: "فتحة الوسط {mm} مم أصغر من الأرداف ({expected} مم) ولا توجد فتحة؛ أضيفي سحابًا أو أزرارًا أو أستك في الوسط",
+    en: "The {mm} mm waist opening is smaller than the hips ({expected} mm) and nothing opens; add a zip or buttons, or an elastic waist",
+  },
   FULLNESS_CLOSURE_OK: {
     ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم كما هو مطلوب",
     en: "Waist after gathers or pleats is {mm} mm, as expected",

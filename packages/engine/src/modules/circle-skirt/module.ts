@@ -6,6 +6,7 @@
 import type { DesignSpec, Piece } from "@tafsila/schemas";
 import { type SkirtHalf, SKIRT_PIECE_ID, SKIRT_PIECE_NAME, skirtEdges } from "../../blocks/skirt/edges";
 import type { CircleSkirtType } from "../../constants/circle-skirt";
+import { closureOpensAt } from "../../pieces/closure-opening";
 import { DraftingError } from "../../errors/drafting-error";
 import { type DraftContext, type PieceDraft, withPiece } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
@@ -19,7 +20,7 @@ const QUARTER = 4;
 /** The two halves, front first. */
 const HALVES: readonly SkirtHalf[] = ["front", "back"];
 
-/** The closure position that puts a seam on each half's centre line. */
+/** The closure position that puts a seam on each half's centre line (when the closure opens there). */
 const CENTRE_CLOSURE: Readonly<Record<SkirtHalf, DesignSpec["closure"]["position"]>> = {
   front: "center-front",
   back: "center-back",
@@ -40,15 +41,11 @@ export function isCircleSkirt(type: string | undefined): type is CircleSkirtType
  *
  * @param half - Front or back.
  * @param layout - Chosen layout.
- * @param closure - Closure position of the design.
+ * @param closure - Closure of the design.
  * @returns True for a centre seam.
  */
-function hasCentreSeam(
-  half: SkirtHalf,
-  layout: CircleLayout,
-  closure: DesignSpec["closure"]["position"],
-): boolean {
-  return layout === "centre-seams" || closure === CENTRE_CLOSURE[half];
+function hasCentreSeam(half: SkirtHalf, layout: CircleLayout, closure: DesignSpec["closure"]): boolean {
+  return layout === "centre-seams" || closureOpensAt(closure, CENTRE_CLOSURE[half]);
 }
 
 /**
@@ -106,7 +103,7 @@ function draftCircleSkirt(ctx: DraftContext): DraftContext {
     finishedWaistMm: inputs.skirtWaistQuarterMm * QUARTER,
     skirtLengthMm: inputs.skirtLengthMm,
   });
-  const closure = ctx.spec.closure.position;
+  const closure = ctx.spec.closure;
   const chosen = chooseLayout(
     (layout) => HALVES.map((half) => circlePiece(half, quarter, hasCentreSeam(half, layout, closure))),
     ctx.options,

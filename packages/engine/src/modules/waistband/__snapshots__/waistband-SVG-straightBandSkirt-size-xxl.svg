@@ -6,28 +6,28 @@
 </g>
 <g id="layer-cut">
 <path id="piece-skirt-front-cut" d="M 20.03 20.00 L 320.03 20.52 L 332.95 20.55 L 334.84 33.33 C 337.51 51.34 340.83 69.25 344.37 87.41 C 347.91 105.57 351.65 123.85 355.06 142.23 C 358.47 160.60 361.60 179.34 363.84 198.01 C 364.96 207.34 365.89 216.91 366.51 226.34 C 367.14 235.76 367.50 245.48 367.50 255.00 L 367.50 615.00 L 367.50 645.00 L 20.00 645.00 L 20.00 615.00 L 20.00 35.00 L 20.00 20.00 L 20.03 20.00 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
-<path id="piece-skirt-back-cut" d="M 432.47 20.55 L 739.47 20.02 L 752.86 20.00 L 754.40 33.30 C 756.50 51.46 759.12 69.54 761.90 87.83 C 764.68 106.12 767.61 124.50 770.28 142.95 C 772.95 161.40 775.39 180.14 777.15 198.81 C 778.90 217.48 780.00 236.61 780.00 255.55 L 780.00 615.55 L 780.00 645.55 L 417.50 645.55 L 417.50 615.55 L 417.50 35.55 L 417.50 20.57 L 432.47 20.55 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
+<path id="piece-skirt-back-cut" d="M 437.47 20.55 L 744.47 20.02 L 757.86 20.00 L 759.40 33.30 C 761.50 51.46 764.12 69.54 766.90 87.83 C 769.68 106.12 772.61 124.50 775.28 142.95 C 777.95 161.40 780.39 180.14 782.15 198.81 C 783.90 217.48 785.00 236.61 785.00 255.55 L 785.00 615.55 L 785.00 645.55 L 417.50 645.55 L 417.50 615.55 L 417.50 35.55 L 417.50 20.58 L 437.47 20.55 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
 <path id="piece-waistband-cut" d="M 35.00 695.55 L 300.00 695.55 L 565.00 695.55 L 830.00 695.55 L 1095.00 695.55 L 1125.00 695.55 L 1140.00 695.55 L 1140.00 710.55 L 1140.00 780.55 L 1140.00 795.55 L 1125.00 795.55 L 35.00 795.55 L 20.00 795.55 L 20.00 780.55 L 20.00 710.55 L 20.00 695.55 L 35.00 695.55 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
 <path id="piece-waistband-interfacing-cut" d="M 35.00 845.55 L 300.00 845.55 L 565.00 845.55 L 830.00 845.55 L 1095.00 845.55 L 1125.00 845.55 L 1140.00 845.55 L 1140.00 860.55 L 1140.00 895.55 L 1140.00 910.55 L 1125.00 910.55 L 35.00 910.55 L 20.00 910.55 L 20.00 895.55 L 20.00 860.55 L 20.00 845.55 L 35.00 845.55 Z" fill="none" stroke="#000000" stroke-width="0.35"/>
 </g>
 <g id="layer-stitch">
 <path id="piece-skirt-front-stitch" d="M 20.00 35.00 L 320.00 35.52 C 330.83 108.68 352.50 181.04 352.50 255.00 L 352.50 615.00 L 20.00 615.00 L 20.00 35.00 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
-<path id="piece-skirt-back-stitch" d="M 432.50 35.55 L 739.50 35.02 C 748.00 108.53 765.00 181.55 765.00 255.55 L 765.00 615.55 L 432.50 615.55 L 432.50 35.55 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
+<path id="piece-skirt-back-stitch" d="M 437.50 35.55 L 744.50 35.02 C 753.00 108.53 770.00 181.55 770.00 255.55 L 770.00 615.55 L 437.50 615.55 L 437.50 35.55 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
 <path id="piece-waistband-stitch" d="M 35.00 710.55 L 300.00 710.55 L 565.00 710.55 L 830.00 710.55 L 1095.00 710.55 L 1125.00 710.55 L 1125.00 780.55 L 35.00 780.55 L 35.00 710.55 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
 <path id="piece-waistband-interfacing-stitch" d="M 35.00 860.55 L 300.00 860.55 L 565.00 860.55 L 830.00 860.55 L 1095.00 860.55 L 1125.00 860.55 L 1125.00 895.55 L 35.00 895.55 L 35.00 860.55 Z" fill="none" stroke="#000000" stroke-width="0.25" stroke-dasharray="3 1.5"/>
 </g>
 <g id="layer-notches">
-
+<path id="piece-skirt-back-notch-zip-stop" d="M 435.00 215.55 L 440.00 215.55" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>
 <g id="layer-grain">
 <path id="piece-skirt-front-grain" d="M 186.25 291.00 L 186.25 471.00 M 184.25 465.00 L 186.25 471.00 L 188.25 465.00 M 188.25 297.00 L 186.25 291.00 L 184.25 297.00" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-skirt-back-grain" d="M 598.75 291.55 L 598.75 471.55 M 596.75 465.55 L 598.75 471.55 L 600.75 465.55 M 600.75 297.55 L 598.75 291.55 L 596.75 297.55" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-skirt-back-grain" d="M 603.75 291.55 L 603.75 471.55 M 601.75 465.55 L 603.75 471.55 L 605.75 465.55 M 605.75 297.55 L 603.75 291.55 L 601.75 297.55" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waistband-grain" d="M 307.50 745.55 L 852.50 745.55 M 846.50 747.55 L 852.50 745.55 L 846.50 743.55 M 313.50 743.55 L 307.50 745.55 L 313.50 747.55" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waistband-interfacing-grain" d="M 307.50 878.05 L 852.50 878.05 M 846.50 880.05 L 852.50 878.05 L 846.50 876.05 M 313.50 876.05 L 307.50 878.05 L 313.50 880.05" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>
 <g id="layer-darts">
 <path id="piece-skirt-front-dart-waist-dart" d="M 152.50 35.23 L 169.84 125.26 L 187.50 35.29" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-skirt-back-dart-waist-dart" d="M 565.00 35.32 L 586.24 175.28 L 607.00 35.25" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-skirt-back-dart-waist-dart" d="M 570.00 35.32 L 591.24 175.28 L 612.00 35.25" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>
 <g id="layer-marks">
 
@@ -35,21 +35,21 @@
 <g id="layer-labels">
 <text id="piece-skirt-front-label-name" x="184.33" y="200.60" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">أمام التنورة</text>
 <text id="piece-skirt-front-label-cut" x="184.33" y="211.80" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 على الثنية</text>
-<text id="piece-skirt-front-label-size" x="184.33" y="223.00" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.12.0</text>
-<text id="piece-skirt-back-label-name" x="596.98" y="193.52" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">خلف التنورة</text>
-<text id="piece-skirt-back-label-cut" x="596.98" y="204.72" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 2 (مع مقلوبها)</text>
-<text id="piece-skirt-back-label-size" x="596.98" y="215.92" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.12.0</text>
+<text id="piece-skirt-front-label-size" x="184.33" y="223.00" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.13.0</text>
+<text id="piece-skirt-back-label-name" x="601.98" y="193.52" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">خلف التنورة</text>
+<text id="piece-skirt-back-label-cut" x="601.98" y="204.72" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 2 (مع مقلوبها)</text>
+<text id="piece-skirt-back-label-size" x="601.98" y="215.92" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.13.0</text>
 <text id="piece-waistband-label-name" x="98.58" y="736.21" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">حزام الوسط</text>
 <text id="piece-waistband-label-cut" x="98.58" y="747.41" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1</text>
-<text id="piece-waistband-label-size" x="98.58" y="758.61" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.12.0</text>
+<text id="piece-waistband-label-size" x="98.58" y="758.61" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.13.0</text>
 <text id="piece-waistband-interfacing-label-name" x="84.96" y="872.41" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">حشوة حزام الوسط</text>
 <text id="piece-waistband-interfacing-label-cut" x="84.96" y="880.81" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 1 - حشوة لاصقة</text>
-<text id="piece-waistband-interfacing-label-size" x="84.96" y="889.21" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.12.0</text>
+<text id="piece-waistband-interfacing-label-size" x="84.96" y="889.21" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس size-xxl - v0.13.0</text>
 </g>
 <g id="layer-scale">
-<rect id="piece-skirt-back-scale-square" x="434.50" y="47.02" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>
-<path id="piece-skirt-back-scale-ticks" d="M 444.50 47.02 v 3.00 M 434.50 57.02 h 3.00 M 454.50 47.02 v 3.00 M 434.50 67.02 h 3.00 M 464.50 47.02 v 3.00 M 434.50 77.02 h 3.00 M 474.50 47.02 v 3.00 M 434.50 87.02 h 3.00 M 484.50 47.02 v 3.00 M 434.50 97.02 h 3.00 M 494.50 47.02 v 3.00 M 434.50 107.02 h 3.00 M 504.50 47.02 v 3.00 M 434.50 117.02 h 3.00 M 514.50 47.02 v 3.00 M 434.50 127.02 h 3.00 M 524.50 47.02 v 3.00 M 434.50 137.02 h 3.00" fill="none" stroke="#000000" stroke-width="0.25"/>
-<text id="piece-skirt-back-scale-caption-ar" x="484.50" y="94.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">10 سم</text>
-<text id="piece-skirt-back-scale-caption-en" x="484.50" y="103.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="ltr" unicode-bidi="plaintext" text-anchor="middle">10 cm</text>
+<rect id="piece-skirt-back-scale-square" x="439.50" y="47.02" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>
+<path id="piece-skirt-back-scale-ticks" d="M 449.50 47.02 v 3.00 M 439.50 57.02 h 3.00 M 459.50 47.02 v 3.00 M 439.50 67.02 h 3.00 M 469.50 47.02 v 3.00 M 439.50 77.02 h 3.00 M 479.50 47.02 v 3.00 M 439.50 87.02 h 3.00 M 489.50 47.02 v 3.00 M 439.50 97.02 h 3.00 M 499.50 47.02 v 3.00 M 439.50 107.02 h 3.00 M 509.50 47.02 v 3.00 M 439.50 117.02 h 3.00 M 519.50 47.02 v 3.00 M 439.50 127.02 h 3.00 M 529.50 47.02 v 3.00 M 439.50 137.02 h 3.00" fill="none" stroke="#000000" stroke-width="0.25"/>
+<text id="piece-skirt-back-scale-caption-ar" x="489.50" y="94.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">10 سم</text>
+<text id="piece-skirt-back-scale-caption-en" x="489.50" y="103.02" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="6.00" direction="ltr" unicode-bidi="plaintext" text-anchor="middle">10 cm</text>
 </g>
 </svg>
