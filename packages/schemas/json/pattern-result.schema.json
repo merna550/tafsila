@@ -754,7 +754,8 @@
                         "slit",
                         "sleeve-end",
                         "button",
-                        "buttonhole"
+                        "buttonhole",
+                        "pocket-placement"
                       ],
                       "type": "string"
                     },
@@ -846,7 +847,8 @@
                         "slit",
                         "sleeve-end",
                         "button",
-                        "buttonhole"
+                        "buttonhole",
+                        "pocket-placement"
                       ],
                       "type": "string"
                     },
@@ -938,7 +940,8 @@
                         "slit",
                         "sleeve-end",
                         "button",
-                        "buttonhole"
+                        "buttonhole",
+                        "pocket-placement"
                       ],
                       "type": "string"
                     },

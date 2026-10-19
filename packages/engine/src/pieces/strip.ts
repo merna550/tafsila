@@ -47,6 +47,8 @@ export interface StripSpec {
   readonly paired: boolean;
   /** Copies cut; 1 when left out (a cuff is cut once per sleeve). */
   readonly quantity?: number;
+  /** The piece name when the id is not in the catalogue (a belt part, #145). */
+  readonly name?: Piece["name"];
 }
 
 /**
@@ -117,7 +119,7 @@ export function stripPiece(spec: StripSpec, options: Pick<EngineOptions, "seamAl
   const midYMm = spec.heightMm / 2;
   return {
     id: spec.id,
-    name: PIECE_NAMES[spec.id]!,
+    name: spec.name ?? PIECE_NAMES[spec.id]!,
     cut: { quantity: spec.quantity ?? 1, onFold: false, mirror: false, fabric: spec.fabric },
     stitchPath,
     edges: buildEdges(spec.id, stripEdgeSpecs(spec), options),

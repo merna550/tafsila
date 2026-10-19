@@ -201,7 +201,41 @@ export const VALIDATION_MESSAGES = {
     ar: "حافة رقبة الياقة {mm} مم لا تطابق فتحة الرقبة {expected} مم",
     en: "Collar neck edge {mm} mm does not match the bodice neck {expected} mm",
   },
+  POCKET_OPENING_MATCH_OK: {
+    ar: "فتحة كيس الجيب {mm} مم تطابق فتحة القطعة {expected} مم",
+    en: "Pocket bag opening {mm} mm matches the shell opening {expected} mm",
+  },
+  POCKET_OPENING_MATCH_MISMATCH: {
+    ar: "فتحة كيس الجيب {first} هي {mm} مم والمتوقع {expected} مم من {second}",
+    en: "Pocket bag opening of {first} is {mm} mm; expected {expected} mm from {second}",
+  },
+  BELT_LENGTH_OK: { ar: "طول الحزام {mm} مم", en: "Belt length is {mm} mm" },
+  BELT_LENGTH_MISMATCH: {
+    ar: "طول الحزام بعد الوصل {mm} مم والمتوقع {expected} مم",
+    en: "Joined belt length is {mm} mm; expected {expected} mm",
+  },
+  LINING_HEM_CLEARANCE_OK: {
+    ar: "حاشية البطانة أعلى من حاشية القماش الأساسي بـ {mm} مم",
+    en: "The lining hem is {mm} mm above the shell hem",
+  },
+  LINING_HEM_CLEARANCE_LOW: {
+    ar: "حاشية البطانة {mm} مم فوق حاشية القماش الأساسي والمطلوب {expected} مم على الأقل",
+    en: "The lining hem is {mm} mm above the shell hem; at least {expected} mm is needed",
+  },
 } as const;
+
+/** Tenths of a millimetre in a message. */
+const MESSAGE_SCALE = 10;
+
+/**
+ * Rounds a length to 0.1 mm for a message.
+ *
+ * @param mm - Length.
+ * @returns The rounded length.
+ */
+export function shownMm(mm: number): number {
+  return Math.round(mm * MESSAGE_SCALE) / MESSAGE_SCALE;
+}
 
 /** A stable code accepted by {@link formatMessage}. */
 export type ValidationMessageCode = keyof typeof VALIDATION_MESSAGES;

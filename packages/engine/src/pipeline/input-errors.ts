@@ -78,6 +78,14 @@ export const INPUT_ERROR_MESSAGES = {
     ar: "الفستان بدون خياطة وسط يحتاج تنورة مستقيمة أو على شكل حرف A. اختاري خياطة وسط أو غيّري نوع التنورة.",
     en: "A dress without a waist seam needs a straight or A-line skirt; add a waist seam or change the skirt",
   },
+  POCKET_UNSUPPORTED: {
+    ar: "هذا النوع من الجيوب لا يناسب التصميم: جيب الجنب لا يصلح مع الجيبة المتدرجة أو البلوزة أو السحاب الجانبي، والجيب المثبّت لا يصلح مع الجيبة المكسّرة أو المكشكشة أو المتدرجة أو الدائرية.",
+    en: "This pocket does not suit the design: side-seam pockets are refused on tiered skirts, blouses and side zips; patch pockets on pleated, gathered, tiered and circle skirts",
+  },
+  POCKET_NO_ROOM: {
+    ar: "لا توجد مساحة كافية للجيب في هذا الطول أو مع هذا الشق. اختاري طولًا أطول أو بدون جيب.",
+    en: "There is no room for the pocket at this length or with this slit; choose a longer garment or drop the pocket",
+  },
   SLEEVE_PUFF_UNSOLVABLE: {
     ar: "لا يمكن رسم رأس كم منفوخ بهذه المقاسات. راجعي محيط الذراع والقيم المدخلة.",
     en: "No puff sleeve head fits this armhole",

@@ -193,7 +193,7 @@ export type Label = z.infer<typeof labelSchema>;
  * What a construction mark tells the sewist (decision 137). Pleats: fold here, lay the fold on the placement line, in
  * the arrow's direction. Gather: gather this run to `lengthMm`. Slit: cut along this line (a cuff opening, #142).
  * Sleeve end: a cap or flutter sleeve ends here on the armhole (#142). Button: sew a button here (a point). Buttonhole:
- * cut a buttonhole along this line (#143).
+ * cut a buttonhole along this line (#143). Pocket placement: a patch pocket's corner line (#145).
  */
 export const markKindSchema = z.enum([
   "pleat-fold",
@@ -204,6 +204,7 @@ export const markKindSchema = z.enum([
   "sleeve-end",
   "button",
   "buttonhole",
+  "pocket-placement",
 ]);
 
 /** What a construction mark tells the sewist. */

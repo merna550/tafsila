@@ -326,6 +326,15 @@ Aldrich, Metric Pattern Cutting for Women's Wear, ch. 3, "One-piece dress block"
 | 5    | Princess seam: from the waist leg to the dart axis on the hip line, then straight to the hem                                     |      |
 | 6    | True the side seams: drop the front lower half until front and back match                                                        |      |
 
+## Pockets, belt and lining (#145)
+
+Method: Aldrich, Metric Pattern Cutting for Women's Wear, 6th ed., ch. 2 (pockets, belts and linings). Starting values are pending sew-test (#225).
+
+- **Side-seam pocket:** the opening is 160 mm, starting 40 mm below the waist along the side seam; the bag is 180 mm deep with 40 mm corners and runs 20 mm past each end of the opening.
+- **Patch pocket:** 150 × 170 mm finished, 30 mm top hem, 10 mm turn-under, top 80 mm below the waist, centred half-way between the centre line and the side seam.
+- **Belt:** length is the waist + 20 mm + two 450 mm ties, 40 mm wide folded, cut across the grain and split at the fabric width.
+- **Lining:** a copy of each bodice, skirt and tier piece, the hem line raised 25 mm and a 20 mm hem.
+
 ## Known limits
 
 - **Bust dart ignores cup size.** It scales with the bust only. `frontLength - backLength` could refine it later; not needed for the toiles of M2.

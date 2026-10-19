@@ -203,7 +203,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | FR-PAT-04 | Regeneration after measurement/option change completes in < 500 ms in browser (no AI call) | M |
 | FR-PAT-05 | Supported features v1 (see catalogue §6.1): bodice with darts, princess seams; necklines; sleeves; skirts; waistbands; closures; pockets; lengths | M |
 | FR-PAT-06 | Output also includes a **sewing order** (ordered list of assembly steps referencing piece edges) used by 3D preview and instructions | M |
-| FR-PAT-07 | Facings / linings generated where the feature requires (e.g. neckline facing) | S |
+| FR-PAT-07 | Facings / linings generated where the feature requires (e.g. neckline facing) (#145: lining copies bodice, skirt and tier pieces; sleeves, collars, cuffs, bands, facings, pockets and belt are unlined; facing trim in #226) | S |
 
 ### 4.5 Pattern Validation (VAL)
 The engine runs these checks on every generation and returns a report (`pass | warn | fail` per check, with the measured values).
@@ -365,8 +365,8 @@ interface DesignSpec {
   };
   waistband?: 'none' | 'straight' | 'contour' | 'elastic'; // skirts only; 'none' = waist facing; a dress joins at its waist seam (#140)
   closure: { type: 'zip' | 'buttons' | 'none'; position: 'center-back' | 'side' | 'center-front' }; // buttons only at a centre line with no slit or split panels; none ignores position; a no-closure dress or skirt warns when its waist cannot pass the hips (FR-VAL-08, #143)
-  pockets: Array<'side-seam' | 'patch'>;
-  lining: boolean;
+  pockets: Array<'side-seam' | 'patch'>; // POCKET_MATRIX (#145): side-seam refused on tiered, blouse, side zip; patch refused on pleated, gathered, tiered, circle skirts and princess-split fronts
+  lining: boolean;                         // unlined: sleeves, collars, cuffs, bands, facings, pockets, belt (#145)
   belt?: 'none' | 'self-tie';
 }
 
