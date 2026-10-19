@@ -2385,7 +2385,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Waistband
 
 **Plain words:** A strip sewn at the waist: straight, contour (shaped to the body) or elastic.  
-**In Tafsila:** `DesignSpec.waistband` values `none`, `straight`, `contour`, `elastic`. **Level:** beginner  
+**In Tafsila:** `DesignSpec.waistband` values `none`, `straight`, `contour`, `elastic`. Drafted by `src/modules/waistband/` (#140) on skirts: a straight band is the sewn skirt waist plus a declared 30 mm closure underlap, folded, with interfacing; a contour band is traced from the skirt waist with the darts closed and rises 50 mm above it; an elastic casing is as long as the relaxed waist and the elastic (waist × 0.9) is a typed `notion`; `none` gives a 60 mm waist facing. FR-VAL-01 checks the finish against the skirt waist within 2 mm and FR-VAL-08 warns when an elastic or closed waist cannot pass over the hip ([decision 140](../decisions/140-waistbands.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Waistband>
 
 <a id="wcag"></a>

@@ -363,7 +363,7 @@ interface DesignSpec {
     lengthMm?: number;
     slit?: { position: 'front' | 'back' | 'side'; lengthMm: number };
   };
-  waistband?: 'none' | 'straight' | 'contour' | 'elastic';
+  waistband?: 'none' | 'straight' | 'contour' | 'elastic'; // skirts only; 'none' = waist facing; a dress joins at its waist seam (#140)
   closure: { type: 'zip' | 'buttons' | 'none'; position: 'center-back' | 'side' | 'center-front' };
   pockets: Array<'side-seam' | 'patch'>;
   lining: boolean;
@@ -412,6 +412,7 @@ interface PatternResult {
   pieces: Piece[];
   sewingOrder: SewingStep[];
   validation: ValidationReport;
+  notions?: Notion[];                     // cut by length, e.g. waist elastic { id, kind: 'elastic', name, lengthMm, widthMm, quantity } (#140)
   meta: { category: GarmentCategory; sizeLabel: string; createdFrom: string /* hash of inputs */ };
 }
 interface Piece {
