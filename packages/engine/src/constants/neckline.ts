@@ -46,7 +46,7 @@ export const FRONT_NECK_DEPTH_MIN_MM = 40;
 /** Shallowest back neck allowed. */
 export const BACK_NECK_DEPTH_MIN_MM = 10;
 
-/** The neck must stay this far above the armscye line (the bust body line and the bust dart start below it). */
+/** The neck must stay this far above the armscye line (the bust body line and the bust dart start below it) and the bust point. */
 export const NECK_CLEARANCE_ABOVE_SCYE_MM = 30;
 
 /** Shortest shoulder left on each piece holding the neck once the neck is widened (keeps a sewable seam). */

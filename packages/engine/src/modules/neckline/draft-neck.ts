@@ -42,6 +42,8 @@ interface BlockNeck {
   readonly tip: Point;
   /** The armscye line on the centre line. */
   readonly scye: Point;
+  /** The bust point (front) or the armscye line (back): the neck stays above it. */
+  readonly bust: Point;
 }
 
 /** One half's drafted neck. */
@@ -97,12 +99,14 @@ function blockNecks(ctx: DraftContext): Record<NeckHalf, BlockNeck> {
       centre: k["bodice.front.neckCF"],
       tip: k["bodice.front.shoulderTip"],
       scye: k["bodice.front.scyeLineCF"],
+      bust: k["bodice.front.bustPoint"],
     },
     back: {
       hps: k["bodice.back.neckPoint"],
       centre: k["bodice.back.nape"],
       tip: k["bodice.back.shoulderTip"],
       scye: k["bodice.back.scyeLineCB"],
+      bust: k["bodice.back.scyeLineCB"],
     },
   };
 }
@@ -154,6 +158,7 @@ export function draftNeck(ctx: DraftContext, neckline: NecklineSpec): DraftedNec
       front: blocks.front.scye.y - blocks.front.hps.y,
       back: blocks.back.scye.y - blocks.back.hps.y,
     },
+    bustDepthMm: blocks.front.bust.y - blocks.front.hps.y,
     dropPerWidenMm: {
       front: normalize(sub(blocks.front.tip, blocks.front.hps)).y,
       back: normalize(sub(blocks.back.tip, blocks.back.hps)).y,

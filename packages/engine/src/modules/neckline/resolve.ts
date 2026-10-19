@@ -25,6 +25,8 @@ export interface NeckBlockSizes {
   readonly blockDepthMm: Readonly<Record<NeckHalf, number>>;
   /** Depth of the armscye line at the centre line below the HPS level, per half. */
   readonly scyeDepthMm: Readonly<Record<NeckHalf, number>>;
+  /** Depth of the lowest point the front neck must stay above (the bust point) below the HPS level. */
+  readonly bustDepthMm: number;
   /** How far the neck point drops per mm it moves out along the shoulder, per half. */
   readonly dropPerWidenMm: Readonly<Record<NeckHalf, number>>;
   /** Largest widening that keeps `NECK_MIN_SHOULDER_LEFT_MM` of shoulder on every piece holding the neck. */
@@ -67,7 +69,8 @@ export function clampMm(requestedMm: number, minMm: number, maxMm: number): Clam
 }
 
 /**
- * Deepest neck allowed on a half, below the moved neck point: `NECK_CLEARANCE_ABOVE_SCYE_MM` above the armscye line.
+ * Deepest neck allowed on a half, below the moved neck point: `NECK_CLEARANCE_ABOVE_SCYE_MM` above the armscye line
+ * and, at the front, above the bust point (the waist dart apex sits below it).
  *
  * @param sizes - Block sizes.
  * @param half - Front or back.
@@ -75,7 +78,9 @@ export function clampMm(requestedMm: number, minMm: number, maxMm: number): Clam
  * @returns Depth in mm.
  */
 export function maxNeckDepthMm(sizes: NeckBlockSizes, half: NeckHalf, widenMm: number): number {
-  return sizes.scyeDepthMm[half] - widenMm * sizes.dropPerWidenMm[half] - NECK_CLEARANCE_ABOVE_SCYE_MM;
+  const lowest =
+    half === "front" ? Math.min(sizes.scyeDepthMm.front, sizes.bustDepthMm) : sizes.scyeDepthMm.back;
+  return lowest - widenMm * sizes.dropPerWidenMm[half] - NECK_CLEARANCE_ABOVE_SCYE_MM;
 }
 
 /**

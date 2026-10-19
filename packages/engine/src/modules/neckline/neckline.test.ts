@@ -44,6 +44,7 @@ const FRONTS = Object.keys(FRONT_NECKLINE_SIZES) as NecklineSpec["front"][];
 const SIZES: NeckBlockSizes = {
   blockDepthMm: { front: 84, back: 20 },
   scyeDepthMm: { front: 232, back: 232 },
+  bustDepthMm: 250,
   dropPerWidenMm: { front: 0.37, back: 0.34 },
   maxWidenMm: 50,
 };
