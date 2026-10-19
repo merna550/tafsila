@@ -83,7 +83,11 @@ describe("waistband properties", () => {
   it(
     "warns about the hip exactly when the opening is smaller than the hip plus its ease",
     () => {
-      const designs = [elasticGatheredSkirt, elasticStraightSkirt, { ...straightBandSkirt, closure: { type: "none", position: "side" } as const }];
+      const designs = [
+        elasticGatheredSkirt,
+        elasticStraightSkirt,
+        { ...straightBandSkirt, closure: { type: "none", position: "side" } as const },
+      ];
       fc.assert(
         fc.property(fc.constantFrom(...designs), arbMeasurements(), (spec, measurements) => {
           const result = generatePattern(spec, measurements, DEFAULT_ENGINE_OPTIONS);

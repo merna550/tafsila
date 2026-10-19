@@ -144,7 +144,9 @@ describe("skirt slits", () => {
 
   it("cuts a side slit into both side seams, notches paired", () => {
     const result = draft(aLineAnkleSideSlitSkirt);
-    expect(withoutWaistFinish(result.pieces).every((p) => p.notches.some((n) => n.edgeId === "side"))).toBe(true);
+    expect(withoutWaistFinish(result.pieces).every((p) => p.notches.some((n) => n.edgeId === "side"))).toBe(
+      true,
+    );
     expect(result.validation.checks.filter((c) => c.code === "NOTCH_OK")).toHaveLength(1);
   });
 

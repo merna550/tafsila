@@ -106,16 +106,20 @@ describe("panel skirt modules", () => {
 
   it("drafts three tiers whose seams declare the gathered length as intended ease", () => {
     const result = draft(tieredMidiSkirt, sizeM);
-    expect(new Set(withoutWaistFinish(result.pieces).map((p) => p.id.split("-").slice(0, 2).join("-")))).toEqual(
-      new Set(["tier-1", "tier-2", "tier-3"]),
-    );
+    expect(
+      new Set(withoutWaistFinish(result.pieces).map((p) => p.id.split("-").slice(0, 2).join("-"))),
+    ).toEqual(new Set(["tier-1", "tier-2", "tier-3"]));
     const seam = result.pieces.find((p) => p.id.startsWith("tier-2"))!.edges.find((e) => e.id === "top")!;
     expect(seam.pairsWith!.intendedEaseMm).toBeGreaterThan(0);
   });
 
   it("splits into equal panels on narrow fabric", () => {
     const result = draft(tieredMidiSkirt, sizeM, NARROW_FABRIC_MM);
-    expect(withoutWaistFinish(result.pieces).map((p) => p.id)).toEqual(["tier-1-panel", "tier-2-panel", "tier-3-panel"]);
+    expect(withoutWaistFinish(result.pieces).map((p) => p.id)).toEqual([
+      "tier-1-panel",
+      "tier-2-panel",
+      "tier-3-panel",
+    ]);
     expect(new Set(withoutWaistFinish(result.pieces).map((p) => p.cut.quantity)).size).toBe(1);
     expect(result.pieces[0]!.cut.quantity).toBeGreaterThan(2);
   });

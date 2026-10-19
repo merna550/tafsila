@@ -1,5 +1,12 @@
 /** The immutable value that flows through the pipeline steps (ARCHITECTURE §3). */
-import type { DesignSpec, EngineOptions, Measurements, Notion, Piece, ValidationCheck } from "@tafsila/schemas";
+import type {
+  DesignSpec,
+  EngineOptions,
+  Measurements,
+  Notion,
+  Piece,
+  ValidationCheck,
+} from "@tafsila/schemas";
 import type { ResolvedDraftInputs } from "../resolve/types";
 
 /** A piece in progress: the finishing step adds the cut path, labels and bounding box later. */
