@@ -5,6 +5,7 @@ import type {
   Measurements,
   Notion,
   Piece,
+  SewingStep,
   ValidationCheck,
 } from "@tafsila/schemas";
 import type { ResolvedDraftInputs } from "../resolve/types";
@@ -31,6 +32,8 @@ export interface DraftContext {
   readonly checks: readonly ValidationCheck[];
   /** Notions cut by length, such as waist elastic (#140); absent until a module adds one. */
   readonly notions?: readonly Notion[];
+  /** The numbered sewing steps from the last pipeline step (#146); absent before it runs. */
+  readonly sewingOrder?: readonly SewingStep[];
 }
 
 /** One pipeline step: a pure function from a frozen context to a new one. */
@@ -128,4 +131,15 @@ export function withInputs(ctx: DraftContext, inputs: ResolvedDraftInputs): Draf
 export function withNotion(ctx: DraftContext, notion: Notion): DraftContext {
   const kept = (ctx.notions ?? []).filter((n) => n.id !== notion.id);
   return Object.freeze({ ...ctx, notions: Object.freeze([...kept, notion]) });
+}
+
+/**
+ * Returns a context that carries the sewing order.
+ *
+ * @param ctx - Current context.
+ * @param sewingOrder - The numbered steps.
+ * @returns A new frozen context.
+ */
+export function withSewingOrder(ctx: DraftContext, sewingOrder: readonly SewingStep[]): DraftContext {
+  return Object.freeze({ ...ctx, sewingOrder });
 }

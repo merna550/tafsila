@@ -1,0 +1,36 @@
+1. [press] ألصقي الحشوة اللاصقة على القطع التي لها حشوة قبل البدء.
+   Fuse the interfacing to its pieces before you start.
+   bodice-front-facing-interfacing, neck-facing-back-interfacing, neck-facing-front-interfacing
+2. [sew] خيّطي الدارتات من الطرف العريض حتى الرأس.
+   Sew each dart from the wide end to the point.
+   bodice-back/dart:waist-dart, bodice-front/dart:bust-dart, bodice-front/dart:waist-dart
+3. [press] اكوي الدارتات ناحية المنتصف.
+   Press the darts toward the centre.
+   bodice-back/dart:waist-dart, bodice-front/dart:bust-dart, bodice-front/dart:waist-dart
+4. [sew] خيّطي خياطات الكتف واكوي الخياطة مفتوحة.
+   Sew the shoulder seams and press them open.
+   bodice-back/shoulder, bodice-front/shoulder
+5. [sew] خيّطي كتف البطانة الداخلية للرقبة واكوي الخياطة مفتوحة.
+   Sew the neck facing shoulder seams and press them open.
+   neck-facing-back/shoulder, neck-facing-front/shoulder
+6. [attach] ركّبي البطانة الداخلية على فتحة الرقبة من الوجه إلى الوجه.
+   Attach the neck facing to the neckline, right sides together.
+   bodice-back/neck, bodice-front/neck, neck-facing-back/neck, neck-facing-front/neck
+7. [finish] قفّلي فتحة الإبط بشريط مائل.
+   Bind the armhole edge.
+   bodice-back/armhole, bodice-front/armhole
+8. [sew] خيّطي خياطات الجنب والظهر في الصدر واكوي الخياطة مفتوحة.
+   Sew the bodice side and back seams and press them open.
+   bodice-back/side, bodice-front/side
+9. [attach] ركّبي بطانة الأمام على حافة المنتصف.
+   Attach the front facing to the centre edge.
+   bodice-front-facing/cf, bodice-front/cf
+10. [finish] اطوي ذيل البلوزة وخيّطيه.
+   Turn up the blouse hem and stitch it.
+   bodice-back/waist, bodice-front/waist
+11. [finish] خيّطي البطانة من الوجه قرب الحافة، وثبّتي طرفها.
+   Understitch the facing close to the edge and tack its ends.
+   neck-facing-back/neck, neck-facing-front/neck
+12. [finish] اعملي العراوي وخيّطي الأزرار حسب العلامات.
+   Sew the buttonholes and buttons on the marks.
+   bodice-front/cf

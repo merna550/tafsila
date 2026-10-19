@@ -3,10 +3,11 @@ import type { ValidationCheck, ValidationReport } from "@tafsila/schemas";
 import { BLOCK_DRAFTERS } from "../blocks";
 import { finishing } from "../finishing";
 import { layout } from "../layout";
+import { assembleSewingOrder } from "../sewing/assemble";
 import { resolveDraftInputs } from "../resolve/resolve-draft-inputs";
 import { CATEGORY_BLOCKS } from "./category-rules";
 import type { Step } from "./draft-context";
-import { withCheck, withInputs } from "./draft-context";
+import { withCheck, withInputs, withSewingOrder } from "./draft-context";
 import type { ModuleRegistry } from "./registry";
 
 export type { Step } from "./draft-context";
@@ -37,7 +38,7 @@ export const blocks: Step = (ctx) =>
  * @param ctx - Current context.
  * @returns The same context for now.
  */
-export const sewingOrder: Step = (ctx) => ctx;
+export const sewingOrder: Step = (ctx) => withSewingOrder(ctx, assembleSewingOrder(ctx));
 
 /**
  * Step 3: run every module that applies to the design, in registry order.

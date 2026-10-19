@@ -262,6 +262,16 @@ Cross-checks:
 | `MEAS_FRONT_SHORTER_THAN_BACK`   | warning  | frontLength < backLength                  |
 | `MEAS_WAIST_TO_FLOOR_UNUSUAL`    | warning  | waistToFloor outside 50% to 70% of height |
 
+## Sewing order (FR-PAT-06)
+
+`generatePattern` ends with `sewingOrder`: numbered steps (`order` 1..n) with `action` (`sew`, `press`, `finish`, `attach`), `edges` and bilingual `text`. Code: `packages/engine/src/sewing/` (decision 146).
+
+- **Phases**, in order: prepare, darts, shoulders, neckline, sleeves, side-seams, waist-seam, closure, waistband, hem, finish. Inside a phase the order is the key order of `SEWING_CATALOGUE`.
+- **References:** `piece/edge` (as in FR-VAL-01), `piece/dart:<id>`, or a bare `piece` (fuse interfacing).
+- **Where the steps come from:** `rules.ts` maps each seam, by edge ids and the closure, to a catalogue key; it also finds the piece-level jobs. Text lives only in `catalogue.ts`.
+- **Coverage rule:** each unique seam (a self pair once) is named by exactly one `sew` or `attach` step. `sewingCoverage(result)` returns `{ ok, uncovered, duplicated }`; the assembler throws `SEWING_PAIR_UNCOVERED` or `SEWING_PAIR_DUPLICATED` otherwise.
+- **Add a module with a seam:** give its edges a `pairsWith`, add a rule in `seamKey` (or it falls to `other-seams`) and a catalogue entry with Arabic and English text.
+
 ## Units and constants
 
 - Millimetres everywhere; angles in radians. Numeric names end with the unit (`lengthMm`).
