@@ -12,19 +12,19 @@ import {
   ZIP_TAPE_WIDTH_MM,
 } from "../../constants/closure";
 import { DraftingError } from "../../errors/drafting-error";
-import { edgeSegments } from "../../pieces/measure";
 import { type DraftContext, type PieceDraft, withNotion } from "../../pipeline/draft-context";
 import { foldToSeam, withPiecesInPlace, withZipAllowance } from "./seam";
 import {
   CENTRE_HALF,
   type CentrePosition,
   type ChainLink,
-  centreFacings,
+  atFromEdgeStart,
   chainLengthMm,
   locateOnChain,
   openingChain,
   SIDE_ZIP_HALF,
-} from "./targets";
+} from "../../pieces/seam-chain";
+import { centreFacings } from "./targets";
 
 /** Id of the zip-stop notch. */
 export const ZIP_STOP_ID = "zip-stop";
@@ -57,19 +57,6 @@ export function zipLengthFor(spec: DesignSpec, openingMm: number): { lengthMm: n
 }
 
 /**
- * Distance along an edge from its start, for a distance down from its top (the end with the smaller y).
- *
- * @param link - The chain link.
- * @param downMm - Distance from the link's top.
- * @returns Distance from the edge start.
- */
-function atFromStart(link: ChainLink, downMm: number): number {
-  const segments = edgeSegments(link.piece, link.edgeId);
-  const startsAtTop = segments[0]!.from.y <= segments.at(-1)!.to.y;
-  return startsAtTop ? downMm : link.lengthMm - downMm;
-}
-
-/**
  * The zip-stop notch on the link where the zip ends; it pairs with the same edge on the mirrored copy (centre) or
  * with the back's side seam (side).
  *
@@ -84,7 +71,7 @@ function withStopNotch(chain: readonly ChainLink[], lengthMm: number): PieceDraf
   const notch: Notch = {
     id: ZIP_STOP_ID,
     edgeId: link.edgeId,
-    atMm: atFromStart(link, downMm),
+    atMm: atFromEdgeStart(link, downMm),
     pairsWith: { pieceId: partner.pieceId, edgeId: partner.edgeId },
   };
   return { ...link.piece, notches: [...link.piece.notches, notch] };

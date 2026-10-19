@@ -6,6 +6,7 @@
 import type { Piece } from "@tafsila/schemas";
 import { ZIP_SEAM_ALLOWANCE_MM } from "../../constants/closure";
 import { FOLD_EDGE_KIND } from "../../constants/finishing";
+import { withEdgeAllowance } from "../../pieces/edge-allowance";
 import { type DraftContext, type PieceDraft, withPieces } from "../../pipeline/draft-context";
 
 /** Edge kind of a centre line once it is a seam. */
@@ -48,12 +49,7 @@ export function foldToSeam(piece: PieceDraft, edgeId: string, pairSelf: boolean)
  * @returns The context with the allowances set.
  */
 export function withZipAllowance(ctx: DraftContext, refs: readonly string[]): DraftContext {
-  const current = ctx.options.seamAllowance.perEdgeMm;
-  const added = Object.fromEntries(
-    refs.filter((ref) => current[ref] === undefined).map((ref) => [ref, ZIP_SEAM_ALLOWANCE_MM]),
-  );
-  const seamAllowance = { ...ctx.options.seamAllowance, perEdgeMm: { ...current, ...added } };
-  return Object.freeze({ ...ctx, options: { ...ctx.options, seamAllowance } });
+  return withEdgeAllowance(ctx, refs, ZIP_SEAM_ALLOWANCE_MM);
 }
 
 /**

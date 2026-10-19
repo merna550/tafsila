@@ -337,6 +337,7 @@ export const MARK_DASH: Readonly<Record<MarkKind, string>> = {
   "sleeve-end": "",
   button: "",
   buttonhole: "",
+  "pocket-placement": "6 2",
 };
 
 /** Radius of a point mark, in mm. */

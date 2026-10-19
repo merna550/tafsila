@@ -27,13 +27,11 @@ import {
   type CentrePosition,
   type ChainLink,
   type Half,
-  centreFacings,
   chainLengthMm,
-  downAlong,
   locateOnChain,
   openingChain,
-  straightEdge,
-} from "./targets";
+} from "../../pieces/seam-chain";
+import { centreFacings, downAlong, straightEdge } from "./targets";
 
 /** Id of the button notion. */
 export const BUTTON_NOTION_ID = "buttons";

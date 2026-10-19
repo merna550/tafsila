@@ -311,6 +311,28 @@ export const princessOnePieceDress: DesignSpec = {
   skirt: { type: "a-line", length: "midi" },
 };
 
+/**
+ * Pockets, belt and lining seed designs (issue #145): a lined waist-seam dress with side-seam pockets and a centre-back
+ * zip; a straight skirt with a patch pocket and a self-tie belt; a lined half-circle skirt with side-seam pockets.
+ * Used by the pocket, belt and lining snapshots and property tests and by `pnpm engine:print`.
+ */
+export const linedSidePocketDress: DesignSpec = { ...seedDress, pockets: ["side-seam"], lining: true };
+
+/** A straight knee skirt with a patch pocket and a self-tie belt (issue #145). */
+export const patchPocketSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  pockets: ["patch"],
+  belt: "self-tie",
+};
+
+/** A lined half-circle knee skirt with side-seam pockets (issue #145). */
+export const linedCircleSkirt: DesignSpec = {
+  ...halfCircleKneeSkirt,
+  closure: { type: "zip", position: "center-back" },
+  pockets: ["side-seam"],
+  lining: true,
+};
+
 /** One seed design per garment category (issue #144): the seed data until the `designs` table exists. */
 export const CATEGORY_SEEDS: Readonly<Record<DesignSpec["category"], DesignSpec>> = {
   dress: seedDress,
