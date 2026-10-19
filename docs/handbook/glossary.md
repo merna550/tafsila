@@ -914,6 +914,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `apps/web/src/features/` (planned). See [feature-sliced frontend](patterns/feature-sliced-frontend.md). **Level:** intermediate  
 **Learn:** <https://feature-sliced.design/docs/get-started/overview>
 
+<a id="fisheye-dart"></a>
+
+### Fisheye dart
+
+**Plain words:** A dart pointed at both ends, widest at the waist, sewn inside a dress or blouse that has no waist seam. It shapes the waist above and below at once.  
+**In Tafsila:** A one-piece dress (#144) turns each bodice waist dart into two `interior` darts, `waist-dart` (up to the bodice apex) and `waist-dart-lower` (down to the skirt dart length); FR-VAL-07 checks both pairs of legs ([decision 144](../decisions/144-garment-assembly.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Dart_(sewing)>
+
 <a id="fit"></a>
 
 ### Fit (fitted, semi-fitted, loose)

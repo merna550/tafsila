@@ -313,6 +313,19 @@ Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/
 2. Size M was recomputed independently, in a separate script with exact fractions and a different structure, written from the formulas of this document and not from the TypeScript. 24 key points (the ones that depend on a new formula: widths, shoulder, dart legs and apexes, side waists, sleeve points) agree within the 0.1 mm rounding. The script is not committed (it is a one-off check; the PR description records it). Issue #128 changed three steps (back shoulder, bust dart apex, front waist dart truing); the 6 changed values of size M were recomputed the same way, in a separate script using the slope angle and a different truing construction, and agree within the rounding (PR of #128).
 3. `reference-drafts.test.ts` checks that every block has every name, values are finite, widths equal the measurement quarter plus the documented ease, the skirt hip line is at `hipDepth`, the bust point is the measured one, and that the fixture equals the calculation.
 
+## Garment assembly (#144)
+
+Aldrich, Metric Pattern Cutting for Women's Wear, ch. 3, "One-piece dress block" (decision 144, 4).
+
+| Step | What the engine does                                                                                                             | Page |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| 1    | Dress with a waist seam: the skirt dart's centre-side leg sits where the bodice dart closes on the waist; paired notches mark it |      |
+| 2    | One-piece: move the skirt half so its waist centre is on the bodice waist centre; keep the skirt below the hip line              |      |
+| 3    | Side seam: one curve from the bodice side waist to the skirt hip side point                                                      |      |
+| 4    | Waist dart → fisheye: lower apex on the legs' bisector at the skirt dart length (front 90, back 140 mm), 20 mm above the hip     |      |
+| 5    | Princess seam: from the waist leg to the dart axis on the hip line, then straight to the hem                                     |      |
+| 6    | True the side seams: drop the front lower half until front and back match                                                        |      |
+
 ## Known limits
 
 - **Bust dart ignores cup size.** It scales with the bust only. `frontLength - backLength` could refine it later; not needed for the toiles of M2.
@@ -327,6 +340,7 @@ Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/
 - [ ] Fill the "Page" column of every step table from the 6th edition.
 - [ ] Compare the constants of "Missing lengths" and "Ease already inside the blocks" with the size chart and block instructions.
 - [ ] Confirm the step order of the three blocks.
+- [ ] Check the garment assembly steps (#144) against Aldrich's one-piece dress block and fill their pages (TC-ENG-144-09).
 - [ ] If anything differs, change `DRAFT_CONSTANTS` and regenerate; do not edit the tables by hand.
 - [ ] #128, back step 3: the back shoulder is laid as the front shoulder length plus an ease (0 for now) along the back slope; the book eases or darts a longer back shoulder. Check the usual amount.
 - [ ] #128, front step 7: the bust dart apex 25 mm beyond the bust point, on the horizontal through the middle of the dart mouth. Check how far the book stops the side dart from the bust point.
