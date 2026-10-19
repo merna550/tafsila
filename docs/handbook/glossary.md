@@ -421,7 +421,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Collar (peter-pan, shirt, mandarin)
 
 **Plain words:** A band or flap around the neck. Peter Pan: flat with rounded ends. Shirt: folds over a stand. Mandarin: a short upright band with no fold.  
-**In Tafsila:** `neckline.collar` values `none`, `peter-pan`, `shirt`, `mandarin`. **Level:** beginner  
+**In Tafsila:** `neckline.collar` values `none`, `peter-pan`, `shirt`, `mandarin`. Drafted by `src/modules/collar/` (#141) from the finished bodice neck: the collar's neck edge is split at the shoulder into `neck-back` and `neck-front`, each paired with the bodice neck (FR-VAL-01) and notched at CB, shoulder and CF (FR-VAL-04). Collars need a round or high-round neck; a stand collar also needs a neck opening, otherwise the pattern is refused with a bilingual message ([decision 141](../decisions/141-collars.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Collar_(clothing)>
 
 <a id="composition-root"></a>
@@ -2055,6 +2055,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `SIZE_MATRIX` and `arbMeasurements()` in `packages/test-fixtures/src/size-matrix.ts`; the 20 custom sets are `synthetic` until Merna swaps in anonymised real ones ([plan](../plans/123-size-matrix.md)). **Level:** intermediate  
 **Learn:** <https://fast-check.dev/>
 
+<a id="stand"></a>
+
+### Stand (collar stand)
+
+**Plain words:** The upright band that a collar sits on, sewn to the neck. A shirt collar folds over its stand; a mandarin collar is a stand alone. Arabic: رجل الياقة.  
+**In Tafsila:** `collar-stand` (cut twice: outer and inner) in `src/modules/collar/stand.ts` (#141): the neck edge runs straight from CB and curves up to a rise at CF, as long as the bodice half neck by construction; with CF buttons it runs on by a 15 mm button extension. The inner stand finishes the neck, so stand collars have no neck facings ([decision 141](../decisions/141-collars.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Collar_(clothing)>
+
 <a id="skill-agent"></a>
 
 ### Skill (Claude Code)
@@ -2279,6 +2287,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** One round in an agent run: the model answers, possibly calling a tool, and gets the result back. Every turn re-sends the conversation, so more turns means more tokens.  
 **In Tafsila:** `--max-turns 50` caps cloud runs ([ADR-017](../DECISIONS.md)); `num_turns` is recorded per run and the weekly report flags runs above 60. **Card:** [Claude Code](tech/claude-code.md#measuring-agent-usage) · **Level:** beginner  
 **Learn:** <https://docs.claude.com/en/docs/claude-code/costs>
+
+<a id="turn-of-cloth"></a>
+
+### Turn of cloth
+
+**Plain words:** The little width a fabric loses when it is folded or rolled over another layer. The under collar is cut slightly smaller so the seam rolls under and does not show. Arabic: فاقد الثني.  
+**In Tafsila:** `COLLAR_TURN_OF_CLOTH_MM` (3 mm) in `src/constants/collar.ts` (#141): the under collar's outer edge is 3 mm inside the upper's, and the outer seam declares the difference as intended ease ([decision 141](../decisions/141-collars.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Collar_(clothing)>
 
 <a id="type"></a>
 

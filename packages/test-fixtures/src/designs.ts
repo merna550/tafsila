@@ -200,3 +200,26 @@ export const elasticStraightSkirt: DesignSpec = {
   waistband: "elastic",
   closure: { type: "none", position: "side" },
 };
+
+/**
+ * Collar seed designs (issue #141): the seed blouse with each collar on a neckline and closure it allows. Used by the
+ * collar snapshots, property tests and `pnpm engine:print`.
+ */
+export const peterPanBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "round", back: "round", collar: "peter-pan" },
+};
+
+/** Shirt collar (stand and fall) on a round neck, buttoned at centre front (issue #141). */
+export const shirtCollarBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "round", back: "round", collar: "shirt" },
+  closure: { type: "buttons", position: "center-front" },
+};
+
+/** Mandarin stand on a high-round neck with a centre-front zip (issue #141). */
+export const mandarinBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "high-round", back: "high-round", collar: "mandarin" },
+  closure: { type: "zip", position: "center-front" },
+};

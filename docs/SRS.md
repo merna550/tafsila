@@ -350,7 +350,7 @@ interface DesignSpec {
     front: 'round' | 'v' | 'square' | 'sweetheart' | 'boat' | 'high-round';
     back: 'round' | 'v' | 'square' | 'high-round';
     depthFrontMm?: number;                 // optional override, below the neck point; clamped with an FR-VAL-08 warning (#139)
-    collar: 'none' | 'peter-pan' | 'shirt' | 'mandarin';
+    collar: 'none' | 'peter-pan' | 'shirt' | 'mandarin'; // needs round/high-round front and back; shirt: CF opening; mandarin: CF or CB opening; no depthFrontMm with a stand; else refused (#141)
   };
   sleeve?: {
     type: 'none' | 'set-in' | 'cap' | 'puff' | 'bishop' | 'flutter';

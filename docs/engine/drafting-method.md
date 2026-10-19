@@ -172,6 +172,21 @@ Starts from the block neck point (HPS) and the centre neck point of each half ([
 | 5   | Interfacing: the facing outline again, cut in interfacing                           | same outline                                                                                     | `neck-facing-*-interfacing`   |      |
 | 6   | No closure at the neck: the neck seam must pass over the head                       | 2 × (front + back neck) ≥ 1.55 × neck, else warn                                                 | FR-VAL-08                     |      |
 
+### Collars (Chapter 5, "Flat collars", "Shirt collar with stand", "Mandarin collar")
+
+Starts from the finished neck of each half ([decision 141](../decisions/141-collars.md)). N = back neck + front neck (half neck), H = stand height, r = CF rise.
+
+| #   | Step (paraphrased)                                                                         | Formula (mm)                                                                          | Key point                 | Page |
+| --- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------- | ---- |
+| 1   | Peter pan: lay the back on the front shoulder at the neck point, overlap the shoulder tips | back neck mirrored on its shoulder, laid on the front, turned 2·asin(13 / 2·shoulder) | `neck-back`, `neck-front` |      |
+| 2   | Peter pan: outer edge the collar width from the neck, rounded into CF (and CB for a pair)  | offset 70, blended over 30 at the shoulder, ends rounded 30                           | `outer`                   |      |
+| 3   | Under collar: the outer edge in by the turn of cloth                                       | offset 67; the outer seam declares the difference                                     | `collar-under`            |      |
+| 4   | Stand: straight from CB, curve up to the CF rise over the front neck's length              | cubic over the front neck run, rise r (shirt 10, mandarin 15); straight = N − curve   | `collar-stand` neck       |      |
+| 5   | Stand: top edge the stand height above, CF end square to the neck                          | offset H (shirt 30, mandarin 35)                                                      | `top`                     |      |
+| 6   | Button extension past CF when the closure is CF buttons                                    | 15 along the CF tangent, corners rounded 10                                           | `extension`               |      |
+| 7   | Shirt fall: neck edge = stand top; 45 deep at CB; point 70 long, 15 past CF                | tip = CF top + 15 · t + √(70² − 15²) · n                                              | `collar-upper` / `-under` |      |
+| 8   | Mandarin: open end rounded                                                                 | radius 15 at the top corner                                                           | `cf` or `cb` end          |      |
+
 ### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
 
 | #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |
@@ -302,3 +317,4 @@ Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/
 - [ ] #128, back step 3: the back shoulder is laid as the front shoulder length plus an ease (0 for now) along the back slope; the book eases or darts a longer back shoulder. Check the usual amount.
 - [ ] #128, front step 7: the bust dart apex 25 mm beyond the bust point, on the horizontal through the middle of the dart mouth. Check how far the book stops the side dart from the bust point.
 - [ ] #128, front step 9: the front waist dart is trued by extending the shorter leg. Check the book's truing step.
+- [ ] #141, collars: check the peter pan shoulder overlap (13 mm), widths (70 mm peter pan, 45 mm shirt fall), stand heights and rises (30 / 10 shirt, 35 / 15 mandarin), the 3 mm turn of cloth and the 15 mm button extension against the book; fill the page numbers of the Collars table.

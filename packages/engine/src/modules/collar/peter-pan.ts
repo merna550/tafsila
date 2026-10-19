@@ -23,6 +23,7 @@ import {
   mirrorAcross,
   offsetPath,
   pathLength,
+  pt,
   reversePath,
   rotateAbout,
   samePoint,
@@ -77,15 +78,23 @@ function frontShoulderMm(pieces: readonly PieceDraft[], holders: CollarHolders):
   return edgeLengthMm(holders.front.piece, SHOULDER_EDGE_ID) + sideMm;
 }
 
+/** The traced neck and where the back shoulder lies after the overlap. */
+export interface PeterPanTrace {
+  /** The collar neck, in the front piece's frame. */
+  readonly neck: CollarNeck;
+  /** Unit direction of the laid back shoulder from the neck point. */
+  readonly backShoulderDir: Point;
+}
+
 /**
  * The traced neck, in the front piece's frame: the back neck mirrored across its shoulder, laid on the front shoulder
  * at the neck point, then turned toward the front so the shoulder tips overlap `PETER_PAN_SHOULDER_OVERLAP_MM`.
  *
  * @param pieces - Pieces drafted so far.
  * @param holders - The bodice neck holders.
- * @returns The collar neck, CB to shoulder to CF.
+ * @returns The collar neck (CB to shoulder to CF) and the laid back shoulder's direction from the neck point.
  */
-export function peterPanNeck(pieces: readonly PieceDraft[], holders: CollarHolders): CollarNeck {
+export function peterPanNeck(pieces: readonly PieceDraft[], holders: CollarHolders): PeterPanTrace {
   const front = holders.front.neck;
   const neckPoint = front.at(-1)!.to;
   const backPoint = holders.back.neck.at(-1)!.to;
@@ -99,7 +108,11 @@ export function peterPanNeck(pieces: readonly PieceDraft[], holders: CollarHolde
   );
   const overlapRad = 2 * Math.asin(PETER_PAN_SHOULDER_OVERLAP_MM / (2 * frontShoulderMm(pieces, holders)));
   const towardFront = Math.sign(cross(frontDir, sub(front[0]!.from, neckPoint)));
-  return { back: rotateAbout(laid, neckPoint, towardFront * overlapRad), front: reversePath(front) };
+  const turnRad = towardFront * overlapRad;
+  return {
+    neck: { back: rotateAbout(laid, neckPoint, turnRad), front: reversePath(front) },
+    backShoulderDir: rotateAbout(frontDir, pt(0, 0), turnRad),
+  };
 }
 
 /** How many offset segments each side of the neck point are searched for the crossing of the two outer runs. */
@@ -197,7 +210,7 @@ export function peterPanPieces(
   options: Pick<EngineOptions, "seamAllowance">,
 ): PieceDraft[] {
   const { holders, opening } = input;
-  const neck = peterPanNeck(input.pieces, holders);
+  const { neck } = peterPanNeck(input.pieces, holders);
   const upper = peterPanOutline(neck, PETER_PAN_WIDTH_MM, opening);
   const under = peterPanOutline(neck, PETER_PAN_WIDTH_MM - COLLAR_TURN_OF_CLOTH_MM, opening);
   const cbNeck = neck.back[0]!.from;

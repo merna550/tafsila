@@ -35,7 +35,7 @@ import { shapedContext } from "../../test-utils/shaped-context";
 import { NECK_HALVES } from "../../pieces/neck-seam";
 import { draftNeck } from "./draft-neck";
 import { FACING_OUTER_EDGE_ID, FACING_PIECE_IDS, INTERFACING_PIECE_IDS } from "./facing";
-import { necklineModule } from "./module";
+import { neckHasFacings, necklineModule } from "./module";
 import { type NeckBlockSizes, type NecklineSpec, clampMm, frontMinDepthMm, resolveNeck } from "./resolve";
 import { NECKLINE_RULES } from "./rules";
 
@@ -254,6 +254,13 @@ describe("neck facings", () => {
       pieceId: FACING_PIECE_IDS.back,
       edgeId: "shoulder",
     });
+  });
+
+  it("keeps the facings under a peter pan and leaves them out under a stand collar (decision 141, 4)", () => {
+    expect(neckHasFacings({ collar: "none" })).toBe(true);
+    expect(neckHasFacings({ collar: "peter-pan" })).toBe(true);
+    expect(neckHasFacings({ collar: "shirt" })).toBe(false);
+    expect(neckHasFacings({ collar: "mandarin" })).toBe(false);
   });
 });
 
