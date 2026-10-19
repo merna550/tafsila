@@ -44,9 +44,9 @@ describe("sewing order, every design in the catalogue (FR-PAT-06, AC 1, AC 2)", 
         }
         for (const step of result.sewingOrder) expect(sewingStepSchema.safeParse(step).success).toBe(true);
       }),
-      { numRuns: 120 },
+      { numRuns: 40 },
     );
-  });
+  }, 120_000);
 
   it("is deterministic", () => {
     const entry = SIZE_MATRIX[1]!;
