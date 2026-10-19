@@ -175,11 +175,9 @@ function legCorner(first: LineLike, second: LineLike): Point {
  */
 function offsetOne(seg: Segment, distanceMm: number): Segment {
   if (seg.kind === "line") return translate(seg, legShift(seg.from, seg.to, distanceMm));
-  const legs: LineLike[] = [
-    lineSeg(seg.from, seg.c1),
-    lineSeg(seg.c1, seg.c2),
-    lineSeg(seg.c2, seg.to),
-  ].map((leg) => translate(leg, legShift(leg.from, leg.to, distanceMm)));
+  const legs: LineLike[] = [lineSeg(seg.from, seg.c1), lineSeg(seg.c1, seg.c2), lineSeg(seg.c2, seg.to)].map(
+    (leg) => translate(leg, legShift(leg.from, leg.to, distanceMm)),
+  );
   return cubicSeg(legs[0]!.from, legCorner(legs[0]!, legs[1]!), legCorner(legs[1]!, legs[2]!), legs[2]!.to);
 }
 
