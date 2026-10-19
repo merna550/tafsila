@@ -8,7 +8,7 @@ import {
 } from "@tafsila/schemas";
 import { ENGINE_VERSION } from "../version";
 import { bbox, samplePath } from "../geometry";
-import { assertCategory } from "./category-rules";
+import { checkCategory } from "./category-rules";
 import { defaultRegistry } from "./default-registry";
 import { createContext, type DraftContext, type PieceDraft } from "./draft-context";
 import { checkInput } from "./input-check";
@@ -102,8 +102,9 @@ function refusedResult(
 /**
  * Drafts a pattern. Pure and deterministic. Bad input gives a `fail` result with no pieces; it never throws.
  * That includes body proportions a block cannot draft and a skirt length outside the body (input codes of
- * `INPUT_ERROR_MESSAGES`, decision 128, 10). Only programming errors (unsupported part combinations,
- * duplicate modules, step order) throw `DraftingError`.
+ * `INPUT_ERROR_MESSAGES`, decision 128, 10), and a spec missing a part its category needs (decision 144, 1). Parts the
+ * category does not use are dropped with a `SPEC_PART_IGNORED` warning; the input hash is the spec as given. Only
+ * programming errors (duplicate modules, step order) throw `DraftingError`.
  *
  * @param spec - The design (checked with `designSpecSchema`).
  * @param measurements - The body measurements in mm.
@@ -122,7 +123,6 @@ export function generatePattern(
     return refusedResult(spec, options, checked.checks, rawInputHash(spec, measurements, options));
   }
   const { spec: s, measurements: m, options: o } = checked.input;
-  assertCategory(s);
   const steps = [
     resolve,
     blocks,
@@ -134,7 +134,9 @@ export function generatePattern(
   ];
   const hash = inputHash(s, m, o);
   try {
-    const done = steps.reduce((ctx, step) => step(ctx), createContext(s, m, o, checked.checks));
+    const category = checkCategory(s);
+    const start = createContext(category.spec, m, o, [...checked.checks, ...category.checks]);
+    const done = steps.reduce((ctx, step) => step(ctx), start);
     return toResult(done, hash);
   } catch (error) {
     if (!isInputError(error)) throw error;

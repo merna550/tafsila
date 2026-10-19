@@ -2,7 +2,7 @@
 import type { DesignSpec, EngineOptions, Measurements, Point } from "@tafsila/schemas";
 import { DEFAULT_SEAM_ALLOWANCE_MM } from "@tafsila/schemas";
 import { DraftingError } from "../../errors/drafting-error";
-import { pathLength } from "../../geometry";
+import { distance, pathLength } from "../../geometry";
 import type { ResolvedDraftInputs } from "../../resolve/types";
 import { type DraftContext, withPiece, withResolved } from "../../pipeline/draft-context";
 import { backArmhole, backKeyPoints, backPiece } from "./back";
@@ -20,7 +20,36 @@ export const BODICE_RESOLVED_KEYS = {
   armholeBackMm: "bodice.armholeBackMm",
   armholeFrontMm: "bodice.armholeFrontMm",
   scyeDepthMm: "bodice.scyeDepthMm",
+  waistDartFrontFromCentreMm: "bodice.waistDartFrontFromCentreMm",
+  waistDartBackFromCentreMm: "bodice.waistDartBackFromCentreMm",
 } as const;
+
+/**
+ * Where each waist dart sits along the waist with the darts closed: the distance from the centre line (CF or CB) to
+ * the dart's centre-side leg, which is where the closed dart lies (issue #144). A dropped dart gives no value. Princess
+ * seams meet the waist at the same legs (decision 138, 3), so the values hold for them too.
+ *
+ * @param keyPoints - The bodice key points.
+ * @param hasDart - Whether the waist darts are drafted.
+ * @returns The resolved values, keyed by `BODICE_RESOLVED_KEYS`.
+ */
+function waistDartPositions(
+  keyPoints: Readonly<Record<BodiceKeyPoint, Point>>,
+  hasDart: boolean,
+): Record<string, number> {
+  if (!hasDart) return {};
+  const k = keyPoints;
+  return {
+    [BODICE_RESOLVED_KEYS.waistDartFrontFromCentreMm]: distance(
+      k["bodice.front.waistCF"],
+      k["bodice.front.waistDartLeft"],
+    ),
+    [BODICE_RESOLVED_KEYS.waistDartBackFromCentreMm]: distance(
+      k["bodice.back.waistCB"],
+      k["bodice.back.waistDartLeft"],
+    ),
+  };
+}
 
 /**
  * Prefixes the key point names with their block name, as in `referenceDrafts`.
@@ -69,6 +98,7 @@ export function draftBodice(
       frontLengthMm: pathLength(armFront),
     },
     scyeDepthMm: lengths.scyeDepthMm,
+    hasWaistDart: hasDart,
   };
 }
 
@@ -98,7 +128,7 @@ export function bodiceInputFrom(m: Measurements, spec: DesignSpec, inputs: Resol
 
 /**
  * Pipeline step of the bodice block: drafts both halves, adds them as pieces and passes the armhole lengths
- * and the armscye depth on in `resolved` for the sleeve block (#134).
+ * and the armscye depth on in `resolved` for the sleeve block (#134), and the waist dart positions for the skirt (#144).
  *
  * @param ctx - Context after the resolve step.
  * @returns A new context with `bodice-back` and `bodice-front`.
@@ -114,5 +144,6 @@ export function bodiceBlock(ctx: DraftContext): DraftContext {
     [BODICE_RESOLVED_KEYS.armholeBackMm]: draft.armhole.backLengthMm,
     [BODICE_RESOLVED_KEYS.armholeFrontMm]: draft.armhole.frontLengthMm,
     [BODICE_RESOLVED_KEYS.scyeDepthMm]: draft.scyeDepthMm,
+    ...waistDartPositions(draft.keyPoints, draft.hasWaistDart),
   });
 }

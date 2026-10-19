@@ -339,12 +339,12 @@ type GarmentCategory = 'dress' | 'skirt' | 'blouse';
 
 interface DesignSpec {
   schemaVersion: 1;
-  category: GarmentCategory;
+  category: GarmentCategory;              // parts per category (#144): dress needs bodice + skirt, ignores waistband; skirt needs skirt, ignores bodice, neckline, sleeve; blouse needs bodice, ignores skirt, waistband. Missing → fail; ignored → FR-VAL-08 warning
   fabricType: 'woven';                     // v1 only
   bodice?: {
     fit: 'fitted' | 'semi-fitted' | 'loose';
     shaping: 'darts' | 'princess-shoulder' | 'princess-armhole' | 'none'; // none: darts become ease; fitted + none warns (FR-VAL-08, #138)
-    waistSeam: boolean;                    // dress: separate bodice + skirt
+    waistSeam: boolean;                    // dress only: true = bodice + skirt joined at the waist; false = one piece shoulder to hem, needs a straight or A-line skirt (#144); a blouse ignores it
   };
   neckline?: {
     front: 'round' | 'v' | 'square' | 'sweetheart' | 'boat' | 'high-round';

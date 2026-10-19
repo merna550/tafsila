@@ -2,7 +2,6 @@
 import { patternResultSchema } from "@tafsila/schemas";
 import { sizeM, vNeckHalfCircleDress } from "@tafsila/test-fixtures";
 import { describe, expect, it } from "vitest";
-import { DraftingError } from "../errors/drafting-error";
 import { deepFreeze } from "../test-utils/deep-freeze";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "./generate-pattern";
 import { createRegistry } from "./registry";
@@ -133,9 +132,11 @@ describe("generatePattern with bad input", () => {
 });
 
 describe("generatePattern programming errors", () => {
-  it("throws for a skirt with a bodice part", () => {
+  it("drafts a skirt with a bodice part and warns instead of throwing (decision 144, 1)", () => {
     const spec = { ...vNeckHalfCircleDress, category: "skirt" };
-    expect(() => generatePattern(spec, sizeM, options)).toThrow(DraftingError);
+    const result = generatePattern(spec, sizeM, options);
+    expect(result.validation.checks.some((c) => c.code === "SPEC_PART_IGNORED")).toBe(true);
+    expect(result.pieces.some((p) => p.id.startsWith("bodice-"))).toBe(false);
   });
 
   it("throws on a duplicate module id", () => {

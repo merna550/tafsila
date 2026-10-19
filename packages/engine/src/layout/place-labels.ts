@@ -15,7 +15,14 @@ import {
   LABEL_SIZE_STEP_MM,
 } from "../constants/labels";
 import { bbox, distancePointToSegment, samplePath, type Rect } from "../geometry";
-import { cutInfoText, pieceNameText, sizeLabelText, type Bilingual } from "../i18n/pieces";
+import {
+  type AssembledGarment,
+  cutInfoText,
+  pieceNameText,
+  sizeLabelText,
+  type Bilingual,
+} from "../i18n/pieces";
+import { isOnePieceDress } from "../pipeline/category-rules";
 import { type DraftContext, type PieceDraft, type Step, withPieces } from "../pipeline/draft-context";
 import { isClear, obstaclesOf, textWidthMm, type PieceObstacles } from "./obstacles";
 
@@ -31,6 +38,16 @@ interface BlockLine {
 const OWNED_KINDS: readonly Label["kind"][] = ["name", "cut", "size"];
 
 /**
+ * Which garment the bodice pieces make once they run below the waist (#144): a one-piece dress.
+ *
+ * @param spec - The design.
+ * @returns The garment, or undefined when the bodice stops at the waist.
+ */
+function assembledGarment(spec: DraftContext["spec"]): AssembledGarment | undefined {
+  return isOnePieceDress(spec) ? "dress" : undefined;
+}
+
+/**
  * The lines of a piece's label block, in print order.
  *
  * @param piece - The piece.
@@ -39,7 +56,7 @@ const OWNED_KINDS: readonly Label["kind"][] = ["name", "cut", "size"];
  */
 function blockLines(piece: PieceDraft, ctx: DraftContext): BlockLine[] {
   return [
-    { kind: "name", text: pieceNameText(piece) },
+    { kind: "name", text: pieceNameText(piece, assembledGarment(ctx.spec)) },
     { kind: "cut", text: cutInfoText(piece.cut) },
     { kind: "size", text: sizeLabelText(ctx.options.sizeLabel, ctx.options.clientLabel) },
   ];

@@ -31,3 +31,15 @@ One row per toile sewn for an engine block or module (`needs:sew-test`). A block
 |      | #143  | Centre-front buttons, buttonFrontBlouse | size-s   |        |        |        |           |
 |      | #143  | Centre-front buttons, buttonFrontBlouse | size-m   |        |        |        |           |
 |      | #143  | Centre-front buttons, buttonFrontBlouse | size-xxl |        |        |        |           |
+|      | #144  | Dress, seedDress                        | size-s   |        |        |        |           |
+|      | #144  | Dress, seedDress                        | size-m   |        |        |        |           |
+|      | #144  | Dress, seedDress                        | size-xxl |        |        |        |           |
+|      | #144  | One-piece dress, onePieceDress          | size-s   |        |        |        |           |
+|      | #144  | One-piece dress, onePieceDress          | size-m   |        |        |        |           |
+|      | #144  | One-piece dress, onePieceDress          | size-xxl |        |        |        |           |
+|      | #144  | Skirt, straightBandSkirt                | size-s   |        |        |        |           |
+|      | #144  | Skirt, straightBandSkirt                | size-m   |        |        |        |           |
+|      | #144  | Skirt, straightBandSkirt                | size-xxl |        |        |        |           |
+|      | #144  | Blouse, dartedBlouse                    | size-s   |        |        |        |           |
+|      | #144  | Blouse, dartedBlouse                    | size-m   |        |        |        |           |
+|      | #144  | Blouse, dartedBlouse                    | size-xxl |        |        |        |           |

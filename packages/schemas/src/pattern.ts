@@ -117,7 +117,10 @@ export const notchSchema = z.object({
 /** A balance mark on an edge. */
 export type Notch = z.infer<typeof notchSchema>;
 
-/** A dart: its tip and the two legs on the edge it opens from. */
+/**
+ * A dart: its tip and the two legs on the edge it opens from. `edgeId` is `interior` for the two halves of a fisheye
+ * dart (a one-piece dress or a blouse, #144): their legs meet inside the piece at the waist, not on an edge.
+ */
 export const dartSchema = z.object({
   id: z.string().min(1),
   edgeId: z.string().min(1),
@@ -137,8 +140,8 @@ export const dartSchema = z.object({
 export type Dart = z.infer<typeof dartSchema>;
 
 /**
- * Width of a button extension the line crosses (issue #143): the two fronts overlap by it, so it is not part of the
- * garment's circumference and the measured length leaves it out.
+ * Width the line crosses that is not part of the garment's circumference, so the measured length leaves it out: a
+ * button extension (issue #143, the two fronts overlap by it) or a fisheye dart closed at the waist (issue #144).
  */
 const overlapMmSchema = z.number().min(0).optional();
 
