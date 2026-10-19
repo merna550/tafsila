@@ -509,7 +509,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Cuff
 
 **Plain words:** The finish at the end of a sleeve: none, a band, or elastic.  
-**In Tafsila:** `sleeve.cuff` values `none`, `band`, `elastic`. **Level:** beginner  
+**In Tafsila:** `sleeve.cuff` values `none`, `band`, `elastic`. Drafted by `src/modules/sleeve/cuff-module.ts` (#142): a band is the arm girth + 20 mm, folded and interfaced, open with a 20 mm overlap and a bound slit at the wrist, a loop above the elbow; elastic is a casing as long as the relaxed hem, with the elastic listed as a notion. The cuff seam pairs with the sleeve hem and declares the gathers between them ([decision 142](../decisions/142-sleeve-styles-cuffs.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Cuff>
 
 <a id="cut-quantity"></a>
@@ -1633,6 +1633,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `supabase/tests/database/rls.test.sql`, run by `pnpm db:test` and the `supabase` CI job; the tests act as different users and expect refusals. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/local-development/testing/overview>
 
+<a id="placket"></a>
+
+### Placket (slit binding)
+
+**Plain words:** The finished opening above a cuff so the hand can pass: a slit cut up from the sleeve hem and bound with a narrow strip.  
+**In Tafsila:** an open wrist cuff (#142) adds a `slit` mark (75 mm, on the back half of the hem) and a `cuff-placket` strip twice the slit long, cut twice ([decision 142](../decisions/142-sleeve-styles-cuffs.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Placket>
+
 <a id="plan"></a>
 
 ### Plan (issue plan)
@@ -1996,7 +2004,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Set-in sleeve (and puff, bishop, flutter, cap)
 
 **Plain words:** A set-in sleeve is sewn into the armhole at the shoulder. Variants: puff (gathered at the top), bishop (full, gathered at the cuff), flutter (a loose frill), cap (very short, covering only the shoulder).  
-**In Tafsila:** `sleeve.type` values `none`, `set-in`, `cap`, `puff`, `bishop`, `flutter`; `sleeve.length` values `cap`, `short`, `elbow`, `three-quarter`, `long`. **Level:** beginner  
+**In Tafsila:** `sleeve.type` values `none`, `set-in`, `cap`, `puff`, `bishop`, `flutter`; `sleeve.length` values `cap`, `short`, `elbow`, `three-quarter`, `long`. The set-in block is `src/blocks/sleeve/` (#134); the other styles are reshaped from it by `src/modules/sleeve/` (#142): the puff head is redrawn 1.5 times longer between the balance notches and gathered back, a bishop widens the hem into a cuff, the cap sleeve and the flutter are sewn only between the notches. Which lengths and cuffs each type allows is data (`SLEEVE_COMBINATIONS`); other combinations are refused with a message ([decision 142](../decisions/142-sleeve-styles-cuffs.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sleeve>
 
 <a id="sew-test"></a>

@@ -740,7 +740,9 @@
                         "pleat-fold",
                         "pleat-placement",
                         "pleat-direction",
-                        "gather"
+                        "gather",
+                        "slit",
+                        "sleeve-end"
                       ],
                       "type": "string"
                     },
@@ -828,7 +830,9 @@
                         "pleat-fold",
                         "pleat-placement",
                         "pleat-direction",
-                        "gather"
+                        "gather",
+                        "slit",
+                        "sleeve-end"
                       ],
                       "type": "string"
                     },
@@ -916,7 +920,9 @@
                         "pleat-fold",
                         "pleat-placement",
                         "pleat-direction",
-                        "gather"
+                        "gather",
+                        "slit",
+                        "sleeve-end"
                       ],
                       "type": "string"
                     },
@@ -1046,6 +1052,10 @@
           "sleeveCap": {
             "additionalProperties": false,
             "properties": {
+              "armholeExcludedMm": {
+                "minimum": 0,
+                "type": "number"
+              },
               "armholeRefs": {
                 "items": {
                   "additionalProperties": false,
@@ -1075,6 +1085,10 @@
                 },
                 "minItems": 1,
                 "type": "array"
+              },
+              "gatheredMm": {
+                "minimum": 0,
+                "type": "number"
               }
             },
             "required": [

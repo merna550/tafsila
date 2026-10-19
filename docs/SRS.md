@@ -211,7 +211,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Check | Rule (default tolerance) | Pri |
 |---|---|---|---|
 | FR-VAL-01 | Seam length match | Paired seams (e.g. front side vs back side) differ ≤ 2 mm, unless intentional ease is declared | M |
-| FR-VAL-02 | Sleeve cap ease | Sleeve cap length − armhole length within 1.0–4.0 cm for woven set-in sleeves | M |
+| FR-VAL-02 | Sleeve cap ease | Sleeve cap length − armhole length within 1.0–4.0 cm for woven set-in sleeves; a cap's declared gathers (`gatheredMm`, puff) and the armhole it is not sewn to (`armholeExcludedMm`, cap and flutter) are taken out first (#142) | M |
 | FR-VAL-03 | Circumference check | Sum of pieces at bust/waist/hip = measurement + ease ± 5 mm | M |
 | FR-VAL-04 | Notch alignment | Every notch has a matching notch on the paired edge at the same distance (± 2 mm) | M |
 | FR-VAL-05 | Geometry integrity | Closed outlines, no self-intersections, SA present on all cut edges | M |
@@ -355,7 +355,7 @@ interface DesignSpec {
   sleeve?: {
     type: 'none' | 'set-in' | 'cap' | 'puff' | 'bishop' | 'flutter';
     length: 'cap' | 'short' | 'elbow' | 'three-quarter' | 'long';
-    cuff: 'none' | 'band' | 'elastic';
+    cuff: 'none' | 'band' | 'elastic'; // allowed: set-in all lengths (band from short, elastic short/elbow); cap, flutter: cap/short, no cuff; puff: cap/short/elbow, any cuff; bishop: three-quarter/long, band or elastic; else refused (#142)
   };
   skirt?: {
     type: 'straight' | 'a-line' | 'circle-half' | 'circle-full' | 'gathered' | 'pleated' | 'tiered';
@@ -424,7 +424,7 @@ interface Piece {
   edges: Edge[];                          // named edges with SA and pairing info
   notches: Notch[];
   bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations: edge, horizontal or polyline (decision 135)
-  sleeveCap?: { edgeId: string; armholeRefs: Array<{ pieceId: string; edgeId: string }> };
+  sleeveCap?: { edgeIds: string[]; armholeRefs: Array<{ pieceId: string; edgeId: string }>; gatheredMm?: number; armholeExcludedMm?: number }; // declared gathers and unsewn armhole (#142)
   grainLine: [Point, Point];
   darts: Dart[];
   labels: Label[];
