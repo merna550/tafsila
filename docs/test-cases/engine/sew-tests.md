@@ -10,3 +10,12 @@ One row per toile sewn for an engine block or module (`needs:sew-test`). A block
 |      | #134  | Set-in sleeve, setInSleeveBlouse | size-s   |        |        |        |           |
 |      | #134  | Set-in sleeve, setInSleeveBlouse | size-m   |        |        |        |           |
 |      | #134  | Set-in sleeve, setInSleeveBlouse | size-xxl |        |        |        |           |
+|      | #141  | Collar, peterPanBlouse           | size-s   |        |        |        |           |
+|      | #141  | Collar, peterPanBlouse           | size-m   |        |        |        |           |
+|      | #141  | Collar, peterPanBlouse           | size-xxl |        |        |        |           |
+|      | #141  | Collar, shirtCollarBlouse        | size-s   |        |        |        |           |
+|      | #141  | Collar, shirtCollarBlouse        | size-m   |        |        |        |           |
+|      | #141  | Collar, shirtCollarBlouse        | size-xxl |        |        |        |           |
+|      | #141  | Collar, mandarinBlouse           | size-s   |        |        |        |           |
+|      | #141  | Collar, mandarinBlouse           | size-m   |        |        |        |           |
+|      | #141  | Collar, mandarinBlouse           | size-xxl |        |        |        |           |

@@ -16,8 +16,9 @@ import {
 /** The neckline part of a design. */
 export type NecklineSpec = NonNullable<DesignSpec["neckline"]>;
 
-/** One half of the bodice. */
-export type NeckHalf = "front" | "back";
+import type { NeckHalf } from "../../pieces/neck-seam";
+
+export type { NeckHalf };
 
 /** The block measures the resolution needs, in mm. */
 export interface NeckBlockSizes {

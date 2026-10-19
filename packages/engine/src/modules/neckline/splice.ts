@@ -9,13 +9,8 @@ import { buildEdges } from "../../blocks/shared/edges";
 import { GRAIN_END_INSET_MM } from "../../constants/bodice";
 import { DraftingError } from "../../errors/drafting-error";
 import { lineSeg, pt } from "../../geometry";
+import { NECK_EDGE_ID, SHOULDER_EDGE_ID } from "../../pieces/neck-seam";
 import type { PieceDraft } from "../../pipeline/draft-context";
-
-/** Id of the neck edge on every bodice piece that holds the neck. */
-export const NECK_EDGE_ID = "neck";
-
-/** Id of the shoulder edge. */
-export const SHOULDER_EDGE_ID = "shoulder";
 
 /** The new neck of one half. */
 export interface NewNeck {

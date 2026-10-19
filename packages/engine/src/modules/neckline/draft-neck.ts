@@ -3,14 +3,7 @@
  * the style depth and width, and builds each half's new neck. Pure, so the module and its rules share it.
  */
 import type { Point } from "@tafsila/schemas";
-import {
-  BACK_CENTRE_PIECE_ID,
-  BACK_PIECE_ID,
-  FRONT_CENTRE_PIECE_ID,
-  FRONT_PIECE_ID,
-  bodiceInputFrom,
-  draftBodice,
-} from "../../blocks/bodice";
+import { bodiceInputFrom, draftBodice } from "../../blocks/bodice";
 import {
   FACING_SHOULDER_CLEARANCE_MM,
   FACING_WIDTH_MM,
@@ -18,19 +11,11 @@ import {
 } from "../../constants/neckline";
 import { DraftingError } from "../../errors/drafting-error";
 import { add, distance, normalize, pt, scale, segmentLength, sub } from "../../geometry";
+import { NECK_HALVES, neckPiece } from "../../pieces/neck-seam";
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
 import { type NecklineStyle, necklineCurve } from "./curves";
 import { type NeckHalf, type NeckResolution, type NecklineSpec, resolveNeck } from "./resolve";
-import { NECK_EDGE_ID, type NewNeck } from "./splice";
-
-/** Bodice pieces that can hold the neck of each half. */
-const NECK_PIECE_IDS: Readonly<Record<NeckHalf, readonly string[]>> = {
-  front: [FRONT_PIECE_ID, FRONT_CENTRE_PIECE_ID],
-  back: [BACK_PIECE_ID, BACK_CENTRE_PIECE_ID],
-};
-
-/** Both halves, front first. */
-export const NECK_HALVES: readonly NeckHalf[] = ["front", "back"];
+import type { NewNeck } from "./splice";
 
 /** The block's neck of one half. */
 interface BlockNeck {
@@ -64,22 +49,6 @@ export interface DraftedNeck {
   readonly halves: Readonly<Record<NeckHalf, HalfNeck>>;
   /** Facing width: `FACING_WIDTH_MM`, less when the shoulder is too short for it. */
   readonly facingWidthMm: number;
-}
-
-/**
- * The piece holding the neck of one half.
- *
- * @param ctx - Context after the bodice shaping modules.
- * @param half - Front or back.
- * @returns The piece.
- * @throws {DraftingError} PIPELINE_STEP_ORDER when no bodice piece holds the neck.
- */
-function neckPiece(ctx: DraftContext, half: NeckHalf): PieceDraft {
-  const piece = ctx.pieces.find(
-    (p) => NECK_PIECE_IDS[half].includes(p.id) && p.edges.some((e) => e.id === NECK_EDGE_ID),
-  );
-  if (!piece) throw new DraftingError("PIPELINE_STEP_ORDER", "The neckline needs the bodice block first");
-  return piece;
 }
 
 /**
@@ -148,7 +117,7 @@ function halfNeck(block: BlockNeck, style: NecklineStyle, depthMm: number, widen
  */
 export function draftNeck(ctx: DraftContext, neckline: NecklineSpec): DraftedNeck {
   const blocks = blockNecks(ctx);
-  const pieces = { front: neckPiece(ctx, "front"), back: neckPiece(ctx, "back") };
+  const pieces = { front: neckPiece(ctx.pieces, "front"), back: neckPiece(ctx.pieces, "back") };
   const resolution = resolveNeck(neckline, {
     blockDepthMm: {
       front: blocks.front.centre.y - blocks.front.hps.y,

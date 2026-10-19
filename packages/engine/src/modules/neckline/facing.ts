@@ -32,7 +32,7 @@ import {
 import { PIECE_NAMES } from "../../i18n/pieces";
 import type { PieceDraft } from "../../pipeline/draft-context";
 import type { NeckHalf } from "./resolve";
-import { NECK_EDGE_ID, SHOULDER_EDGE_ID } from "./splice";
+import { NECK_EDGE_ID, SHOULDER_EDGE_ID } from "../../pieces/neck-seam";
 
 /** Degree of a cubic: its first derivative at an end is 3 × the handle. */
 const CUBIC_DEGREE = 3;

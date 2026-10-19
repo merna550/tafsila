@@ -1,6 +1,6 @@
 /**
  * Input-type drafting errors (issue #128, decision 128, 10): body proportions or a skirt length the blocks
- * cannot draft. `generatePattern` turns them into a `fail` result with these messages instead of throwing.
+ * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
  */
 import { DraftingError } from "../errors/drafting-error";
 
@@ -41,6 +41,18 @@ export const INPUT_ERROR_MESSAGES = {
   SKIRT_LENGTH_INVALID_BODY: {
     ar: "طول الجيبة خارج حدود الجسم. راجعي القيم المدخلة.",
     en: "The body's knee length does not fit its waist-to-floor length",
+  },
+  COLLAR_NECKLINE_UNSUPPORTED: {
+    ar: "الياقة تحتاج فتحة رقبة دائرية أو دائرية عالية من الأمام والخلف. غيّري فتحة الرقبة أو اختاري بدون ياقة.",
+    en: "A collar needs a round or high-round neckline at the front and back",
+  },
+  COLLAR_DEPTH_UNSUPPORTED: {
+    ar: "ياقة القميص والياقة الصينية تُركّبان على الرقبة الطبيعية، فلا يمكن تعميق فتحة الرقبة معهما.",
+    en: "A shirt or mandarin collar sits on the natural neck, so the neckline cannot be lowered",
+  },
+  COLLAR_CLOSURE_UNSUPPORTED: {
+    ar: "هذه الياقة تحتاج فتحة عند الرقبة: ياقة القميص بأزرار أو سحاب في المنتصف الأمامي، والياقة الصينية في المنتصف الأمامي أو الخلفي.",
+    en: "This collar needs an opening at the neck: centre front for a shirt collar, centre front or back for a mandarin collar",
   },
 } as const satisfies Record<string, BilingualText>;
 
