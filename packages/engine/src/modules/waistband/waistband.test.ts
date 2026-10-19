@@ -16,21 +16,20 @@ import {
 } from "@tafsila/test-fixtures";
 import { describe, expect, it } from "vitest";
 import {
-  CASING_EASE_MM,
   CLOSURE_OVERLAP_MM,
   CONTOUR_BAND_WIDTH_MM,
-  ELASTIC_LENGTH_RATIO,
   ELASTIC_WIDTH_MM,
   STRAIGHT_BAND_WIDTH_MM,
   WAIST_FACING_DEPTH_MM,
 } from "../../constants/waistband";
+import { CASING_EASE_MM, ELASTIC_LENGTH_RATIO } from "../../constants/elastic";
 import { DraftingError } from "../../errors/drafting-error";
 import { pathLength } from "../../geometry";
 import { edgeLengthMm } from "../../pieces/measure";
 import { closedWaistMm } from "../../pieces/waist-seam";
 import { createContext } from "../../pipeline/draft-context";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../../pipeline/generate-pattern";
-import { OVERLAP_EDGE_ID, STRIP_END_EDGE_ID, STRIP_START_EDGE_ID } from "./strip";
+import { OVERLAP_EDGE_ID, STRIP_END_EDGE_ID, STRIP_START_EDGE_ID } from "../../pieces/strip";
 import { TRACED_CENTRE_EDGE_ID, TRACED_FREE_EDGE_ID, TRACED_SEAM_EDGE_ID, closedWaistTrace } from "./traced";
 import { draftWaistband, waistbandModule } from "./module";
 
