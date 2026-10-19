@@ -478,8 +478,10 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | GET | `/api/me` | Current user `{ userId, role }` from the verified access token (401 without a valid token) |
 | POST, GET | `/api/designs` | Create a design from `{ category, title? }` (no title: category word in the profile language + Cairo date, no upload URLs until M6); list with `q` (title search), `clientId`, `limit`, `offset`, newest `updated_at` first, each item with `summary { versionCount, currentStatus, clientName }`; returns `{ items, total, limit, offset }` |
 | POST | `/api/designs/:id/analyze` | Enqueue AI analysis job (consumes credit on first generation, not here) |
-| GET, PATCH, DELETE | `/api/designs/:id` | Read the design and its current version's stored inputs (`{ design, currentVersion }`; the version list and the regenerated pattern come from the version routes); rename (`{ title }`); delete (its versions go with it) |
-| POST | `/api/designs/:id/versions` | Create version from spec + measurements (server re-runs engine, stores result hash) |
+| GET, PATCH, DELETE | `/api/designs/:id` | Read the design and its current version's stored inputs (`{ design, currentVersion }`; the version list and the regenerated pattern come from the version routes (#245)); rename (`{ title }`); delete (its versions go with it) |
+| POST, GET | `/api/designs/:id/versions` | Save: `{ spec, measurementSetId, easeProfile, options }`; the server re-runs the engine, a `fail` report is refused (422 `PATTERN_INVALID` with `details.report`), the same inputs as the current version return it (200 `reused`), otherwise a new version (201) and the design's `current_version_id` change in one transaction. Returns `{ version, report, reused }` and a `Server-Timing: engine` header. List: `limit`, `offset`, newest `version_no` first, light rows with `isCurrent` |
+| GET | `/api/versions/:id` | The stored inputs plus a pattern regenerated from them and `engineChanged` (the version was saved by another engine version); nothing is written |
+| POST | `/api/versions/:id/restore` | Append a copy of the version's stored inputs (its measurements snapshot, re-run with today's engine) as version n+1; restoring the current version returns it (200) |
 | POST | `/api/designs/:id/chat` | Send chat message → proposed patch |
 | POST | `/api/designs/:id/chat/:msgId/apply` | Apply proposed patch → new version |
 | POST | `/api/versions/:id/exports` | Enqueue PDF export |

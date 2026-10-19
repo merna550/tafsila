@@ -1,5 +1,6 @@
 /** Error body returned by every failing API endpoint; the web API client parses it into an ApiError (ADR-030). */
 import { z } from "zod";
+import { validationReportSchema } from "./pattern";
 
 /** Schema of the JSON body of every non-2xx API response. */
 export const apiErrorBodySchema = z.object({
@@ -9,7 +10,7 @@ export const apiErrorBodySchema = z.object({
   message_ar: z.string(),
   /** Message for English users. */
   message_en: z.string(),
-  /** Extras; `fields` maps a field path to the message shown under that field, `issues` carries bilingual measurement issues. */
+  /** Extras; `fields` maps a field path to the message shown under that field, `issues` carries bilingual measurement issues, `report` the failed validation report (PATTERN_INVALID). */
   details: z
     .object({
       fields: z.record(z.string(), z.string()).optional(),
@@ -25,6 +26,7 @@ export const apiErrorBodySchema = z.object({
           }),
         )
         .optional(),
+      report: validationReportSchema.optional(),
     })
     .optional(),
   /** Id of the failing request; users can copy it to support. */

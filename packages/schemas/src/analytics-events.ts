@@ -38,6 +38,16 @@ const accountDeletedSchema = z.object({}).strict();
 /** Server event: the person changed the app language in settings. */
 const localeChangedSchema = z.object({ locale: z.enum(["ar", "en"]) }).strict();
 
+/** Server event: a pattern version was saved or reused; only the category, the status and the engine time (never measurements). */
+const patternVersionSavedSchema = z
+  .object({
+    category: z.string(),
+    validation_status: z.enum(["pass", "warn"]),
+    engine_ms: z.number().min(0),
+    reused: z.boolean(),
+  })
+  .strict();
+
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
@@ -50,6 +60,7 @@ export const ANALYTICS_EVENTS = {
   phone_verify_skipped: phoneVerifySkippedSchema,
   account_deleted: accountDeletedSchema,
   locale_changed: localeChangedSchema,
+  pattern_version_saved: patternVersionSavedSchema,
 } as const;
 
 /** Names of all known analytics events. */

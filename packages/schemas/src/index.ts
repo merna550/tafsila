@@ -9,6 +9,7 @@ export * from "./health";
 export * from "./pagination";
 export * from "./clients";
 export * from "./designs";
+export * from "./pattern-versions";
 export * from "./measurement-sets";
 export * from "./phone";
 export * from "./profile";

@@ -1,6 +1,6 @@
 /** Domain errors: every code lives in ERROR_CATALOGUE with bilingual messages; the error handler maps them to HTTP (ADR-030). */
 
-import type { MeasurementIssueDto } from "@tafsila/schemas";
+import type { MeasurementIssueDto, ValidationReport } from "@tafsila/schemas";
 
 /** One entry of the error catalogue: what the user sees and what the team needs to fix it. */
 export interface ErrorDefinition {
@@ -36,6 +36,11 @@ export const ERROR_CATALOGUE = {
     status: 422,
     messageAr: "القياسات غير منطقية، راجعي القياسات المحددة وحاولي مرة أخرى",
     messageEn: "The measurements are impossible, check the highlighted values",
+  },
+  PATTERN_INVALID: {
+    status: 422,
+    messageAr: "التصميم مع هذه القياسات لا يمكن رسمه كباترون، راجعي تقرير التحقق",
+    messageEn: "The pattern engine refused this design with these measurements, see the validation report",
   },
   NOT_FOUND: {
     status: 404,
@@ -143,6 +148,8 @@ export interface ErrorDetails {
   readonly fields?: Readonly<Record<string, string>>;
   /** Bilingual measurement problems from the engine (MEASUREMENTS_INVALID), so the UI picks the language. */
   readonly issues?: readonly (MeasurementIssueDto & { readonly size?: string })[];
+  /** The failed validation report of the engine (PATTERN_INVALID). */
+  readonly report?: ValidationReport;
   /** Seconds until the caller may try again (429 phone codes); also sent as the Retry-After header. */
   readonly retryAfterSeconds?: number;
 }
@@ -223,6 +230,18 @@ export class MeasurementsInvalidError extends AppError {
     const fields: Record<string, string> = {};
     for (const issue of issues) for (const field of issue.fields) fields[field] ??= issue.message_en;
     super("MEASUREMENTS_INVALID", { details: { fields, issues } });
+  }
+}
+
+/** Raised when the engine refuses a design with the given measurements; nothing is saved. */
+export class PatternInvalidError extends AppError {
+  /**
+   * Creates the error from the engine's failed report.
+   *
+   * @param report - Validation report with status `fail`.
+   */
+  constructor(report: ValidationReport) {
+    super("PATTERN_INVALID", { details: { report } });
   }
 }
 

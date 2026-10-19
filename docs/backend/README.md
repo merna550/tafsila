@@ -40,6 +40,8 @@ Sign-up, sign-in and reset go from the browser straight to Supabase Auth; our AP
 
 `POST/GET /api/designs`, `GET/PATCH/DELETE /api/designs/:id` (all behind `requireAuth`, rows through `withUser`, RLS is the guard). An untitled design is named by `domain/design-title.ts` (category word in the profile language + Cairo date). The list summary (version count, current status, client name) is one query; `GET /:id` returns the current version's stored inputs only. Versions are written by #245. Details: [ADR-242](../decisions/242-designs-api.md).
 
+**Pattern versions** (`routes/pattern-versions.ts`): `POST/GET /api/designs/:id/versions`, `GET /api/versions/:id`, `POST /api/versions/:id/restore`. The server re-runs the engine (`domain/run-pattern.ts`), stores only `pass`/`warn` results, appends in one `withUser` transaction with the design row locked, and restores by appending a copy (history is append-only). Details: [ADR-245](../decisions/245-pattern-versions-api.md).
+
 ## Environment: DATABASE_URL
 
 The API reads and writes through Drizzle on `DATABASE_URL` (optional in `packages/config/src/env.ts`; without it the repositories reject every call). Use the `api_app` login role, never `postgres` (the superuser bypasses RLS). Local: `postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres` (password in `supabase/roles.sql`). Staging: set the `api_app` password once and add the secret (ADR-24a, ADR-29a).
