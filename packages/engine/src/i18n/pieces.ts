@@ -59,6 +59,33 @@ export const PIECE_NAMES: Readonly<Record<string, Bilingual>> = {
   "waist-facing-interfacing-back": { ar: "حشوة تلبيس الوسط الخلفي", en: "Back waist facing interfacing" },
 };
 
+/** A garment whose bodice pieces run below the waist (#144): a one-piece dress or a blouse. */
+export type AssembledGarment = "dress" | "blouse";
+
+/**
+ * Names of the bodice pieces once they run below the waist (issue #144, decision 144, 6): the ids stay `bodice-*`,
+ * the printed names say what the piece now is. A dress with a waist seam keeps "bodice" and "skirt".
+ */
+export const ASSEMBLED_PIECE_NAMES: Readonly<Record<AssembledGarment, Readonly<Record<string, Bilingual>>>> =
+  {
+    dress: {
+      "bodice-front": { ar: "أمام الفستان", en: "Dress front" },
+      "bodice-back": { ar: "خلف الفستان", en: "Dress back" },
+      "bodice-front-centre": { ar: "وسط أمام الفستان", en: "Centre front dress" },
+      "bodice-front-side": { ar: "جنب أمام الفستان", en: "Side front dress" },
+      "bodice-back-centre": { ar: "وسط خلف الفستان", en: "Centre back dress" },
+      "bodice-back-side": { ar: "جنب خلف الفستان", en: "Side back dress" },
+    },
+    blouse: {
+      "bodice-front": { ar: "أمام البلوزة", en: "Blouse front" },
+      "bodice-back": { ar: "خلف البلوزة", en: "Blouse back" },
+      "bodice-front-centre": { ar: "وسط أمام البلوزة", en: "Centre front blouse" },
+      "bodice-front-side": { ar: "جنب أمام البلوزة", en: "Side front blouse" },
+      "bodice-back-centre": { ar: "وسط خلف البلوزة", en: "Centre back blouse" },
+      "bodice-back-side": { ar: "جنب خلف البلوزة", en: "Side back blouse" },
+    },
+  };
+
 /** The engine version as printed on a piece. */
 export const ENGINE_STAMP = `v${ENGINE_VERSION}`;
 
@@ -73,10 +100,11 @@ const FABRIC_TEXT: Readonly<Record<Piece["cut"]["fabric"], Bilingual | null>> = 
  * The name of a piece: the catalogue entry for its id, else the name the piece already carries.
  *
  * @param piece - The piece (only `id` and `name` are read).
+ * @param garment - For a one-piece dress or a blouse, the garment its bodice pieces now make (#144).
  * @returns The bilingual name.
  */
-export function pieceNameText(piece: Pick<Piece, "id" | "name">): Bilingual {
-  return PIECE_NAMES[piece.id] ?? piece.name;
+export function pieceNameText(piece: Pick<Piece, "id" | "name">, garment?: AssembledGarment): Bilingual {
+  return (garment && ASSEMBLED_PIECE_NAMES[garment][piece.id]) ?? PIECE_NAMES[piece.id] ?? piece.name;
 }
 
 /**

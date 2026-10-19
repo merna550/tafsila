@@ -8,6 +8,10 @@ export const garmentCategorySchema = z.enum(["dress", "skirt", "blouse"]);
 const bodiceSchema = z.object({
   fit: z.enum(["fitted", "semi-fitted", "loose"]),
   shaping: z.enum(["darts", "princess-shoulder", "princess-armhole", "none"]),
+  /**
+   * Dress only (#144): true joins bodice and skirt at the waist; false drafts each half in one piece from shoulder to
+   * hem, which needs a straight or A-line skirt. A blouse ignores it (it always runs to the hip).
+   */
   waistSeam: z.boolean(),
 });
 

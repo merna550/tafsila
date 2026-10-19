@@ -140,8 +140,8 @@ export const dartSchema = z.object({
 export type Dart = z.infer<typeof dartSchema>;
 
 /**
- * Width of a button extension the line crosses (issue #143): the two fronts overlap by it, so it is not part of the
- * garment's circumference and the measured length leaves it out.
+ * Width the line crosses that is not part of the garment's circumference, so the measured length leaves it out: a
+ * button extension (issue #143, the two fronts overlap by it) or a fisheye dart closed at the waist (issue #144).
  */
 const overlapMmSchema = z.number().min(0).optional();
 

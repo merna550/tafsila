@@ -287,3 +287,33 @@ export const noClosureDress: DesignSpec = {
   ...centreBackZipDress,
   closure: { type: "none", position: "center-back" },
 };
+
+/**
+ * Garment assembly seed designs (issue #144): the seed dress with a waist seam (darted bodice, straight knee skirt,
+ * centre-back zip), the same in one piece, and a princess one-piece dress. Used by the assembly snapshots, property
+ * tests and `pnpm engine:print`.
+ */
+export const seedDress: DesignSpec = {
+  ...centreBackZipDress,
+  bodice: { fit: "fitted", shaping: "darts", waistSeam: true },
+};
+
+/** The seed dress without a waist seam: each half is one piece from shoulder to hem, with fisheye darts (issue #144). */
+export const onePieceDress: DesignSpec = {
+  ...seedDress,
+  bodice: { fit: "fitted", shaping: "darts", waistSeam: false },
+};
+
+/** A one-piece dress with shoulder princess seams running to the hem of an A-line midi skirt (issue #144). */
+export const princessOnePieceDress: DesignSpec = {
+  ...seedDress,
+  bodice: { fit: "fitted", shaping: "princess-shoulder", waistSeam: false },
+  skirt: { type: "a-line", length: "midi" },
+};
+
+/** One seed design per garment category (issue #144): the seed data until the `designs` table exists. */
+export const CATEGORY_SEEDS: Readonly<Record<DesignSpec["category"], DesignSpec>> = {
+  dress: seedDress,
+  skirt: straightBandSkirt,
+  blouse: dartedBlouse,
+};
