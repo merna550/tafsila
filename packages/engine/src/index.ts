@@ -23,3 +23,4 @@ export * from "./pipeline";
 export * from "./render";
 export * from "./resolve";
 export * from "./sewing";
+export * from "./spec-rules";

@@ -262,6 +262,16 @@ Cross-checks:
 | `MEAS_FRONT_SHORTER_THAN_BACK`   | warning  | frontLength < backLength                  |
 | `MEAS_WAIST_TO_FLOOR_UNUSUAL`    | warning  | waistToFloor outside 50% to 70% of height |
 
+## Picker rules
+
+`src/spec-rules/` is what the design picker (M3) reads, so the UI never copies a compatibility rule (issue #238, ADR-238).
+
+- `specRefusals(spec)`: the one list of refused part combinations, built from the modules' own predicates (closure, collar, sleeve, pocket, slit, one-piece dress). The property-test arbitrary uses it too.
+- `specOptions(spec)`: per feature (`FEATURE_PATHS`) whether it applies to the category and every schema value as allowed or refused, with the first refusal code and its `{ ar, en }` text. Call it on a normalised design.
+- `defaultSpec(category)`: a valid starting design (dress, skirt, blouse).
+- `normalizeSpec(spec)`: drops parts the category ignores, adds missing ones, resolves each refusal by changing the add-on that causes it (never the category) and returns `{ spec, changed }`.
+- Refusals that depend on the body (pocket room, neckline depth, zip length) are not here; they stay report checks.
+
 ## Sewing order (FR-PAT-06)
 
 `generatePattern` ends with `sewingOrder`: numbered steps (`order` 1..n) with `action` (`sew`, `press`, `finish`, `attach`), `edges` and bilingual `text`. Code: `packages/engine/src/sewing/` (decision 146).

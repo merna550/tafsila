@@ -88,7 +88,7 @@ export function checkCategory(spec: DesignSpec): CategoryCheck {
  * @param part - The part.
  * @returns True when the part is present and not `none`.
  */
-function isUsed(spec: DesignSpec, part: SpecPart): boolean {
+export function isUsed(spec: DesignSpec, part: SpecPart): boolean {
   return spec[part] !== undefined && !(part === "waistband" && spec.waistband === "none");
 }
 

@@ -4,12 +4,8 @@
  */
 import { designSpecSchema, type DesignSpec } from "@tafsila/schemas";
 import fc from "fast-check";
-import { closureIssue } from "../modules/closure/compatibility";
-import { pocketAllowed } from "../modules/pocket/compatibility";
-import { collarCombinationIssue } from "../modules/collar/combinations";
-import { sleeveCombinationIssue } from "../modules/sleeve/combinations";
-import { SLIT_SKIRT_TYPES } from "../modules/skirt/rules";
-import { CATEGORY_PARTS, ONE_PIECE_SKIRT_TYPES } from "../pipeline/category-rules";
+import { CATEGORY_PARTS } from "../pipeline/category-rules";
+import { specRefusals } from "../spec-rules/refusals";
 
 /** Draw one value of a schema enum. */
 type Enum<T> = fc.Arbitrary<T>;
@@ -156,19 +152,6 @@ export function hitsKnownBug(spec: DesignSpec, bodyId: string): boolean {
   return KNOWN_BUGS.some((rule) => rule(spec, bodyId));
 }
 
-// The module rules that refuse a part combination as an input error, as predicates that are true when refused.
-const REFUSALS: readonly ((spec: DesignSpec) => boolean)[] = [
-  (s) =>
-    s.category === "dress" &&
-    s.bodice?.waistSeam === false &&
-    !ONE_PIECE_SKIRT_TYPES.includes(s.skirt?.type as never),
-  (s) => s.skirt?.slit !== undefined && !SLIT_SKIRT_TYPES.has(s.skirt.type),
-  (s) => closureIssue(s) !== undefined,
-  (s) => collarCombinationIssue(s) !== undefined,
-  (s) => sleeveCombinationIssue(s) !== undefined,
-  (s) => s.pockets.some((style) => !pocketAllowed(s, style)),
-];
-
 /**
  * Whether the engine accepts the design's part combinations (closure, pockets, collar, sleeve, slit, one-piece dress).
  *
@@ -176,7 +159,16 @@ const REFUSALS: readonly ((spec: DesignSpec) => boolean)[] = [
  * @returns True when no module refuses the combination as an input error.
  */
 export function isAllowedCombination(spec: DesignSpec): boolean {
-  return !REFUSALS.some((refused) => refused(spec));
+  return specRefusals(spec).length === 0;
+}
+
+/**
+ * Schema-valid designs before the compatibility filter: they may hold combinations the engine refuses.
+ *
+ * @returns An arbitrary of raw designs.
+ */
+export function arbRawSpec(): fc.Arbitrary<DesignSpec> {
+  return rawSpec;
 }
 
 /**
