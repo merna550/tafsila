@@ -46,8 +46,8 @@
 <path id="piece-waist-facing-interfacing-front-grain" d="M 119.89 1608.12 L 119.89 1638.12 M 117.89 1632.12 L 119.89 1638.12 L 121.89 1632.12 M 121.89 1614.12 L 119.89 1608.12 L 117.89 1614.12" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waist-facing-back-grain" d="M 433.09 1608.12 L 433.09 1638.12 M 431.09 1632.12 L 433.09 1638.12 L 435.09 1632.12 M 435.09 1614.12 L 433.09 1608.12 L 431.09 1614.12" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waist-facing-interfacing-back-grain" d="M 746.29 1608.12 L 746.29 1638.12 M 744.29 1632.12 L 746.29 1638.12 L 748.29 1632.12 M 748.29 1614.12 L 746.29 1608.12 L 744.29 1614.12" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-pocket-bag-front-grain" d="M 1019.61 1580.32 L 1019.61 1680.32 M 1017.61 1674.32 L 1019.61 1680.32 L 1021.61 1674.32 M 1021.61 1586.32 L 1019.61 1580.32 L 1017.61 1586.32" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-pocket-bag-back-grain" d="M 95.00 1860.32 L 95.00 1960.32 M 93.00 1954.32 L 95.00 1960.32 L 97.00 1954.32 M 97.00 1866.32 L 95.00 1860.32 L 93.00 1866.32" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-pocket-bag-front-grain" d="M 1019.01 1580.32 L 1019.01 1680.32 M 1017.01 1674.32 L 1019.01 1680.32 L 1021.01 1674.32 M 1021.01 1586.32 L 1019.01 1580.32 L 1017.01 1586.32" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-pocket-bag-back-grain" d="M 94.40 1860.32 L 94.40 1960.32 M 92.40 1954.32 L 94.40 1960.32 L 96.40 1954.32 M 96.40 1866.32 L 94.40 1860.32 L 92.40 1866.32" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-lining-skirt-front-grain" d="M 488.95 1993.92 L 488.95 2278.92 M 486.95 2272.92 L 488.95 2278.92 L 490.95 2272.92 M 490.95 1999.92 L 488.95 1993.92 L 486.95 1999.92" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-lining-skirt-back-grain" d="M 248.95 2706.59 L 248.95 2991.59 M 246.95 2985.59 L 248.95 2991.59 L 250.95 2985.59 M 250.95 2712.59 L 248.95 2706.59 L 246.95 2712.59" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>

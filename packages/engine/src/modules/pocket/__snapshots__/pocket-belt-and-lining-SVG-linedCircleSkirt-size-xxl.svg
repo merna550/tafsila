@@ -46,8 +46,8 @@
 <path id="piece-waist-facing-interfacing-front-grain" d="M 149.12 1689.43 L 149.12 1719.43 M 147.12 1713.43 L 149.12 1719.43 L 151.12 1713.43 M 151.12 1695.43 L 149.12 1689.43 L 147.12 1695.43" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waist-facing-back-grain" d="M 516.34 1689.43 L 516.34 1719.43 M 514.34 1713.43 L 516.34 1719.43 L 518.34 1713.43 M 518.34 1695.43 L 516.34 1689.43 L 514.34 1695.43" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-waist-facing-interfacing-back-grain" d="M 883.57 1689.43 L 883.57 1719.43 M 881.57 1713.43 L 883.57 1719.43 L 885.57 1713.43 M 885.57 1695.43 L 883.57 1689.43 L 881.57 1695.43" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-pocket-bag-front-grain" d="M 95.00 1890.11 L 95.00 1990.11 M 93.00 1984.11 L 95.00 1990.11 L 97.00 1984.11 M 97.00 1896.11 L 95.00 1890.11 L 93.00 1896.11" fill="none" stroke="#000000" stroke-width="0.25"/>
-<path id="piece-pocket-bag-back-grain" d="M 355.00 1890.11 L 355.00 1990.11 M 353.00 1984.11 L 355.00 1990.11 L 357.00 1984.11 M 357.00 1896.11 L 355.00 1890.11 L 353.00 1896.11" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-pocket-bag-front-grain" d="M 94.40 1890.11 L 94.40 1990.11 M 92.40 1984.11 L 94.40 1990.11 L 96.40 1984.11 M 96.40 1896.11 L 94.40 1890.11 L 92.40 1896.11" fill="none" stroke="#000000" stroke-width="0.25"/>
+<path id="piece-pocket-bag-back-grain" d="M 354.40 1890.11 L 354.40 1990.11 M 352.40 1984.11 L 354.40 1990.11 L 356.40 1984.11 M 356.40 1896.11 L 354.40 1890.11 L 352.40 1896.11" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-lining-skirt-front-grain" d="M 260.10 2322.39 L 260.10 2612.39 M 258.10 2606.39 L 260.10 2612.39 L 262.10 2606.39 M 262.10 2328.39 L 260.10 2322.39 L 258.10 2328.39" fill="none" stroke="#000000" stroke-width="0.25"/>
 <path id="piece-lining-skirt-back-grain" d="M 280.10 3067.43 L 280.10 3357.43 M 278.10 3351.43 L 280.10 3357.43 L 282.10 3351.43 M 282.10 3073.43 L 280.10 3067.43 L 278.10 3073.43" fill="none" stroke="#000000" stroke-width="0.25"/>
 </g>

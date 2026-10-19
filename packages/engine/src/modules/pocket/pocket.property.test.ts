@@ -62,7 +62,7 @@ function expectSound(r: PatternResult, sample: Sample): void {
     for (const e of p.edges) if (e.pairsWith) expect(ids.has(e.pairsWith.pieceId)).toBe(true);
     for (const n of p.notches) if (n.pairsWith) expect(ids.has(n.pairsWith.pieceId)).toBe(true);
   }
-  const hems = r.validation.checks.filter((c) => c.code.startsWith("LINING_HEM"));
+  const hems = r.validation.checks.filter((c) => (c.code ?? "").startsWith("LINING_HEM"));
   expect(hems.length > 0).toBe(sample.lining);
   expect(hems.every((c) => c.status === "pass")).toBe(true);
   for (const p of r.pieces.filter((q) => q.id.startsWith("belt"))) {
