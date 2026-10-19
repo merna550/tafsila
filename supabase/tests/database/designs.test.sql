@@ -47,7 +47,7 @@ select throws_ok(
 
 -- 6-7 admin reads, cannot write
 select pg_temp.act_as('cccccccc-0000-4000-8000-000000000003');
-select is((select count(*)::int from public.designs) + (select count(*)::int from public.pattern_versions), 2,
+select is((select count(*)::int from public.designs where owner_id = 'aaaaaaaa-0000-4000-8000-000000000001') + (select count(*)::int from public.pattern_versions where owner_id = 'aaaaaaaa-0000-4000-8000-000000000001'), 2,
   '6 admin can read the design and the version');
 select throws_ok(
   $$ insert into public.pattern_versions (design_id, owner_id, version_no, spec, measurements, ease_profile, engine_version, validation_status, input_hash)
@@ -77,9 +77,9 @@ select throws_ok(
 update public.designs set current_version_id = 'aaaaaaaa-0000-4000-8000-0000000000f1';
 delete from public.measurement_sets where id = 'aaaaaaaa-0000-4000-8000-0000000000e1';
 select pg_temp.reset();
-select is((select measurements ->> 'bust' from public.pattern_versions where version_no = 1), '920',
+select is((select measurements ->> 'bust' from public.pattern_versions where id = 'aaaaaaaa-0000-4000-8000-0000000000f1'), '920',
   '13 deleting the measurement set keeps the snapshot');
-select is((select measurement_set_id from public.pattern_versions where version_no = 1), null,
+select is((select measurement_set_id from public.pattern_versions where id = 'aaaaaaaa-0000-4000-8000-0000000000f1'), null,
   '14 and nulls measurement_set_id');
 
 -- 15 account deletion removes designs and versions; 16 design delete cascades
@@ -91,7 +91,7 @@ delete from public.designs where id = 'bbbbbbbb-0000-4000-8000-0000000000d2';
 select is((select count(*)::int from public.pattern_versions where owner_id = 'bbbbbbbb-0000-4000-8000-000000000002'), 0,
   '15 deleting a design deletes its versions');
 delete from auth.users where id = 'aaaaaaaa-0000-4000-8000-000000000001';
-select is((select count(*)::int from public.designs) + (select count(*)::int from public.pattern_versions), 0,
+select is((select count(*)::int from public.designs where owner_id = 'aaaaaaaa-0000-4000-8000-000000000001') + (select count(*)::int from public.pattern_versions where owner_id = 'aaaaaaaa-0000-4000-8000-000000000001'), 0,
   '16 deleting the account removes designs and versions');
 
 -- 17 api_app alone has no table access
