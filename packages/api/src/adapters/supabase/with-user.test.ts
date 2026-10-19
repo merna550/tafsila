@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as withUserModule from "./with-user";
-import { escapeLike } from "./client-repository";
+import { escapeLike } from "./escape-like";
 
 describe("withUser guard", () => {
   it("exports only the two factories (the raw Drizzle client is never exported)", () => {

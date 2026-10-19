@@ -476,9 +476,9 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | GET | `/api/openapi.json` | OpenAPI 3.1 document generated from the routes (`pnpm api:openapi`) |
 | GET | `/api/docs` | Scalar API viewer (not served in production) |
 | GET | `/api/me` | Current user `{ userId, role }` from the verified access token (401 without a valid token) |
-| POST | `/api/designs` | Create design, get signed upload URLs |
+| POST, GET | `/api/designs` | Create a design from `{ category, title? }` (no title: category word in the profile language + Cairo date, no upload URLs until M6); list with `q` (title search), `clientId`, `limit`, `offset`, newest `updated_at` first, each item with `summary { versionCount, currentStatus, clientName }`; returns `{ items, total, limit, offset }` |
 | POST | `/api/designs/:id/analyze` | Enqueue AI analysis job (consumes credit on first generation, not here) |
-| GET | `/api/designs/:id` | Design + analysis + versions |
+| GET, PATCH, DELETE | `/api/designs/:id` | Read the design and its current version's stored inputs (`{ design, currentVersion }`; the version list and the regenerated pattern come from the version routes); rename (`{ title }`); delete (its versions go with it) |
 | POST | `/api/designs/:id/versions` | Create version from spec + measurements (server re-runs engine, stores result hash) |
 | POST | `/api/designs/:id/chat` | Send chat message → proposed patch |
 | POST | `/api/designs/:id/chat/:msgId/apply` | Apply proposed patch → new version |

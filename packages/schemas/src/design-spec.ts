@@ -4,6 +4,9 @@ import { z } from "zod";
 /** Garment categories supported in release 1. */
 export const garmentCategorySchema = z.enum(["dress", "skirt", "blouse"]);
 
+/** A garment category. */
+export type GarmentCategory = z.infer<typeof garmentCategorySchema>;
+
 /** Bodice fit and shaping. */
 const bodiceSchema = z.object({
   fit: z.enum(["fitted", "semi-fitted", "loose"]),

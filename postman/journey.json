@@ -191,5 +191,48 @@
     },
     "status": 200,
     "has": ["name", "locale", "email"]
+  },
+  {
+    "name": "16 Create a design without a title",
+    "method": "POST",
+    "path": "/api/designs",
+    "body": {
+      "category": "dress"
+    },
+    "status": 201,
+    "has": ["id", "title", "category", "currentVersionId"],
+    "capture": {
+      "designId": "id"
+    }
+  },
+  {
+    "name": "17 List designs with a title search",
+    "method": "GET",
+    "path": "/api/designs?limit=5",
+    "status": 200,
+    "has": ["items", "total", "limit", "offset"]
+  },
+  {
+    "name": "18 Read the design",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}",
+    "status": 200,
+    "has": ["design", "currentVersion"]
+  },
+  {
+    "name": "19 Rename the design",
+    "method": "PATCH",
+    "path": "/api/designs/{{designId}}",
+    "body": {
+      "title": "Postman dress"
+    },
+    "status": 200,
+    "has": ["id", "title"]
+  },
+  {
+    "name": "20 Delete the design",
+    "method": "DELETE",
+    "path": "/api/designs/{{designId}}",
+    "status": 204
   }
 ]

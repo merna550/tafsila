@@ -36,6 +36,10 @@ Sign-up, sign-in and reset go from the browser straight to Supabase Auth; our AP
 
 `GET /api/phone`, `POST /api/phone/code`, `POST /api/phone/verify` (all behind `requireAuth`). The API normalises the number, checks the environment guard (`PHONE_TEST_NUMBERS` outside production), the rate limits and uniqueness, and only then asks the `PhoneOtp` port (Supabase Auth phone change) to send. Phones and IPs are stored only as HMAC hashes (`PHONE_HASH_SECRET`). The database writes go through `withApiRole` (a transaction as the `api_app` role) calling `private.*` functions; this is the only exception to "the only door is `withUser`". Details: [ADR-26a](../decisions/26a-phone-otp-trial.md), [tutorial](tutorials/phone-otp.md).
 
+## Designs (plan #242)
+
+`POST/GET /api/designs`, `GET/PATCH/DELETE /api/designs/:id` (all behind `requireAuth`, rows through `withUser`, RLS is the guard). An untitled design is named by `domain/design-title.ts` (category word in the profile language + Cairo date). The list summary (version count, current status, client name) is one query; `GET /:id` returns the current version's stored inputs only. Versions are written by #245. Details: [ADR-242](../decisions/242-designs-api.md).
+
 ## Environment: DATABASE_URL
 
 The API reads and writes through Drizzle on `DATABASE_URL` (optional in `packages/config/src/env.ts`; without it the repositories reject every call). Use the `api_app` login role, never `postgres` (the superuser bypasses RLS). Local: `postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres` (password in `supabase/roles.sql`). Staging: set the `api_app` password once and add the secret (ADR-24a, ADR-29a).

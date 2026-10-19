@@ -33,6 +33,7 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | custom measurements                | مقاسات مخصّصة                           | custom measurements                 |
 | pattern                            | باترون / باترونات                       | pattern / patterns                  |
 | my designs                         | تصاميمي                                 | my designs                          |
+| dress / skirt / blouse             | فستان / تنورة / بلوزة                   | dress / skirt / blouse              |
 | phone number                       | رقم الهاتف                              | phone number                        |
 | verification code                  | رمز التأكيد                             | verification code                   |
 | verified / not verified            | مؤكَّد / غير مؤكَّد                     | verified / not verified             |

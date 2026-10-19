@@ -623,6 +623,201 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "16 Create a design without a title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));",
+                  "pm.test(\"has title\", () => pm.expect(pm.response.json()).to.have.property(\"title\"));",
+                  "pm.test(\"has category\", () => pm.expect(pm.response.json()).to.have.property(\"category\"));",
+                  "pm.test(\"has currentVersionId\", () => pm.expect(pm.response.json()).to.have.property(\"currentVersionId\"));",
+                  "pm.environment.set(\"designId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"dress\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "17 List designs with a title search",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has total\", () => pm.expect(pm.response.json()).to.have.property(\"total\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));",
+                  "pm.test(\"has offset\", () => pm.expect(pm.response.json()).to.have.property(\"offset\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs?limit=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "18 Read the design",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has design\", () => pm.expect(pm.response.json()).to.have.property(\"design\"));",
+                  "pm.test(\"has currentVersion\", () => pm.expect(pm.response.json()).to.have.property(\"currentVersion\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "19 Rename the design",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));",
+                  "pm.test(\"has title\", () => pm.expect(pm.response.json()).to.have.property(\"title\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman dress\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "20 Delete the design",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -976,6 +1171,51 @@
               "path": [
                 "api",
                 "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR PATCH /api/designs/{id} with an empty title returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"error code is VALIDATION_FAILED\", () => pm.expect(pm.response.json().code).to.eql(\"VALIDATION_FAILED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/00000000-0000-4000-8000-0000000000d1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "00000000-0000-4000-8000-0000000000d1"
               ]
             }
           },
@@ -1490,7 +1730,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "e7d64c9bc8e02faa7c2eb66848e900fc2281743dce9469c4c066233bbd619e09"
+    "_postman_id": "4e9f57df27f596d737c79bceb3bc6d4cf32004844d297614af927dbd70bf4a51"
   },
   "auth": {
     "type": "bearer",

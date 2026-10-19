@@ -23,6 +23,7 @@ import {
 } from "./adapters/supabase/jwks-token-verifier";
 import { createUnlimitedPlanLimits } from "./adapters/plan/unlimited-plan-limits";
 import { createClientRepository } from "./adapters/supabase/client-repository";
+import { createDesignRepository } from "./adapters/supabase/design-repository";
 import { createGotruePhoneOtp } from "./adapters/supabase/gotrue-phone-otp";
 import {
   createPhoneVerificationRepository,
@@ -45,6 +46,7 @@ import type { UserFilesRemover } from "./ports/user-files-remover";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
 import type { ClientRepository } from "./ports/client-repository";
+import type { DesignRepository } from "./ports/design-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
 import type { MeasurementSetRepository } from "./ports/measurement-set-repository";
 import type { PhoneHasher } from "./ports/phone-hasher";
@@ -73,6 +75,8 @@ export interface Container {
   readonly tokenVerifier: TokenVerifier;
   /** The signed-in user's clients. */
   readonly clients: ClientRepository;
+  /** The signed-in user's designs. */
+  readonly designs: DesignRepository;
   /** The signed-in user's saved measurement sets. */
   readonly measurementSets: MeasurementSetRepository;
   /** The default size chart (system data, readable by every signed-in user). */
@@ -119,6 +123,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     phoneVerification: createPhoneVerificationRepository(withApiRole),
     trialEligibility: createTrialEligibility(withApiRole),
     clients: createClientRepository(withUser),
+    designs: createDesignRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
     sizeCharts: createSizeChartRepository(withUser),
     profiles: createProfileRepository(withUser),

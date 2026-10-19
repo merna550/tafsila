@@ -6,6 +6,7 @@ import { loadDatabaseUrl } from "@tafsila/config";
 import type { AuthContext } from "../../ports/token-verifier";
 import { createAdminRepository } from "./admin-repository";
 import { createClientRepository } from "./client-repository";
+import { createDesignRepository } from "./design-repository";
 import { createSizeChartRepository } from "./size-chart-repository";
 import { createWithApiRole, createWithUser } from "./with-user";
 import { createMeasurementSetRepository } from "./measurement-set-repository";
@@ -29,6 +30,7 @@ const ctxOf = (userId: string): AuthContext => ({
 const withUser = createWithUser(URL);
 const clients = createClientRepository(withUser);
 const sets = createMeasurementSetRepository(withUser);
+const designs = createDesignRepository(withUser);
 const ADMIN = "00000000-0000-4000-8000-000000000004";
 const trial = ctxOf(TRIAL);
 const admin = { ...ctxOf(ADMIN), role: "admin" as const };
@@ -178,5 +180,51 @@ describe("withUser and the api_app role", () => {
 
   it("a raw connection without withUser gets permission denied", async () => {
     await expect(raw`select * from public.clients`).rejects.toMatchObject({ code: "42501" });
+  });
+});
+
+describe("designs repository on local Supabase", () => {
+  const SEED_DESIGN = "00000000-0000-4000-8000-0000000000d1";
+  const SEED_CLIENT = "00000000-0000-4000-8000-0000000000a1";
+
+  it("lists the seed design with its summary and resolves the client name through set and client", async () => {
+    const page = await designs.list(trial, { clientId: SEED_CLIENT, limit: 20, offset: 0 });
+    expect(page.items.find((d) => d.id === SEED_DESIGN)?.summary).toMatchObject({
+      versionCount: 2,
+      currentStatus: "pass",
+      clientName: "Client M",
+    });
+    expect((await designs.get(trial, SEED_DESIGN))?.currentVersion?.versionNo).toBe(2);
+  });
+
+  it("never shows another user's designs, and their rename and delete touch 0 rows", async () => {
+    expect((await designs.list(pro, { limit: 100, offset: 0 })).items.some((d) => d.id === SEED_DESIGN)).toBe(
+      false,
+    );
+    expect(await designs.get(pro, SEED_DESIGN)).toBeUndefined();
+    expect(await designs.rename(pro, SEED_DESIGN, "hacked")).toBeUndefined();
+    expect(await designs.remove(pro, SEED_DESIGN)).toBe(false);
+  });
+
+  it("matches % literally in the title search, renames and deletes the versions with the design", async () => {
+    const d = await designs.create(trial, { category: "skirt", title: "50%_off" });
+    expect((await designs.list(trial, { q: "50%_", limit: 20, offset: 0 })).items.map((x) => x.id)).toEqual([
+      d.id,
+    ]);
+    const renamed = await designs.rename(trial, d.id, "Renamed");
+    expect(renamed?.title).toBe("Renamed");
+    expect(await designs.remove(trial, d.id)).toBe(true);
+    expect(await designs.get(trial, d.id)).toBeUndefined();
+  });
+
+  it("deletes a design's versions by cascade", async () => {
+    const copy = "00000000-0000-4000-8000-0000000000d9";
+    await raw`insert into public.designs (id, owner_id, category, title) values (${copy}, ${TRIAL}, 'dress', 'cascade')`;
+    await raw`insert into public.pattern_versions (design_id, owner_id, version_no, spec, measurements, ease_profile, engine_version, validation_status, input_hash)
+      select ${copy}, owner_id, 1, spec, measurements, ease_profile, engine_version, validation_status, 'cascade-hash'
+      from public.pattern_versions where design_id = ${SEED_DESIGN} and version_no = 1`;
+    expect(await designs.remove(trial, copy)).toBe(true);
+    const left = await raw`select count(*)::int as n from public.pattern_versions where design_id = ${copy}`;
+    expect(left[0]?.n).toBe(0);
   });
 });
