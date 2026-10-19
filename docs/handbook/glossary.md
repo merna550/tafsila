@@ -336,6 +336,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## C
 
+<a id="button-extension"></a>
+
+### Button extension
+
+**Plain words:** The strip added past the centre line so the two halves overlap and the buttons can sit on the centre line with fabric behind them. It is usually as wide as the button.  
+**In Tafsila:** `BUTTON_EXTENSION_MM` (15, one button diameter) added along the centre line by `src/modules/closure/extension.ts` (#143); the body lines leave it out (`overlapMm`) so the circumference check still measures the body ([decision 143](../decisions/143-closures.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Button>
+
 <a id="calibration"></a>
 
 ### Calibration (projector)
@@ -413,7 +421,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Closure
 
 **Plain words:** What fastens the garment: a zip or buttons.  
-**In Tafsila:** `DesignSpec.closure` has `type` (`zip`, `buttons`, `none`) and `position` (`center-back`, `side`, `center-front`). **Level:** beginner  
+**In Tafsila:** `DesignSpec.closure` has `type` (`zip`, `buttons`, `none`) and `position` (`center-back`, `side`, `center-front`). Drafted by `src/modules/closure/` (#143) as a late transform: a zip turns the fold on its centre line into a seam with a wider allowance and a zip-stop notch; buttons add a button extension, button and buttonhole marks and a front facing; `none` only warns when the waist cannot pass the hips. Which closures go where is data (`CLOSURE_MATRIX`) ([decision 143](../decisions/143-closures.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="collar"></a>

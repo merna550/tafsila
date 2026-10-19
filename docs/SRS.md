@@ -364,7 +364,7 @@ interface DesignSpec {
     slit?: { position: 'front' | 'back' | 'side'; lengthMm: number };
   };
   waistband?: 'none' | 'straight' | 'contour' | 'elastic'; // skirts only; 'none' = waist facing; a dress joins at its waist seam (#140)
-  closure: { type: 'zip' | 'buttons' | 'none'; position: 'center-back' | 'side' | 'center-front' };
+  closure: { type: 'zip' | 'buttons' | 'none'; position: 'center-back' | 'side' | 'center-front' }; // buttons only at a centre line with no slit or split panels; none ignores position; a no-closure dress or skirt warns when its waist cannot pass the hips (FR-VAL-08, #143)
   pockets: Array<'side-seam' | 'patch'>;
   lining: boolean;
   belt?: 'none' | 'self-tie';
@@ -412,7 +412,7 @@ interface PatternResult {
   pieces: Piece[];
   sewingOrder: SewingStep[];
   validation: ValidationReport;
-  notions?: Notion[];                     // cut by length, e.g. waist elastic { id, kind: 'elastic', name, lengthMm, widthMm, quantity } (#140)
+  notions?: Notion[];                     // bought notions { id, kind: 'elastic' | 'zip' | 'button', name, lengthMm, widthMm, quantity }: waist elastic (#140), the zip and the buttons (#143)
   meta: { category: GarmentCategory; sizeLabel: string; createdFrom: string /* hash of inputs */ };
 }
 interface Piece {
@@ -423,7 +423,8 @@ interface Piece {
   cutPath: Path;                          // stitchPath offset by SA
   edges: Edge[];                          // named edges with SA and pairing info
   notches: Notch[];
-  bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations: edge, horizontal or polyline (decision 135)
+  bodyLines: BodyLine[];                  // geometric bust/waist/hip declarations: edge, horizontal or polyline (decision 135); `overlapMm` leaves a button extension out (#143)
+  marks?: Mark[];                         // construction marks: pleat lines, gathers, slit, sleeve end, button (point), buttonhole (line) (#137, #142, #143)
   sleeveCap?: { edgeIds: string[]; armholeRefs: Array<{ pieceId: string; edgeId: string }>; gatheredMm?: number; armholeExcludedMm?: number }; // declared gathers and unsewn armhole (#142)
   grainLine: [Point, Point];
   darts: Dart[];
