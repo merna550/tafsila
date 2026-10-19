@@ -790,7 +790,283 @@
           "response": []
         },
         {
-          "name": "20 Delete the design",
+          "name": "20 Save a set for the versions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set(\"versionSetId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Versions set\",\n  \"sizeLabel\": \"M\",\n  \"measurements\": {\n    \"unit\": \"mm\",\n    \"height\": 1650,\n    \"bust\": 920,\n    \"highBust\": 860,\n    \"underBust\": 780,\n    \"waist\": 740,\n    \"hip\": 1000,\n    \"hipDepth\": 200,\n    \"neck\": 360,\n    \"shoulderWidth\": 380,\n    \"backLength\": 400,\n    \"frontLength\": 430,\n    \"bustPointDistance\": 190,\n    \"bustHeight\": 250,\n    \"armLength\": 590,\n    \"upperArm\": 290,\n    \"wrist\": 160,\n    \"waistToKnee\": 580,\n    \"waistToFloor\": 1050\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "21 Save a version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));",
+                  "pm.environment.set(\"versionId\", pm.response.json().version.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spec\": {\n    \"schemaVersion\": 1,\n    \"category\": \"dress\",\n    \"fabricType\": \"woven\",\n    \"bodice\": {\n      \"fit\": \"fitted\",\n      \"shaping\": \"darts\",\n      \"waistSeam\": true\n    },\n    \"neckline\": {\n      \"front\": \"round\",\n      \"back\": \"round\",\n      \"collar\": \"none\"\n    },\n    \"sleeve\": {\n      \"type\": \"set-in\",\n      \"length\": \"short\",\n      \"cuff\": \"none\"\n    },\n    \"skirt\": {\n      \"type\": \"straight\",\n      \"length\": \"knee\"\n    },\n    \"waistband\": \"none\",\n    \"closure\": {\n      \"type\": \"zip\",\n      \"position\": \"center-back\"\n    },\n    \"pockets\": [],\n    \"lining\": false,\n    \"belt\": \"none\"\n  },\n  \"measurementSetId\": \"{{versionSetId}}\",\n  \"easeProfile\": \"regular\",\n  \"options\": {\n    \"fabricWidthMm\": 1400\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "versions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "22 Save the same inputs again returns the version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spec\": {\n    \"schemaVersion\": 1,\n    \"category\": \"dress\",\n    \"fabricType\": \"woven\",\n    \"bodice\": {\n      \"fit\": \"fitted\",\n      \"shaping\": \"darts\",\n      \"waistSeam\": true\n    },\n    \"neckline\": {\n      \"front\": \"round\",\n      \"back\": \"round\",\n      \"collar\": \"none\"\n    },\n    \"sleeve\": {\n      \"type\": \"set-in\",\n      \"length\": \"short\",\n      \"cuff\": \"none\"\n    },\n    \"skirt\": {\n      \"type\": \"straight\",\n      \"length\": \"knee\"\n    },\n    \"waistband\": \"none\",\n    \"closure\": {\n      \"type\": \"zip\",\n      \"position\": \"center-back\"\n    },\n    \"pockets\": [],\n    \"lining\": false,\n    \"belt\": \"none\"\n  },\n  \"measurementSetId\": \"{{versionSetId}}\",\n  \"easeProfile\": \"regular\",\n  \"options\": {\n    \"fabricWidthMm\": 1400\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "versions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "23 List the versions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has total\", () => pm.expect(pm.response.json()).to.have.property(\"total\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/versions?limit=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "versions"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "24 Read the version with a fresh pattern",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has pattern\", () => pm.expect(pm.response.json()).to.have.property(\"pattern\"));",
+                  "pm.test(\"has engineChanged\", () => pm.expect(pm.response.json()).to.have.property(\"engineChanged\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/versions/{{versionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "versions",
+                "{{versionId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25 Restore the current version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/versions/{{versionId}}/restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "versions",
+                "{{versionId}}",
+                "restore"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "26 Delete the versions set",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/measurements/{{versionSetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "measurements",
+                "{{versionSetId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "27 Delete the design",
           "event": [
             {
               "listen": "test",
@@ -1686,201 +1962,6 @@
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        }
-      ],
-      "event": []
-    },
-    {
-      "name": "versions",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
-      "item": [
-        {
-          "name": "List a design's versions, newest first",
-          "request": {
-            "name": "List a design's versions, newest first",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "designs",
-                ":id",
-                "versions"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "disabled": false,
-                  "key": "limit",
-                  "value": "20",
-                  "description": "Page size, 1 to 100"
-                },
-                {
-                  "disabled": false,
-                  "key": "offset",
-                  "value": "0",
-                  "description": "Rows to skip"
-                }
-              ],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Read a version with a pattern regenerated from its stored inputs",
-          "request": {
-            "name": "Read a version with a pattern regenerated from its stored inputs",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "versions",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Restore a version as a new version with the same stored inputs",
-          "request": {
-            "name": "Restore a version as a new version with the same stored inputs",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "versions",
-                ":id",
-                "restore"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST"
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Save a version: the server re-runs the engine; a failed report is refused (422 PATTERN_INVALID)",
-          "request": {
-            "name": "Save a version: the server re-runs the engine; a failed report is refused (422 PATTERN_INVALID)",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "designs",
-                ":id",
-                "versions"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"spec\": {\n    \"schemaVersion\": \"<number>\",\n    \"category\": \"<string>\",\n    \"fabricType\": \"<string>\",\n    \"closure\": {\n      \"type\": \"<string>\",\n      \"position\": \"<string>\"\n    },\n    \"pockets\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"lining\": \"<boolean>\",\n    \"bodice\": {\n      \"fit\": \"<string>\",\n      \"shaping\": \"<string>\",\n      \"waistSeam\": \"<boolean>\"\n    },\n    \"neckline\": {\n      \"front\": \"<string>\",\n      \"back\": \"<string>\",\n      \"collar\": \"<string>\",\n      \"depthFrontMm\": \"<number>\"\n    },\n    \"sleeve\": {\n      \"type\": \"<string>\",\n      \"length\": \"<string>\",\n      \"cuff\": \"<string>\"\n    },\n    \"skirt\": {\n      \"type\": \"<string>\",\n      \"length\": \"<string>\",\n      \"lengthMm\": \"<number>\",\n      \"slit\": {\n        \"position\": \"<string>\",\n        \"lengthMm\": \"<number>\"\n      }\n    },\n    \"waistband\": \"<string>\",\n    \"belt\": \"<string>\"\n  },\n  \"measurementSetId\": \"<uuid>\",\n  \"easeProfile\": \"<string>\",\n  \"options\": {\n    \"fabricWidthMm\": \"<number>\",\n    \"seamAllowance\": {\n      \"defaultsMm\": {\n        \"side\": 15,\n        \"neckline\": 10,\n        \"armhole\": 10,\n        \"hem\": 30,\n        \"other\": 15\n      },\n      \"perEdgeMm\": {}\n    }\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [],
-          "event": [],
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           }
