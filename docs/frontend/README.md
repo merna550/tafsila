@@ -79,6 +79,16 @@ In code: `routeError(error, context)` gives the place, the Arabic message and th
 
 The error catalogue is [docs/errors.md](../errors.md) (ADR-030).
 
+## Engine in a worker
+
+The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue #239) so the page never freezes (FR-PAT-04).
+
+- Call `usePatternPreview(input)` with a memoised `{ spec, measurements, options? }` or `null`. It returns `{ status: idle | running | done | error, result, error, durationMs, inputHash }`. Input changes are debounced by `PATTERN_PREVIEW_DEBOUNCE_MS` (250 ms); the last input wins and older answers are dropped.
+- `inputHash` is `result.meta.createdFrom`, the same hash the server stores, so the page can tell when the preview equals the saved version.
+- An error state carries a code; `previewErrorToApiError` turns it into an `ApiError` for the shared error display. An engine crash is shown as an unexpected error, never thrown in render.
+- Only the worker imports the engine geometry. Pages import `@tafsila/engine/measurements` for validation. `scripts/check-engine-chunk.mjs` runs after `next build` in the e2e job and fails when a page bundle loads engine code.
+- `/dev/pattern-preview?design=seedDress` hosts the browser test until the pattern page (#251) exists.
+
 ## Testing
 
 - Component tests: Vitest + Testing Library, next to the component.

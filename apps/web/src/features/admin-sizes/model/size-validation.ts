@@ -1,5 +1,5 @@
 /** Judging a whole size chart with the engine's measurement rules, size by size. */
-import { validateMeasurements } from "@tafsila/engine";
+import { validateMeasurements } from "@tafsila/engine/measurements";
 import type { IssueLike, MeasurementField } from "@/features/measurements/model";
 import type { SizeChart } from "@tafsila/schemas";
 
