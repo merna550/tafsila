@@ -1,8 +1,7 @@
-# 140 — Waistbands (straight, contour, elastic) and waist facings
+# ADR-140 · 2026-10-19 · Waistbands (straight, contour, elastic) and waist facings
 
-Issue #140 · FR-PAT-05, FR-PAT-07, FR-VAL-01, FR-VAL-08 · Date 2026-10-19 · Status: accepted (pending sew-test)
-
-Cheap to reverse: every number is a named constant in `packages/engine/src/constants/waistband.ts`, and the module is one entry in the default registry.
+**Context:** Issue #140 (FR-PAT-05, FR-PAT-07, FR-VAL-01, -08). Plan: [`docs/plans/140-waistbands.md`](../plans/140-waistbands.md). Cheap to reverse: every number is a named constant in `packages/engine/src/constants/waistband.ts`, and the module is one entry in the default registry. Status: accepted, pending sew-test (#212).
+**Decision:**
 
 1. **Contour follows the dart-closed waist.** A contour band (and the `none` waist facing) is traced from the skirt's own waist line: each part past a dart is turned about the dart apex until the legs meet, so lengths are kept exactly and the traced edge sews to the skirt waist with no drift. The skirt is not lowered: the contour band rises `CONTOUR_BAND_WIDTH_MM` (50 mm) above the waist seam, its top edge a parallel offset; the facing hangs `WAIST_FACING_DEPTH_MM` (60 mm) below it. Each piece is cut like the skirt half it follows (on the fold, or a mirrored pair for a centre-back zip). The contour band has a band facing (sewn to it along the top) and an interfacing.
 2. **Closure overlap is declared, not a mismatch.** A one-piece band (straight band, casing, flat facing) splits its sewn edge into one edge per cut copy of each skirt waist edge (`seam-1`, `seam-2`, …), ordered round the body from the closure, each paired with that skirt edge. A zip or button closure adds a separate `overlap` edge of `CLOSURE_OVERLAP_MM` (30 mm) that pairs with nothing; with no closure the ends pair with each other as a loop. Gathers and pleats make the skirt edge longer than the band on purpose: the difference is the edge's declared `intendedEaseMm`. The `WAISTBAND_LENGTH_*` check (FR-VAL-01) measures the whole finish against the whole sewn skirt waist within 2 mm and names the overlap in its message.

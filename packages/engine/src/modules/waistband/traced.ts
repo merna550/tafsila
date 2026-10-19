@@ -13,12 +13,17 @@ import { DraftingError } from "../../errors/drafting-error";
 import {
   add,
   angleRad,
+  cubicSeg,
+  lerp,
+  lineLine,
+  type LineLike,
+  perpendicular,
+  type Point,
   distance,
   distancePointToSegment,
   dot,
   lineSeg,
   normalize,
-  offsetPath,
   pathLength,
   pointAtLength,
   reversePath,
@@ -42,6 +47,9 @@ export const TRACED_FREE_EDGE_ID = "free";
 export const TRACED_SIDE_EDGE_ID = "side";
 /** The end on the centre line (a fold when the skirt piece is cut on the fold). */
 export const TRACED_CENTRE_EDGE_ID = "centre";
+
+/** Half, for the midpoint of a degenerate control leg. */
+const HALF = 0.5;
 
 /** A dart's mouth points and apex, moved along with the waist as earlier darts close. */
 type DartShape = Pick<Dart, "apex" | "legs">;
@@ -134,6 +142,46 @@ export function closedWaistTrace(piece: PieceDraft): Segment[] {
 export type TraceSide = "above" | "below";
 
 /**
+ * Moves one segment `distanceMm` along its normal: a line by its normal, a cubic by offsetting each leg of its control
+ * polygon (Tiller and Hanson, 1984). One segment per segment keeps the outline light; the far edge is free, so the
+ * small error of the cubic offset does not touch any seam.
+ *
+ * @param seg - A waist segment.
+ * @param distanceMm - Signed distance along `perpendicular` of the travel direction.
+ * @returns The moved segment.
+ */
+function offsetOne(seg: Segment, distanceMm: number): Segment {
+  const shift = (a: Point, b: Point): Point => scale(perpendicular(normalize(sub(b, a))), distanceMm);
+  if (seg.kind === "line") return translate(seg, shift(seg.from, seg.to));
+  const legs: LineLike[] = [
+    { from: seg.from, to: seg.c1 },
+    { from: seg.c1, to: seg.c2 },
+    { from: seg.c2, to: seg.to },
+  ].map((leg) => translate(lineSeg(leg.from, leg.to), shift(leg.from, leg.to)));
+  const corner = (a: LineLike, b: LineLike): Point => lineLine(a, b, true)?.point ?? lerp(a.to, b.from, HALF);
+  return cubicSeg(legs[0]!.from, corner(legs[0]!, legs[1]!), corner(legs[1]!, legs[2]!), legs[2]!.to);
+}
+
+/**
+ * Joins consecutive moved segments: two lines meet at their crossing (a mitre outside a kink, a trim inside it);
+ * otherwise the next segment starts where the previous one ends.
+ *
+ * @param moved - Moved segments in order.
+ * @returns A continuous path.
+ */
+function joinMoved(moved: readonly Segment[]): Segment[] {
+  const out: Segment[] = [moved[0]!];
+  for (const next of moved.slice(1)) {
+    const prev = out.at(-1)!;
+    const meet =
+      prev.kind === "line" && next.kind === "line" ? (lineLine(prev, next, true)?.point ?? prev.to) : prev.to;
+    out[out.length - 1] = { ...prev, to: meet };
+    out.push({ ...next, from: meet });
+  }
+  return out;
+}
+
+/**
  * The waist line moved a constant depth away, above (a band) or below (a facing). The skirt hangs toward +y.
  *
  * @param trace - Closed waist line.
@@ -142,9 +190,10 @@ export type TraceSide = "above" | "below";
  * @returns The far edge, centre to side.
  */
 function farEdge(trace: readonly Segment[], depthMm: number, side: TraceSide): Segment[] {
-  const first = offsetPath(trace, depthMm);
-  const below = first[0]!.from.y > trace[0]!.from.y;
-  return below === (side === "below") ? first : offsetPath(trace, -depthMm);
+  const probe = offsetOne(trace[0]!, depthMm);
+  const below = probe.from.y > trace[0]!.from.y;
+  const signed = below === (side === "below") ? depthMm : -depthMm;
+  return joinMoved(trace.map((seg) => offsetOne(seg, signed)));
 }
 
 /** How a traced piece is cut and paired. */
