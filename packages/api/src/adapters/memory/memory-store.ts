@@ -1,4 +1,5 @@
 /** In-memory tables shared by the memory repositories, so deleting a client can cascade to its sets like the database does. */
+import { patternVersionSchema } from "@tafsila/schemas";
 import type {
   Client,
   Design,
@@ -116,4 +117,17 @@ export function newestFirst<T extends { createdAt: string; id: string }>(rows: r
   return [...rows].sort((a, b) =>
     a.createdAt === b.createdAt ? b.id.localeCompare(a.id) : b.createdAt.localeCompare(a.createdAt),
   );
+}
+
+/**
+ * A version as the API shows it: a deleted measurement set reads as null (ON DELETE SET NULL).
+ *
+ * @param store - Shared fake database.
+ * @param row - Stored version.
+ * @returns The public version.
+ */
+export function toVersion(store: MemoryStore, row: VersionRow): PatternVersion {
+  const setExists = store.sets.some((set) => set.id === row.measurementSetId);
+  // Parsing drops the owner (unknown keys are stripped).
+  return patternVersionSchema.parse({ ...row, measurementSetId: setExists ? row.measurementSetId : null });
 }

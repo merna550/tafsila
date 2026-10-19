@@ -11,6 +11,7 @@ import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
+import { createMemoryPatternVersionRepository } from "../adapters/memory/pattern-version-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
 import { createMemoryStore } from "../adapters/memory/memory-store";
@@ -32,6 +33,7 @@ const app = createApp(
     appInfo: { environment: "test", version: "test", gitSha: "test" },
     clients: createMemoryClientRepository(store),
     designs: createMemoryDesignRepository(store),
+    versions: createMemoryPatternVersionRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
     sizeCharts: createMemorySizeChartRepository(store),
     profiles: createMemoryProfileRepository(store),

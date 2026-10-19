@@ -1,8 +1,8 @@
 /** In-memory design repository for tests and `pnpm api:test`; filters by owner exactly as RLS does. */
-import { patternVersionSchema } from "@tafsila/schemas";
-import type { Design, DesignDetail, DesignSummary, PatternVersion } from "@tafsila/schemas";
+import type { Design, DesignDetail, DesignSummary } from "@tafsila/schemas";
 import type { DesignRepository } from "../../ports/design-repository";
-import type { DesignRow, MemoryOptions, MemoryStore, VersionRow } from "./memory-store";
+import { toVersion } from "./memory-store";
+import type { DesignRow, MemoryOptions, MemoryStore } from "./memory-store";
 
 /**
  * Strips the owner from a design row.
@@ -19,19 +19,6 @@ function toDesign(row: DesignRow): Design {
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
-}
-
-/**
- * A version as the API shows it: a deleted measurement set reads as null (ON DELETE SET NULL).
- *
- * @param store - Shared fake database.
- * @param row - Stored version.
- * @returns The public version.
- */
-function toVersion(store: MemoryStore, row: VersionRow): PatternVersion {
-  const setExists = store.sets.some((set) => set.id === row.measurementSetId);
-  // Parsing drops the owner (unknown keys are stripped).
-  return patternVersionSchema.parse({ ...row, measurementSetId: setExists ? row.measurementSetId : null });
 }
 
 /**

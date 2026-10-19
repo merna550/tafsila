@@ -24,6 +24,7 @@ import {
 import { createUnlimitedPlanLimits } from "./adapters/plan/unlimited-plan-limits";
 import { createClientRepository } from "./adapters/supabase/client-repository";
 import { createDesignRepository } from "./adapters/supabase/design-repository";
+import { createPatternVersionRepository } from "./adapters/supabase/pattern-version-repository";
 import { createGotruePhoneOtp } from "./adapters/supabase/gotrue-phone-otp";
 import {
   createPhoneVerificationRepository,
@@ -49,6 +50,7 @@ import type { ClientRepository } from "./ports/client-repository";
 import type { DesignRepository } from "./ports/design-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
 import type { MeasurementSetRepository } from "./ports/measurement-set-repository";
+import type { PatternVersionRepository } from "./ports/pattern-version-repository";
 import type { PhoneHasher } from "./ports/phone-hasher";
 import type { PhoneOtp } from "./ports/phone-otp";
 import type { PhoneVerificationRepository } from "./ports/phone-verification-repository";
@@ -77,6 +79,8 @@ export interface Container {
   readonly clients: ClientRepository;
   /** The signed-in user's designs. */
   readonly designs: DesignRepository;
+  /** Append-only versions of the signed-in user's designs. */
+  readonly versions: PatternVersionRepository;
   /** The signed-in user's saved measurement sets. */
   readonly measurementSets: MeasurementSetRepository;
   /** The default size chart (system data, readable by every signed-in user). */
@@ -124,6 +128,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     trialEligibility: createTrialEligibility(withApiRole),
     clients: createClientRepository(withUser),
     designs: createDesignRepository(withUser),
+    versions: createPatternVersionRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
     sizeCharts: createSizeChartRepository(withUser),
     profiles: createProfileRepository(withUser),

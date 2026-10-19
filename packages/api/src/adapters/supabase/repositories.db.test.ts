@@ -1,5 +1,5 @@
 /** Adapter tests against local Supabase (`pnpm db:start`, `pnpm db:reset`); run with `pnpm --filter @tafsila/api test:db`. */
-import { sizeM } from "@tafsila/test-fixtures";
+import { seedDress, sizeM } from "@tafsila/test-fixtures";
 import postgres from "postgres";
 import { afterAll, describe, expect, it } from "vitest";
 import { loadDatabaseUrl } from "@tafsila/config";
@@ -8,6 +8,7 @@ import { createAdminRepository } from "./admin-repository";
 import { createClientRepository } from "./client-repository";
 import { eq } from "drizzle-orm";
 import { createDesignRepository } from "./design-repository";
+import { createPatternVersionRepository } from "./pattern-version-repository";
 import { patternVersions } from "./schema";
 import { createSizeChartRepository } from "./size-chart-repository";
 import { createWithApiRole, createWithUser } from "./with-user";
@@ -244,5 +245,75 @@ describe("designs repository on local Supabase", () => {
     expect(await count()).toHaveLength(1);
     expect(await designs.remove(trial, d.id)).toBe(true);
     expect(await count()).toHaveLength(0);
+  });
+});
+
+describe("pattern versions repository on local Supabase", () => {
+  const versions = createPatternVersionRepository(withUser);
+  const SEED_DESIGN = "00000000-0000-4000-8000-0000000000d1";
+
+  /**
+   * A new version for a design, with a distinct hash.
+   *
+   * @param designId - Target design.
+   * @param hash - Input hash.
+   * @returns The input of `appendVersion`.
+   */
+  const input = (designId: string, hash: string) => ({
+    designId,
+    spec: seedDress,
+    measurementSetId: null,
+    measurements: sizeM,
+    sizeLabel: "M",
+    easeProfile: "regular" as const,
+    options: {},
+    engineVersion: "0.16.0",
+    validationStatus: "pass" as const,
+    inputHash: hash,
+  });
+
+  it("appends n+1, moves current_version_id, reuses an equal hash and serialises parallel saves", async () => {
+    const d = await designs.create(trial, { category: "dress", title: "append" });
+    const [x, y] = await Promise.all([
+      versions.appendVersion(trial, input(d.id, "hx")),
+      versions.appendVersion(trial, input(d.id, "hy")),
+    ]);
+    expect([x?.version.versionNo, y?.version.versionNo].sort((m, n) => (m ?? 0) - (n ?? 0))).toEqual([1, 2]);
+    const latest = (await designs.get(trial, d.id))?.design.currentVersionId;
+    const current = [x, y].find((r) => r?.version.versionNo === 2)?.version.id;
+    expect(latest).toBe(current);
+    const again = await versions.appendVersion(trial, input(d.id, latest === x?.version.id ? "hx" : "hy"));
+    expect(again?.reused).toBe(true);
+    expect((await versions.list(trial, d.id, { limit: 20, offset: 0 }))?.total).toBe(2);
+    expect(await designs.remove(trial, d.id)).toBe(true);
+  });
+
+  it("rolls the insert back when a later step fails", async () => {
+    const failing = createPatternVersionRepository(withUser, {
+      afterInsert: () => {
+        throw new Error("boom");
+      },
+    });
+    const d = await designs.create(trial, { category: "dress", title: "rollback" });
+    await expect(failing.appendVersion(trial, input(d.id, "hz"))).rejects.toThrow("boom");
+    expect((await versions.list(trial, d.id, { limit: 20, offset: 0 }))?.total).toBe(0);
+    expect((await designs.get(trial, d.id))?.design.currentVersionId).toBeNull();
+    expect(await designs.remove(trial, d.id)).toBe(true);
+  });
+
+  it("hides another user's design and version, and the API role cannot update or delete a version", async () => {
+    expect(await versions.appendVersion(pro, input(SEED_DESIGN, "hp"))).toBeUndefined();
+    expect(await versions.list(pro, SEED_DESIGN, { limit: 20, offset: 0 })).toBeUndefined();
+    const own = (await versions.list(trial, SEED_DESIGN, { limit: 1, offset: 0 }))?.items[0];
+    if (!own) throw new Error("seed version missing");
+    expect(await versions.get(pro, own.id)).toBeUndefined();
+    await expect(
+      withUser(trial, (tx) =>
+        tx.update(patternVersions).set({ sizeLabel: "X" }).where(eq(patternVersions.id, own.id)),
+      ),
+    ).rejects.toThrow();
+    await expect(
+      withUser(trial, (tx) => tx.delete(patternVersions).where(eq(patternVersions.id, own.id))),
+    ).rejects.toThrow();
   });
 });

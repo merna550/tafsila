@@ -230,7 +230,163 @@
     "has": ["id", "title"]
   },
   {
-    "name": "20 Delete the design",
+    "name": "20 Save a set for the versions",
+    "method": "POST",
+    "path": "/api/measurements",
+    "body": {
+      "label": "Versions set",
+      "sizeLabel": "M",
+      "measurements": {
+        "unit": "mm",
+        "height": 1650,
+        "bust": 920,
+        "highBust": 860,
+        "underBust": 780,
+        "waist": 740,
+        "hip": 1000,
+        "hipDepth": 200,
+        "neck": 360,
+        "shoulderWidth": 380,
+        "backLength": 400,
+        "frontLength": 430,
+        "bustPointDistance": 190,
+        "bustHeight": 250,
+        "armLength": 590,
+        "upperArm": 290,
+        "wrist": 160,
+        "waistToKnee": 580,
+        "waistToFloor": 1050
+      }
+    },
+    "status": 201,
+    "capture": {
+      "versionSetId": "id"
+    }
+  },
+  {
+    "name": "21 Save a version",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/versions",
+    "body": {
+      "spec": {
+        "schemaVersion": 1,
+        "category": "dress",
+        "fabricType": "woven",
+        "bodice": {
+          "fit": "fitted",
+          "shaping": "darts",
+          "waistSeam": true
+        },
+        "neckline": {
+          "front": "round",
+          "back": "round",
+          "collar": "none"
+        },
+        "sleeve": {
+          "type": "set-in",
+          "length": "short",
+          "cuff": "none"
+        },
+        "skirt": {
+          "type": "straight",
+          "length": "knee"
+        },
+        "waistband": "none",
+        "closure": {
+          "type": "zip",
+          "position": "center-back"
+        },
+        "pockets": [],
+        "lining": false,
+        "belt": "none"
+      },
+      "measurementSetId": "{{versionSetId}}",
+      "easeProfile": "regular",
+      "options": {
+        "fabricWidthMm": 1400
+      }
+    },
+    "status": 201,
+    "has": ["version", "report", "reused"],
+    "capture": {
+      "versionId": "version.id"
+    }
+  },
+  {
+    "name": "22 Save the same inputs again returns the version",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/versions",
+    "body": {
+      "spec": {
+        "schemaVersion": 1,
+        "category": "dress",
+        "fabricType": "woven",
+        "bodice": {
+          "fit": "fitted",
+          "shaping": "darts",
+          "waistSeam": true
+        },
+        "neckline": {
+          "front": "round",
+          "back": "round",
+          "collar": "none"
+        },
+        "sleeve": {
+          "type": "set-in",
+          "length": "short",
+          "cuff": "none"
+        },
+        "skirt": {
+          "type": "straight",
+          "length": "knee"
+        },
+        "waistband": "none",
+        "closure": {
+          "type": "zip",
+          "position": "center-back"
+        },
+        "pockets": [],
+        "lining": false,
+        "belt": "none"
+      },
+      "measurementSetId": "{{versionSetId}}",
+      "easeProfile": "regular",
+      "options": {
+        "fabricWidthMm": 1400
+      }
+    },
+    "status": 200,
+    "has": ["version", "report", "reused"]
+  },
+  {
+    "name": "23 List the versions",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}/versions?limit=5",
+    "status": 200,
+    "has": ["items", "total"]
+  },
+  {
+    "name": "24 Read the version with a fresh pattern",
+    "method": "GET",
+    "path": "/api/versions/{{versionId}}",
+    "status": 200,
+    "has": ["version", "pattern", "engineChanged"]
+  },
+  {
+    "name": "25 Restore the current version",
+    "method": "POST",
+    "path": "/api/versions/{{versionId}}/restore",
+    "status": 200,
+    "has": ["version", "reused"]
+  },
+  {
+    "name": "26 Delete the versions set",
+    "method": "DELETE",
+    "path": "/api/measurements/{{versionSetId}}",
+    "status": 204
+  },
+  {
+    "name": "27 Delete the design",
     "method": "DELETE",
     "path": "/api/designs/{{designId}}",
     "status": 204

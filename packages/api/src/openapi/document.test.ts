@@ -31,6 +31,7 @@ describe("OpenAPI document", () => {
       "/api/debug/error",
       "/api/designs",
       "/api/designs/{id}",
+      "/api/designs/{id}/versions",
       "/api/health",
       "/api/me",
       "/api/measurements",
@@ -40,6 +41,8 @@ describe("OpenAPI document", () => {
       "/api/phone/verify",
       "/api/profile",
       "/api/size-charts/default",
+      "/api/versions/{id}",
+      "/api/versions/{id}/restore",
     ]);
   });
 

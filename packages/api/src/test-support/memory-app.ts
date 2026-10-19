@@ -4,6 +4,7 @@ import { createMemoryAccountDeletion, type MemoryAccountDeletion } from "../adap
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
+import { createMemoryPatternVersionRepository } from "../adapters/memory/pattern-version-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemoryPhoneOtp, type MemoryPhoneOtp } from "../adapters/memory/phone-otp";
 import {
@@ -75,6 +76,7 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
       tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
       clients: createMemoryClientRepository(store),
       designs: createMemoryDesignRepository(store),
+      versions: createMemoryPatternVersionRepository(store),
       measurementSets: createMemoryMeasurementSetRepository(store),
       sizeCharts: createMemorySizeChartRepository(store),
       profiles: createMemoryProfileRepository(store),

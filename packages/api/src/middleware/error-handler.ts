@@ -7,7 +7,7 @@ import type { ErrorReporter } from "../ports/error-reporter";
 import type { AppEnv } from "./request-id";
 
 /**
- * Copies the error details into the response shape (fields always, issues only when present).
+ * Copies the error details into the response shape (fields always, issues and report only when present).
  *
  * @param details - Details carried by the AppError.
  * @returns The `details` object of the error body.
@@ -16,6 +16,7 @@ function errorDetailsBody(details: ErrorDetails): NonNullable<ApiErrorBody["deta
   return {
     fields: { ...details.fields },
     ...(details.retryAfterSeconds === undefined ? {} : { retryAfterSeconds: details.retryAfterSeconds }),
+    ...(details.report ? { report: details.report } : {}),
     ...(details.issues
       ? { issues: details.issues.map((issue) => ({ ...issue, fields: [...issue.fields] })) }
       : {}),
