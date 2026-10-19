@@ -13,6 +13,9 @@ import { specOptions } from "./spec-options";
 /** Runs per property (60 like #147; `FC_RUNS` raises it). */
 const RUNS = Number(process.env.FC_RUNS ?? 60);
 
+/** Runs of the drafting property: each run drafts a pattern, so 20 keeps it near 7 s with coverage (decision 238, 7). */
+const DRAFT_RUNS = Number(process.env.FC_RUNS ?? 20);
+
 /** Input errors that depend on the body, so the picker cannot know them. */
 const BODY_CODES: ReadonlySet<string> = new Set(["POCKET_NO_ROOM", "CLOSURE_ZIP_TOO_LONG"]);
 
@@ -41,7 +44,7 @@ describe("normalizeSpec (property)", () => {
         );
         expect(refusals, JSON.stringify(spec)).toEqual([]);
       }),
-      { numRuns: RUNS },
+      { numRuns: DRAFT_RUNS },
     );
   });
 

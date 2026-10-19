@@ -9,3 +9,4 @@
 4. **Parts ignored by the category are dropped** by `normalizeSpec` (no `SPEC_PART_IGNORED` warning in the preview); missing required parts are added from `defaultSpec`.
 5. **Body-dependent refusals** (pocket room, neckline depth clamps, zip length) are not in `specOptions`; they stay report checks.
 6. `specOptions` judges one feature at a time on the given design, so call it on a normalised design.
+7. **Run counts:** 60 runs for the pure properties, 20 for the one that drafts patterns (about 7 s with coverage; 60 took 22 s). `FC_RUNS` raises both for a nightly run.
