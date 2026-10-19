@@ -6,7 +6,9 @@ import { loadDatabaseUrl } from "@tafsila/config";
 import type { AuthContext } from "../../ports/token-verifier";
 import { createAdminRepository } from "./admin-repository";
 import { createClientRepository } from "./client-repository";
+import { eq } from "drizzle-orm";
 import { createDesignRepository } from "./design-repository";
+import { patternVersions } from "./schema";
 import { createSizeChartRepository } from "./size-chart-repository";
 import { createWithApiRole, createWithUser } from "./with-user";
 import { createMeasurementSetRepository } from "./measurement-set-repository";
@@ -218,13 +220,29 @@ describe("designs repository on local Supabase", () => {
   });
 
   it("deletes a design's versions by cascade", async () => {
-    const copy = "00000000-0000-4000-8000-0000000000d9";
-    await raw`insert into public.designs (id, owner_id, category, title) values (${copy}, ${TRIAL}, 'dress', 'cascade')`;
-    await raw`insert into public.pattern_versions (design_id, owner_id, version_no, spec, measurements, ease_profile, engine_version, validation_status, input_hash)
-      select ${copy}, owner_id, 1, spec, measurements, ease_profile, engine_version, validation_status, 'cascade-hash'
-      from public.pattern_versions where design_id = ${SEED_DESIGN} and version_no = 1`;
-    expect(await designs.remove(trial, copy)).toBe(true);
-    const left = await raw`select count(*)::int as n from public.pattern_versions where design_id = ${copy}`;
-    expect(left[0]?.n).toBe(0);
+    const d = await designs.create(trial, { category: "dress", title: "cascade" });
+    const seed = (await designs.get(trial, SEED_DESIGN))?.currentVersion;
+    if (!seed) throw new Error("seed version missing");
+    await withUser(trial, (tx) =>
+      tx.insert(patternVersions).values({
+        spec: seed.spec,
+        measurements: seed.measurements,
+        easeProfile: seed.easeProfile,
+        engineVersion: seed.engineVersion,
+        validationStatus: seed.validationStatus,
+        designId: d.id,
+        ownerId: TRIAL,
+        versionNo: 1,
+
+        inputHash: "cascade-hash",
+      }),
+    );
+    const count = () =>
+      withUser(trial, (tx) =>
+        tx.select({ id: patternVersions.id }).from(patternVersions).where(eq(patternVersions.designId, d.id)),
+      );
+    expect(await count()).toHaveLength(1);
+    expect(await designs.remove(trial, d.id)).toBe(true);
+    expect(await count()).toHaveLength(0);
   });
 });
