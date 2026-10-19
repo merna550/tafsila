@@ -39,5 +39,7 @@ No database, migration, HTTP/OpenAPI, or public schema change is expected.
 - Files: the module is `src/modules/neckline/{resolve,curves,draft-neck,splice,facing,rules,module}.ts`; `draft-neck.ts` (block neck, resolution, new necks) and `splice.ts` (putting a neck into a block half or a princess centre panel) were split out of `module.ts` to keep functions small. No geometry helper was added: the facing uses `offsetPath` and `arcToCubics`.
 - Depth is measured from the level of the moved neck point, not from the HPS, so a widened neck keeps its depth and its curve stays smooth (decision 139, 1).
 - The round family uses its own cubic (handles adapted to depth/width) instead of the block's `neckCurve`, and the sweetheart is built from circular arcs: the block curve and a cubic sweetheart looped in the seam allowance or the facing offset on some bodies (decision 139, 3).
+- The square neck has its own shallowest depth (100 mm), like the sweetheart (120 mm): shallower, their turn into the shoulder is tighter than the facing (decision 139, 1).
+- The facing's outer edge offsets each neck segment once (handles scaled by the change of radius) instead of `offsetPath`, which split it into dozens of cubics and slowed every pattern (decision 139, 4).
 - The head-opening check also runs for a side zip (nothing opens at the neck) (decision 139, 5).
 - Toile criterion moved to the sew-test follow-up issue (#184 rule).
