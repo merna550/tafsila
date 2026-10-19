@@ -2,17 +2,22 @@
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
+  boatNeckBlouse,
   dartFreeLooseBlouse,
   dartedBlouse,
   gatheredKneeSkirt,
+  highRoundNeckBlouse,
   pleatedKneeSkirt,
   princessArmholeBlouse,
   princessShoulderBlouse,
   setInSleeveBlouse,
   rectanglePattern,
   SIZE_MATRIX,
+  squareNeckBlouse,
   straightKneeSkirt,
+  sweetheartNeckBlouse,
   tieredMidiSkirt,
+  vNeckBlouse,
   vNeckHalfCircleDress,
 } from "@tafsila/test-fixtures";
 import type { PatternResult } from "@tafsila/schemas";
@@ -30,15 +35,20 @@ const EXIT_USAGE = 2;
 
 /** Design fixtures the script can draft, by name. */
 const DESIGN_FIXTURES = {
+  boatNeckBlouse,
   dartFreeLooseBlouse,
   dartedBlouse,
   gatheredKneeSkirt,
+  highRoundNeckBlouse,
   pleatedKneeSkirt,
   princessArmholeBlouse,
   princessShoulderBlouse,
   setInSleeveBlouse,
+  squareNeckBlouse,
   straightKneeSkirt,
+  sweetheartNeckBlouse,
   tieredMidiSkirt,
+  vNeckBlouse,
   vNeckHalfCircleDress,
 } as const;
 

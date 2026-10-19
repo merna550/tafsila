@@ -19,6 +19,7 @@ import { bustDartPivot } from "./dart-pivot";
 import { armholeSplitMm } from "./panel-parts";
 import { bodiceOf, princessArmholeModule, princessShoulderModule } from "./princess";
 import { styleCurve, trueStyleCurve } from "./style-line";
+import { withFacings } from "../../test-utils/piece-ids";
 
 const PRINCESS_IDS = ["bodice-back-centre", "bodice-back-side", "bodice-front-centre", "bodice-front-side"];
 
@@ -86,7 +87,7 @@ describe("princess modules", () => {
 
   it("replace the two block halves by four panels", () => {
     expect(Object.keys(piecesOf(princessShoulderBlouse)).sort((a, b) => a.localeCompare(b, "en"))).toEqual(
-      PRINCESS_IDS,
+      withFacings(PRINCESS_IDS),
     );
   });
 

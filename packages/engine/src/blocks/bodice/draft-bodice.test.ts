@@ -15,6 +15,7 @@ import { createContext } from "../../pipeline/draft-context";
 import { bodiceCase } from "../../test-utils/bodice-input";
 import { deepFreeze } from "../../test-utils/deep-freeze";
 import { bodiceBlock, draftBodice } from "./draft-bodice";
+import { sortedIds, withFacings } from "../../test-utils/piece-ids";
 
 /** NFR-01 tolerance. */
 const KEY_POINT_MM = 1;
@@ -224,10 +225,9 @@ describe("bodice purity and pipeline", () => {
 
   it("drafts the seed blouse through generatePattern with the armhole lengths in resolved", () => {
     const result = generatePattern(dartedBlouse, M, { ...DEFAULT_ENGINE_OPTIONS, sizeLabel: "M" });
-    expect(patternResultSchema.parse(result).pieces.map((p) => p.id)).toEqual([
-      "bodice-back",
-      "bodice-front",
-    ]);
+    expect(sortedIds(patternResultSchema.parse(result).pieces)).toEqual(
+      withFacings(["bodice-back", "bodice-front"]),
+    );
     expect(result.validation.status).toBe("pass");
   });
 

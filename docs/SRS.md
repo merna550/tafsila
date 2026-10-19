@@ -349,7 +349,7 @@ interface DesignSpec {
   neckline?: {
     front: 'round' | 'v' | 'square' | 'sweetheart' | 'boat' | 'high-round';
     back: 'round' | 'v' | 'square' | 'high-round';
-    depthFrontMm?: number;                 // optional override
+    depthFrontMm?: number;                 // optional override, below the neck point; clamped with an FR-VAL-08 warning (#139)
     collar: 'none' | 'peter-pan' | 'shirt' | 'mandarin';
   };
   sleeve?: {

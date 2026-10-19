@@ -27,6 +27,10 @@ export const PIECE_NAMES: Readonly<Record<string, Bilingual>> = {
   "skirt-back": { ar: "خلف التنورة", en: "Skirt back" },
   sleeve: { ar: "الكم", en: "Sleeve" },
   "neck-facing": { ar: "بطانة الياقة", en: "Neck facing" },
+  "neck-facing-front": { ar: "تلبيس رقبة أمامي", en: "Front neck facing" },
+  "neck-facing-back": { ar: "تلبيس رقبة خلفي", en: "Back neck facing" },
+  "neck-facing-front-interfacing": { ar: "حشوة تلبيس الرقبة الأمامي", en: "Front neck facing interfacing" },
+  "neck-facing-back-interfacing": { ar: "حشوة تلبيس الرقبة الخلفي", en: "Back neck facing interfacing" },
 };
 
 /** The engine version as printed on a piece. */

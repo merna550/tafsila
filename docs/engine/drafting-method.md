@@ -159,6 +159,19 @@ Starts from the darted bodice block above; nothing is re-measured ([decision 138
 | 6   | Back: style line from the shoulder (same distance from the neck point) or the armhole to the waist dart apex, then the dart legs | as steps 2, 4 and 5, nothing turns                                             | `bodice-back-centre` / `-side` |      |
 | 7   | Dart-free front: no bust dart; side waist where the side seam equals the back's and the waist keeps its length                   | circle–circle crossing (underarm, back side length) × (CF waist, waist length) | `bodice-front` side waist      |      |
 
+### Necklines and facings (Chapter 4, "Necklines", "Facings")
+
+Starts from the block neck point (HPS) and the centre neck point of each half ([decision 139](../decisions/139-necklines-facings.md)). u = unit shoulder direction, d = depth below the moved neck point, w = widening.
+
+| #   | Step (paraphrased)                                                                  | Formula (mm)                                                                                     | Key point                     | Page |
+| --- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------- | ---- |
+| 1   | Move both neck points out along the shoulder by the wider style's amount            | NP' = NP + u · w, w = max(front, back `widenMm`), shoulder left ≥ 15                             | neck point                    |      |
+| 2   | Lower or raise the centre neck: style depth, or `depthFrontMm`, within limits       | C' = (0, NP'.y + d), d = block + `depthAddMm`, clamped to [min, scye − 30]                       | centre front neck / nape      |      |
+| 3   | Draw the style curve from C' to NP', square to the shoulder at NP'                  | round family: one cubic; V: one cubic; square: line + cubic; sweetheart: arcs R 110 / ≥ 25 / 100 | `neck` edge                   |      |
+| 4   | Facing: trace the neck, 60 mm along the shoulder, the neck moved 60 mm in, the fold | outer edge: each neck segment offset 60 mm (one Tiller–Hanson step)                              | `neck-facing-front` / `-back` |      |
+| 5   | Interfacing: the facing outline again, cut in interfacing                           | same outline                                                                                     | `neck-facing-*-interfacing`   |      |
+| 6   | No closure at the neck: the neck seam must pass over the head                       | 2 × (front + back neck) ≥ 1.55 × neck, else warn                                                 | FR-VAL-08                     |      |
+
 ### Set-in sleeve, one piece (Chapter 2, "Sleeve block")
 
 | #   | Step (paraphrased)                                                               | Formula (mm)                                                       | Key point                                 | Page |

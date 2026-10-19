@@ -6,6 +6,7 @@ import { createContext } from "../../pipeline/draft-context";
 import { defaultRegistry } from "../../pipeline/default-registry";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../../pipeline/generate-pattern";
 import { setInSleeveModule } from "./module";
+import { sortedIds, withFacings } from "../../test-utils/piece-ids";
 
 /**
  * The sleeve seed blouse with another sleeve type.
@@ -31,7 +32,7 @@ describe("setInSleeveModule", () => {
   it("adds a schema-valid sleeve and passes the seam, cap and notch checks", () => {
     const result = generatePattern(setInSleeveBlouse, sizeM);
     expect(patternResultSchema.safeParse(result).success).toBe(true);
-    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front", "sleeve"]);
+    expect(sortedIds(result.pieces)).toEqual(withFacings(["bodice-back", "bodice-front", "sleeve"]));
     const checks = result.validation.checks;
     for (const id of ["FR-VAL-01", "FR-VAL-02", "FR-VAL-04"]) {
       const rows = checks.filter((c) => c.id === id);
@@ -47,7 +48,7 @@ describe("setInSleeveModule", () => {
 
   it("leaves a sleeveless armhole finished: no sleeve, no armhole notches", () => {
     const result = generatePattern(dartedBlouse, sizeM);
-    expect(result.pieces.map((p) => p.id)).toEqual(["bodice-back", "bodice-front"]);
+    expect(sortedIds(result.pieces)).toEqual(withFacings(["bodice-back", "bodice-front"]));
     expect(result.pieces.every((p) => p.notches.length === 0)).toBe(true);
     expect(result.pieces[0]!.edges.find((e) => e.id === "armhole")!.seamAllowanceMm).toBeGreaterThan(0);
   });

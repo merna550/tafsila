@@ -113,6 +113,34 @@ export const VALIDATION_MESSAGES = {
     ar: "القصة المحددة تحتاج بنسات أو قصة أميرة؛ الصدر بدون بنس لن يكون محددًا على الجسم",
     en: "A fitted bodice needs darts or princess seams; without them it will not fit closely",
   },
+  NECK_DEPTH_OK: {
+    ar: "عمق فتحة الرقبة الأمامية {mm} مم والخلفية {expected} مم ضمن الحدود",
+    en: "Neckline depth is {mm} mm at the front and {expected} mm at the back, within limits",
+  },
+  NECK_FRONT_DEPTH_CLAMPED: {
+    ar: "عمق فتحة الرقبة الأمامية المطلوب {requested} مم خارج الحدود ({min} إلى {max} مم)؛ رُسمت بعمق {mm} مم",
+    en: "Front neckline depth {requested} mm is outside {min} to {max} mm; drafted at {mm} mm",
+  },
+  NECK_BACK_DEPTH_CLAMPED: {
+    ar: "عمق فتحة الرقبة الخلفية المطلوب {requested} مم خارج الحدود ({min} إلى {max} مم)؛ رُسمت بعمق {mm} مم",
+    en: "Back neckline depth {requested} mm is outside {min} to {max} mm; drafted at {mm} mm",
+  },
+  NECK_WIDTH_OK: {
+    ar: "اتساع فتحة الرقبة {mm} مم عند الكتف كما هو مطلوب",
+    en: "Neckline widened {mm} mm at the shoulder, as asked",
+  },
+  NECK_WIDTH_CLAMPED: {
+    ar: "اتسعت فتحة الرقبة {mm} مم بدل {requested} مم ليبقى من الكتف {min} مم على الأقل",
+    en: "Neckline widened {mm} mm instead of {requested} mm so at least {min} mm of shoulder is left",
+  },
+  NECK_HEAD_OPENING_OK: {
+    ar: "فتحة الرقبة {mm} مم تمر من الرأس (حوالي {expected} مم)",
+    en: "The {mm} mm neck opening fits over the head (about {expected} mm)",
+  },
+  NECK_HEAD_OPENING_TIGHT: {
+    ar: "فتحة الرقبة {mm} مم أصغر من الرأس (حوالي {expected} مم) ولا يوجد فتح عند الرقبة؛ يمكن إضافة سحاب أو أزرار أو اختيار فتحة أعمق",
+    en: "The {mm} mm neck opening is smaller than the head (about {expected} mm) and nothing opens at the neck; add a zip or buttons, or choose a deeper neckline",
+  },
   FULLNESS_CLOSURE_OK: {
     ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم كما هو مطلوب",
     en: "Waist after gathers or pleats is {mm} mm, as expected",

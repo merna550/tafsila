@@ -28,10 +28,10 @@
 <g id="layer-labels">
 <text id="piece-skirt-front-label-name" x="320.98" y="411.81" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">أمام التنورة</text>
 <text id="piece-skirt-front-label-cut" x="320.98" y="423.01" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 2 (مع مقلوبها)</text>
-<text id="piece-skirt-front-label-size" x="320.98" y="434.21" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس custom - v0.8.0</text>
+<text id="piece-skirt-front-label-size" x="320.98" y="434.21" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس custom - v0.9.0</text>
 <text id="piece-skirt-back-label-name" x="320.98" y="1179.39" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">خلف التنورة</text>
 <text id="piece-skirt-back-label-cut" x="320.98" y="1190.59" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">اقصّي 2 (مع مقلوبها)</text>
-<text id="piece-skirt-back-label-size" x="320.98" y="1201.79" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس custom - v0.8.0</text>
+<text id="piece-skirt-back-label-size" x="320.98" y="1201.79" font-family='"IBM Plex Sans Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif' font-size="8.00" direction="rtl" unicode-bidi="plaintext" text-anchor="middle">المقاس custom - v0.9.0</text>
 </g>
 <g id="layer-scale">
 <rect id="piece-skirt-front-scale-square" x="197.00" y="93.21" width="100.00" height="100.00" fill="none" stroke="#000000" stroke-width="0.35"/>

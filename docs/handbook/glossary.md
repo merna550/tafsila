@@ -855,7 +855,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Facing and interfacing
 
 **Plain words:** A facing is a shaped piece that finishes a raw edge such as a neckline from the inside. Interfacing is a stiffening layer fused or sewn to a piece (collars, waistbands).  
-**In Tafsila:** Cut `fabric` kinds: `main`, `lining`, `interfacing`; facings generated where needed (FR-PAT-07). **Level:** intermediate  
+**In Tafsila:** Cut `fabric` kinds: `main`, `lining`, `interfacing`; facings generated where needed (FR-PAT-07). The neckline module (#139) traces `neck-facing-front` / `neck-facing-back` 60 mm wide from the drafted neck, cut on the fold, plus a matching `-interfacing` piece; the facing's `neck` edge pairs with the bodice neck, so FR-VAL-01 checks them within 2 mm ([decision 139](../decisions/139-necklines-facings.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Interfacing>
 
 <a id="fastapi"></a>
@@ -1478,7 +1478,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Neckline (v, square, sweetheart, boat, round)
 
 **Plain words:** The shape of the opening around the neck. V comes to a point; square has straight corners; sweetheart is heart-shaped; boat is wide and shallow; high-round sits close to the neck.  
-**In Tafsila:** `neckline.front` and `neckline.back` enums in `design-spec.ts`; depth in `depthFrontMm`. **Level:** beginner  
+**In Tafsila:** `neckline.front` and `neckline.back` enums in `design-spec.ts`; depth in `depthFrontMm`. Drafted by `src/modules/neckline/` (#139): each style is a named depth and width change on the block neck, every curve meets the shoulder square, and an override outside its limits is clamped with an FR-VAL-08 warning ([decision 139](../decisions/139-necklines-facings.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Neckline>
 
 <a id="nesting"></a>
