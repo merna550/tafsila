@@ -2,6 +2,7 @@
 import type { AdminRepository } from "../../ports/admin-repository";
 import type { AccountAudit } from "../../ports/account-audit";
 import type { ClientRepository } from "../../ports/client-repository";
+import type { DesignRepository } from "../../ports/design-repository";
 import type { MeasurementSetRepository } from "../../ports/measurement-set-repository";
 import type { SizeChartRepository } from "../../ports/size-chart-repository";
 import type { ProfileRepository } from "../../ports/profile-repository";
@@ -11,6 +12,7 @@ import type { TrialEligibility } from "../../ports/trial-eligibility";
 /** The repositories and ports that need the database. */
 export interface Repositories {
   readonly clients: ClientRepository;
+  readonly designs: DesignRepository;
   readonly measurementSets: MeasurementSetRepository;
   readonly sizeCharts: SizeChartRepository;
   readonly phoneVerification: PhoneVerificationRepository;
@@ -44,6 +46,7 @@ export function createRejectingRepositories(): Repositories {
       update: failing(),
       remove: failing(),
     },
+    designs: { create: failing(), list: failing(), get: failing(), rename: failing(), remove: failing() },
     measurementSets: {
       create: failing(),
       list: failing(),

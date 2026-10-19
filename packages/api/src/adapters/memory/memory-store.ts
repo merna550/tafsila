@@ -1,5 +1,12 @@
 /** In-memory tables shared by the memory repositories, so deleting a client can cascade to its sets like the database does. */
-import type { Client, MeasurementSet, Profile, SizeChartResponse } from "@tafsila/schemas";
+import type {
+  Client,
+  Design,
+  MeasurementSet,
+  PatternVersion,
+  Profile,
+  SizeChartResponse,
+} from "@tafsila/schemas";
 
 /** A client row plus its owner. */
 export interface ClientRow extends Omit<Client, "summary"> {
@@ -8,6 +15,16 @@ export interface ClientRow extends Omit<Client, "summary"> {
 
 /** A measurement set row (without warnings) plus its owner. */
 export interface SetRow extends Omit<MeasurementSet, "warnings"> {
+  readonly ownerId: string;
+}
+
+/** A design row plus its owner. */
+export interface DesignRow extends Design {
+  readonly ownerId: string;
+}
+
+/** A pattern version row plus its owner. */
+export interface VersionRow extends PatternVersion {
   readonly ownerId: string;
 }
 
@@ -46,6 +63,10 @@ export interface MemoryStore {
   clients: ClientRow[];
   /** Measurement set rows in insertion order. */
   sets: SetRow[];
+  /** Design rows in insertion order. */
+  designs: DesignRow[];
+  /** Pattern version rows in insertion order (written by the pattern version routes). */
+  versions: VersionRow[];
   /** System size charts; the first default one is served. */
   sizeCharts: ChartRow[];
   /** Users the admin screens list (the fake of profiles joined with auth.users); an admin check reads `role` here. */
@@ -75,6 +96,8 @@ export function createMemoryStore(): MemoryStore {
   return {
     clients: [],
     sets: [],
+    designs: [],
+    versions: [],
     sizeCharts: [],
     users: [],
     audit: [],

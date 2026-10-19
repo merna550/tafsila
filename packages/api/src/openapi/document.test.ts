@@ -29,6 +29,8 @@ describe("OpenAPI document", () => {
       "/api/clients",
       "/api/clients/{id}",
       "/api/debug/error",
+      "/api/designs",
+      "/api/designs/{id}",
       "/api/health",
       "/api/me",
       "/api/measurements",

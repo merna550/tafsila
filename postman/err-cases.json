@@ -179,5 +179,16 @@
     },
     "status": 403,
     "code": "FORBIDDEN"
+  },
+  {
+    "name": "ERR PATCH /api/designs/{id} with an empty title returns 400",
+    "method": "PATCH",
+    "path": "/api/designs/00000000-0000-4000-8000-0000000000d1",
+    "auth": true,
+    "body": {
+      "title": ""
+    },
+    "status": 400,
+    "code": "VALIDATION_FAILED"
   }
 ]

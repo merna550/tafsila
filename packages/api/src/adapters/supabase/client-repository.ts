@@ -2,6 +2,7 @@
 import type { Client } from "@tafsila/schemas";
 import { desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import type { ClientRepository } from "../../ports/client-repository";
+import { escapeLike } from "./escape-like";
 import { clients, measurementSets } from "./schema";
 import type { WithUser } from "./with-user";
 
@@ -31,16 +32,6 @@ const summaryColumns = {
 
 /** What every client read selects: the table columns and the summary. */
 const clientColumns = { ...getTableColumns(clients), ...summaryColumns };
-
-/**
- * Escapes `%`, `_` and `\` so a search term is matched literally by LIKE.
- *
- * @param term - Raw search text.
- * @returns Text safe to wrap in `%...%`.
- */
-export function escapeLike(term: string): string {
-  return term.replace(/[\\%_]/g, (char) => `\\${char}`);
-}
 
 /**
  * Maps a row to the API shape.

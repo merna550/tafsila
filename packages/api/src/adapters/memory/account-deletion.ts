@@ -58,6 +58,8 @@ export function createMemoryAccountDeletion(store: MemoryStore): MemoryAccountDe
         await run("deleter", userId);
         store.clients = store.clients.filter((row) => row.ownerId !== userId);
         store.sets = store.sets.filter((row) => row.ownerId !== userId);
+        store.designs = store.designs.filter((row) => row.ownerId !== userId);
+        store.versions = store.versions.filter((row) => row.ownerId !== userId);
         store.profiles.delete(userId);
         store.deletedUsers.add(userId);
       },
