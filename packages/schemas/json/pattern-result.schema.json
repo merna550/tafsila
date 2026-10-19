@@ -43,7 +43,9 @@
           },
           "kind": {
             "enum": [
-              "elastic"
+              "elastic",
+              "zip",
+              "button"
             ],
             "type": "string"
           },
@@ -169,6 +171,10 @@
                         "hip"
                       ],
                       "type": "string"
+                    },
+                    "overlapMm": {
+                      "minimum": 0,
+                      "type": "number"
                     }
                   },
                   "required": [
@@ -197,6 +203,10 @@
                         "hip"
                       ],
                       "type": "string"
+                    },
+                    "overlapMm": {
+                      "minimum": 0,
+                      "type": "number"
                     },
                     "points": {
                       "items": {
@@ -742,7 +752,9 @@
                         "pleat-direction",
                         "gather",
                         "slit",
-                        "sleeve-end"
+                        "sleeve-end",
+                        "button",
+                        "buttonhole"
                       ],
                       "type": "string"
                     },
@@ -832,7 +844,9 @@
                         "pleat-direction",
                         "gather",
                         "slit",
-                        "sleeve-end"
+                        "sleeve-end",
+                        "button",
+                        "buttonhole"
                       ],
                       "type": "string"
                     },
@@ -922,7 +936,9 @@
                         "pleat-direction",
                         "gather",
                         "slit",
-                        "sleeve-end"
+                        "sleeve-end",
+                        "button",
+                        "buttonhole"
                       ],
                       "type": "string"
                     },

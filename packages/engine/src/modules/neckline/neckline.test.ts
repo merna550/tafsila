@@ -213,7 +213,8 @@ describe("resolveNeck", () => {
 });
 
 describe("neck facings", () => {
-  const ctx = shapedContext(vNeckBlouse, sizeM);
+  // No closure, so both facings stay on the fold (a zip or buttons turn the fold into a seam, #143).
+  const ctx = shapedContext({ ...vNeckBlouse, closure: { type: "none", position: "center-back" } }, sizeM);
 
   it("adds a facing and an interfacing per half, each one on the fold", () => {
     for (const half of NECK_HALVES) {

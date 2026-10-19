@@ -13,7 +13,9 @@ import {
   CUFF_PLACKET_WIDTH_MM,
   CUFF_SLIT_LENGTH_MM,
 } from "../../constants/cuff";
+import { CUFF_BUTTON_DIAMETER_MM } from "../../constants/closure";
 import { pt, type Segment } from "../../geometry";
+import { buttonholeMark, buttonMark } from "../../pieces/button-marks";
 import { stripPiece } from "../../pieces/strip";
 import type { PieceDraft } from "../../pipeline/draft-context";
 
@@ -65,10 +67,11 @@ export function bandCuffPieces(
     loop: !input.opens,
     quantity: PAIR,
   };
-  const band = stripPiece(
+  const strip = stripPiece(
     { ...base, id: CUFF_PIECE_IDS.band, heightMm: FOLDED_LAYERS * widthMm, fabric: "main", paired: true },
     options,
   );
+  const band = input.opens ? { ...strip, marks: cuffButtonMarks(input.seamMm, widthMm) } : strip;
   const interfacing = stripPiece(
     { ...base, id: CUFF_PIECE_IDS.interfacing, heightMm: widthMm, fabric: "interfacing", paired: false },
     options,
@@ -88,6 +91,26 @@ export function bandCuffPieces(
     options,
   );
   return [band, interfacing, placket];
+}
+
+/**
+ * The button and buttonhole of an open wrist cuff (decision 142, 5; issue #143): centred across the outer half of the
+ * folded band, the button on the underlap at the start and the buttonhole in the overlap at the end, so the two meet
+ * once the overlap lies over the start.
+ *
+ * @param seamMm - Sewn edge of the band.
+ * @param widthMm - Finished width of the band.
+ * @returns The two marks.
+ */
+export function cuffButtonMarks(seamMm: number, widthMm: number): Mark[] {
+  const yMm = widthMm / 2;
+  const half = CUFF_OVERLAP_MM / 2;
+  const button = { key: "cuff", centre: pt(half, yMm), towardEdge: pt(-1, 0) };
+  const hole = { key: "cuff", centre: pt(seamMm + half, yMm), towardEdge: pt(1, 0) };
+  return [
+    buttonMark(button, CUFF_BUTTON_DIAMETER_MM, "none"),
+    buttonholeMark(hole, CUFF_BUTTON_DIAMETER_MM, "none"),
+  ];
 }
 
 /**

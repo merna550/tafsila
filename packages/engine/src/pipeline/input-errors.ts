@@ -1,6 +1,6 @@
 /**
  * Input-type drafting errors (issue #128, decision 128, 10): body proportions or a skirt length the blocks
- * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141), and sleeve style, length and cuff combinations the sleeve modules refuse (issue #142). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
+ * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141), sleeve style, length and cuff combinations the sleeve modules refuse (issue #142), and closures the category cannot take or a zip longer than its opening (issue #143). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
  */
 import { DraftingError } from "../errors/drafting-error";
 
@@ -61,6 +61,14 @@ export const INPUT_ERROR_MESSAGES = {
   SLEEVE_CUFF_UNSUPPORTED: {
     ar: "هذه الأسورة لا تناسب نوع الكم وطوله: كم الأسقف يحتاج أسورة، والكم الكاب والفراشة بدون أسورة، والأستك على الكم العادي حتى الكوع فقط.",
     en: "This cuff does not suit the sleeve style and length: a bishop sleeve needs a cuff, cap and flutter sleeves take none, and elastic on a set-in sleeve stops at the elbow",
+  },
+  CLOSURE_UNSUPPORTED: {
+    ar: "الأزرار تحتاج منتصف أمامي أو خلفي بدون شق وبدون تقسيم الجيبة لقطع. غيّري مكان الأزرار أو اختاري سحابًا.",
+    en: "Buttons need a centre front or back line with no slit and no skirt split into panels; move them or choose a zip",
+  },
+  CLOSURE_ZIP_TOO_LONG: {
+    ar: "السحاب أطول من الفتحة في هذا الطول. اختاري طولًا أطول أو مكانًا آخر للسحاب.",
+    en: "The zip is longer than the opening at this length; choose a longer garment or another zip position",
   },
   SLEEVE_PUFF_UNSOLVABLE: {
     ar: "لا يمكن رسم رأس كم منفوخ بهذه المقاسات. راجعي محيط الذراع والقيم المدخلة.",

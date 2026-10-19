@@ -250,3 +250,40 @@ export const flutterSleeveBlouse: DesignSpec = {
   ...dartedBlouse,
   sleeve: { type: "flutter", length: "short", cuff: "none" },
 };
+
+/**
+ * Closure seed designs (issue #143): the seed garments with each closure. Used by the closure snapshots, property
+ * tests and `pnpm engine:print`.
+ */
+export const centreBackZipDress: DesignSpec = {
+  ...vNeckHalfCircleDress,
+  skirt: { type: "straight", length: "knee" },
+  neckline: { front: "round", back: "round", collar: "none" },
+};
+
+/** The straight dress with a zip in the left side seam (issue #143). */
+export const sideZipDress: DesignSpec = { ...centreBackZipDress, closure: { type: "zip", position: "side" } };
+
+/** The straight dress with a centre-front zip (issue #143). */
+export const centreFrontZipDress: DesignSpec = {
+  ...centreBackZipDress,
+  closure: { type: "zip", position: "center-front" },
+};
+
+/** The straight dress buttoned down the centre front, neck to hem (issue #143). */
+export const buttonFrontDress: DesignSpec = {
+  ...centreBackZipDress,
+  closure: { type: "buttons", position: "center-front" },
+};
+
+/** The seed blouse buttoned down the centre front, with no collar (issue #143). */
+export const buttonFrontBlouse: DesignSpec = {
+  ...dartedBlouse,
+  closure: { type: "buttons", position: "center-front" },
+};
+
+/** The straight dress with no closure: the waist cannot pass the hips, so it warns (issue #143). */
+export const noClosureDress: DesignSpec = {
+  ...centreBackZipDress,
+  closure: { type: "none", position: "center-back" },
+};

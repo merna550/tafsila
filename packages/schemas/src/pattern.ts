@@ -136,6 +136,12 @@ export const dartSchema = z.object({
 /** A dart on a piece. */
 export type Dart = z.infer<typeof dartSchema>;
 
+/**
+ * Width of a button extension the line crosses (issue #143): the two fronts overlap by it, so it is not part of the
+ * garment's circumference and the measured length leaves it out.
+ */
+const overlapMmSchema = z.number().min(0).optional();
+
 /** A geometric declaration used to measure one garment circumference from finished pieces. */
 export const bodyLineSchema = z.discriminatedUnion("kind", [
   z.object({
@@ -149,10 +155,12 @@ export const bodyLineSchema = z.discriminatedUnion("kind", [
     measurement: z.enum(["bust", "waist", "hip"]),
     kind: z.literal("horizontal"),
     atMm: z.number(),
+    overlapMm: overlapMmSchema,
   }),
   z.object({
     id: z.string().min(1),
     measurement: z.enum(["bust", "waist", "hip"]),
+    overlapMm: overlapMmSchema,
     /**
      * A body line that bends on the flat pattern, such as the hip line of a pivoted panel (decision 135): measured
      * along these points, between the first and last place the outline crosses them (the end legs are extended).
@@ -181,7 +189,8 @@ export type Label = z.infer<typeof labelSchema>;
 /**
  * What a construction mark tells the sewist (decision 137). Pleats: fold here, lay the fold on the placement line, in
  * the arrow's direction. Gather: gather this run to `lengthMm`. Slit: cut along this line (a cuff opening, #142).
- * Sleeve end: a cap or flutter sleeve ends here on the armhole (#142). Closures (#143) add their kinds here.
+ * Sleeve end: a cap or flutter sleeve ends here on the armhole (#142). Button: sew a button here (a point). Buttonhole:
+ * cut a buttonhole along this line (#143).
  */
 export const markKindSchema = z.enum([
   "pleat-fold",
@@ -190,6 +199,8 @@ export const markKindSchema = z.enum([
   "gather",
   "slit",
   "sleeve-end",
+  "button",
+  "buttonhole",
 ]);
 
 /** What a construction mark tells the sewist. */
@@ -304,21 +315,21 @@ export const validationReportSchema = z.object({
 export type ValidationReport = z.infer<typeof validationReportSchema>;
 
 /**
- * A notion bought by length rather than cut from the pattern, such as waist elastic (issue #140, decision 140): its
- * cut length is pattern data, not display text.
+ * A notion bought rather than cut from the pattern (issue #140, decision 140): waist elastic by length, a zip by its
+ * length and buttons by count and diameter (issue #143). Its sizes are pattern data, not display text.
  */
 export const notionSchema = z.object({
   id: z.string().min(1),
-  kind: z.enum(["elastic"]),
+  kind: z.enum(["elastic", "zip", "button"]),
   name: localizedTextSchema,
-  /** Length to cut, in mm, including any join overlap. */
+  /** Length to cut or buy, in mm, including any join overlap (a button's diameter). */
   lengthMm: z.number().positive(),
-  /** Width of the notion, in mm. */
+  /** Width of the notion, in mm (a button's diameter). */
   widthMm: z.number().positive(),
   quantity: z.number().int().min(1),
 });
 
-/** A notion cut by length (elastic). */
+/** A notion bought for the pattern (elastic, zip, buttons). */
 export type Notion = z.infer<typeof notionSchema>;
 
 /** The engine output: pieces, sewing order, validation report and metadata. */

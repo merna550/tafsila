@@ -326,7 +326,7 @@ export function scaleLayer(layout: SheetLayout): string {
 
 /**
  * Dash pattern of each mark kind: fold lines, arrows and slits solid, placement lines dashed, gathers dotted (a sleeve
- * end is a point, drawn as a dot).
+ * end and a button are points, drawn as dots; a buttonhole is a solid line).
  */
 export const MARK_DASH: Readonly<Record<MarkKind, string>> = {
   "pleat-fold": "",
@@ -335,6 +335,8 @@ export const MARK_DASH: Readonly<Record<MarkKind, string>> = {
   gather: "1 1.5",
   slit: "",
   "sleeve-end": "",
+  button: "",
+  buttonhole: "",
 };
 
 /** Radius of a point mark, in mm. */

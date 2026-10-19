@@ -68,7 +68,7 @@ export function probeLengthMm(path: ReadonlyPath, probe: readonly Point[]): numb
 }
 
 /**
- * Measures one declared body line from the piece geometry.
+ * Measures one declared body line from the piece geometry; a button extension it crosses is left out (#143).
  *
  * @param piece - Drafted piece.
  * @param line - Edge-backed, horizontal or polyline body-line declaration.
@@ -81,8 +81,10 @@ export function bodyLineLengthMm(piece: BodyLinePiece, line: BodyLine): number |
   }
   const box = bbox(samplePath(piece.stitchPath));
   const reachMm = box.maxX - box.minX + box.maxY - box.minY + 1;
-  if (line.kind === "horizontal") {
-    return probeLengthMm(piece.stitchPath, [pt(box.minX - 1, line.atMm), pt(box.maxX + 1, line.atMm)]);
-  }
-  return probeLengthMm(piece.stitchPath, extendProbe(line.points, reachMm));
+  const probe =
+    line.kind === "horizontal"
+      ? [pt(box.minX - 1, line.atMm), pt(box.maxX + 1, line.atMm)]
+      : extendProbe(line.points, reachMm);
+  const lengthMm = probeLengthMm(piece.stitchPath, probe);
+  return lengthMm === undefined ? undefined : lengthMm - (line.overlapMm ?? 0);
 }
