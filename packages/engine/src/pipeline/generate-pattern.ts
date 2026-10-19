@@ -64,6 +64,7 @@ function toResult(ctx: DraftContext, hash: string): PatternResult {
     pieces: ctx.pieces.map(completePiece),
     sewingOrder: [],
     validation: buildReport(ctx.checks),
+    ...(ctx.notions && ctx.notions.length > 0 ? { notions: [...ctx.notions] } : {}),
     meta: { category: ctx.spec.category, sizeLabel: ctx.options.sizeLabel, createdFrom: hash },
   });
 }

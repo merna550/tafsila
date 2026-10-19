@@ -173,3 +173,30 @@ export const tieredMidiSkirt: DesignSpec = {
   skirt: { type: "tiered", length: "midi" },
   closure: { type: "zip", position: "center-back" },
 };
+
+/** A straight knee skirt with a straight folded waistband and a centre-back zip with a 30 mm underlap (issue #140). */
+export const straightBandSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  waistband: "straight",
+  closure: { type: "zip", position: "center-back" },
+};
+
+/** An A-line midi skirt with a contour band traced from the waist, darts closed, and a side zip (issue #140). */
+export const contourBandSkirt: DesignSpec = {
+  ...aLineMidiSkirt,
+  waistband: "contour",
+};
+
+/** A gathered knee skirt with an elastic casing and no opening: wide enough to pull on over the hip (issue #140). */
+export const elasticGatheredSkirt: DesignSpec = {
+  ...gatheredKneeSkirt,
+  waistband: "elastic",
+  closure: { type: "none", position: "side" },
+};
+
+/** A straight knee skirt with an elastic casing: too narrow to pass over the hip, so FR-VAL-08 warns (issue #140). */
+export const elasticStraightSkirt: DesignSpec = {
+  ...straightKneeSkirt,
+  waistband: "elastic",
+  closure: { type: "none", position: "side" },
+};

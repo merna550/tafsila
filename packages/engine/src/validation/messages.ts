@@ -149,6 +149,26 @@ export const VALIDATION_MESSAGES = {
     ar: "الوسط بعد الكشكشة أو الكسرات {mm} مم؛ المتوقع {expected} مم",
     en: "Waist after gathers or pleats is {mm} mm; expected {expected} mm",
   },
+  WAISTBAND_LENGTH_OK: {
+    ar: "حافة الحزام {mm} مم تطابق وسط التنورة {expected} مم؛ تراكب القفل {overlap} مم",
+    en: "Waist finish seam {mm} mm matches the skirt waist {expected} mm; closure overlap {overlap} mm",
+  },
+  WAISTBAND_LENGTH_MISMATCH: {
+    ar: "حافة الحزام {mm} مم لا تطابق وسط التنورة {expected} مم",
+    en: "Waist finish seam {mm} mm does not match the skirt waist {expected} mm",
+  },
+  WAIST_HIP_PASS_OK: {
+    ar: "فتحة الوسط {mm} مم تمر فوق الأرداف ({expected} مم)",
+    en: "The {mm} mm waist opening passes over the hip ({expected} mm)",
+  },
+  WAIST_HIP_PASS_TIGHT: {
+    ar: "فتحة الوسط {mm} مم أصغر من الأرداف ({expected} مم) فلن تمر التنورة؛ يمكن إضافة سحاب أو اختيار تنورة مكشكشة",
+    en: "The {mm} mm waist opening is smaller than the hip ({expected} mm), so the skirt will not pull on; add a zip or choose a gathered skirt",
+  },
+  WAISTBAND_CONTOUR_FLAT: {
+    ar: "الحزام المشكّل يحتاج وسطًا مشكّلًا؛ رُسم حزام مستقيم لأن أعلى التنورة مستقيم",
+    en: "A contour band needs a shaped waist; a straight band was drafted because the skirt top is straight",
+  },
 } as const;
 
 /** A stable code accepted by {@link formatMessage}. */
