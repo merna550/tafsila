@@ -23,6 +23,7 @@ import { skirtBlockModule } from "../../blocks/skirt/skirt-module";
 import { skirtShapeModule } from "./shape-module";
 import { SLIT_EDGE_ID } from "./slit";
 import { skirtSlitModule } from "./slit-module";
+import { withoutWaistFinish } from "../../test-utils/piece-ids";
 
 const sizeM = SIZE_MATRIX.find((e) => e.id === "size-m")!.measurements;
 const CHART = SIZE_MATRIX.filter((e) => e.source === "chart");
@@ -143,7 +144,7 @@ describe("skirt slits", () => {
 
   it("cuts a side slit into both side seams, notches paired", () => {
     const result = draft(aLineAnkleSideSlitSkirt);
-    expect(result.pieces.every((p) => p.notches.some((n) => n.edgeId === "side"))).toBe(true);
+    expect(withoutWaistFinish(result.pieces).every((p) => p.notches.some((n) => n.edgeId === "side"))).toBe(true);
     expect(result.validation.checks.filter((c) => c.code === "NOTCH_OK")).toHaveLength(1);
   });
 

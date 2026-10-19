@@ -20,3 +20,13 @@ export function sortedIds(pieces: readonly { readonly id: string }[]): string[] 
 export function withFacings(ids: readonly string[]): string[] {
   return [...ids, ...NECKLINE_PIECE_IDS].sort((a, b) => a.localeCompare(b, "en"));
 }
+
+/**
+ * The pieces without the waist finish (band, casing or waist facing) every skirt gets from #140.
+ *
+ * @param pieces - Pieces of a pattern.
+ * @returns The other pieces, in order.
+ */
+export function withoutWaistFinish<P extends { readonly id: string }>(pieces: readonly P[]): P[] {
+  return pieces.filter((p) => !p.id.startsWith("waist"));
+}

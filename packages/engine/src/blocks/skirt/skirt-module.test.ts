@@ -5,6 +5,7 @@ import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../../pipeline/generate
 import { defaultRegistry } from "../../pipeline/default-registry";
 import { expectSvgSnapshot } from "../../render/expect-svg-snapshot";
 import { skirtBlockModule } from "./skirt-module";
+import { withoutWaistFinish } from "../../test-utils/piece-ids";
 
 /** Chart sizes, one snapshot each. */
 const CHART = SIZE_MATRIX.filter((e) => e.source === "chart");
@@ -23,7 +24,7 @@ describe("skirtBlockModule", () => {
 
   it("adds a front and a back cut on the fold with a side zip", () => {
     const result = generatePattern(straightKneeSkirt, sizeM, DEFAULT_ENGINE_OPTIONS, defaultRegistry);
-    expect(result.pieces.map((p) => [p.id, p.cut.onFold, p.cut.quantity])).toEqual([
+    expect(withoutWaistFinish(result.pieces).map((p) => [p.id, p.cut.onFold, p.cut.quantity])).toEqual([
       ["skirt-front", true, 1],
       ["skirt-back", true, 1],
     ]);

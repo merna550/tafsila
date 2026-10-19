@@ -33,6 +33,64 @@
       ],
       "type": "object"
     },
+    "notions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "elastic"
+            ],
+            "type": "string"
+          },
+          "lengthMm": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "name": {
+            "additionalProperties": false,
+            "properties": {
+              "ar": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "en": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "ar",
+              "en"
+            ],
+            "type": "object"
+          },
+          "quantity": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "widthMm": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "lengthMm",
+          "widthMm",
+          "quantity"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
     "pieces": {
       "items": {
         "additionalProperties": false,
