@@ -18,6 +18,7 @@ import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
 import { gatheredSkirtModule } from "./gathered";
 import { pleatedSkirtModule } from "./pleated";
 import { tieredSkirtModule } from "./tiered";
+import { withoutWaistFinish } from "../../test-utils/piece-ids";
 
 /** The default fabric width, in mm. */
 const DEFAULT_FABRIC_MM = 1500;
@@ -81,7 +82,7 @@ describe("panel skirt modules", () => {
   it("drafts gathered and pleated skirts as front and back on the fold, without darts", () => {
     for (const spec of [gatheredKneeSkirt, pleatedKneeSkirt]) {
       const result = draft(spec, sizeM);
-      expect(result.pieces.map((p) => [p.id, p.cut.onFold, p.darts.length])).toEqual([
+      expect(withoutWaistFinish(result.pieces).map((p) => [p.id, p.cut.onFold, p.darts.length])).toEqual([
         ["skirt-front", true, 0],
         ["skirt-back", true, 0],
       ]);
@@ -105,17 +106,21 @@ describe("panel skirt modules", () => {
 
   it("drafts three tiers whose seams declare the gathered length as intended ease", () => {
     const result = draft(tieredMidiSkirt, sizeM);
-    expect(new Set(result.pieces.map((p) => p.id.split("-").slice(0, 2).join("-")))).toEqual(
-      new Set(["tier-1", "tier-2", "tier-3"]),
-    );
+    expect(
+      new Set(withoutWaistFinish(result.pieces).map((p) => p.id.split("-").slice(0, 2).join("-"))),
+    ).toEqual(new Set(["tier-1", "tier-2", "tier-3"]));
     const seam = result.pieces.find((p) => p.id.startsWith("tier-2"))!.edges.find((e) => e.id === "top")!;
     expect(seam.pairsWith!.intendedEaseMm).toBeGreaterThan(0);
   });
 
   it("splits into equal panels on narrow fabric", () => {
     const result = draft(tieredMidiSkirt, sizeM, NARROW_FABRIC_MM);
-    expect(result.pieces.map((p) => p.id)).toEqual(["tier-1-panel", "tier-2-panel", "tier-3-panel"]);
-    expect(new Set(result.pieces.map((p) => p.cut.quantity)).size).toBe(1);
+    expect(withoutWaistFinish(result.pieces).map((p) => p.id)).toEqual([
+      "tier-1-panel",
+      "tier-2-panel",
+      "tier-3-panel",
+    ]);
+    expect(new Set(withoutWaistFinish(result.pieces).map((p) => p.cut.quantity)).size).toBe(1);
     expect(result.pieces[0]!.cut.quantity).toBeGreaterThan(2);
   });
 
@@ -172,7 +177,7 @@ describe("panel skirt properties across the size matrix", () => {
         const { result } = sample(i, tieredMidiSkirt, l, w);
         const seams = result.validation.checks.filter((c) => c.id === "FR-VAL-01");
         const tierSeams = seams.filter((c) => c.refs?.some((r) => r.endsWith("/top")));
-        const slots = result.pieces.length / 3;
+        const slots = withoutWaistFinish(result.pieces).length / 3;
         expect(tierSeams).toHaveLength(2 * slots);
         for (const c of seams) expect(c.status).toBe("pass");
         for (const c of tierSeams) expect(Math.abs(c.expectedMm!)).toBeGreaterThan(0);

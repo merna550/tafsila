@@ -16,6 +16,7 @@ export * from "./modules/circle-skirt/draft";
 export * from "./modules/skirt";
 export * from "./pieces/fabric-width";
 export * from "./pieces/measure";
+export * from "./pieces/waist-seam";
 export * from "./pipeline";
 export * from "./render";
 export * from "./resolve";

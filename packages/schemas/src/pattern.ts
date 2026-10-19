@@ -291,12 +291,32 @@ export const validationReportSchema = z.object({
 /** The validation outcome for a whole pattern. */
 export type ValidationReport = z.infer<typeof validationReportSchema>;
 
+/**
+ * A notion bought by length rather than cut from the pattern, such as waist elastic (issue #140, decision 140): its
+ * cut length is pattern data, not display text.
+ */
+export const notionSchema = z.object({
+  id: z.string().min(1),
+  kind: z.enum(["elastic"]),
+  name: localizedTextSchema,
+  /** Length to cut, in mm, including any join overlap. */
+  lengthMm: z.number().positive(),
+  /** Width of the notion, in mm. */
+  widthMm: z.number().positive(),
+  quantity: z.number().int().min(1),
+});
+
+/** A notion cut by length (elastic). */
+export type Notion = z.infer<typeof notionSchema>;
+
 /** The engine output: pieces, sewing order, validation report and metadata. */
 export const patternResultSchema = z.object({
   engineVersion: z.string().regex(/^\d+\.\d+\.\d+/),
   pieces: z.array(pieceSchema),
   sewingOrder: z.array(sewingStepSchema),
   validation: validationReportSchema,
+  /** Notions cut by length, such as waist elastic; absent when the pattern needs none (#140). */
+  notions: z.array(notionSchema).optional(),
   meta: z.object({
     category: garmentCategorySchema,
     sizeLabel: z.string().min(1),

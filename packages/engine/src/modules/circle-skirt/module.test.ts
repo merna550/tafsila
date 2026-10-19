@@ -17,6 +17,7 @@ import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../../pipeline/generate
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
 import { expectSvgSnapshot } from "../../render/expect-svg-snapshot";
 import { circleSkirtModule } from "./module";
+import { withoutWaistFinish } from "../../test-utils/piece-ids";
 
 /** The default fabric width of the issue's acceptance criterion, in mm. */
 const DEFAULT_FABRIC_MM = 1500;
@@ -49,7 +50,7 @@ describe("circleSkirtModule", () => {
 
   it("replaces the block's front and back: same ids, no darts", () => {
     const result = draft(halfCircleKneeSkirt, sizeM);
-    expect(result.pieces.map((p) => [p.id, p.darts.length])).toEqual([
+    expect(withoutWaistFinish(result.pieces).map((p) => [p.id, p.darts.length])).toEqual([
       ["skirt-front", 0],
       ["skirt-back", 0],
     ]);
@@ -68,7 +69,7 @@ describe("circleSkirtModule", () => {
 
   it("splits into four pieces on narrow fabric, each centre seam paired with its mirror", () => {
     const result = draft(fullCircleKneeSkirt, sizeM, NARROW_FABRIC_MM);
-    for (const piece of result.pieces) {
+    for (const piece of withoutWaistFinish(result.pieces)) {
       expect(piece.cut).toEqual({ quantity: 2, onFold: false, mirror: true, fabric: "main" });
       const centre = piece.edges.find((e) => e.id === (piece.id === "skirt-front" ? "cf" : "cb"))!;
       expect(centre).toMatchObject({ kind: "other", pairsWith: { pieceId: piece.id, edgeId: centre.id } });

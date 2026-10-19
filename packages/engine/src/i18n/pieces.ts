@@ -31,6 +31,21 @@ export const PIECE_NAMES: Readonly<Record<string, Bilingual>> = {
   "neck-facing-back": { ar: "تلبيس رقبة خلفي", en: "Back neck facing" },
   "neck-facing-front-interfacing": { ar: "حشوة تلبيس الرقبة الأمامي", en: "Front neck facing interfacing" },
   "neck-facing-back-interfacing": { ar: "حشوة تلبيس الرقبة الخلفي", en: "Back neck facing interfacing" },
+  waistband: { ar: "حزام الوسط", en: "Waistband" },
+  "waistband-interfacing": { ar: "حشوة حزام الوسط", en: "Waistband interfacing" },
+  "waistband-casing": { ar: "مجرى الأستك", en: "Elastic casing" },
+  "waistband-front": { ar: "حزام الوسط الأمامي", en: "Front waistband" },
+  "waistband-back": { ar: "حزام الوسط الخلفي", en: "Back waistband" },
+  "waistband-facing-front": { ar: "تلبيس حزام الوسط الأمامي", en: "Front waistband facing" },
+  "waistband-facing-back": { ar: "تلبيس حزام الوسط الخلفي", en: "Back waistband facing" },
+  "waistband-interfacing-front": { ar: "حشوة حزام الوسط الأمامي", en: "Front waistband interfacing" },
+  "waistband-interfacing-back": { ar: "حشوة حزام الوسط الخلفي", en: "Back waistband interfacing" },
+  "waist-facing": { ar: "تلبيس الوسط", en: "Waist facing" },
+  "waist-facing-interfacing": { ar: "حشوة تلبيس الوسط", en: "Waist facing interfacing" },
+  "waist-facing-front": { ar: "تلبيس الوسط الأمامي", en: "Front waist facing" },
+  "waist-facing-back": { ar: "تلبيس الوسط الخلفي", en: "Back waist facing" },
+  "waist-facing-interfacing-front": { ar: "حشوة تلبيس الوسط الأمامي", en: "Front waist facing interfacing" },
+  "waist-facing-interfacing-back": { ar: "حشوة تلبيس الوسط الخلفي", en: "Back waist facing interfacing" },
 };
 
 /** The engine version as printed on a piece. */

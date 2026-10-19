@@ -7,7 +7,8 @@ import { pt } from "../../geometry";
 import { createContext, type DraftContext, withInputs, withPiece } from "../../pipeline/draft-context";
 import { DEFAULT_ENGINE_OPTIONS } from "../../pipeline/generate-pattern";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
-import { closedWaistMm, fullnessClosureRule } from "./fullness-rule";
+import { closedWaistMm } from "../../pieces/waist-seam";
+import { fullnessClosureRule } from "./fullness-rule";
 import {
   type Band,
   finishedWaistMm,

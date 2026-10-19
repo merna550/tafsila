@@ -1,5 +1,12 @@
 /** The immutable value that flows through the pipeline steps (ARCHITECTURE §3). */
-import type { DesignSpec, EngineOptions, Measurements, Piece, ValidationCheck } from "@tafsila/schemas";
+import type {
+  DesignSpec,
+  EngineOptions,
+  Measurements,
+  Notion,
+  Piece,
+  ValidationCheck,
+} from "@tafsila/schemas";
 import type { ResolvedDraftInputs } from "../resolve/types";
 
 /** A piece in progress: the finishing step adds the cut path, labels and bounding box later. */
@@ -22,6 +29,8 @@ export interface DraftContext {
   readonly pieces: readonly PieceDraft[];
   /** Report items collected so far (input warnings, validation results). */
   readonly checks: readonly ValidationCheck[];
+  /** Notions cut by length, such as waist elastic (#140); absent until a module adds one. */
+  readonly notions?: readonly Notion[];
 }
 
 /** One pipeline step: a pure function from a frozen context to a new one. */
@@ -107,4 +116,16 @@ export function withResolved(ctx: DraftContext, values: Readonly<Record<string, 
  */
 export function withInputs(ctx: DraftContext, inputs: ResolvedDraftInputs): DraftContext {
   return Object.freeze({ ...ctx, inputs: Object.freeze(inputs) });
+}
+
+/**
+ * Returns a context with one more notion. A notion with the same id replaces the old one.
+ *
+ * @param ctx - Current context.
+ * @param notion - The notion to add or replace.
+ * @returns A new frozen context.
+ */
+export function withNotion(ctx: DraftContext, notion: Notion): DraftContext {
+  const kept = (ctx.notions ?? []).filter((n) => n.id !== notion.id);
+  return Object.freeze({ ...ctx, notions: Object.freeze([...kept, notion]) });
 }

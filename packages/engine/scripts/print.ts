@@ -3,8 +3,11 @@ import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   boatNeckBlouse,
+  contourBandSkirt,
   dartFreeLooseBlouse,
   dartedBlouse,
+  elasticGatheredSkirt,
+  elasticStraightSkirt,
   gatheredKneeSkirt,
   highRoundNeckBlouse,
   pleatedKneeSkirt,
@@ -14,6 +17,7 @@ import {
   rectanglePattern,
   SIZE_MATRIX,
   squareNeckBlouse,
+  straightBandSkirt,
   straightKneeSkirt,
   sweetheartNeckBlouse,
   tieredMidiSkirt,
@@ -36,8 +40,11 @@ const EXIT_USAGE = 2;
 /** Design fixtures the script can draft, by name. */
 const DESIGN_FIXTURES = {
   boatNeckBlouse,
+  contourBandSkirt,
   dartFreeLooseBlouse,
   dartedBlouse,
+  elasticGatheredSkirt,
+  elasticStraightSkirt,
   gatheredKneeSkirt,
   highRoundNeckBlouse,
   pleatedKneeSkirt,
@@ -45,6 +52,7 @@ const DESIGN_FIXTURES = {
   princessShoulderBlouse,
   setInSleeveBlouse,
   squareNeckBlouse,
+  straightBandSkirt,
   straightKneeSkirt,
   sweetheartNeckBlouse,
   tieredMidiSkirt,
