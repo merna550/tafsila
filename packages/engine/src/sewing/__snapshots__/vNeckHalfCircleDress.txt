@@ -1,0 +1,54 @@
+1. [press] ألصقي الحشوة اللاصقة على القطع التي لها حشوة قبل البدء.
+   Fuse the interfacing to its pieces before you start.
+   neck-facing-back-interfacing, neck-facing-front-interfacing
+2. [sew] اعملي غرزة تسبيل على رأس الكم ليصير على قدر الحردة.
+   Ease-stitch the sleeve cap so it fits the armhole.
+   sleeve/cap-back, sleeve/cap-front
+3. [sew] خيّطي الدارتات من الطرف العريض حتى الرأس.
+   Sew each dart from the wide end to the point.
+   bodice-back/dart:waist-dart, bodice-front/dart:bust-dart, bodice-front/dart:waist-dart
+4. [press] اكوي الدارتات ناحية المنتصف.
+   Press the darts toward the centre.
+   bodice-back/dart:waist-dart, bodice-front/dart:bust-dart, bodice-front/dart:waist-dart
+5. [sew] خيّطي خياطات الكتف واكوي الخياطة مفتوحة.
+   Sew the shoulder seams and press them open.
+   bodice-back/shoulder, bodice-front/shoulder
+6. [sew] خيّطي كتف البطانة الداخلية للرقبة واكوي الخياطة مفتوحة.
+   Sew the neck facing shoulder seams and press them open.
+   neck-facing-back/shoulder, neck-facing-front/shoulder
+7. [attach] ركّبي البطانة الداخلية على فتحة الرقبة من الوجه إلى الوجه.
+   Attach the neck facing to the neckline, right sides together.
+   bodice-back/neck, bodice-front/neck, neck-facing-back/neck, neck-facing-front/neck
+8. [attach] ركّبي الكم على فتحة الإبط واكوي الخياطة ناحية الكم.
+   Set the sleeve into the armhole and press the seam toward the sleeve.
+   bodice-back/armhole, bodice-front/armhole, sleeve/cap-back, sleeve/cap-front
+9. [finish] قفّلي فتحة الإبط بشريط مائل.
+   Bind the armhole edge.
+   bodice-back/armhole, bodice-front/armhole
+10. [sew] خيّطي خياطات الجنب والظهر في الصدر واكوي الخياطة مفتوحة.
+   Sew the bodice side and back seams and press them open.
+   bodice-back/side, bodice-front/side
+11. [sew] خيّطي خياطة تحت الإبط في الكم من الإبط حتى الحافة.
+   Sew the sleeve underarm seam from the armhole to the edge.
+   sleeve/underarm-back, sleeve/underarm-front
+12. [sew] خيّطي خياطات التنورة واكوي الخياطة مفتوحة.
+   Sew the skirt seams and press them open.
+   skirt-back/side, skirt-front/side
+13. [attach] ركّبي الصدر على التنورة من الوجه إلى الوجه عند خط الوسط.
+   Join the bodice to the skirt at the waist, right sides together.
+   bodice-back/waist, bodice-front/waist, skirt-back/waist, skirt-front/waist
+14. [sew] خيّطي منتصف الخلف تحت علامة السوستة وركّبي السوستة.
+   Sew the centre back seam below the zip notch and insert the zip.
+   bodice-back/cb, skirt-back/cb
+15. [press] علّقي التنورة 24 ساعة قبل تقفيل الذيل: الأجزاء المقصوصة على الوَرْب تنزل. بعدها قيسي الطول من الأرض وسوّي الذيل.
+   Hang the skirt for 24 hours before hemming: the bias parts drop. Then measure the length from the floor and level the hem.
+   skirt-back/hem, skirt-front/hem
+16. [finish] اطوي ذيل التنورة وخيّطيه.
+   Turn up the skirt hem and stitch it.
+   skirt-back/hem, skirt-front/hem
+17. [finish] اطوي حافة الكم وخيّطيها.
+   Turn up the sleeve hem and stitch it.
+   sleeve/hem
+18. [finish] خيّطي البطانة من الوجه قرب الحافة، وثبّتي طرفها.
+   Understitch the facing close to the edge and tack its ends.
+   neck-facing-back/neck, neck-facing-front/neck

@@ -1,0 +1,15 @@
+1. [sew] اعملي غرزتي تجميع على حافة الوسط بحيث تصير على قدر الوسط.
+   Run two gathering rows along the waist edge so it fits the waist.
+   skirt-back/waist, skirt-front/waist
+2. [sew] خيّطي خياطات التنورة واكوي الخياطة مفتوحة.
+   Sew the skirt seams and press them open.
+   skirt-back/side, skirt-front/side
+3. [sew] خيّطي طرفي الجراب ليصير حلقة، واتركي فتحة للأستيك.
+   Sew the ends of the casing into a ring and leave a gap for the elastic.
+   waistband-casing/end, waistband-casing/start
+4. [attach] ركّبي الحزام أو بطانة الوسط على حافة الوسط.
+   Attach the waistband or waist facing to the waist edge.
+   skirt-back/waist, skirt-front/waist, waistband-casing/seam-1, waistband-casing/seam-2, waistband-casing/seam-3, waistband-casing/seam-4
+5. [finish] اطوي ذيل التنورة وخيّطيه.
+   Turn up the skirt hem and stitch it.
+   skirt-back/hem, skirt-front/hem

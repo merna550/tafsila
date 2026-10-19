@@ -202,7 +202,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | FR-PAT-03 | Seam allowance configurable globally and per edge (default 1.5 cm sides, 1 cm necklines/armholes, 3 cm hems) | M |
 | FR-PAT-04 | Regeneration after measurement/option change completes in < 500 ms in browser (no AI call) | M |
 | FR-PAT-05 | Supported features v1 (see catalogue §6.1): bodice with darts, princess seams; necklines; sleeves; skirts; waistbands; closures; pockets; lengths | M |
-| FR-PAT-06 | Output also includes a **sewing order** (ordered list of assembly steps referencing piece edges) used by 3D preview and instructions | M |
+| FR-PAT-06 | Output also includes a **sewing order** (ordered list of assembly steps referencing piece edges) used by 3D preview and instructions. Phases and the one-step-per-seam rule: decision 146 | M |
 | FR-PAT-07 | Facings / linings generated where the feature requires (e.g. neckline facing) (#145: lining copies bodice, skirt and tier pieces; sleeves, collars, cuffs, bands, facings, pockets and belt are unlined; facing trim in #226) | S |
 
 ### 4.5 Pattern Validation (VAL)

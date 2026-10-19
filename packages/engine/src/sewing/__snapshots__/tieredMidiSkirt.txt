@@ -1,0 +1,18 @@
+1. [press] ألصقي الحشوة اللاصقة على القطع التي لها حشوة قبل البدء.
+   Fuse the interfacing to its pieces before you start.
+   waist-facing-interfacing
+2. [sew] اعملي غرزتي تجميع على حافة الوسط بحيث تصير على قدر الوسط.
+   Run two gathering rows along the waist edge so it fits the waist.
+   tier-1-panel/waist
+3. [sew] خيّطي خياطة كل طبقة لتصير حلقة.
+   Sew each tier into a ring.
+   tier-1-panel/seam-left, tier-1-panel/seam-right, tier-2-panel/seam-left, tier-2-panel/seam-right, tier-3-panel/seam-left, tier-3-panel/seam-right
+4. [attach] ركّبي الطبقات ببعضها من الأعلى للأسفل.
+   Join the tiers to each other from the top down.
+   tier-1-panel/bottom, tier-2-panel/bottom, tier-2-panel/top, tier-3-panel/top
+5. [attach] ركّبي الحزام أو بطانة الوسط على حافة الوسط.
+   Attach the waistband or waist facing to the waist edge.
+   tier-1-panel/waist, waist-facing/seam-1, waist-facing/seam-2, waist-facing/seam-3, waist-facing/seam-4
+6. [finish] اطوي ذيل التنورة وخيّطيه.
+   Turn up the skirt hem and stitch it.
+   tier-3-panel/hem

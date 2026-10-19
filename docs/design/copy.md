@@ -50,5 +50,9 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | back                               | العودة                                  | back                                |
 | free trial                         | تجربة مجانية                            | free trial                          |
 | resend code                        | إعادة الإرسال                           | resend code                         |
+| seam / dart / hem                  | خياطة / دارت / ذيل                      | seam / dart / hem                   |
+| facing / interfacing               | بطانة داخلية / حشوة لاصقة               | facing / interfacing                |
+| press / gather / bind              | اكوي / جمّعي / قفّلي بشريط مائل         | press / gather / bind               |
+| zip / buttonhole                   | سوستة / عروة                            | zip / buttonhole                    |
 
 Add a row here in the same PR whenever a new product term appears.

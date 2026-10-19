@@ -1,0 +1,24 @@
+1. [press] ألصقي الحشوة اللاصقة على القطع التي لها حشوة قبل البدء.
+   Fuse the interfacing to its pieces before you start.
+   waist-facing-interfacing-back, waist-facing-interfacing-front
+2. [sew] خيّطي الدارتات من الطرف العريض حتى الرأس.
+   Sew each dart from the wide end to the point.
+   skirt-back/dart:waist-dart, skirt-front/dart:waist-dart
+3. [press] اكوي الدارتات ناحية المنتصف.
+   Press the darts toward the centre.
+   skirt-back/dart:waist-dart, skirt-front/dart:waist-dart
+4. [sew] خيّطي خياطات التنورة واكوي الخياطة مفتوحة.
+   Sew the skirt seams and press them open.
+   skirt-back/side, skirt-front/side
+5. [sew] خيّطي منتصف الخلف تحت علامة السوستة وركّبي السوستة.
+   Sew the centre back seam below the zip notch and insert the zip.
+   skirt-back/cb
+6. [attach] ركّبي الحزام أو بطانة الوسط على حافة الوسط.
+   Attach the waistband or waist facing to the waist edge.
+   skirt-back/waist, skirt-front/waist, waist-facing-back/seam, waist-facing-front/seam
+7. [finish] اطوي ذيل التنورة وخيّطيه.
+   Turn up the skirt hem and stitch it.
+   skirt-back/hem, skirt-front/hem
+8. [finish] قفّلي حافة الفتحة الجانبية وخيّطيها.
+   Finish the slit edge and stitch it.
+   skirt-back/slit

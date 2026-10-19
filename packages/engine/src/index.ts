@@ -22,3 +22,4 @@ export * from "./pieces/waist-seam";
 export * from "./pipeline";
 export * from "./render";
 export * from "./resolve";
+export * from "./sewing";

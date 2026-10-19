@@ -30,6 +30,12 @@ export const SLEEVE_ERROR_CODES = ["SLEEVE_CAP_UNSOLVABLE", "SLEEVE_LENGTH_TOO_S
 /** One of the sleeve block's error codes. */
 export type SleeveErrorCode = (typeof SLEEVE_ERROR_CODES)[number];
 
+/** Codes thrown when the sewing order leaves a seam unsewn or sewn twice (issue #146); programming errors. */
+export const SEWING_ERROR_CODES = ["SEWING_PAIR_UNCOVERED", "SEWING_PAIR_DUPLICATED"] as const;
+
+/** One of the sewing-order error codes. */
+export type SewingErrorCode = (typeof SEWING_ERROR_CODES)[number];
+
 /** Thrown when a pattern cannot be drafted for the given design and measurements. */
 export class DraftingError extends Error {
   /**

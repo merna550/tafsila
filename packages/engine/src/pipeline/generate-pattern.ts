@@ -62,7 +62,7 @@ function toResult(ctx: DraftContext, hash: string): PatternResult {
   return Object.freeze({
     engineVersion: ENGINE_VERSION,
     pieces: ctx.pieces.map(completePiece),
-    sewingOrder: [],
+    sewingOrder: [...(ctx.sewingOrder ?? [])],
     validation: buildReport(ctx.checks),
     ...(ctx.notions && ctx.notions.length > 0 ? { notions: [...ctx.notions] } : {}),
     meta: { category: ctx.spec.category, sizeLabel: ctx.options.sizeLabel, createdFrom: hash },
