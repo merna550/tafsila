@@ -1,15 +1,18 @@
 /**
  * The neckline feature module (issue #139, FR-PAT-05, FR-PAT-07): reshapes the bodice neck of both halves to the
  * catalogue style, applies `depthFrontMm` within limits and adds the front and back facings with their
- * interfacing (decision 139).
+ * interfacing (decision 139); a shirt or mandarin collar replaces the facings (decision 141).
  */
 import type { DesignSpec } from "@tafsila/schemas";
+import { STAND_COLLARS } from "../../constants/collar";
 import { DraftingError } from "../../errors/drafting-error";
 import { pathLength } from "../../geometry";
 import { type DraftContext, withPieces, withResolved } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
-import { type DraftedNeck, NECK_HALVES, draftNeck } from "./draft-neck";
+import { NECK_HALVES } from "../../pieces/neck-seam";
+import { type DraftedNeck, draftNeck } from "./draft-neck";
 import { facingPieces } from "./facing";
+import type { NecklineSpec } from "./resolve";
 import { NECKLINE_RULES, NECK_RESOLVED_KEYS } from "./rules";
 import { spliceNeck } from "./splice";
 
@@ -44,8 +47,18 @@ function resolvedValues(d: DraftedNeck): Record<string, number> {
 }
 
 /**
+ * Whether the neck gets facings: not under a stand collar, whose inner stand finishes the neck instead.
+ *
+ * @param neckline - The design's neckline.
+ * @returns True when the facings are drafted.
+ */
+export function neckHasFacings(neckline: Pick<NecklineSpec, "collar">): boolean {
+  return !STAND_COLLARS.has(neckline.collar);
+}
+
+/**
  * Drafts the neckline: new necks spliced into the bodice pieces (kept in place), then the facings and their
- * interfacing appended.
+ * interfacing appended (none under a stand collar).
  *
  * @param ctx - Context after the bodice shaping modules.
  * @returns The new context.
@@ -61,7 +74,8 @@ export function draftNeckline(ctx: DraftContext): DraftContext {
       spliceNeck(d.halves[half].piece, d.halves[half].neck, ctx.options),
     ]),
   );
-  const facings = NECK_HALVES.flatMap((half) =>
+  const facingHalves = neckHasFacings(neckline) ? NECK_HALVES : [];
+  const facings = facingHalves.flatMap((half) =>
     facingPieces(
       {
         half,

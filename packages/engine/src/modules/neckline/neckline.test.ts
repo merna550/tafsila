@@ -32,7 +32,8 @@ import {
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
 import { generatePattern } from "../../pipeline/generate-pattern";
 import { shapedContext } from "../../test-utils/shaped-context";
-import { NECK_HALVES, draftNeck } from "./draft-neck";
+import { NECK_HALVES } from "../../pieces/neck-seam";
+import { draftNeck } from "./draft-neck";
 import { FACING_OUTER_EDGE_ID, FACING_PIECE_IDS, INTERFACING_PIECE_IDS } from "./facing";
 import { necklineModule } from "./module";
 import { type NeckBlockSizes, type NecklineSpec, clampMm, frontMinDepthMm, resolveNeck } from "./resolve";

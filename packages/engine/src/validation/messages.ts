@@ -169,6 +169,14 @@ export const VALIDATION_MESSAGES = {
     ar: "الحزام المشكّل يحتاج وسطًا مشكّلًا؛ رُسم حزام مستقيم لأن أعلى التنورة مستقيم",
     en: "A contour band needs a shaped waist; a straight band was drafted because the skirt top is straight",
   },
+  COLLAR_NECK_LENGTH_OK: {
+    ar: "حافة رقبة الياقة {mm} مم تطابق فتحة الرقبة {expected} مم",
+    en: "Collar neck edge {mm} mm matches the bodice neck {expected} mm",
+  },
+  COLLAR_NECK_LENGTH_MISMATCH: {
+    ar: "حافة رقبة الياقة {mm} مم لا تطابق فتحة الرقبة {expected} مم",
+    en: "Collar neck edge {mm} mm does not match the bodice neck {expected} mm",
+  },
 } as const;
 
 /** A stable code accepted by {@link formatMessage}. */
