@@ -66,6 +66,40 @@ export const dartFreeLooseBlouse: DesignSpec = {
   bodice: { fit: "loose", shaping: "none", waistSeam: false },
 };
 
+/**
+ * Neckline seed designs (issue #139): the seed blouse with each front style and a matching back, no closure where
+ * the neck opens wide enough to slip over the head. Used by the neckline snapshots and `pnpm engine:print`.
+ */
+export const vNeckBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "v", back: "v", collar: "none" },
+};
+
+/** Square front and back neck (issue #139). */
+export const squareNeckBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "square", back: "square", collar: "none" },
+};
+
+/** Sweetheart front, round back (issue #139). */
+export const sweetheartNeckBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "sweetheart", back: "round", collar: "none" },
+};
+
+/** Boat front, high-round back, no closure: the head-opening check warns (issue #139). */
+export const boatNeckBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "boat", back: "high-round", collar: "none" },
+  closure: { type: "none", position: "center-back" },
+};
+
+/** High-round front and back (issue #139). */
+export const highRoundNeckBlouse: DesignSpec = {
+  ...dartedBlouse,
+  neckline: { front: "high-round", back: "high-round", collar: "none" },
+};
+
 /** A plain straight skirt at the knee with a side zip: front and back both cut on the fold (issue #129). */
 export const straightKneeSkirt: DesignSpec = {
   schemaVersion: 1,

@@ -17,7 +17,13 @@ import {
   intersectSegments,
   lineSeg,
   normalize,
-  offsetPath,
+  perpendicular,
+  angleRad,
+  arcToCubics,
+  cross,
+  cubicSeg,
+  distance,
+  tangentOnSegment,
   pt,
   reversePath,
   scale,
@@ -27,6 +33,13 @@ import { PIECE_NAMES } from "../../i18n/pieces";
 import type { PieceDraft } from "../../pipeline/draft-context";
 import type { NeckHalf } from "./resolve";
 import { NECK_EDGE_ID, SHOULDER_EDGE_ID } from "./splice";
+
+/** Degree of a cubic: its first derivative at an end is 3 × the handle. */
+const CUBIC_DEGREE = 3;
+/** Its second derivative at an end is 6 × the second difference of the control points. */
+const CUBIC_SECOND_FACTOR = 6;
+/** Curvature divides by the speed cubed. */
+const CUBE = 3;
 
 /** Id of the facing's outer (finished) edge. */
 export const FACING_OUTER_EDGE_ID = "outer";
@@ -62,6 +75,71 @@ export interface FacingSource {
   readonly bodicePieceId: string;
   /** Facing width in mm. */
   readonly widthMm: number;
+}
+
+/**
+ * Signed curvature of a cubic at one end (positive when it turns toward the left normal).
+ *
+ * @param velocity - First derivative there.
+ * @param accel - Second derivative there.
+ * @returns Curvature in 1/mm, 0 for a degenerate handle.
+ */
+function endCurvature(velocity: Point, accel: Point): number {
+  const speed = Math.hypot(velocity.x, velocity.y);
+  return speed < FACING_ON_FOLD_EPSILON_MM ? 0 : cross(velocity, accel) / speed ** CUBE;
+}
+
+/**
+ * One neck segment moved `widthMm` toward the body. A line moves exactly; a cubic moves its ends along their normals
+ * and scales each handle by the change of radius there (1 − d·κ), which is exact for the circular arcs of the
+ * sweetheart and well inside 1 mm for the other necks (Tiller & Hanson 1984, one step).
+ *
+ * @param seg - Neck segment.
+ * @param widthMm - Facing width.
+ * @returns The moved segment.
+ */
+function offsetOnce(seg: Segment, widthMm: number): Segment {
+  const n0 = scale(perpendicular(tangentOnSegment(seg, 0)), widthMm);
+  const n1 = scale(perpendicular(tangentOnSegment(seg, 1)), widthMm);
+  if (seg.kind === "line") return lineSeg(add(seg.from, n0), add(seg.to, n1));
+  const { from, c1, c2, to } = seg;
+  const k0 = endCurvature(
+    scale(sub(c1, from), CUBIC_DEGREE),
+    scale(add(sub(c2, scale(c1, 2)), from), CUBIC_SECOND_FACTOR),
+  );
+  const k1 = endCurvature(
+    scale(sub(to, c2), CUBIC_DEGREE),
+    scale(add(sub(to, scale(c2, 2)), c1), CUBIC_SECOND_FACTOR),
+  );
+  const start = add(from, n0);
+  const end = add(to, n1);
+  return cubicSeg(
+    start,
+    add(start, scale(sub(c1, from), 1 - widthMm * k0)),
+    add(end, scale(sub(c2, to), 1 - widthMm * k1)),
+    end,
+  );
+}
+
+/**
+ * The facing's outer edge: each neck segment moved `widthMm` toward the body; where the neck has a corner (the square
+ * neck), the gap is closed by a circular arc about the corner. It is a finished edge, not a seam.
+ *
+ * @param neck - The neck, centre first.
+ * @param widthMm - Facing width.
+ * @returns The outer edge, centre side first.
+ */
+function facingEdge(neck: readonly Segment[], widthMm: number): Segment[] {
+  const moved = neck.map((seg) => offsetOnce(seg, widthMm));
+  return moved.flatMap((seg, i) => {
+    const next = moved[i + 1];
+    if (!next || distance(seg.to, next.from) <= FACING_ON_FOLD_EPSILON_MM) return [seg];
+    const corner = neck[i]!.to;
+    const fromRad = angleRad(sub(seg.to, corner));
+    const turnRad = angleRad(sub(next.from, corner)) - fromRad;
+    const sweepRad = Math.atan2(Math.sin(turnRad), Math.cos(turnRad));
+    return [seg, ...arcToCubics({ center: corner, radiusMm: widthMm, fromRad, toRad: fromRad + sweepRad })];
+  });
 }
 
 /**
@@ -105,13 +183,12 @@ function facingGrain(outline: readonly Segment[]): [Point, Point] {
  *
  * @param source - What the facing is traced from.
  * @returns The outline and its edge specs.
- * @throws {DraftingError} GEOMETRY_OFFSET_FAILED when the neck curves tighter than the facing width.
  */
 export function facingOutline(source: FacingSource): {
   outline: Segment[];
   segments: Record<string, number>;
 } {
-  const outer = offsetPath(source.neck, -source.widthMm);
+  const outer = facingEdge(source.neck, source.widthMm);
   const neckPoint = source.neck.at(-1)!.to;
   const centre = source.neck[0]!.from;
   const extension = toFold(outer);
@@ -175,7 +252,7 @@ function facingEdgeSpecs(
  * @param source - What the facing is traced from.
  * @param options - Engine options, for the seam allowances.
  * @returns The facing and the interfacing.
- * @throws {DraftingError} GEOMETRY_OFFSET_FAILED or NECKLINE_FACING_INVALID.
+ * @throws {DraftingError} NECKLINE_FACING_INVALID when the band misses its grain line.
  */
 export function facingPieces(
   source: FacingSource,

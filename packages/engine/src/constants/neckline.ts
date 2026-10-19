@@ -32,8 +32,8 @@ export const FRONT_NECKLINE_SIZES = {
 export const BACK_NECKLINE_SIZES = {
   /** The block neck itself. */
   round: { depthAddMm: 0, widenMm: 0 },
-  /** 5 mm higher and 5 mm narrower than the block. */
-  "high-round": { depthAddMm: -5, widenMm: -5 },
+  /** As deep as the block (already close to the neck at the back) and 5 mm narrower. */
+  "high-round": { depthAddMm: 0, widenMm: -5 },
   /** Back V lowered 130 mm (about 150 mm below the HPS). */
   v: { depthAddMm: 130, widenMm: 10 },
   /** Lowered 80 mm and widened 30 mm. */
@@ -70,11 +70,23 @@ export const FACING_GRAIN_MAX_INSET_SHARE = 0.25;
 /** Below this distance from the fold, the facing's outer edge is taken to start on it. */
 export const FACING_ON_FOLD_EPSILON_MM = 0.01;
 
+/** Round necks: centre handle as a share of the neck width. */
+export const ROUND_NECK_CENTRE_HANDLE_SHARE = 0.7;
+
+/** Round necks: shoulder handle as a share of the depth for a shallow neck (depth / width at or below the ratio). */
+export const ROUND_NECK_SHALLOW_HANDLE_SHARE = 0.9;
+
+/** Depth / width at or below which a round neck counts as shallow. */
+export const ROUND_NECK_SHALLOW_RATIO = 0.3;
+
+/** Round necks: shoulder handle as a share of the depth for a deep neck (depth / width at or above the ratio). */
+export const ROUND_NECK_DEEP_HANDLE_SHARE = 0.55;
+
+/** Depth / width at or above which a round neck counts as deep. */
+export const ROUND_NECK_DEEP_RATIO = 1;
+
 /** V neck: the first handle lies on the chord, this share of it, so the neck runs straight from the centre. */
 export const V_NECK_CHORD_HANDLE_SHARE = 0.33;
-
-/** Square neck: the corner sits at this share of the neck point's distance from the centre line. */
-export const SQUARE_CORNER_X_SHARE = 0.95;
 
 /** Square and sweetheart necks: handle length as a share of the rise from the corner or lobe to the neck point. */
 export const NECK_RISE_HANDLE_SHARE = 0.4;
@@ -82,14 +94,29 @@ export const NECK_RISE_HANDLE_SHARE = 0.4;
 /** Sweetheart: the lobe sits at this share of the neck point's distance from the centre line. */
 export const SWEETHEART_LOBE_X_SHARE = 0.6;
 
-/** Sweetheart: the lobe sits this much higher than the centre dip. */
-export const SWEETHEART_LOBE_RISE_MM = 20;
+/**
+ * Sweetheart: radius of the arc from the centre dip to the lobe top. It must exceed the facing width plus the facing's
+ * seam allowance, or the facing's outer edge would loop: 110 mm leaves a 50 mm curve on the facing edge.
+ */
+export const SWEETHEART_LOBE_RADIUS_MM = 110;
 
-/** Sweetheart: level handle at the lobe top as a share of the lobe-to-neck-point run. */
-export const SWEETHEART_STRAP_HANDLE_SHARE = 0.5;
+/** Sweetheart: smallest radius where the lobe turns up the strap (more than the 10 mm neck allowance). */
+export const SWEETHEART_MIN_TURN_RADIUS_MM = 25;
 
-/** Sweetheart: handle at the neck point as a share of the rise from the lobe (short, so the strap does not S-bend). */
-export const SWEETHEART_RISE_HANDLE_SHARE = 0.25;
+/**
+ * Sweetheart: radius of the arc that brings the strap square to the shoulder at the neck point; like the lobe radius
+ * it leaves room for the facing width and its allowance (100 mm leaves a 40 mm curve on the facing edge).
+ */
+export const SWEETHEART_STRAP_RADIUS_MM = 100;
+
+/** Sweetheart: shallowest front depth below the neck point, so the lobe sits below the strap arc. */
+export const SWEETHEART_MIN_DEPTH_MM = 120;
+
+/**
+ * Square: shallowest front depth below the neck point. The side turns into the shoulder over its last handle; on a
+ * shallower square that bend gets tighter than the facing width and the facing's outer edge would loop.
+ */
+export const SQUARE_MIN_DEPTH_MM = 100;
 
 /**
  * Head circumference as a multiple of the neck circumference (anthropometric average, about 560 / 360 mm), used to

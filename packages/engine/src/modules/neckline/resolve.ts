@@ -9,6 +9,8 @@ import {
   FRONT_NECKLINE_SIZES,
   FRONT_NECK_DEPTH_MIN_MM,
   NECK_CLEARANCE_ABOVE_SCYE_MM,
+  SQUARE_MIN_DEPTH_MM,
+  SWEETHEART_MIN_DEPTH_MM,
 } from "../../constants/neckline";
 
 /** The neckline part of a design. */
@@ -77,6 +79,18 @@ export function maxNeckDepthMm(sizes: NeckBlockSizes, half: NeckHalf, widenMm: n
 }
 
 /**
+ * Shallowest front depth for a style: the sweetheart needs room for its lobe below the strap, the square for its turn
+ * into the shoulder.
+ *
+ * @param style - Front style.
+ * @returns Depth in mm.
+ */
+export function frontMinDepthMm(style: NecklineSpec["front"]): number {
+  if (style === "sweetheart") return SWEETHEART_MIN_DEPTH_MM;
+  return style === "square" ? SQUARE_MIN_DEPTH_MM : FRONT_NECK_DEPTH_MIN_MM;
+}
+
+/**
  * Resolves both neck depths and the shared widening. The widening is the larger of the two styles' (the back follows
  * a wide front), held so each shoulder keeps `NECK_MIN_SHOULDER_LEFT_MM`. Depths are measured down the centre line
  * from the level of the moved neck point: the front depth is `depthFrontMm` when given, else the block depth plus the
@@ -93,7 +107,11 @@ export function resolveNeck(neckline: NecklineSpec, sizes: NeckBlockSizes): Neck
   const widen = clampMm(Math.max(front.widenMm, back.widenMm), Number.NEGATIVE_INFINITY, sizes.maxWidenMm);
   return {
     depth: {
-      front: clampMm(frontRequested, FRONT_NECK_DEPTH_MIN_MM, maxNeckDepthMm(sizes, "front", widen.valueMm)),
+      front: clampMm(
+        frontRequested,
+        frontMinDepthMm(neckline.front),
+        maxNeckDepthMm(sizes, "front", widen.valueMm),
+      ),
       back: clampMm(
         sizes.blockDepthMm.back + back.depthAddMm,
         BACK_NECK_DEPTH_MIN_MM,
