@@ -46,7 +46,7 @@ describe("FR-VAL-02 sleeve cap", () => {
   it("accepts 20 mm ease and rejects 5 mm ease", () => {
     const armhole = (id: string) =>
       validationPiece({ id, edges: [{ ...validationPiece().edges[0]!, id: "armhole" }] });
-    const sleeve = (widthMm: number) =>
+    const sleeve = (widthMm: number, declared: { gatheredMm?: number; armholeExcludedMm?: number } = {}) =>
       validationPiece({
         id: "sleeve",
         stitchPath: [
@@ -62,12 +62,20 @@ describe("FR-VAL-02 sleeve cap", () => {
             { pieceId: "front", edgeId: "armhole" },
             { pieceId: "back", edgeId: "armhole" },
           ],
+          ...declared,
         },
       });
-    const run = (widthMm: number) =>
-      sleeveCapRule.runMany!(validationContext([armhole("front"), armhole("back"), sleeve(widthMm)]))[0]!;
+    const run = (widthMm: number, declared = {}) =>
+      sleeveCapRule.runMany!(
+        validationContext([armhole("front"), armhole("back"), sleeve(widthMm, declared)]),
+      )[0]!;
     expect(run(220)).toMatchObject({ status: "pass", measuredMm: 20 });
     expect(run(205)).toMatchObject({ status: "fail", measuredMm: 5 });
+    // Issue #142: a gathered puff head and an armhole the cap is not sewn to are declared, not hidden.
+    expect(run(300)).toMatchObject({ status: "fail", measuredMm: 100 });
+    expect(run(300, { gatheredMm: 75 })).toMatchObject({ status: "pass", measuredMm: 25 });
+    expect(run(60, { armholeExcludedMm: 165 })).toMatchObject({ status: "pass", measuredMm: 25 });
+    expect(run(60)).toMatchObject({ status: "fail", measuredMm: -140 });
   });
 });
 

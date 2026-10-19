@@ -4,7 +4,8 @@
  */
 import type { DesignSpec } from "@tafsila/schemas";
 import { isPanelSkirt } from "../../constants/skirt-fullness";
-import { ELASTIC_LENGTH_RATIO, ELASTIC_WIDTH_MM } from "../../constants/waistband";
+import { ELASTIC_LENGTH_RATIO } from "../../constants/elastic";
+import { ELASTIC_WIDTH_MM } from "../../constants/waistband";
 import { DraftingError } from "../../errors/drafting-error";
 import { waistPieces } from "../../pieces/waist-seam";
 import {

@@ -1,6 +1,6 @@
 /**
  * Input-type drafting errors (issue #128, decision 128, 10): body proportions or a skirt length the blocks
- * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
+ * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141), and sleeve style, length and cuff combinations the sleeve modules refuse (issue #142). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
  */
 import { DraftingError } from "../errors/drafting-error";
 
@@ -53,6 +53,18 @@ export const INPUT_ERROR_MESSAGES = {
   COLLAR_CLOSURE_UNSUPPORTED: {
     ar: "هذه الياقة تحتاج فتحة عند الرقبة: ياقة القميص بأزرار أو سحاب في المنتصف الأمامي، والياقة الصينية في المنتصف الأمامي أو الخلفي.",
     en: "This collar needs an opening at the neck: centre front for a shirt collar, centre front or back for a mandarin collar",
+  },
+  SLEEVE_LENGTH_UNSUPPORTED: {
+    ar: "هذا النوع من الأكمام لا يُرسم بهذا الطول. اختاري طولًا آخر أو نوع كم آخر.",
+    en: "This sleeve style cannot be drafted at this length",
+  },
+  SLEEVE_CUFF_UNSUPPORTED: {
+    ar: "هذه الأسورة لا تناسب نوع الكم وطوله: كم الأسقف يحتاج أسورة، والكم الكاب والفراشة بدون أسورة، والأستك على الكم العادي حتى الكوع فقط.",
+    en: "This cuff does not suit the sleeve style and length: a bishop sleeve needs a cuff, cap and flutter sleeves take none, and elastic on a set-in sleeve stops at the elbow",
+  },
+  SLEEVE_PUFF_UNSOLVABLE: {
+    ar: "لا يمكن رسم رأس كم منفوخ بهذه المقاسات. راجعي محيط الذراع والقيم المدخلة.",
+    en: "No puff sleeve head fits this armhole",
   },
 } as const satisfies Record<string, BilingualText>;
 

@@ -4,16 +4,16 @@
  */
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
 import {
-  CASING_EASE_MM,
   CLOSURE_OVERLAP_MM,
   CONTOUR_BAND_WIDTH_MM,
   ELASTIC_WIDTH_MM,
   STRAIGHT_BAND_WIDTH_MM,
   WAIST_FACING_DEPTH_MM,
 } from "../../constants/waistband";
+import { CASING_EASE_MM } from "../../constants/elastic";
 import { waistPieces } from "../../pieces/waist-seam";
-import { waistRuns } from "./runs";
-import { stripPiece } from "./strip";
+import { stripPiece, type StripRun } from "../../pieces/strip";
+import { type WaistRun, waistPair, waistRuns } from "./runs";
 import { tracedPiece } from "./traced";
 
 /** Layers of a band folded along its length: the cut piece is twice the finished width. */
@@ -27,6 +27,16 @@ export const WAISTBAND_PIECE_IDS = {
   flatFacing: "waist-facing",
   flatFacingInterfacing: "waist-facing-interfacing",
 } as const;
+
+/**
+ * The strip runs of the waist runs: each sews to its skirt waist with its declared gathers or pleats.
+ *
+ * @param runs - Waist runs in band order.
+ * @returns The strip runs.
+ */
+function stripRuns(runs: readonly WaistRun[]): StripRun[] {
+  return runs.map((run) => ({ lengthMm: run.lengthMm, pairsWith: waistPair(run) }));
+}
 
 /**
  * Underlap the closure needs past the band's end: none when nothing opens.
@@ -46,7 +56,7 @@ export function closureOverlapMm(ctx: DraftContext): number {
  * @returns The band and its interfacing.
  */
 export function straightBand(ctx: DraftContext): PieceDraft[] {
-  const runs = waistRuns(ctx.pieces, ctx.spec.closure.position, "sewn");
+  const runs = stripRuns(waistRuns(ctx.pieces, ctx.spec.closure.position, "sewn"));
   const overlapMm = closureOverlapMm(ctx);
   const loop = overlapMm === 0;
   return [
@@ -89,7 +99,7 @@ export function elasticCasing(ctx: DraftContext): PieceDraft[] {
     stripPiece(
       {
         id: WAISTBAND_PIECE_IDS.casing,
-        runs: waistRuns(ctx.pieces, ctx.spec.closure.position, "relaxed"),
+        runs: stripRuns(waistRuns(ctx.pieces, ctx.spec.closure.position, "relaxed")),
         heightMm: FOLDED_LAYERS * (ELASTIC_WIDTH_MM + CASING_EASE_MM),
         overlapMm: 0,
         loop: true,
@@ -109,7 +119,7 @@ export function elasticCasing(ctx: DraftContext): PieceDraft[] {
  * @returns The facing and its interfacing.
  */
 export function flatFacing(ctx: DraftContext): PieceDraft[] {
-  const runs = waistRuns(ctx.pieces, ctx.spec.closure.position, "sewn");
+  const runs = stripRuns(waistRuns(ctx.pieces, ctx.spec.closure.position, "sewn"));
   const loop = ctx.spec.closure.type === "none";
   /**
    * One facing strip.

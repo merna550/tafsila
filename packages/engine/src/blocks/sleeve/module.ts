@@ -8,7 +8,7 @@ import type { FeatureModule } from "../../pipeline/feature-module";
 import { DraftingError } from "../../errors/drafting-error";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
 import { BODICE_RESOLVED_KEYS } from "../bodice/draft-bodice";
-import { armholeParts } from "../bodice/armhole-parts";
+import { armholeParts, type BodiceArmholeParts } from "../bodice/armhole-parts";
 import { edgeLengthMm } from "../../pieces/measure";
 import { draftSleeve } from "./draft-sleeve";
 import { BODICE_ARMHOLE_EDGE } from "./ids";
@@ -68,7 +68,7 @@ function bodicePiece(ctx: DraftContext, pieceId: string | undefined): PieceDraft
  * @returns A new context.
  * @throws {DraftingError} PIPELINE_STEP_ORDER when the piece is missing.
  */
-function withArmholeNotches(
+export function withArmholeNotches(
   ctx: DraftContext,
   pieceId: string | undefined,
   notches: (armholeMm: number) => PieceDraft["notches"],
@@ -88,11 +88,22 @@ function withArmholeNotches(
 function draftSetInSleeve(ctx: DraftContext): DraftContext {
   const input = sleeveInputFrom(ctx);
   const sleeve = draftSleeve(input, ctx.options);
-  const parts = input.armholes ?? armholeParts(ctx.pieces);
+  return withPiece(withSleeveArmholeNotches(ctx, input.armholes ?? armholeParts(ctx.pieces)), sleeve.piece);
+}
+
+/**
+ * Marks the bodice armholes for a sleeve sewn all round them: the back double notch, the front notch and the
+ * shoulder notch (decision 134, 3). Shared by the set-in sleeve and the puff and bishop sleeves (#142).
+ *
+ * @param ctx - Context after the bodice block.
+ * @param parts - Bodice pieces holding each armhole, shoulder tip first.
+ * @returns The context with notched bodice armholes.
+ * @throws {DraftingError} PIPELINE_STEP_ORDER when a bodice piece is missing.
+ */
+export function withSleeveArmholeNotches(ctx: DraftContext, parts: BodiceArmholeParts): DraftContext {
   const notchedBack = withArmholeNotches(ctx, parts.back.at(-1), backArmholeNotches);
   const notchedFront = withArmholeNotches(notchedBack, parts.front.at(-1), (mm) => [frontArmholeNotch(mm)]);
-  const notched = withArmholeNotches(notchedFront, parts.front[0], () => [shoulderArmholeNotch()]);
-  return withPiece(notched, sleeve.piece);
+  return withArmholeNotches(notchedFront, parts.front[0], () => [shoulderArmholeNotch()]);
 }
 
 /** One-piece set-in sleeve, every length. Runs after the skirt modules and after the bodice shaping modules (#138). */

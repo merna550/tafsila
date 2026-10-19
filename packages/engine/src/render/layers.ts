@@ -324,12 +324,17 @@ export function scaleLayer(layout: SheetLayout): string {
   return [...onPieces, ...own].join("\n");
 }
 
-/** Dash pattern of each mark kind: fold lines and arrows solid, placement lines dashed, gathers dotted. */
+/**
+ * Dash pattern of each mark kind: fold lines, arrows and slits solid, placement lines dashed, gathers dotted (a sleeve
+ * end is a point, drawn as a dot).
+ */
 export const MARK_DASH: Readonly<Record<MarkKind, string>> = {
   "pleat-fold": "",
   "pleat-placement": "6 2",
   "pleat-direction": "",
   gather: "1 1.5",
+  slit: "",
+  "sleeve-end": "",
 };
 
 /** Radius of a point mark, in mm. */

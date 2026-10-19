@@ -197,6 +197,20 @@ Starts from the finished neck of each half ([decision 141](../decisions/141-coll
 
 The cap curve runs from the underarm points up through the cap top; FR-VAL-02 checks that its length exceeds the armhole by 10-40 mm. The engine (#134) keeps steps 1 and 3 and the half-widths of step 2, but solves the cap height by bisection for 25 mm of ease over its own armhole: the 2/3 height gives a cap shorter than that armhole, so it cannot pass FR-VAL-02. The reference value stays as the starting point to compare with on paper ([decision 134](../decisions/134-set-in-sleeve.md), 1).
 
+### Sleeve styles and cuffs (Chapter 2, "Sleeve variations", "Cuffs and openings")
+
+Every style starts from the set-in block above ([decision 142](../decisions/142-sleeve-styles-cuffs.md)). L = block cap length, M = cap between the upper back notch (96 from the underarm) and the front notch (75), G = arm girth at the hem (upper arm at the underarm line, wrist at the wrist, linear between), S = cuff seam.
+
+| #   | Step (paraphrased)                                                       | Formula (mm)                                                                         | Key point                   | Page |
+| --- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | --------------------------- | ---- |
+| 1   | Puff: slash and spread the head between the notches                      | head through (±0.15 · bicep, −R), block tangents at the notches; R solved: 1.5 · M   | `cap-back`, `cap-front`     |      |
+| 2   | Puff / bishop with a cuff: spread the hem, add blouson length            | hem = S · 1.5 (puff) or S · 1.8 (bishop); drop 20 (puff) or 40 (bishop)              | `hem`                       |      |
+| 3   | Cap sleeve: block cap from the back notch to the front notch, curved hem | cap from 90 to L − 75; hem through (0, block hem y); self-lined, cut 4               | `cap-sleeve`                |      |
+| 4   | Flutter: half-circle ruffle sewn notch to notch                          | inner arc = armhole span + 25, r = inner / π; depth 100 (cap) or 150 (short)         | `flutter-sleeve`            |      |
+| 5   | Band cuff: arm girth plus ease, folded, interfaced                       | S = G + 20; width 50 at the wrist, 30 on the arm; overlap 20 at three-quarter / long | `cuff`, `cuff-interfacing`  |      |
+| 6   | Wrist opening: slit on the back half, bound                              | slit 75 at x = −hem / 4; placket strip 150 × 30                                      | `slit` mark, `cuff-placket` |      |
+| 7   | Elastic cuff: casing as long as the relaxed hem; elastic cut to the arm  | casing 2 · (10 + 5) high; elastic = G · 0.9, 10 wide, 2 off                          | `sleeve-casing`, notion     |      |
+
 ## Reference key points
 
 Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/egyptian-size-chart.ts`), rounded to 0.1 mm. The tables below and `packages/test-fixtures/src/reference-drafts.ts` come from **one calculation** (`reference-drafts-calc.ts`); a test fails when they differ. The "Egyptian chart" waist and the other measurements except bust, hip and height are themselves derived (ADR-158), so these drafts prove the method, not the fit on real bodies.
@@ -317,4 +331,5 @@ Sizes S, M and XXL of `egyptianSizeChart` (PR #159, `packages/test-fixtures/src/
 - [ ] #128, back step 3: the back shoulder is laid as the front shoulder length plus an ease (0 for now) along the back slope; the book eases or darts a longer back shoulder. Check the usual amount.
 - [ ] #128, front step 7: the bust dart apex 25 mm beyond the bust point, on the horizontal through the middle of the dart mouth. Check how far the book stops the side dart from the bust point.
 - [ ] #128, front step 9: the front waist dart is trued by extending the shorter leg. Check the book's truing step.
+- [ ] #142, sleeve styles: check the puff head ratio (1.5) and top width (0.3 of the bicep), the blouson drops (20 puff, 40 bishop), the flutter depths (100, 150), the band ease (20), widths (50, 30), overlap (20) and slit (75) against the book; fill the page numbers of the Sleeve styles table.
 - [ ] #141, collars: check the peter pan shoulder overlap (13 mm), widths (70 mm peter pan, 45 mm shirt fall), stand heights and rises (30 / 10 shirt, 35 / 15 mandarin), the 3 mm turn of cloth and the 15 mm button extension against the book; fill the page numbers of the Collars table.

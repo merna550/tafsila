@@ -157,6 +157,14 @@ export const VALIDATION_MESSAGES = {
     ar: "حافة الحزام {mm} مم لا تطابق وسط التنورة {expected} مم",
     en: "Waist finish seam {mm} mm does not match the skirt waist {expected} mm",
   },
+  CUFF_LENGTH_OK: {
+    ar: "حافة الأسورة {mm} مم تطابق ذيل الكم بعد التجميع {expected} مم؛ تراكب الأسورة {overlap} مم",
+    en: "Cuff seam {mm} mm matches the sleeve hem after gathering {expected} mm; cuff overlap {overlap} mm",
+  },
+  CUFF_LENGTH_MISMATCH: {
+    ar: "حافة الأسورة {mm} مم لا تطابق ذيل الكم بعد التجميع {expected} مم؛ تراكب الأسورة {overlap} مم",
+    en: "Cuff seam {mm} mm does not match the sleeve hem after gathering {expected} mm; cuff overlap {overlap} mm",
+  },
   WAIST_HIP_PASS_OK: {
     ar: "فتحة الوسط {mm} مم تمر فوق الأرداف ({expected} مم)",
     en: "The {mm} mm waist opening passes over the hip ({expected} mm)",

@@ -19,12 +19,6 @@ export const WAIST_FACING_DEPTH_MM = 60;
 /** Width of the waist elastic the casing is sized for (25 mm is the common Egyptian market width). */
 export const ELASTIC_WIDTH_MM = 25;
 
-/** Room in the casing so the elastic slides through it once the casing is stitched. */
-export const CASING_EASE_MM = 5;
-
-/** Elastic cut length as a share of the body waist, join overlap included (Aldrich: 85 to 95 % of the waist). */
-export const ELASTIC_LENGTH_RATIO = 0.9;
-
 /** Room the relaxed waist needs over the hip to be pulled on without straining the seams. */
 export const HIP_PASS_EASE_MM = 20;
 

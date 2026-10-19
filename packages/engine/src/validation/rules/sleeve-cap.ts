@@ -1,4 +1,4 @@
-/** Woven set-in sleeve-cap ease validation (FR-VAL-02). */
+/** Woven sleeve-cap ease validation (FR-VAL-02), with declared gathers and unsewn armhole (issue #142). */
 import type { ValidationCheck } from "@tafsila/schemas";
 import { SLEEVE_CAP_EASE_MAX_MM, SLEEVE_CAP_EASE_MIN_MM } from "../../constants/validation";
 import { edgeLengthMm } from "../../pieces/measure";
@@ -34,7 +34,9 @@ function totalLengthMm(refs: readonly { readonly found: ReturnType<typeof refere
 }
 
 /**
- * Builds one report row per declared sleeve cap.
+ * Builds one report row per declared sleeve cap. A cap may declare a length it gathers on purpose (a puff head) and an
+ * armhole length it is not sewn to (a cap or flutter sleeve); both are taken out before the ease is measured, so the
+ * net ease is still held to 10 to 40 mm (decision 142, 4).
  *
  * @param ctx - Finished drafting context.
  * @returns Sleeve-cap validation checks.
@@ -64,8 +66,8 @@ function sleeveCapChecks(ctx: DraftContext): readonly ValidationCheck[] {
           refs,
         };
       }
-      const capLengthMm = totalLengthMm(caps);
-      const armholeLengthMm = totalLengthMm(armholes);
+      const capLengthMm = totalLengthMm(caps) - (declaration.gatheredMm ?? 0);
+      const armholeLengthMm = totalLengthMm(armholes) - (declaration.armholeExcludedMm ?? 0);
       const measuredMm = capLengthMm - armholeLengthMm;
       const passes = measuredMm >= SLEEVE_CAP_EASE_MIN_MM && measuredMm <= SLEEVE_CAP_EASE_MAX_MM;
       const code = passes ? "SLEEVE_CAP_OK" : "SLEEVE_CAP_OUT_OF_RANGE";

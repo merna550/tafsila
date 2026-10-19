@@ -6,6 +6,10 @@ import {
   fullCircleKneeSkirt,
   halfCircleKneeSkirt,
   setInSleeveBlouse,
+  puffSleeveBlouse,
+  bishopSleeveBlouse,
+  capSleeveBlouse,
+  flutterSleeveBlouse,
   straightMidiBackSlitSkirt,
   straightMidiSkirt,
   vNeckHalfCircleDress,
@@ -19,7 +23,15 @@ describe("fixtures stay valid against the shared schemas", () => {
   });
 
   it("the circle skirt and sleeve designs are valid DesignSpecs", () => {
-    for (const spec of [halfCircleKneeSkirt, fullCircleKneeSkirt, setInSleeveBlouse]) {
+    for (const spec of [
+      halfCircleKneeSkirt,
+      fullCircleKneeSkirt,
+      setInSleeveBlouse,
+      puffSleeveBlouse,
+      bishopSleeveBlouse,
+      capSleeveBlouse,
+      flutterSleeveBlouse,
+    ]) {
       expect(designSpecSchema.safeParse(spec).success).toBe(true);
     }
   });

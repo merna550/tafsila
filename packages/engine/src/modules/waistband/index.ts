@@ -3,5 +3,4 @@ export * from "./finishes";
 export * from "./module";
 export * from "./rules";
 export * from "./runs";
-export * from "./strip";
 export * from "./traced";

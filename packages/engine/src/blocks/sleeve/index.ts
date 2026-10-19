@@ -2,4 +2,5 @@
 export * from "./draft-sleeve";
 export * from "./ids";
 export * from "./module";
+export * from "./notches";
 export * from "./types";

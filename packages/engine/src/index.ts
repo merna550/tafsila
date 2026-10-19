@@ -14,6 +14,7 @@ export * from "./version";
 export * from "./measurements";
 export * from "./modules/circle-skirt/draft";
 export * from "./modules/collar/combinations";
+export * from "./modules/sleeve/combinations";
 export * from "./modules/skirt";
 export * from "./pieces/fabric-width";
 export * from "./pieces/measure";
