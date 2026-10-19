@@ -15,7 +15,6 @@ import { DraftingError } from "../../errors/drafting-error";
 import {
   add,
   curveThroughPoints,
-  lerp,
   lineSeg,
   normalize,
   pathLength,
@@ -48,6 +47,12 @@ export interface SkirtHalfArgs {
   readonly inputs: SkirtDraftInputs;
   /** True when the centre back is a seam (zip); ignored for the front. */
   readonly centreSeam?: boolean;
+  /**
+   * For a dress: distance along the waist from the centre line to the bodice dart's centre-side leg (darts closed).
+   * The skirt dart's centre-side leg goes there, so the darts meet at the waist seam (issue #144, decision 144, 3).
+   * Absent: the dart is centred half way along the waist (method step 4).
+   */
+  readonly dartFromCentreMm?: number;
 }
 
 /** One drafted skirt half, before the finishing step. */
@@ -153,17 +158,24 @@ function truingDropMm(
 }
 
 /**
- * The waist dart, centred half way across the waist line, its apex square to the waist so both legs are equal (method step 4).
+ * The waist dart, its apex square to the waist so both legs are equal (method step 4). It is centred half way across
+ * the waist line, or, for a dress, starts where the bodice dart closes (decision 144, 3), kept inside the waist.
  *
  * @param half - Front or back.
  * @param waistSide - Waist side point (the waist runs from (0, 0) to it).
  * @param dartMm - Dart width.
+ * @param fromCentreMm - Distance from the centre to the dart's centre-side leg, when set by the bodice.
  * @returns The dart, or none for a zero width.
  */
-function waistDart(half: SkirtHalf, waistSide: Point, dartMm: number): Dart[] {
+function waistDart(half: SkirtHalf, waistSide: Point, dartMm: number, fromCentreMm?: number): Dart[] {
   if (dartMm <= 0) return [];
-  const centre = lerp(pt(0, 0), waistSide, 1 / 2);
   const along = normalize(waistSide);
+  const waistMm = Math.hypot(waistSide.x, waistSide.y);
+  const centreMm =
+    fromCentreMm === undefined
+      ? waistMm / 2
+      : Math.min(Math.max(fromCentreMm, 0), waistMm - dartMm) + dartMm / 2;
+  const centre = scale(along, centreMm);
   const legs: [Point, Point] = [sub(centre, scale(along, dartMm / 2)), add(centre, scale(along, dartMm / 2))];
   const apex = add(centre, scale(perpendicular(along), SKIRT_DART_LENGTH_MM[half]));
   return [{ id: "waist-dart", edgeId: "waist", apex, legs }];
@@ -201,7 +213,7 @@ export function draftSkirtHalf(args: SkirtHalfArgs): SkirtHalfDraft {
   const hipSide = pt(w.hipXMm, hipDepthMm);
   const hemCentre = pt(0, skirtLengthMm);
   const hemSide = pt(w.hipXMm, skirtLengthMm);
-  const darts = waistDart(half, waistSide, w.dartMm);
+  const darts = waistDart(half, waistSide, w.dartMm, args.dartFromCentreMm);
   const k = `skirt.${half}`;
   const dartPoints = darts[0]
     ? {

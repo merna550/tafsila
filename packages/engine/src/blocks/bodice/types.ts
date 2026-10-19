@@ -112,4 +112,6 @@ export interface BodiceDraft {
   readonly armhole: BodiceArmhole;
   /** Armscye depth from the nape level. */
   readonly scyeDepthMm: number;
+  /** Whether the waist darts are drafted (false for a dart-free bodice or a dart dropped under the minimum). */
+  readonly hasWaistDart: boolean;
 }

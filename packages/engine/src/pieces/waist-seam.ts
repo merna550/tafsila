@@ -42,14 +42,21 @@ export function closedWaistMm(piece: PieceDraft, gathers: WaistGathers = "sewn")
   return edgeLengthMm(piece, WAIST_EDGE_ID, { closeDarts: true }) + changeMm;
 }
 
+/** Id prefix of the bodice pieces, whose waist edge is the other side of a dress waist seam (#144). */
+const BODICE_ID_PREFIX = "bodice-";
+
 /**
- * The main-fabric pieces that carry a skirt waist edge.
+ * The main-fabric pieces that carry a waist edge: the skirt's, or with `bodice`, the bodice's (a dress, #144).
  *
  * @param pieces - Pieces drafted so far.
- * @returns The skirt waist pieces, in their drafted order.
+ * @param part - `skirt` (default) or `bodice`.
+ * @returns The waist pieces of that part, in their drafted order.
  */
-export function waistPieces(pieces: readonly PieceDraft[]): PieceDraft[] {
+export function waistPieces(pieces: readonly PieceDraft[], part: "skirt" | "bodice" = "skirt"): PieceDraft[] {
   return pieces.filter(
-    (piece) => piece.cut.fabric === "main" && piece.edges.some((edge) => edge.id === WAIST_EDGE_ID),
+    (piece) =>
+      piece.cut.fabric === "main" &&
+      piece.id.startsWith(BODICE_ID_PREFIX) === (part === "bodice") &&
+      piece.edges.some((edge) => edge.id === WAIST_EDGE_ID),
   );
 }

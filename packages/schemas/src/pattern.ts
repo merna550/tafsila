@@ -117,7 +117,10 @@ export const notchSchema = z.object({
 /** A balance mark on an edge. */
 export type Notch = z.infer<typeof notchSchema>;
 
-/** A dart: its tip and the two legs on the edge it opens from. */
+/**
+ * A dart: its tip and the two legs on the edge it opens from. `edgeId` is `interior` for the two halves of a fisheye
+ * dart (a one-piece dress or a blouse, #144): their legs meet inside the piece at the waist, not on an edge.
+ */
 export const dartSchema = z.object({
   id: z.string().min(1),
   edgeId: z.string().min(1),

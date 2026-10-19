@@ -5,7 +5,7 @@
 import type { ValidationCheck } from "@tafsila/schemas";
 import { CIRCUMFERENCE_TOLERANCE_MM } from "../../constants/validation";
 import { bodyLineMultiplier } from "../../pieces/body-lines";
-import { closedWaistMm, WAIST_EDGE_ID } from "../../pieces/waist-seam";
+import { closedWaistMm, WAIST_EDGE_ID, waistPieces } from "../../pieces/waist-seam";
 import type { DraftContext } from "../../pipeline/draft-context";
 import type { ValidationRule } from "../../pipeline/feature-module";
 import { formatMessage } from "../../validation/messages";
@@ -17,7 +17,7 @@ import { formatMessage } from "../../validation/messages";
  * @returns One FR-VAL-03 check.
  */
 function fullnessCheck(ctx: DraftContext): ValidationCheck {
-  const pieces = ctx.pieces.filter((piece) => piece.edges.some((edge) => edge.id === WAIST_EDGE_ID));
+  const pieces = waistPieces(ctx.pieces);
   const measuredMm = pieces.reduce((sum, piece) => sum + closedWaistMm(piece) * bodyLineMultiplier(piece), 0);
   const expectedMm = ctx.measurements.waist + ctx.inputs!.totalEaseMm.waist;
   const passes = Math.abs(measuredMm - expectedMm) <= CIRCUMFERENCE_TOLERANCE_MM;
@@ -37,8 +37,6 @@ function fullnessCheck(ctx: DraftContext): ValidationCheck {
 export const fullnessClosureRule: ValidationRule = {
   id: "FR-VAL-03",
   code: "FULLNESS_CLOSURE_MISMATCH",
-  appliesTo: (ctx) =>
-    ctx.inputs !== undefined &&
-    ctx.pieces.some((piece) => piece.edges.some((edge) => edge.id === WAIST_EDGE_ID)),
+  appliesTo: (ctx) => ctx.inputs !== undefined && waistPieces(ctx.pieces).length > 0,
   run: fullnessCheck,
 };

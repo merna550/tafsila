@@ -1,6 +1,6 @@
 /**
  * Input-type drafting errors (issue #128, decision 128, 10): body proportions or a skirt length the blocks
- * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141), sleeve style, length and cuff combinations the sleeve modules refuse (issue #142), and closures the category cannot take or a zip longer than its opening (issue #143). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
+ * cannot draft, and collars on a neckline or closure they cannot be drafted with (issue #141), sleeve style, length and cuff combinations the sleeve modules refuse (issue #142), closures the category cannot take or a zip longer than its opening (issue #143), and a spec missing a part its category needs or a one-piece dress with a skirt it cannot join (issue #144). `generatePattern` turns them into a `fail` result with these messages instead of throwing.
  */
 import { DraftingError } from "../errors/drafting-error";
 
@@ -69,6 +69,14 @@ export const INPUT_ERROR_MESSAGES = {
   CLOSURE_ZIP_TOO_LONG: {
     ar: "السحاب أطول من الفتحة في هذا الطول. اختاري طولًا أطول أو مكانًا آخر للسحاب.",
     en: "The zip is longer than the opening at this length; choose a longer garment or another zip position",
+  },
+  SPEC_PART_MISSING: {
+    ar: "التصميم ناقص: الفستان يحتاج صدرًا وتنورة، والتنورة تحتاج تنورة، والبلوزة تحتاج صدرًا.",
+    en: "The design is missing a part: a dress needs a bodice and a skirt, a skirt needs a skirt, a blouse needs a bodice",
+  },
+  DRESS_ONE_PIECE_SKIRT_UNSUPPORTED: {
+    ar: "الفستان بدون خياطة وسط يحتاج تنورة مستقيمة أو على شكل حرف A. اختاري خياطة وسط أو غيّري نوع التنورة.",
+    en: "A dress without a waist seam needs a straight or A-line skirt; add a waist seam or change the skirt",
   },
   SLEEVE_PUFF_UNSOLVABLE: {
     ar: "لا يمكن رسم رأس كم منفوخ بهذه المقاسات. راجعي محيط الذراع والقيم المدخلة.",

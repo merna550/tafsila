@@ -3,6 +3,7 @@ import type { Piece } from "@tafsila/schemas";
 import { SKIRT_GRAIN_LINE_SHARE } from "../../constants/skirt-block";
 import { isPanelSkirt } from "../../constants/skirt-fullness";
 import { pt } from "../../geometry";
+import { BODICE_RESOLVED_KEYS } from "../bodice/draft-bodice";
 import { type DraftContext, type PieceDraft, withPiece } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
 import { closureOpensAt } from "../../pieces/closure-opening";
@@ -29,16 +30,24 @@ function cutFor(half: SkirtHalf, centreSeam: boolean): Piece["cut"] {
  * @param half - Front or back.
  * @param measurements - Body measurements.
  * @param inputs - Resolved inputs.
- * @param centreSeam - True for a centre-back seam.
+ * @param place - `centreSeam`: true for a centre-back seam; `dartFromCentreMm`: for a dress, where the bodice dart
+ * closes on the waist (#144).
  * @returns The piece, ready for the finishing step.
  */
 function skirtPiece(
   half: SkirtHalf,
   measurements: DraftContext["measurements"],
   inputs: SkirtDraftInputs,
-  centreSeam: boolean,
+  place: { readonly centreSeam: boolean; readonly dartFromCentreMm: number | undefined },
 ): PieceDraft {
-  const draft = draftSkirtHalf({ half, measurements, inputs, centreSeam });
+  const { centreSeam, dartFromCentreMm } = place;
+  const draft = draftSkirtHalf({
+    half,
+    measurements,
+    inputs,
+    centreSeam,
+    ...(dartFromCentreMm === undefined ? {} : { dartFromCentreMm }),
+  });
   const hip = draft.keyPoints[`skirt.${half}.hipSide`]!;
   const hem = draft.keyPoints[`skirt.${half}.hemSide`]!;
   const grainXMm = hip.x / 2;
@@ -62,6 +71,24 @@ function skirtPiece(
   };
 }
 
+/** Where the bodice dart of each half closes on the waist (#144), as published by the bodice block. */
+const BODICE_DART_KEY: Readonly<Record<SkirtHalf, string>> = {
+  front: BODICE_RESOLVED_KEYS.waistDartFrontFromCentreMm,
+  back: BODICE_RESOLVED_KEYS.waistDartBackFromCentreMm,
+};
+
+/**
+ * For a dress, the distance from the centre to the bodice dart on the waist, so the skirt dart sits under it
+ * (decision 144, 3). Undefined for a skirt, or when the bodice has no waist dart.
+ *
+ * @param ctx - Current context.
+ * @param half - Front or back.
+ * @returns The distance in mm, or undefined.
+ */
+function bodiceDartMm(ctx: DraftContext, half: SkirtHalf): number | undefined {
+  return ctx.spec.category === "dress" ? ctx.resolved[BODICE_DART_KEY[half]] : undefined;
+}
+
 /**
  * Straight skirt block module. Calls `resolveDraftInputs` itself while the pipeline's resolve step is a stub
  * (decision 129-skirt-block, 2). Applies to every design with a skirt except the panel skirts (gathered, pleated,
@@ -76,7 +103,14 @@ export const skirtBlockModule: FeatureModule = {
     const centreSeam = closureOpensAt(ctx.spec.closure, "center-back");
     const halves: readonly SkirtHalf[] = ["front", "back"];
     return halves.reduce(
-      (acc, half) => withPiece(acc, skirtPiece(half, ctx.measurements, inputs, centreSeam)),
+      (acc, half) =>
+        withPiece(
+          acc,
+          skirtPiece(half, ctx.measurements, inputs, {
+            centreSeam,
+            dartFromCentreMm: bodiceDartMm(ctx, half),
+          }),
+        ),
       ctx,
     );
   },

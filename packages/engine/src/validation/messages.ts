@@ -185,6 +185,14 @@ export const VALIDATION_MESSAGES = {
     ar: "الحزام المشكّل يحتاج وسطًا مشكّلًا؛ رُسم حزام مستقيم لأن أعلى التنورة مستقيم",
     en: "A contour band needs a shaped waist; a straight band was drafted because the skirt top is straight",
   },
+  DRESS_WAIST_SEAM_OK: {
+    ar: "خياطة الوسط في {half}: الصدر {mm} مم والتنورة {expected} مم متطابقان",
+    en: "Waist seam, {half}: bodice {mm} mm matches skirt {expected} mm",
+  },
+  DRESS_WAIST_SEAM_LENGTH: {
+    ar: "خياطة الوسط في {half}: الصدر {mm} مم لا يطابق التنورة {expected} مم",
+    en: "Waist seam, {half}: bodice {mm} mm does not match skirt {expected} mm",
+  },
   COLLAR_NECK_LENGTH_OK: {
     ar: "حافة رقبة الياقة {mm} مم تطابق فتحة الرقبة {expected} مم",
     en: "Collar neck edge {mm} mm matches the bodice neck {expected} mm",
