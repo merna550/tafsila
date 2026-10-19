@@ -6,7 +6,7 @@ import type { DesignSpec, EaseProfile, Measurements, ValidationCheck } from "@ta
 import { createContext, type DraftContext } from "../pipeline/draft-context";
 import { defaultRegistry } from "../pipeline/default-registry";
 import { DEFAULT_ENGINE_OPTIONS } from "../pipeline/generate-pattern";
-import { blocks, modulesStep, resolve } from "../pipeline/steps";
+import { blocks, resolve } from "../pipeline/steps";
 import { CORE_RULES } from "../validation/core-rules";
 
 /**
@@ -21,7 +21,7 @@ export function blockContext(spec: DesignSpec, m: Measurements): DraftContext {
 }
 
 /**
- * Runs resolve, blocks and modules for a design.
+ * Runs resolve, blocks and the modules for a design, without garment assembly (#144): the bodice stays at waist length.
  *
  * @param spec - The design.
  * @param m - Measurements.
@@ -34,8 +34,15 @@ export function shapedContext(
   easeProfile: EaseProfile = "regular",
 ): DraftContext {
   const ctx = createContext(spec, m, { ...DEFAULT_ENGINE_OPTIONS, easeProfile });
-  return modulesStep(defaultRegistry)(blocks(resolve(ctx)));
+  const drafted = blocks(resolve(ctx));
+  return defaultRegistry
+    .modulesFor(spec)
+    .filter((m) => !m.id.startsWith(ASSEMBLY_ID_PREFIX))
+    .reduce((acc, m) => m.draft(acc), drafted);
 }
+
+/** Id prefix of the garment assembly modules (#144), left out so shaping tests see the bodice at waist length. */
+const ASSEMBLY_ID_PREFIX = "assembly-";
 
 /**
  * Every check the core rules report for a context.

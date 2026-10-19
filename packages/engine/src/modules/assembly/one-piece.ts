@@ -1,6 +1,6 @@
 /**
- * One-piece dress (`waistSeam: false`) and blouse (issue #144, decision 144, 4): the bodice pieces keep their rows
- * above the waist, take the skirt rows (or the blouse hip row) below the hip, and the zone between is redrawn: side
+ * One-piece dress (`waistSeam: false`, issue #144, decision 144, 4): the bodice pieces keep their rows above the
+ * waist, take the skirt rows below the hip, and the zone between is redrawn: side
  * seam, fisheye dart or princess seam. Piece ids do not change; the skirt pieces are removed.
  * Aldrich, Metric Pattern Cutting for Women's Wear, ch. 3 "One-piece dress block".
  */
@@ -15,7 +15,7 @@ import { type DraftContext, type PieceDraft, withPieces } from "../../pipeline/d
 import type { FeatureModule } from "../../pipeline/feature-module";
 import { bodyLinesBelowWaist, fisheyeDarts, waistBodyLine } from "./fisheye";
 import { CENTRE_EDGE, edgeOf, type HalfFrame, halfFrames, WAIST_EDGE } from "./half-frame";
-import { HEM_EDGE_ID, type LabeledSegment, SIDE_EDGE_ID, waistToHipSide } from "./lower-half";
+import { type LabeledSegment, SIDE_EDGE_ID, waistToHipSide } from "./lower-half";
 import { labelled, rebuildOutline } from "./rebuild";
 import { GARMENT_HALVES } from "./waist-seam";
 
@@ -77,8 +77,21 @@ function styleEdgeId(frame: HalfFrame): string {
   return edge.id;
 }
 
+/** Suffix of the princess seam below the waist: its own edge, so the seam may turn at the waist (decision 144, 4). */
+const LOWER_SUFFIX = "-lower";
+
 /**
- * A straight stretch, or nothing when its ends meet (a blouse princess seam ends on the hip-line hem).
+ * Id of the princess seam below the waist.
+ *
+ * @param styleId - Id of the princess seam above the waist.
+ * @returns The lower seam's id.
+ */
+function lowerStyleId(styleId: string): string {
+  return `${styleId}${LOWER_SUFFIX}`;
+}
+
+/**
+ * A straight stretch, or nothing when its ends meet (the seam point on the hem may lie on the hip line).
  *
  * @param from - Start.
  * @param to - End.
@@ -119,8 +132,8 @@ function aboveWaist(piece: PieceDraft): LabeledSegment[] {
  * @returns Outline per piece id.
  */
 function outlines(frame: HalfFrame): Map<string, LabeledSegment[]> {
-  const { pieces, lower, sideWaist } = frame;
-  const sideSeam: LabeledSegment = { seg: waistToHipSide(sideWaist, lower), edgeId: SIDE_EDGE_ID };
+  const { pieces, lower, sideWaist, sideLeave } = frame;
+  const sideSeam: LabeledSegment = { seg: waistToHipSide(sideWaist, lower, sideLeave), edgeId: SIDE_EDGE_ID };
   if (pieces.centre === pieces.side) {
     const end = lower.path.at(-1)!.seg.to;
     return new Map([
@@ -128,7 +141,7 @@ function outlines(frame: HalfFrame): Map<string, LabeledSegment[]> {
     ]);
   }
   const split = splitLower(frame);
-  const style = styleEdgeId(frame);
+  const style = lowerStyleId(styleEdgeId(frame));
   const centreWaist = edgeOf(pieces.centre, WAIST_EDGE);
   const sideWaistEdge = edgeOf(pieces.side, WAIST_EDGE);
   const centreLeg = pieces.centre.stitchPath[centreWaist.fromSegment]!.from;
@@ -176,7 +189,8 @@ function splitLower(frame: HalfFrame): SplitLower {
 }
 
 /**
- * The skirt edges, with pairings to a skirt piece moved to the bodice piece of the same role.
+ * The skirt edges, with pairings to a skirt piece moved to the bodice piece of the same role, and for princess
+ * panels the template of the seam below the waist (paired like the seam above it).
  *
  * @param frame - The half's frame.
  * @param piece - The piece being rebuilt.
@@ -184,23 +198,24 @@ function splitLower(frame: HalfFrame): SplitLower {
  */
 function lowerEdges(frame: HalfFrame, piece: PieceDraft): Edge[] {
   const role = piece.id.replace(/^bodice-(front|back)/, "");
-  return frame.lower.sourceEdges.map((edge) => {
+  const skirt = frame.lower.sourceEdges.map((edge) => {
     if (!edge.pairsWith) return edge;
     const other = edge.pairsWith.pieceId.replace(/^skirt-/, "bodice-") + role;
     return { ...edge, pairsWith: { ...edge.pairsWith, pieceId: other } };
   });
+  if (frame.pieces.centre === frame.pieces.side) return skirt;
+  const style = piece.edges.find((e) => e.id === styleEdgeId(frame))!;
+  const id = lowerStyleId(style.id);
+  return [...skirt, { ...style, id, pairsWith: { ...style.pairsWith!, edgeId: id } }];
 }
 
 /**
- * The hip body line: the skirt's (moved), else horizontal at the hip line, or along the hem when the hem is the hip
- * line (a blouse).
+ * The hip body line: the skirt's (moved), else horizontal at the hip line.
  *
  * @param frame - The half's frame.
- * @param hasHem - Whether the hem is on the hip line.
  * @returns The body line.
  */
-function hipLine(frame: HalfFrame, hasHem: boolean): BodyLine {
-  if (hasHem) return { id: HIP_LINE_ID, measurement: "hip", kind: "edge", edgeId: HEM_EDGE_ID };
+function hipLine(frame: HalfFrame): BodyLine {
   const skirtLine = frame.lower.hipLine;
   return skirtLine
     ? { ...skirtLine, id: HIP_LINE_ID }
@@ -227,19 +242,13 @@ function rebuiltPiece(
     piece.stitchPath[waist.fromSegment]!.from,
     piece.stitchPath[waist.toSegment]!.to,
   ];
-  const hemOnHip = Math.abs(outline.at(-1)!.seg.from.y - frame.lower.hipY) <= GEOMETRY_EPSILON_MM;
   const bottomY = Math.max(...outline.map((s) => s.seg.to.y));
   const [grainTop, grainEnd] = piece.grainLine;
-  const garment = ctx.spec.category === "blouse" ? "blouse" : "dress";
   return {
     ...piece,
-    name: ASSEMBLED_PIECE_NAMES[garment][piece.id] ?? piece.name,
+    name: ASSEMBLED_PIECE_NAMES.dress[piece.id] ?? piece.name,
     ...rebuildOutline({ piece, segments: outline, lowerEdges: lowerEdges(frame, piece) }),
-    bodyLines: bodyLinesBelowWaist(
-      piece,
-      waistBodyLine(piece, ends),
-      hipLine(frame, hemOnHip && ctx.spec.category === "blouse"),
-    ),
+    bodyLines: bodyLinesBelowWaist(piece, waistBodyLine(piece, ends), hipLine(frame)),
     grainLine: [grainTop, pt(grainEnd.x, grainEnd.y + bottomY - frame.waistCentre.y)],
     darts: fisheyeDarts(piece, frame.half, frame.lower.hipY),
     marks: [...(piece.marks ?? []), ...(piece.id === frame.pieces.centre.id ? frame.lower.marks : [])],
@@ -268,10 +277,10 @@ function assemble(ctx: DraftContext): DraftContext {
   return withPieces(ctx, pieces);
 }
 
-/** One-piece dress and blouse: the bodice pieces run to the hem (decision 144, 4). */
+/** One-piece dress: the bodice pieces run to the hem (decision 144, 4). */
 export const onePieceModule: FeatureModule = {
   id: "assembly-one-piece",
   order: ASSEMBLY_ORDER,
-  appliesTo: (spec) => spec.category === "blouse" || isOnePieceDress(spec),
+  appliesTo: isOnePieceDress,
   draft: assemble,
 };

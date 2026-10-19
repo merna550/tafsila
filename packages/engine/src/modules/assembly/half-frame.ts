@@ -1,12 +1,13 @@
 /**
- * The frame of one half of a one-piece dress or a blouse (issue #144): its bodice pieces, waist points and the lower
+ * The frame of one half of a one-piece dress (issue #144): its bodice pieces, waist points and the lower
  * half below the hip, with the front lower half dropped so both side seams have the same length (decision 144, 4).
  */
 import type { Edge, Point } from "@tafsila/schemas";
 import { ASSEMBLY_TRUING_MAX_STEPS, ASSEMBLY_TRUING_TOLERANCE_MM } from "../../constants/assembly";
 import { DraftingError } from "../../errors/drafting-error";
+import { tangentOnSegment } from "../../geometry";
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
-import { blouseLowerHalf, type LowerHalf, lowerSideMm, SIDE_EDGE_ID, skirtLowerHalf } from "./lower-half";
+import { type LowerHalf, lowerSideMm, SIDE_EDGE_ID, skirtLowerHalf } from "./lower-half";
 import type { GarmentHalf } from "./waist-seam";
 
 /** Id of the waist edge of every bodice piece. */
@@ -33,6 +34,8 @@ export interface HalfFrame {
   readonly waistCentre: Point;
   /** Side waist point, where the bodice side seam ends. */
   readonly sideWaist: Point;
+  /** Direction of the bodice side seam where it reaches the waist. */
+  readonly sideLeave: Point;
   /** The outline below the hip line. */
   readonly lower: LowerHalf;
 }
@@ -76,7 +79,7 @@ function halfPieces(ctx: DraftContext, half: GarmentHalf): HalfPieces {
 }
 
 /**
- * The lower half of a half for a given drop: the skirt's below the hip (a dress), or the blouse hip row.
+ * The lower half of a half for a given drop: the skirt's below the hip.
  *
  * @param ctx - Current context.
  * @param half - Front or back.
@@ -86,9 +89,6 @@ function halfPieces(ctx: DraftContext, half: GarmentHalf): HalfPieces {
  */
 function lowerFor(ctx: DraftContext, half: GarmentHalf, waistCentre: Point, dropMm: number): LowerHalf {
   const inputs = ctx.inputs!;
-  if (ctx.spec.category === "blouse") {
-    return blouseLowerHalf(waistCentre, inputs.hipDepthMm, inputs.hipQuarterMm, dropMm);
-  }
   const skirt = ctx.pieces.find((p) => p.id === `skirt-${half}`);
   if (!skirt) throw new DraftingError("ASSEMBLY_SKIRT_MISSING", `No skirt-${half} to join`);
   return skirtLowerHalf(skirt, waistCentre, inputs.hipDepthMm, dropMm);
@@ -106,9 +106,11 @@ function frameAt(ctx: DraftContext, half: GarmentHalf, dropMm: number): HalfFram
   const pieces = halfPieces(ctx, half);
   const centreEdge = edgeOf(pieces.centre, CENTRE_EDGE[half]);
   const waistCentre = pieces.centre.stitchPath[centreEdge.fromSegment]!.from;
-  const sideWaist = pieces.side.stitchPath[edgeOf(pieces.side, WAIST_EDGE).fromSegment]!.from;
+  const waistAt = edgeOf(pieces.side, WAIST_EDGE).fromSegment;
+  const sideWaist = pieces.side.stitchPath[waistAt]!.from;
+  const sideLeave = tangentOnSegment(pieces.side.stitchPath[waistAt - 1]!, 1);
   edgeOf(pieces.side, SIDE_EDGE_ID);
-  return { half, pieces, waistCentre, sideWaist, lower: lowerFor(ctx, half, waistCentre, dropMm) };
+  return { half, pieces, waistCentre, sideWaist, sideLeave, lower: lowerFor(ctx, half, waistCentre, dropMm) };
 }
 
 /**
@@ -121,11 +123,11 @@ function frameAt(ctx: DraftContext, half: GarmentHalf, dropMm: number): HalfFram
  */
 export function halfFrames(ctx: DraftContext): Readonly<Record<GarmentHalf, HalfFrame>> {
   const back = frameAt(ctx, "back", 0);
-  const backMm = lowerSideMm(back.sideWaist, back.lower);
+  const backMm = lowerSideMm(back.sideWaist, back.lower, back.sideLeave);
   let dropMm = 0;
   let front = frameAt(ctx, "front", dropMm);
   for (let i = 0; i < ASSEMBLY_TRUING_MAX_STEPS; i += 1) {
-    const gapMm = backMm - lowerSideMm(front.sideWaist, front.lower);
+    const gapMm = backMm - lowerSideMm(front.sideWaist, front.lower, front.sideLeave);
     if (Math.abs(gapMm) <= ASSEMBLY_TRUING_TOLERANCE_MM) break;
     dropMm += gapMm;
     front = frameAt(ctx, "front", dropMm);

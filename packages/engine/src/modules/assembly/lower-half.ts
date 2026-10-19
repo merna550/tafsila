@@ -1,11 +1,10 @@
 /**
- * The part of a one-piece dress or a blouse below the hip line (issue #144, decision 144, 4): the skirt rows of a
- * dress kept as drafted, or the blouse hip row built from the hip quarter, and the side seam that joins the bodice
+ * The part of a one-piece dress below the hip line (issue #144, decision 144, 4): the skirt rows kept as drafted, and
+ * the side seam that joins the bodice
  * waist to it. Aldrich, Metric Pattern Cutting for Women's Wear, ch. 3 "One-piece dress block" (the waist-to-hip
  * zone is redrawn between the bodice block and the skirt block).
  */
 import type { BodyLine, Edge, Mark, Point, Segment } from "@tafsila/schemas";
-import { BLOUSE_LENGTH_BELOW_HIP_MM } from "../../constants/assembly";
 import { GEOMETRY_EPSILON_MM } from "../../constants/geometry";
 import { DraftingError } from "../../errors/drafting-error";
 import {
@@ -39,9 +38,9 @@ export interface LowerHalf {
   readonly hipSide: Point;
   /** From the hip side point down the side, along the hem, to the centre line at the hem. */
   readonly path: readonly LabeledSegment[];
-  /** Edges of the skirt the path came from, to copy kinds and pairings; empty for a blouse. */
+  /** Edges of the skirt the path came from, to copy kinds and pairings. */
   readonly sourceEdges: readonly Edge[];
-  /** The skirt's hip body line moved into the bodice frame (a pivoted A-line bends it, decision 135); none for a blouse. */
+  /** The skirt's hip body line moved into the bodice frame (a pivoted A-line bends it, decision 135). */
   readonly hipLine?: BodyLine;
   /** Marks of the skirt (slit marks), moved into the bodice frame. */
   readonly marks: NonNullable<PieceDraft["marks"]>;
@@ -116,7 +115,8 @@ export function skirtLowerHalf(
     throw new DraftingError("ASSEMBLY_SKIRT_LAYOUT", `${skirt.id} has no side then centre edge`);
   }
   const hipY = offset.y + hipDepthMm;
-  const sideBelow = belowLine(path.slice(side.fromSegment, side.toSegment + 1), hipY);
+  const { hipLine } = hipLineOf(skirt, offset);
+  const sideBelow = belowLine(path.slice(side.fromSegment, side.toSegment + 1), sideCutY(hipLine, hipY));
   const between = path.slice(side.toSegment + 1, centre.fromSegment).map((seg, i) => ({
     seg,
     edgeId: edgeIdAt(skirt.edges, side.toSegment + 1 + i),
@@ -130,9 +130,22 @@ export function skirtLowerHalf(
     hipSide: sideBelow[0]!.from,
     path: [...sideBelow.map((seg) => ({ seg, edgeId: SIDE_EDGE_ID })), ...between],
     sourceEdges: skirt.edges,
-    ...hipLineOf(skirt, offset),
+    ...(hipLine ? { hipLine } : {}),
     marks: (skirt.marks ?? []).map((m) => moveMark(m, offset)),
   };
+}
+
+/**
+ * Where the side seam is cut: at the side end of the skirt's hip line. A pivoted A-line panel lifts its hip side
+ * point off the hip line (decision 135), and the hip line must still end on the side seam.
+ *
+ * @param hipLine - The skirt's hip body line, moved.
+ * @param hipY - y of the hip line.
+ * @returns y of the cut.
+ */
+function sideCutY(hipLine: BodyLine | undefined, hipY: number): number {
+  if (hipLine?.kind !== "polyline") return hipY;
+  return hipLine.points.reduce((side, p) => (p.x > side.x ? p : side), hipLine.points[0]!).y;
 }
 
 /**
@@ -173,48 +186,19 @@ function edgeIdAt(edges: readonly Edge[], index: number): string {
 }
 
 /**
- * The lower half of a blouse: a hip row from the centre line to the hip quarter (decision 144, 4), the hem
- * `BLOUSE_LENGTH_BELOW_HIP_MM` below it (0: the hem is the hip row).
- *
- * @param waistCentre - The bodice waist point on the centre line.
- * @param hipDepthMm - Waist to hip line.
- * @param hipQuarterMm - Finished hip quarter, (hip + total ease) / 4.
- * @param dropMm - Extra drop, used to true the side seams.
- * @returns The lower half.
- */
-export function blouseLowerHalf(
-  waistCentre: Point,
-  hipDepthMm: number,
-  hipQuarterMm: number,
-  dropMm: number,
-): LowerHalf {
-  const hipY = waistCentre.y + hipDepthMm + dropMm;
-  const hemY = hipY + BLOUSE_LENGTH_BELOW_HIP_MM;
-  const hipSide = pt(hipQuarterMm, hipY);
-  const hemSide = pt(hipQuarterMm, hemY);
-  const sideRun: LabeledSegment[] =
-    hemY > hipY ? [{ seg: lineSeg(hipSide, hemSide), edgeId: SIDE_EDGE_ID }] : [];
-  return {
-    hipY,
-    hipSide,
-    path: [...sideRun, { seg: lineSeg(hemSide, pt(waistCentre.x, hemY)), edgeId: HEM_EDGE_ID }],
-    sourceEdges: [],
-    marks: [],
-  };
-}
-
-/**
  * The side seam from the bodice side waist down to the hip side point: one curve leaving the bodice side seam's
- * direction and arriving along the run below the hip, so the seam has no corner at the waist or the hip.
+ * direction and arriving along the run below the hip, so the seam has no
+ * corner at the waist or the hip.
  *
  * @param sideWaist - Bodice side waist point.
  * @param lower - The lower half.
+ * @param leave - Direction of the bodice side seam at the waist.
  * @returns One segment.
  */
-export function waistToHipSide(sideWaist: Point, lower: LowerHalf): Segment {
+export function waistToHipSide(sideWaist: Point, lower: LowerHalf, leave: Point): Segment {
   const next = lower.path[0]!;
-  const arrive = next.edgeId === SIDE_EDGE_ID ? tangentOnSegment(next.seg, 0) : pt(0, 1);
-  const [curve] = curveThroughPoints([sideWaist, lower.hipSide], sub(lower.hipSide, sideWaist), arrive);
+  const arrive = next.edgeId === SIDE_EDGE_ID ? tangentOnSegment(next.seg, 0) : sub(lower.hipSide, sideWaist);
+  const [curve] = curveThroughPoints([sideWaist, lower.hipSide], leave, arrive);
   return curve!;
 }
 
@@ -223,9 +207,10 @@ export function waistToHipSide(sideWaist: Point, lower: LowerHalf): Segment {
  *
  * @param sideWaist - Bodice side waist point.
  * @param lower - The lower half.
+ * @param leave - Direction of the bodice side seam at the waist.
  * @returns Length in mm.
  */
-export function lowerSideMm(sideWaist: Point, lower: LowerHalf): number {
+export function lowerSideMm(sideWaist: Point, lower: LowerHalf, leave: Point): number {
   const run = lower.path.filter((s) => s.edgeId === SIDE_EDGE_ID).map((s) => s.seg);
-  return segmentLength(waistToHipSide(sideWaist, lower)) + pathLength(run);
+  return segmentLength(waistToHipSide(sideWaist, lower, leave)) + pathLength(run);
 }

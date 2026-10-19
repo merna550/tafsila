@@ -6,12 +6,6 @@
  */
 export const ASSEMBLY_ORDER = 45;
 
-/**
- * How far a blouse hem sits below the hip line, in mm. 0: hip length, worn over or tucked in (decision 144, 5);
- * the spec has no tuck-in/over field yet.
- */
-export const BLOUSE_LENGTH_BELOW_HIP_MM = 0;
-
 /** Waist seam lengths (bodice and skirt, darts closed) match within this, in mm (FR-VAL-01 seam tolerance). */
 export const WAIST_SEAM_TOLERANCE_MM = 2;
 

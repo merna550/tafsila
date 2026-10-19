@@ -38,13 +38,12 @@ interface BlockLine {
 const OWNED_KINDS: readonly Label["kind"][] = ["name", "cut", "size"];
 
 /**
- * Which garment the bodice pieces make once they run below the waist (#144): a blouse or a one-piece dress.
+ * Which garment the bodice pieces make once they run below the waist (#144): a one-piece dress.
  *
  * @param spec - The design.
  * @returns The garment, or undefined when the bodice stops at the waist.
  */
 function assembledGarment(spec: DraftContext["spec"]): AssembledGarment | undefined {
-  if (spec.category === "blouse") return "blouse";
   return isOnePieceDress(spec) ? "dress" : undefined;
 }
 

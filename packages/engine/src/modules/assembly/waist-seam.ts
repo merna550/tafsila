@@ -60,19 +60,22 @@ export function skirtWaistPieces(pieces: readonly PieceDraft[], half: GarmentHal
   return waistPieces(pieces).filter((p) => inHalf(p.id, half));
 }
 
+/** Copies of a piece on each side of the body (a half cut on the fold, or one of a mirrored pair). */
+const SIDES_OF_BODY = 2;
+
 /**
- * Sewn waist of a set of pieces around the garment (darts closed, gathers drawn up, pleats folded), counting each
- * piece as many times as it is cut.
+ * Sewn waist of a set of pieces on one side of the body (darts closed, gathers drawn up, pleats folded): the seam
+ * as one side of the garment sews it, compared edge to edge like every FR-VAL-01 seam (decision 144, 3).
  *
  * @param pieces - The pieces.
  * @returns Length in mm.
  */
 function sewnWaistMm(pieces: readonly PieceDraft[]): number {
-  return pieces.reduce((sum, p) => sum + closedWaistMm(p) * bodyLineMultiplier(p), 0);
+  return pieces.reduce((sum, p) => sum + (closedWaistMm(p) * bodyLineMultiplier(p)) / SIDES_OF_BODY, 0);
 }
 
 /**
- * The bodice waist and the skirt waist of one half, each around the garment.
+ * The bodice waist and the skirt waist of one half, on one side of the body.
  *
  * @param ctx - Finished context.
  * @param half - Front or back.
