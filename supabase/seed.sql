@@ -64,3 +64,25 @@ select
   c.owner_id, c.id, c.name || ' measurements', 'M',
   '{"unit":"mm","height":1650,"bust":920,"highBust":860,"underBust":780,"waist":740,"hip":1000,"hipDepth":200,"neck":360,"shoulderWidth":380,"backLength":400,"frontLength":430,"bustPointDistance":190,"bustHeight":250,"armLength":590,"upperArm":290,"wrist":160,"waistToKnee":580,"waistToFloor":1050}'::jsonb
 from public.clients c;
+
+-- Designs (issue #237): one dress for the trial user with two versions (v2 has long sleeves; v2 is current).
+-- spec = seedDress from @tafsila/test-fixtures; input_hash computed as described in docs/backend/seed-data.md.
+insert into public.designs (id, owner_id, category, title) values
+  ('00000000-0000-4000-8000-0000000000d1', '00000000-0000-4000-8000-000000000001', 'dress', 'Seed dress');
+
+insert into public.pattern_versions (
+  id, design_id, owner_id, version_no, spec, measurement_set_id, measurements, size_label,
+  ease_profile, options, engine_version, validation_status, input_hash
+)
+select
+  v.id, '00000000-0000-4000-8000-0000000000d1', m.owner_id, v.version_no, v.spec::jsonb, m.id, m.data, 'M',
+  'regular', '{"fabricWidthMm":1400}'::jsonb, '0.16.0', 'pass', v.input_hash
+from public.measurement_sets m,
+  (values
+    ('00000000-0000-4000-8000-0000000000f1'::uuid, 1, '{"schemaVersion":1,"category":"dress","fabricType":"woven","bodice":{"fit":"fitted","shaping":"darts","waistSeam":true},"neckline":{"front":"round","back":"round","collar":"none"},"sleeve":{"type":"set-in","length":"short","cuff":"none"},"skirt":{"type":"straight","length":"knee"},"waistband":"none","closure":{"type":"zip","position":"center-back"},"pockets":[],"lining":false,"belt":"none"}', 'fnv1a64:1208b8d84c283787'),
+    ('00000000-0000-4000-8000-0000000000f2'::uuid, 2, '{"schemaVersion":1,"category":"dress","fabricType":"woven","bodice":{"fit":"fitted","shaping":"darts","waistSeam":true},"neckline":{"front":"round","back":"round","collar":"none"},"sleeve":{"type":"set-in","length":"long","cuff":"none"},"skirt":{"type":"straight","length":"knee"},"waistband":"none","closure":{"type":"zip","position":"center-back"},"pockets":[],"lining":false,"belt":"none"}', 'fnv1a64:31a4c82202f88eb1')
+  ) as v (id, version_no, spec, input_hash)
+where m.client_id = '00000000-0000-4000-8000-0000000000a1';
+
+update public.designs set current_version_id = '00000000-0000-4000-8000-0000000000f2'
+  where id = '00000000-0000-4000-8000-0000000000d1';

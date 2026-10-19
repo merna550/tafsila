@@ -1,6 +1,17 @@
 /** Drizzle mirror of the SQL tables the API uses (supabase/migrations is the source of truth; schema.test.ts compares the columns). */
-import type { Measurements, SizeChart } from "@tafsila/schemas";
-import { boolean, foreignKey, jsonb, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
+import type { DesignSpec, Measurements, SizeChart } from "@tafsila/schemas";
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 /** public.clients */
 export const clients = pgTable(
@@ -64,3 +75,49 @@ export const adminAudit = pgTable("admin_audit", {
   after: jsonb("after"),
   at: timestamp("at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 });
+
+/** public.designs. The API sets `updatedAt` on every update (there is no trigger). */
+export const designs = pgTable(
+  "designs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    ownerId: uuid("owner_id").notNull(),
+    category: text("category", { enum: ["dress", "skirt", "blouse"] }).notNull(),
+    title: text("title").notNull(),
+    photoPaths: text("photo_paths").array().notNull().default([]),
+    analysis: jsonb("analysis"),
+    currentVersionId: uuid("current_version_id"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [unique().on(table.id, table.ownerId)],
+);
+
+/** public.pattern_versions. Append-only (select and insert only); `input_hash` is not unique, the API dedupes against the current version. */
+export const patternVersions = pgTable(
+  "pattern_versions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    designId: uuid("design_id").notNull(),
+    ownerId: uuid("owner_id").notNull(),
+    versionNo: integer("version_no").notNull(),
+    spec: jsonb("spec").$type<DesignSpec>().notNull(),
+    measurementSetId: uuid("measurement_set_id"),
+    measurements: jsonb("measurements").$type<Measurements>().notNull(),
+    sizeLabel: text("size_label"),
+    easeProfile: text("ease_profile", { enum: ["fitted", "regular", "loose"] }).notNull(),
+    options: jsonb("options").notNull().default({}),
+    engineVersion: text("engine_version").notNull(),
+    validationStatus: text("validation_status", { enum: ["pass", "warn"] }).notNull(),
+    inputHash: text("input_hash").notNull(),
+    createdBy: text("created_by", { enum: ["user", "chat"] })
+      .notNull()
+      .default("user"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    unique().on(table.designId, table.versionNo),
+    foreignKey({ columns: [table.designId, table.ownerId], foreignColumns: [designs.id, designs.ownerId] }),
+    index().on(table.designId, table.inputHash),
+  ],
+);

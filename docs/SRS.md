@@ -447,8 +447,8 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `profiles` | id (= auth.users.id), name, phone, phone_verified_at, locale, role (`user`/`admin`), created_at |
 | `clients` | id, owner_id, name, notes, created_at (unique id + owner_id) |
 | `measurement_sets` | id, owner_id, client_id?, label, size_label?, data (jsonb Measurements), created_at (client must have the same owner) |
-| `designs` | id, owner_id, category, title, photo_paths (text[]), analysis (jsonb DesignAnalysisResult), current_version_id, created_at |
-| `pattern_versions` | id, design_id, version_no, spec (jsonb), measurement_set_id, ease_profile, options (jsonb), engine_version, validation_status, input_hash, created_by (`user`/`chat`), created_at |
+| `designs` | id, owner_id, category (`dress`/`skirt`/`blouse`), title (1-120 chars), photo_paths (text[]), analysis (jsonb DesignAnalysisResult), current_version_id, created_at, updated_at (set by the API; unique id + owner_id) |
+| `pattern_versions` | id, design_id, owner_id (same owner as the design, composite FK), version_no (unique per design), spec (jsonb), measurement_set_id? (null if the set is deleted), measurements (jsonb snapshot), size_label?, ease_profile, options (jsonb), engine_version, validation_status (`pass`/`warn` only, a `fail` is never stored), input_hash (indexed, not unique), created_by (`user`/`chat`), created_at. Append-only: users can select and insert, never update or delete ([ADR-236](decisions/236-m3-scope.md)) |
 | `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at |
 | `chat_messages` | id, design_id, role, content, proposed_patch (jsonb), applied_version_id?, created_at |
 | `fabric_calcs` | id, pattern_version_id, width_mm, layout, result (jsonb: length_mm, marker) |
