@@ -142,6 +142,29 @@ export function closedWaistTrace(piece: PieceDraft): Segment[] {
 export type TraceSide = "above" | "below";
 
 /**
+ * The shift that moves a leg `distanceMm` along its normal.
+ *
+ * @param from - Leg start.
+ * @param to - Leg end.
+ * @param distanceMm - Signed distance along `perpendicular` of the leg direction.
+ * @returns The shift vector.
+ */
+function legShift(from: Point, to: Point, distanceMm: number): Point {
+  return scale(perpendicular(normalize(sub(to, from))), distanceMm);
+}
+
+/**
+ * Where two moved control legs meet (their midpoint gap when parallel).
+ *
+ * @param first - Earlier leg.
+ * @param second - Later leg.
+ * @returns The new control point.
+ */
+function legCorner(first: LineLike, second: LineLike): Point {
+  return lineLine(first, second, true)?.point ?? lerp(first.to, second.from, HALF);
+}
+
+/**
  * Moves one segment `distanceMm` along its normal: a line by its normal, a cubic by offsetting each leg of its control
  * polygon (Tiller and Hanson, 1984). One segment per segment keeps the outline light; the far edge is free, so the
  * small error of the cubic offset does not touch any seam.
@@ -151,15 +174,13 @@ export type TraceSide = "above" | "below";
  * @returns The moved segment.
  */
 function offsetOne(seg: Segment, distanceMm: number): Segment {
-  const shift = (a: Point, b: Point): Point => scale(perpendicular(normalize(sub(b, a))), distanceMm);
-  if (seg.kind === "line") return translate(seg, shift(seg.from, seg.to));
+  if (seg.kind === "line") return translate(seg, legShift(seg.from, seg.to, distanceMm));
   const legs: LineLike[] = [
-    { from: seg.from, to: seg.c1 },
-    { from: seg.c1, to: seg.c2 },
-    { from: seg.c2, to: seg.to },
-  ].map((leg) => translate(lineSeg(leg.from, leg.to), shift(leg.from, leg.to)));
-  const corner = (a: LineLike, b: LineLike): Point => lineLine(a, b, true)?.point ?? lerp(a.to, b.from, HALF);
-  return cubicSeg(legs[0]!.from, corner(legs[0]!, legs[1]!), corner(legs[1]!, legs[2]!), legs[2]!.to);
+    lineSeg(seg.from, seg.c1),
+    lineSeg(seg.c1, seg.c2),
+    lineSeg(seg.c2, seg.to),
+  ].map((leg) => translate(leg, legShift(leg.from, leg.to, distanceMm)));
+  return cubicSeg(legs[0]!.from, legCorner(legs[0]!, legs[1]!), legCorner(legs[1]!, legs[2]!), legs[2]!.to);
 }
 
 /**
