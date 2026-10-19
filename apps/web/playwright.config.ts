@@ -32,7 +32,7 @@ export default defineConfig({
     { name: "en-mobile", use: { ...viewports.mobile, locale: "en-US" }, metadata: { locale: "en" } },
   ],
   webServer: {
-    command: `pnpm build && pnpm start --port ${PORT}`,
+    command: `pnpm build && node ../../scripts/check-engine-chunk.mjs .next && pnpm start --port ${PORT}`,
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 300_000,

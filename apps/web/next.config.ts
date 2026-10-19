@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     "@tafsila/api",
     "@tafsila/ui",
     "@tafsila/engine",
+    "@tafsila/test-fixtures",
     "@tafsila/schemas",
     "@tafsila/utils",
     "@tafsila/config",

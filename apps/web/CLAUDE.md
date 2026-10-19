@@ -26,7 +26,7 @@ src/shared/       api client, i18n, query client, workers, analytics
 - Four layers per feature: `components/` (UI) → `hooks/` (application) → `model/` (pure domain) → `shared/api` (data). Components never fetch; only `shared/api` calls `fetch`; Supabase only in `shared/auth`. Server state = TanStack Query hooks in `features/<f>/hooks/`. Details and examples: `.claude/rules/frontend/`.
 - Errors: components read `ApiError` only (`placementFor` picks the place); see `docs/errors.md`.
 - Local UI state = component state; Zustand only for the pattern-editor session.
-- Pattern geometry comes from `@tafsila/engine`; never compute geometry in the UI.
+- Pattern geometry comes from `@tafsila/engine`; never compute geometry in the UI. Import the geometry only through `shared/pattern-preview` (worker); pages use `@tafsila/engine/measurements` (CI scans the build for leaks).
 
 ## UI and RTL
 

@@ -1,5 +1,5 @@
 /** Pure rules behind the measurement form: size picking, resetting a box and judging the whole form. */
-import { validateMeasurements } from "@tafsila/engine";
+import { validateMeasurements } from "@tafsila/engine/measurements";
 import type { SizeChart } from "@tafsila/schemas";
 import type { MeasurementField } from "./field-groups";
 import { toIssueView, type IssueLocale, type IssueView } from "./issues";

@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./measurements": "./src/measurements/index.ts",
     "./testing": "./src/render/expect-svg-snapshot.ts"
   },
   "scripts": {
