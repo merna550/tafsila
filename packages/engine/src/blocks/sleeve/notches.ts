@@ -55,14 +55,31 @@ export function frontArmholeNotch(armholeMm: number): Notch {
 /**
  * The shoulder-point notch at the tip of the front bodice armhole (on the armhole part at the shoulder tip).
  *
+ * @param sleevePieceId - The sleeve piece it matches; a cap or flutter sleeve has its own id (#142).
  * @returns The shoulder notch.
  */
-export function shoulderArmholeNotch(): Notch {
+export function shoulderArmholeNotch(sleevePieceId: string = SLEEVE_PIECE_ID): Notch {
   return {
     id: SLEEVE_NOTCH.shoulder,
     edgeId: BODICE_ARMHOLE_EDGE,
     atMm: 0,
-    pairsWith: { pieceId: SLEEVE_PIECE_ID, edgeId: SLEEVE_EDGE.capFront },
+    pairsWith: { pieceId: sleevePieceId, edgeId: SLEEVE_EDGE.capFront },
+  };
+}
+
+/**
+ * The shoulder-point notch of the sleeve: at the start of its front cap edge, on the bodice armhole part at the
+ * shoulder tip.
+ *
+ * @param armholes - Bodice pieces holding each armhole, shoulder tip first.
+ * @returns The sleeve's shoulder notch.
+ */
+export function sleeveShoulderNotch(armholes: BodiceArmholeParts): Notch {
+  return {
+    id: SLEEVE_NOTCH.shoulder,
+    edgeId: SLEEVE_EDGE.capFront,
+    atMm: 0,
+    pairsWith: { pieceId: armholes.front[0]!, edgeId: BODICE_ARMHOLE_EDGE },
   };
 }
 
@@ -80,7 +97,6 @@ export function shoulderArmholeNotch(): Notch {
 export function sleeveCapNotches(capFrontMm: number, armholes: BodiceArmholeParts): Notch[] {
   const backUnderarmPiece = armholes.back.at(-1)!;
   const frontUnderarmPiece = armholes.front.at(-1)!;
-  const frontTipPiece = armholes.front[0]!;
   const back: Notch[] = BACK_IDS.map((id, i) => ({
     id,
     edgeId: SLEEVE_EDGE.capBack,
@@ -94,12 +110,7 @@ export function sleeveCapNotches(capFrontMm: number, armholes: BodiceArmholePart
   }));
   return [
     ...back,
-    {
-      id: SLEEVE_NOTCH.shoulder,
-      edgeId: SLEEVE_EDGE.capFront,
-      atMm: 0,
-      pairsWith: { pieceId: frontTipPiece, edgeId: BODICE_ARMHOLE_EDGE },
-    },
+    sleeveShoulderNotch(armholes),
     {
       id: SLEEVE_NOTCH.front,
       edgeId: SLEEVE_EDGE.capFront,

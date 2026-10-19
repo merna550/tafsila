@@ -180,9 +180,17 @@ export type Label = z.infer<typeof labelSchema>;
 
 /**
  * What a construction mark tells the sewist (decision 137). Pleats: fold here, lay the fold on the placement line, in
- * the arrow's direction. Gather: gather this run to `lengthMm`. Closures (#143) add their kinds here.
+ * the arrow's direction. Gather: gather this run to `lengthMm`. Slit: cut along this line (a cuff opening, #142).
+ * Sleeve end: a cap or flutter sleeve ends here on the armhole (#142). Closures (#143) add their kinds here.
  */
-export const markKindSchema = z.enum(["pleat-fold", "pleat-placement", "pleat-direction", "gather"]);
+export const markKindSchema = z.enum([
+  "pleat-fold",
+  "pleat-placement",
+  "pleat-direction",
+  "gather",
+  "slit",
+  "sleeve-end",
+]);
 
 /** What a construction mark tells the sewist. */
 export type MarkKind = z.infer<typeof markKindSchema>;
@@ -229,6 +237,10 @@ export const pieceSchema = z.object({
       /** The cap edges, in path order; their lengths add up to the cap (decision 134). */
       edgeIds: z.array(z.string().min(1)).min(1),
       armholeRefs: z.array(edgePairSchema.pick({ pieceId: true, edgeId: true })).min(1),
+      /** Cap length gathered on purpose (a puff head, #142); taken out of the measured ease (FR-VAL-02). */
+      gatheredMm: z.number().min(0).optional(),
+      /** Armhole length this cap is not sewn to (a cap or flutter sleeve, #142); taken out of the armhole. */
+      armholeExcludedMm: z.number().min(0).optional(),
     })
     .optional(),
   grainLine: z.tuple([pointSchema, pointSchema]),

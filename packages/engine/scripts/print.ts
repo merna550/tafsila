@@ -2,10 +2,13 @@
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
+  bishopSleeveBlouse,
   boatNeckBlouse,
+  capSleeveBlouse,
   contourBandSkirt,
   dartFreeLooseBlouse,
   dartedBlouse,
+  flutterSleeveBlouse,
   elasticGatheredSkirt,
   elasticStraightSkirt,
   gatheredKneeSkirt,
@@ -14,6 +17,7 @@ import {
   peterPanBlouse,
   pleatedKneeSkirt,
   princessArmholeBlouse,
+  puffSleeveBlouse,
   princessShoulderBlouse,
   setInSleeveBlouse,
   shirtCollarBlouse,
@@ -42,10 +46,13 @@ const EXIT_USAGE = 2;
 
 /** Design fixtures the script can draft, by name. */
 const DESIGN_FIXTURES = {
+  bishopSleeveBlouse,
   boatNeckBlouse,
+  capSleeveBlouse,
   contourBandSkirt,
   dartFreeLooseBlouse,
   dartedBlouse,
+  flutterSleeveBlouse,
   elasticGatheredSkirt,
   elasticStraightSkirt,
   gatheredKneeSkirt,
@@ -54,6 +61,7 @@ const DESIGN_FIXTURES = {
   peterPanBlouse,
   pleatedKneeSkirt,
   princessArmholeBlouse,
+  puffSleeveBlouse,
   princessShoulderBlouse,
   setInSleeveBlouse,
   shirtCollarBlouse,

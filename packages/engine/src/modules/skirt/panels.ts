@@ -17,6 +17,7 @@ import {
 } from "../../constants/skirt-fullness";
 import { SKIRT_PIECE_NAME } from "../../blocks/skirt/edges";
 import { DraftingError } from "../../errors/drafting-error";
+import { gatherLineMark } from "../../pieces/gather-mark";
 import { lineSeg, pt } from "../../geometry";
 import type { DraftContext, PieceDraft } from "../../pipeline/draft-context";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
@@ -324,15 +325,5 @@ export function panelPiece(band: Band, slot: PanelSlot, plan: PanelPlan, extras:
  * @returns The mark.
  */
 export function gatherMark(edgeId: string, widthMm: number, gatheredToMm: number): Mark {
-  const mm = Math.round(gatheredToMm);
-  return {
-    id: `gather-${edgeId}`,
-    kind: "gather",
-    shape: "line",
-    edgeId,
-    from: pt(0, 0),
-    to: pt(widthMm, 0),
-    lengthMm: gatheredToMm,
-    text: { ar: `جمّعي إلى ${mm} مم`, en: `Gather to ${mm} mm` },
-  };
+  return gatherLineMark(edgeId, pt(0, 0), pt(widthMm, 0), gatheredToMm);
 }

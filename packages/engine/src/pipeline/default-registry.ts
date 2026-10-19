@@ -8,6 +8,7 @@ import { necklineModule } from "../modules/neckline";
 import { gatheredSkirtModule, pleatedSkirtModule, tieredSkirtModule } from "../modules/skirt";
 import { skirtShapeModule } from "../modules/skirt/shape-module";
 import { skirtSlitModule } from "../modules/skirt/slit-module";
+import { cuffModule, sleeveStyleModule } from "../modules/sleeve";
 import { waistbandModule } from "../modules/waistband";
 import { CORE_RULES } from "../validation/core-rules";
 import { createRegistry } from "./registry";
@@ -29,6 +30,8 @@ export const defaultRegistry = createRegistry(
     tieredSkirtModule,
     waistbandModule,
     setInSleeveModule,
+    sleeveStyleModule,
+    cuffModule,
   ],
   CORE_RULES,
 );

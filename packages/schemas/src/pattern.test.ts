@@ -131,4 +131,27 @@ describe("markSchema (issue #137)", () => {
     const zero = { id: "x", kind: "gather", shape: "line", from: corners[0], to: corners[1], lengthMm: 0 };
     expect(markSchema.safeParse(zero).success).toBe(false);
   });
+
+  it("accepts a cuff slit line and a sleeve-end point (issue #142)", () => {
+    const slit = { id: "s", kind: "slit", shape: "line", edgeId: "hem", from: corners[0], to: corners[1] };
+    const end = { id: "e", kind: "sleeve-end", shape: "point", edgeId: "armhole", at: corners[2] };
+    for (const mark of [slit, end]) expect(markSchema.safeParse(mark).success).toBe(true);
+  });
+});
+
+describe("sleeveCap declared ease (issue #142)", () => {
+  it("accepts gathered and excluded lengths and rejects negative ones", () => {
+    const withCap = (extra: Record<string, number>) => {
+      const p = fixture();
+      p.pieces[0]!.sleeveCap = {
+        edgeIds: ["cap"],
+        armholeRefs: [{ pieceId: "bodice-front", edgeId: "armhole" }],
+        ...extra,
+      };
+      return patternResultSchema.safeParse(p).success;
+    };
+    expect(withCap({ gatheredMm: 60, armholeExcludedMm: 165 })).toBe(true);
+    expect(withCap({ gatheredMm: -1 })).toBe(false);
+    expect(withCap({ armholeExcludedMm: -1 })).toBe(false);
+  });
 });

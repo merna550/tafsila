@@ -223,3 +223,30 @@ export const mandarinBlouse: DesignSpec = {
   neckline: { front: "high-round", back: "high-round", collar: "mandarin" },
   closure: { type: "zip", position: "center-front" },
 };
+
+/**
+ * Sleeve style seed designs (issue #142): the seed blouse with each sleeve style. Tests set other lengths and cuffs on
+ * them; used by the sleeve-style snapshots, property tests and `pnpm engine:print`.
+ */
+export const puffSleeveBlouse: DesignSpec = {
+  ...dartedBlouse,
+  sleeve: { type: "puff", length: "short", cuff: "band" },
+};
+
+/** Long bishop sleeves gathered into an open band cuff (issue #142). */
+export const bishopSleeveBlouse: DesignSpec = {
+  ...dartedBlouse,
+  sleeve: { type: "bishop", length: "long", cuff: "band" },
+};
+
+/** Self-lined cap sleeves, sewn between the armhole balance notches (issue #142). */
+export const capSleeveBlouse: DesignSpec = {
+  ...dartedBlouse,
+  sleeve: { type: "cap", length: "short", cuff: "none" },
+};
+
+/** Half-circle flutter sleeves, sewn between the armhole balance notches (issue #142). */
+export const flutterSleeveBlouse: DesignSpec = {
+  ...dartedBlouse,
+  sleeve: { type: "flutter", length: "short", cuff: "none" },
+};
