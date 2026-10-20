@@ -1,8 +1,8 @@
-# M1 screen designs
+# Screen designs
 
-Approved reference designs for the M1 screens. **Every UI issue that builds one of these screens must match its file here.**
+Approved reference designs for the M1 and M3 screens. **Every UI issue that builds one of these screens must match its file here.**
 
-Source of truth: Merna's design canvas "Tafsila — M1 screens" on claude.ai (private). These files are a copy of it. When the canvas changes, the copy here is updated in the same PR as any code that depends on it.
+Source of truth: Merna's design canvases on claude.ai (private; "Tafsila — M1 screens" and the M3 canvas). These files are a copy of them. When the canvas changes, the copy here is updated in the same PR as any code that depends on it.
 
 ## Images
 
@@ -25,18 +25,24 @@ Each `*.dc.html` file is plain HTML with inline styles, drawn in **Arabic (RTL)*
 
 ## Screens
 
-| File                    | Screen                    | Route (under `/[locale]`)        | Issue | States shown                                                     |
-| ----------------------- | ------------------------- | -------------------------------- | ----- | ---------------------------------------------------------------- |
-| `Main.dc.html`          | Sign in / sign up         | `/sign-in`                       | #25   | sign-in tab, filled form                                         |
-| `Verify.dc.html`        | Phone verification (OTP)  | `/verify`                        | #26   | code half-entered, resend countdown (built, PR #116)             |
-| `Clients.dc.html`       | Clients list              | `/clients`                       | #30   | list with 5 clients, search                                      |
-| `ClientsEmpty.dc.html`  | Clients list, first visit | `/clients`                       | #30   | empty state (the "3 free patterns" chip is not built until M7)   |
-| `ClientProfile.dc.html` | Client profile            | `/clients/[id]`                  | #30   | notes, 2 measurement sets                                        |
-| `Measurements.dc.html`  | New measurement set       | `/clients/[id]/measurements/new` | #31   | base size M, one override, one warning, one error, save disabled |
-| `Guide.dc.html`         | How to measure (dialog)   | opens over the measurement form  | #31   | bust guide                                                       |
-| `Settings.dc.html`      | Settings                  | `/settings`                      | #27   | account, display, delete account                                 |
-| `AdminUsers.dc.html`    | Admin: users              | `/admin/users`                   | #32   | stats, filter, table                                             |
-| `AdminSizes.dc.html`    | Admin: size chart         | `/admin/sizes`                   | #32   | 2 edited cells, 1 invalid cell                                   |
+| File                     | Screen                    | Route (under `/[locale]`)                    | Issue            | States shown                                                                                                        |
+| ------------------------ | ------------------------- | -------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Main.dc.html`           | Sign in / sign up         | `/sign-in`                                   | #25              | sign-in tab, filled form                                                                                            |
+| `Verify.dc.html`         | Phone verification (OTP)  | `/verify`                                    | #26              | code half-entered, resend countdown (built, PR #116)                                                                |
+| `Clients.dc.html`        | Clients list              | `/clients`                                   | #30              | list with 5 clients, search                                                                                         |
+| `ClientsEmpty.dc.html`   | Clients list, first visit | `/clients`                                   | #30              | empty state (the "3 free patterns" chip is not built until M7)                                                      |
+| `ClientProfile.dc.html`  | Client profile            | `/clients/[id]`                              | #30              | notes, 2 measurement sets                                                                                           |
+| `Measurements.dc.html`   | New measurement set       | `/clients/[id]/measurements/new`             | #31              | base size M, one override, one warning, one error, save disabled                                                    |
+| `Guide.dc.html`          | How to measure (dialog)   | opens over the measurement form              | #31              | bust guide                                                                                                          |
+| `Settings.dc.html`       | Settings                  | `/settings`                                  | #27              | account, display, delete account                                                                                    |
+| `AdminUsers.dc.html`     | Admin: users              | `/admin/users`                               | #32              | stats, filter, table                                                                                                |
+| `AdminSizes.dc.html`     | Admin: size chart         | `/admin/sizes`                               | #32              | 2 edited cells, 1 invalid cell                                                                                      |
+| `DesignsList.dc.html`    | My designs                | `/designs`                                   | #250             | list of 5 designs (one with no versions), first-visit empty state                                                   |
+| `NewDesign.dc.html`      | New design (category)     | `/designs/new` (`?clientId=`)                | #244             | opened from a client profile (client chip), hover card, disabled "soon" card                                        |
+| `DesignPicker.dc.html`   | Design picker             | `/designs/[id]`                              | #244, #246       | selected card, disabled card with its reason, option reset notice, length override fields, preview ready / updating |
+| `PatternOptions.dc.html` | Pattern options (panel)   | tab "Options" inside `/designs/[id]/pattern` | #247             | no client (save disabled), client and measurement set, fabric width error                                           |
+| `PatternPage.dc.html`    | Pattern page              | `/designs/[id]/pattern`                      | #251, #243, #249 | saved with a warning, unsaved changes, preview updating, validation failure, phone                                  |
+| `VersionHistory.dc.html` | Version history           | `/designs/[id]/versions`                     | #252             | versions newest first, older engine version notice, restore confirmation, read-only old version                     |
 
 Routes are proposals; if an issue already fixed a different route, keep the issue's route and update this table.
 
