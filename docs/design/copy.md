@@ -33,6 +33,12 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | custom measurements                | مقاسات مخصّصة                           | custom measurements                 |
 | pattern                            | باترون / باترونات                       | pattern / patterns                  |
 | my designs                         | تصاميمي                                 | my designs                          |
+| design (one garment design)        | تصميم / تصاميم                          | design / designs                    |
+| version (saved copy of a pattern)  | نسخة / النسخ                            | version / versions                  |
+| save version / restore version     | حفظ نسخة / استعادة النسخة               | save version / restore version      |
+| ease preference                    | الراحة: ضيّق / عادي / فضفاض             | ease: fitted / regular / loose      |
+| seam allowance                     | سماحة الخياطة                           | seam allowance                      |
+| validation report                  | تقرير التحقق                            | validation report                   |
 | dress / skirt / blouse             | فستان / تنورة / بلوزة                   | dress / skirt / blouse              |
 | phone number                       | رقم الهاتف                              | phone number                        |
 | verification code                  | رمز التأكيد                             | verification code                   |
