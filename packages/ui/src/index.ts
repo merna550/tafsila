@@ -20,6 +20,8 @@ export * from "./dialog";
 export * from "./empty-state";
 export * from "./icons";
 export * from "./error-state";
+export * from "./option-card";
+export * from "./option-card-group";
 export * from "./page-header";
 export * from "./segmented-control";
 export * from "./sheet";

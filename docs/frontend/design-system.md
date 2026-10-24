@@ -24,25 +24,26 @@ Style only with the classes the tokens generate. Raw colours, `bg-[...]` and Tai
 
 ## Which component for what
 
-| Need                                 | Component                                            | Notes                                                                |
-| ------------------------------------ | ---------------------------------------------------- | -------------------------------------------------------------------- |
-| An action                            | `Button` (`primary`, `secondary`, `ghost`, `danger`) | `min-h-11` (44px) already built in                                   |
-| An icon-only action                  | `IconButton`                                         | needs an accessible label from messages                              |
-| Navigation                           | `Link`                                               | never a `Button` that calls `router.push`                            |
-| Text, long text, choices             | `Input`, `Textarea`, `Select`                        | always inside a `FormField`                                          |
-| Yes/no, one of many, many of many    | `Switch`, `Radio`, `Checkbox`                        | switch for a setting that applies at once, checkbox for a form value |
-| A grouped block of content           | `Card`                                               | optional `title` and `footer`                                        |
-| Status or count                      | `Badge`                                              | state is never colour alone                                          |
-| Tabular data                         | `Table`; sections of a page: `Tabs`                  |                                                                      |
-| A key number with its label          | `StatTile` (inside a `dl`)                           | admin overview; no story yet (baselines need Docker)                 |
-| A filter of exclusive choices        | `SegmentedControl`                                   | toggle buttons with `aria-pressed`, not tabs (no panels)             |
-| A person                             | `Avatar`                                             |                                                                      |
-| Blocking question or short form      | `Dialog`                                             | centred, traps focus, closes on Escape                               |
-| Side or bottom panel (filters, menu) | `Sheet` (`start`, `end`, `bottom`)                   | on phones prefer `bottom`                                            |
-| Extra explanation on hover or focus  | `Tooltip`                                            | never the only place an instruction lives                            |
-| Result of an action                  | `useToast().showToast`                               | tones `success`, `info`, `warning`, `danger`                         |
-| Loading, empty, load failed          | `Skeleton`, `EmptyState`, `ErrorState`, `Spinner`    | all three on every data screen; wire with `DataState` (ADR-72)       |
-| Page frame and page title            | `AppShell`, `PageHeader`                             | `AppShell` has the banner slot used by the connection banner         |
+| Need                                  | Component                                            | Notes                                                                                                |
+| ------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| An action                             | `Button` (`primary`, `secondary`, `ghost`, `danger`) | `min-h-11` (44px) already built in                                                                   |
+| An icon-only action                   | `IconButton`                                         | needs an accessible label from messages                                                              |
+| Navigation                            | `Link`                                               | never a `Button` that calls `router.push`                                                            |
+| Text, long text, choices              | `Input`, `Textarea`, `Select`                        | always inside a `FormField`                                                                          |
+| Yes/no, one of many, many of many     | `Switch`, `Radio`, `Checkbox`                        | switch for a setting that applies at once, checkbox for a form value                                 |
+| A grouped block of content            | `Card`                                               | optional `title` and `footer`                                                                        |
+| Status or count                       | `Badge`                                              | state is never colour alone                                                                          |
+| Tabular data                          | `Table`; sections of a page: `Tabs`                  |                                                                                                      |
+| A key number with its label           | `StatTile` (inside a `dl`)                           | admin overview; no story yet (baselines need Docker)                                                 |
+| A filter of exclusive choices         | `SegmentedControl`                                   | toggle buttons with `aria-pressed`, not tabs (no panels)                                             |
+| A picture card to pick one or several | `OptionCardGroup` (`options` array, `multiple`)      | radio pattern for one, checkbox pattern for several; drawing slot; disabled reason shown on the card |
+| A person                              | `Avatar`                                             |                                                                                                      |
+| Blocking question or short form       | `Dialog`                                             | centred, traps focus, closes on Escape                                                               |
+| Side or bottom panel (filters, menu)  | `Sheet` (`start`, `end`, `bottom`)                   | on phones prefer `bottom`                                                                            |
+| Extra explanation on hover or focus   | `Tooltip`                                            | never the only place an instruction lives                                                            |
+| Result of an action                   | `useToast().showToast`                               | tones `success`, `info`, `warning`, `danger`                                                         |
+| Loading, empty, load failed           | `Skeleton`, `EmptyState`, `ErrorState`, `Spinner`    | all three on every data screen; wire with `DataState` (ADR-72)                                       |
+| Page frame and page title             | `AppShell`, `PageHeader`                             | `AppShell` has the banner slot used by the connection banner                                         |
 
 Components take already-translated strings as props; none holds literal text. If you repeat JSX twice, promote it to `packages/ui` with a test and a story rather than restyling in the feature.
 
