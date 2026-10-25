@@ -1,0 +1,183 @@
+الصدر الأمامي / Front bodice: 50 steps, 35 points
+1. الخط المرجعي هو الطيّة. قيسي كل المسافات منها.
+   The fold is the reference line. Measure every distance from it.
+2. ارسمي خطاً عمودياً على الخط المرجعي عند أعلى القطعة: هذا هو الخط العلوي.
+   Draw a line square to the reference line at the top of the piece: this is the top line.
+3. انزلي 0.0 سم من الخط العلوي و 6.7 سم من الخط المرجعي، وضعي النقطة A.
+   Measure 0.0 cm down from the top line and 6.7 cm from the reference line. Mark point A.
+4. انزلي 5.6 سم من الخط العلوي و 20.7 سم من الخط المرجعي، وضعي النقطة B.
+   Measure 5.6 cm down from the top line and 20.7 cm from the reference line. Mark point B.
+5. صلي النقطة A بالنقطة B بخط مستقيم.
+   Join point A to point B with a straight line.
+6. على المنحنى: انزلي 7.8 سم من الخط العلوي و 19.8 سم من الخط المرجعي، وضعي النقطة C.
+   On the curve: measure 7.8 cm down and 19.8 cm from the reference line. Mark point C.
+7. على المنحنى: انزلي 10.1 سم من الخط العلوي و 18.9 سم من الخط المرجعي، وضعي النقطة D.
+   On the curve: measure 10.1 cm down and 18.9 cm from the reference line. Mark point D.
+8. على المنحنى: انزلي 12.5 سم من الخط العلوي و 18.5 سم من الخط المرجعي، وضعي النقطة E.
+   On the curve: measure 12.5 cm down and 18.5 cm from the reference line. Mark point E.
+9. على المنحنى: انزلي 14.9 سم من الخط العلوي و 18.3 سم من الخط المرجعي، وضعي النقطة F.
+   On the curve: measure 14.9 cm down and 18.3 cm from the reference line. Mark point F.
+10. على المنحنى: انزلي 17.3 سم من الخط العلوي و 18.2 سم من الخط المرجعي، وضعي النقطة G.
+   On the curve: measure 17.3 cm down and 18.2 cm from the reference line. Mark point G.
+11. على المنحنى: انزلي 19.7 سم من الخط العلوي و 18.2 سم من الخط المرجعي، وضعي النقطة H.
+   On the curve: measure 19.7 cm down and 18.2 cm from the reference line. Mark point H.
+12. على المنحنى: انزلي 22.1 سم من الخط العلوي و 18.6 سم من الخط المرجعي، وضعي النقطة I.
+   On the curve: measure 22.1 cm down and 18.6 cm from the reference line. Mark point I.
+13. على المنحنى: انزلي 24.0 سم من الخط العلوي و 20.1 سم من الخط المرجعي، وضعي النقطة J.
+   On the curve: measure 24.0 cm down and 20.1 cm from the reference line. Mark point J.
+14. على المنحنى: انزلي 24.6 سم من الخط العلوي و 22.4 سم من الخط المرجعي، وضعي النقطة K.
+   On the curve: measure 24.6 cm down and 22.4 cm from the reference line. Mark point K.
+15. على المنحنى: انزلي 24.8 سم من الخط العلوي و 24.8 سم من الخط المرجعي، وضعي النقطة L.
+   On the curve: measure 24.8 cm down and 24.8 cm from the reference line. Mark point L.
+16. انزلي 24.8 سم من الخط العلوي و 27.3 سم من الخط المرجعي، وضعي النقطة M.
+   Measure 24.8 cm down from the top line and 27.3 cm from the reference line. Mark point M.
+17. صلي النقاط من B إلى M بخط منحنٍ ناعم.
+   Join the points from B to M with a smooth curve.
+18. انزلي 30.6 سم من الخط العلوي و 27.3 سم من الخط المرجعي، وضعي النقطة N.
+   Measure 30.6 cm down from the top line and 27.3 cm from the reference line. Mark point N.
+19. صلي النقطة M بالنقطة N بخط مستقيم.
+   Join point M to point N with a straight line.
+20. انزلي 47.5 سم من الخط العلوي و 24.3 سم من الخط المرجعي، وضعي النقطة O.
+   Measure 47.5 cm down from the top line and 24.3 cm from the reference line. Mark point O.
+21. صلي النقطة N بالنقطة O بخط مستقيم.
+   Join point N to point O with a straight line.
+22. انزلي 47.1 سم من الخط العلوي و 10.9 سم من الخط المرجعي، وضعي النقطة P.
+   Measure 47.1 cm down from the top line and 10.9 cm from the reference line. Mark point P.
+23. صلي النقطة O بالنقطة P بخط مستقيم.
+   Join point O to point P with a straight line.
+24. انزلي 47.1 سم من الخط العلوي و 8.1 سم من الخط المرجعي، وضعي النقطة Q.
+   Measure 47.1 cm down from the top line and 8.1 cm from the reference line. Mark point Q.
+25. صلي النقطة P بالنقطة Q بخط مستقيم.
+   Join point P to point Q with a straight line.
+26. انزلي 46.8 سم من الخط العلوي و -0.1 سم من الخط المرجعي، وضعي النقطة R.
+   Measure 46.8 cm down from the top line and -0.1 cm from the reference line. Mark point R.
+27. صلي النقطة Q بالنقطة R بخط مستقيم.
+   Join point Q to point R with a straight line.
+28. انزلي 45.3 سم من الخط العلوي و 0.0 سم من الخط المرجعي، وضعي النقطة S.
+   Measure 45.3 cm down from the top line and 0.0 cm from the reference line. Mark point S.
+29. صلي النقطة R بالنقطة S بخط مستقيم.
+   Join point R to point S with a straight line.
+30. انزلي 9.1 سم من الخط العلوي و 0.0 سم من الخط المرجعي، وضعي النقطة T.
+   Measure 9.1 cm down from the top line and 0.0 cm from the reference line. Mark point T.
+31. على المنحنى: انزلي 8.6 سم من الخط العلوي و 2.4 سم من الخط المرجعي، وضعي النقطة U.
+   On the curve: measure 8.6 cm down and 2.4 cm from the reference line. Mark point U.
+32. على المنحنى: انزلي 6.8 سم من الخط العلوي و 4.0 سم من الخط المرجعي، وضعي النقطة V.
+   On the curve: measure 6.8 cm down and 4.0 cm from the reference line. Mark point V.
+33. على المنحنى: انزلي 4.6 سم من الخط العلوي و 5.0 سم من الخط المرجعي، وضعي النقطة W.
+   On the curve: measure 4.6 cm down and 5.0 cm from the reference line. Mark point W.
+34. على المنحنى: انزلي 2.3 سم من الخط العلوي و 5.8 سم من الخط المرجعي، وضعي النقطة X.
+   On the curve: measure 2.3 cm down and 5.8 cm from the reference line. Mark point X.
+35. صلي النقاط من T إلى A بخط منحنٍ ناعم.
+   Join the points from T to A with a smooth curve.
+36. علامة المطابقة: انزلي 23.5 سم من الخط العلوي و 19.4 سم من الخط المرجعي، وضعي النقطة Y.
+   Notch: measure 23.5 cm down and 19.4 cm from the reference line. Mark point Y.
+37. علامة المطابقة: انزلي 7.0 سم من الخط العلوي و 20.2 سم من الخط المرجعي، وضعي النقطة Z.
+   Notch: measure 7.0 cm down and 20.2 cm from the reference line. Mark point Z.
+38. علامة المطابقة: انزلي 47.1 سم من الخط العلوي و 10.9 سم من الخط المرجعي، وضعي النقطة AA.
+   Notch: measure 47.1 cm down and 10.9 cm from the reference line. Mark point AA.
+39. للدارت: انزلي 27.8 سم من الخط العلوي و 25.8 سم من الخط المرجعي، وضعي النقطة AB.
+   Dart: measure 27.8 cm down and 25.8 cm from the reference line. Mark point AB.
+40. للدارت: انزلي 29.1 سم من الخط العلوي و 12.0 سم من الخط المرجعي، وضعي النقطة AC.
+   Dart: measure 29.1 cm down and 12.0 cm from the reference line. Mark point AC.
+41. للدارت: انزلي 30.5 سم من الخط العلوي و 25.8 سم من الخط المرجعي، وضعي النقطة AD.
+   Dart: measure 30.5 cm down and 25.8 cm from the reference line. Mark point AD.
+42. ارسمي الدارت: من AB إلى رأسه AC ثم إلى AD.
+   Draw the dart: from AB to its point AC, then to AD.
+43. للدارت: انزلي 45.6 سم من الخط العلوي و 10.9 سم من الخط المرجعي، وضعي النقطة AE.
+   Dart: measure 45.6 cm down and 10.9 cm from the reference line. Mark point AE.
+44. للدارت: انزلي 29.3 سم من الخط العلوي و 9.5 سم من الخط المرجعي، وضعي النقطة AF.
+   Dart: measure 29.3 cm down and 9.5 cm from the reference line. Mark point AF.
+45. للدارت: انزلي 45.6 سم من الخط العلوي و 8.1 سم من الخط المرجعي، وضعي النقطة AG.
+   Dart: measure 45.6 cm down and 8.1 cm from the reference line. Mark point AG.
+46. ارسمي الدارت: من AE إلى رأسه AF ثم إلى AG.
+   Draw the dart: from AE to its point AF, then to AG.
+47. لخط النسيج: انزلي 13.1 سم من الخط العلوي و 4.0 سم من الخط المرجعي، وضعي النقطة AH.
+   Grain line: measure 13.1 cm down and 4.0 cm from the reference line. Mark point AH.
+48. لخط النسيج: انزلي 42.3 سم من الخط العلوي و 4.0 سم من الخط المرجعي، وضعي النقطة AI.
+   Grain line: measure 42.3 cm down and 4.0 cm from the reference line. Mark point AI.
+49. ارسمي خط النسيج من AH إلى AI.
+   Draw the grain line from AH to AI.
+50. على الخط المرسوم: اقصّي 1 على الثنية.
+   Cut 1 on fold, along the drawn line.
+
+الظهر / Back bodice: 40 steps, 29 points
+1. ارسمي خطاً مرجعياً موازياً لحافة القماش. قيسي كل المسافات منه.
+   Draw a reference line parallel to the selvedge. Measure every distance from it.
+2. ارسمي خطاً عمودياً على الخط المرجعي عند أعلى القطعة: هذا هو الخط العلوي.
+   Draw a line square to the reference line at the top of the piece: this is the top line.
+3. انزلي 2.8 سم من الخط العلوي و 0.0 سم من الخط المرجعي، وضعي النقطة A.
+   Measure 2.8 cm down from the top line and 0.0 cm from the reference line. Mark point A.
+4. على المنحنى: انزلي 2.8 سم من الخط العلوي و 2.0 سم من الخط المرجعي، وضعي النقطة B.
+   On the curve: measure 2.8 cm down and 2.0 cm from the reference line. Mark point B.
+5. على المنحنى: انزلي 2.7 سم من الخط العلوي و 4.1 سم من الخط المرجعي، وضعي النقطة C.
+   On the curve: measure 2.7 cm down and 4.1 cm from the reference line. Mark point C.
+6. على المنحنى: انزلي 2.6 سم من الخط العلوي و 6.1 سم من الخط المرجعي، وضعي النقطة D.
+   On the curve: measure 2.6 cm down and 6.1 cm from the reference line. Mark point D.
+7. على المنحنى: انزلي 2.4 سم من الخط العلوي و 7.1 سم من الخط المرجعي، وضعي النقطة E.
+   On the curve: measure 2.4 cm down and 7.1 cm from the reference line. Mark point E.
+8. على المنحنى: انزلي 1.9 سم من الخط العلوي و 7.9 سم من الخط المرجعي، وضعي النقطة F.
+   On the curve: measure 1.9 cm down and 7.9 cm from the reference line. Mark point F.
+9. على المنحنى: انزلي 1.0 سم من الخط العلوي و 8.3 سم من الخط المرجعي، وضعي النقطة G.
+   On the curve: measure 1.0 cm down and 8.3 cm from the reference line. Mark point G.
+10. انزلي 0.0 سم من الخط العلوي و 8.7 سم من الخط المرجعي، وضعي النقطة H.
+   Measure 0.0 cm down from the top line and 8.7 cm from the reference line. Mark point H.
+11. صلي النقاط من A إلى H بخط منحنٍ ناعم.
+   Join the points from A to H with a smooth curve.
+12. انزلي 5.1 سم من الخط العلوي و 22.9 سم من الخط المرجعي، وضعي النقطة I.
+   Measure 5.1 cm down from the top line and 22.9 cm from the reference line. Mark point I.
+13. صلي النقطة H بالنقطة I بخط مستقيم.
+   Join point H to point I with a straight line.
+14. على المنحنى: انزلي 7.4 سم من الخط العلوي و 22.1 سم من الخط المرجعي، وضعي النقطة J.
+   On the curve: measure 7.4 cm down and 22.1 cm from the reference line. Mark point J.
+15. على المنحنى: انزلي 9.9 سم من الخط العلوي و 22.1 سم من الخط المرجعي، وضعي النقطة K.
+   On the curve: measure 9.9 cm down and 22.1 cm from the reference line. Mark point K.
+16. على المنحنى: انزلي 12.3 سم من الخط العلوي و 22.4 سم من الخط المرجعي، وضعي النقطة L.
+   On the curve: measure 12.3 cm down and 22.4 cm from the reference line. Mark point L.
+17. على المنحنى: انزلي 14.8 سم من الخط العلوي و 22.5 سم من الخط المرجعي، وضعي النقطة M.
+   On the curve: measure 14.8 cm down and 22.5 cm from the reference line. Mark point M.
+18. على المنحنى: انزلي 17.2 سم من الخط العلوي و 22.4 سم من الخط المرجعي، وضعي النقطة N.
+   On the curve: measure 17.2 cm down and 22.4 cm from the reference line. Mark point N.
+19. على المنحنى: انزلي 19.7 سم من الخط العلوي و 22.5 سم من الخط المرجعي، وضعي النقطة O.
+   On the curve: measure 19.7 cm down and 22.5 cm from the reference line. Mark point O.
+20. على المنحنى: انزلي 22.1 سم من الخط العلوي و 23.1 سم من الخط المرجعي، وضعي النقطة P.
+   On the curve: measure 22.1 cm down and 23.1 cm from the reference line. Mark point P.
+21. على المنحنى: انزلي 23.9 سم من الخط العلوي و 24.7 سم من الخط المرجعي، وضعي النقطة Q.
+   On the curve: measure 23.9 cm down and 24.7 cm from the reference line. Mark point Q.
+22. على المنحنى: انزلي 24.7 سم من الخط العلوي و 27.0 سم من الخط المرجعي، وضعي النقطة R.
+   On the curve: measure 24.7 cm down and 27.0 cm from the reference line. Mark point R.
+23. انزلي 24.8 سم من الخط العلوي و 29.4 سم من الخط المرجعي، وضعي النقطة S.
+   Measure 24.8 cm down from the top line and 29.4 cm from the reference line. Mark point S.
+24. صلي النقاط من I إلى S بخط منحنٍ ناعم.
+   Join the points from I to S with a smooth curve.
+25. انزلي 44.8 سم من الخط العلوي و 26.3 سم من الخط المرجعي، وضعي النقطة T.
+   Measure 44.8 cm down from the top line and 26.3 cm from the reference line. Mark point T.
+26. صلي النقطة S بالنقطة T بخط مستقيم.
+   Join point S to point T with a straight line.
+27. انزلي 44.8 سم من الخط العلوي و 0.0 سم من الخط المرجعي، وضعي النقطة U.
+   Measure 44.8 cm down from the top line and 0.0 cm from the reference line. Mark point U.
+28. صلي النقطة T بالنقطة U بخط مستقيم.
+   Join point T to point U with a straight line.
+29. صلي النقطة U بالنقطة A بخط مستقيم.
+   Join point U to point A with a straight line.
+30. علامة المطابقة: انزلي 20.2 سم من الخط العلوي و 22.6 سم من الخط المرجعي، وضعي النقطة V.
+   Notch: measure 20.2 cm down and 22.6 cm from the reference line. Mark point V.
+31. علامة المطابقة: انزلي 19.7 سم من الخط العلوي و 22.5 سم من الخط المرجعي، وضعي النقطة W.
+   Notch: measure 19.7 cm down and 22.5 cm from the reference line. Mark point W.
+32. علامة المطابقة: انزلي 44.8 سم من الخط العلوي و 14.9 سم من الخط المرجعي، وضعي النقطة X.
+   Notch: measure 44.8 cm down and 14.9 cm from the reference line. Mark point X.
+33. للدارت: انزلي 43.3 سم من الخط العلوي و 14.9 سم من الخط المرجعي، وضعي النقطة Y.
+   Dart: measure 43.3 cm down and 14.9 cm from the reference line. Mark point Y.
+34. للدارت: انزلي 34.5 سم من الخط العلوي و 13.5 سم من الخط المرجعي، وضعي النقطة Z.
+   Dart: measure 34.5 cm down and 13.5 cm from the reference line. Mark point Z.
+35. للدارت: انزلي 43.3 سم من الخط العلوي و 12.1 سم من الخط المرجعي، وضعي النقطة AA.
+   Dart: measure 43.3 cm down and 12.1 cm from the reference line. Mark point AA.
+36. ارسمي الدارت: من Y إلى رأسه Z ثم إلى AA.
+   Draw the dart: from Y to its point Z, then to AA.
+37. لخط النسيج: انزلي 6.8 سم من الخط العلوي و 6.0 سم من الخط المرجعي، وضعي النقطة AB.
+   Grain line: measure 6.8 cm down and 6.0 cm from the reference line. Mark point AB.
+38. لخط النسيج: انزلي 40.3 سم من الخط العلوي و 6.0 سم من الخط المرجعي، وضعي النقطة AC.
+   Grain line: measure 40.3 cm down and 6.0 cm from the reference line. Mark point AC.
+39. ارسمي خط النسيج من AB إلى AC.
+   Draw the grain line from AB to AC.
+40. على الخط المرسوم: اقصّي 2 (مع مقلوبها).
+   Cut 2 (and mirrored), along the drawn line.
