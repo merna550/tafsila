@@ -712,6 +712,17 @@
       "measured": "Measured {value} cm",
       "expected": "Expected {value} cm",
       "highlighted": "The place is shaded on the pattern"
+    },
+    "measure": {
+      "toggle": "Measure",
+      "pickFirst": "Tap the first point on the pattern.",
+      "pickSecond": "Tap the second point.",
+      "result": "Distance: {value} cm",
+      "from": "From",
+      "to": "To",
+      "choose": "Choose a point",
+      "vertex": "{piece}, corner {index}",
+      "notch": "{piece}, notch {index}"
     }
   },
   "designPicker": {

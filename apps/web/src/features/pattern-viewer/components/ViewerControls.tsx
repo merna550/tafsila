@@ -15,6 +15,10 @@ interface ViewerControlsProps {
   readonly onZoomOut: () => void;
   /** Fits the whole sheet. */
   readonly onFit: () => void;
+  /** Whether the measure tool is on. */
+  readonly measureActive: boolean;
+  /** Switches the measure tool on or off. */
+  readonly onMeasureToggle: () => void;
 }
 
 /** Props of {@link ScaleBar}. */
@@ -29,7 +33,13 @@ interface ScaleBarProps {
  * @param props - Component props.
  * @returns The toolbar.
  */
-export function ViewerControls({ onZoomIn, onZoomOut, onFit }: Readonly<ViewerControlsProps>): ReactElement {
+export function ViewerControls({
+  onZoomIn,
+  onZoomOut,
+  onFit,
+  measureActive,
+  onMeasureToggle,
+}: Readonly<ViewerControlsProps>): ReactElement {
   const t = useTranslations("patternViewer");
   return (
     <div role="toolbar" aria-label={t("toolbar")} className="flex flex-wrap gap-2">
@@ -41,6 +51,14 @@ export function ViewerControls({ onZoomIn, onZoomOut, onFit }: Readonly<ViewerCo
       </Button>
       <Button variant="secondary" onClick={onFit} data-testid="viewer-fit">
         {t("fit")}
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={onMeasureToggle}
+        aria-pressed={measureActive}
+        data-testid="viewer-measure-toggle"
+      >
+        {t("measure.toggle")}
       </Button>
     </div>
   );

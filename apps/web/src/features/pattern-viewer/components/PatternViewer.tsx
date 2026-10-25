@@ -1,25 +1,16 @@
 "use client";
 /** The pattern viewer: a controlled canvas with zoom, pan, fit, selection and highlight (issue #243, FR-PAT-04). */
-import { forwardRef, useCallback, useImperativeHandle, type KeyboardEvent, type ReactElement } from "react";
+import { forwardRef, useImperativeHandle, useMemo, type KeyboardEvent, type ReactElement } from "react";
 import { useTranslations } from "next-intl";
+import { useTapRouter } from "./use-tap-router";
 import { useViewportGestures } from "./use-viewport-gestures";
+import { MEASURE_OFF, MEASURE_ON, allSnapPoints } from "../model/measure";
 import { targetBox } from "../model/scene-selectors";
 import type { PatternViewerHandle, PatternViewerProps } from "../model/types";
 import { ScaleBar, ViewerControls } from "./ViewerControls";
 import { ViewerCanvas } from "./ViewerCanvas";
+import { MeasurePanel } from "./MeasurePanel";
 import { ViewerSurface } from "./ViewerSurface";
-
-/**
- * The piece a tap landed on.
- *
- * @param target - The element the press started on.
- * @returns The piece id, or null on empty canvas.
- */
-function pieceIdAt(target: EventTarget | null): string | null {
-  return target instanceof Element
-    ? (target.closest("[data-piece-id]")?.getAttribute("data-piece-id") ?? null)
-    : null;
-}
 
 /**
  * Draws a pattern scene. Layers, selection and highlight come from the parent; zoom and pan stay here and are driven
@@ -31,15 +22,14 @@ function pieceIdAt(target: EventTarget | null): string | null {
  * @returns The viewer.
  */
 export const PatternViewer = forwardRef<PatternViewerHandle, PatternViewerProps>(function PatternViewer(
-  { scene, layers, selectedPieceId, onSelectPiece, highlight, className },
+  { scene, layers, selectedPieceId, onSelectPiece, highlight, measure, onMeasureChange, className },
   ref,
 ): ReactElement {
   const t = useTranslations("patternViewer");
-  const onTap = useCallback(
-    (target: EventTarget | null) => onSelectPiece(pieceIdAt(target)),
-    [onSelectPiece],
-  );
+  const snapPoints = useMemo(() => allSnapPoints(scene), [scene]);
+  const { onTap, viewportRef } = useTapRouter({ measure, onMeasureChange, onSelectPiece, snapPoints });
   const g = useViewportGestures(scene, onTap);
+  viewportRef.current = g.viewport;
   const { fit, zoomToBox } = g;
 
   useImperativeHandle(
@@ -55,19 +45,26 @@ export const PatternViewer = forwardRef<PatternViewerHandle, PatternViewerProps>
   );
 
   /**
-   * Escape clears the selection; every other key goes to the zoom and pan keys.
+   * Escape leaves the measure tool when it is on, else clears the selection; every other key goes to the zoom and pan keys.
    *
    * @param e - The key event.
    */
   function onKeyDown(e: KeyboardEvent<HTMLElement>): void {
-    if (e.key === "Escape") onSelectPiece(null);
-    else g.handlers.onKeyDown(e);
+    if (e.key !== "Escape") g.handlers.onKeyDown(e);
+    else if (measure.active) onMeasureChange(MEASURE_OFF);
+    else onSelectPiece(null);
   }
 
   return (
     <div dir="ltr" className={className}>
       <div dir="auto" className="mb-2">
-        <ViewerControls onZoomIn={g.zoomIn} onZoomOut={g.zoomOut} onFit={fit} />
+        <ViewerControls
+          onZoomIn={g.zoomIn}
+          onZoomOut={g.zoomOut}
+          onFit={fit}
+          measureActive={measure.active}
+          onMeasureToggle={() => onMeasureChange(measure.active ? MEASURE_OFF : MEASURE_ON)}
+        />
       </div>
       <ViewerSurface gestures={g} onKeyDown={onKeyDown}>
         <ViewerCanvas
@@ -75,6 +72,8 @@ export const PatternViewer = forwardRef<PatternViewerHandle, PatternViewerProps>
           layers={layers}
           selectedPieceId={selectedPieceId}
           highlight={highlight}
+          measure={measure}
+          snapPoints={snapPoints}
           viewport={g.viewport}
           label={t("canvasLabel")}
         />
@@ -82,6 +81,7 @@ export const PatternViewer = forwardRef<PatternViewerHandle, PatternViewerProps>
           <ScaleBar zoom={g.viewport.zoom} />
         </div>
       </ViewerSurface>
+      <MeasurePanel scene={scene} measure={measure} onChange={onMeasureChange} />
       <p id="viewer-hint" dir="auto" className="mt-2 text-sm text-muted">
         {t("hint")}
       </p>

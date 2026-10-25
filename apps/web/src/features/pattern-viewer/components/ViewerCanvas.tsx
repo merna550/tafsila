@@ -1,7 +1,15 @@
 /** The drawing area: the grid and every piece, moved and scaled by the viewport (issue #243). */
 import type { ReactElement } from "react";
 import { gridPaths } from "../model/scene-selectors";
-import type { PatternScene, ViewerLayers, ViewerTarget, Viewport } from "../model/types";
+import type {
+  PatternScene,
+  SnapPoint,
+  ViewerLayers,
+  ViewerMeasure,
+  ViewerTarget,
+  Viewport,
+} from "../model/types";
+import { MeasureLayer } from "./MeasureLayer";
 import { ScenePieceView } from "./ScenePieceView";
 
 /** Props of {@link ViewerCanvas}. */
@@ -14,6 +22,10 @@ interface ViewerCanvasProps {
   readonly selectedPieceId: string | null;
   /** Highlighted targets. */
   readonly highlight: readonly ViewerTarget[];
+  /** The measure tool state. */
+  readonly measure: ViewerMeasure;
+  /** Every snap point, drawn while the tool is on. */
+  readonly snapPoints: readonly SnapPoint[];
   /** Zoom and pan. */
   readonly viewport: Viewport;
   /** Accessible name of the drawing. */
@@ -31,6 +43,8 @@ export function ViewerCanvas({
   layers,
   selectedPieceId,
   highlight,
+  measure,
+  snapPoints,
   viewport,
   label,
 }: Readonly<ViewerCanvasProps>): ReactElement {
@@ -58,6 +72,7 @@ export function ViewerCanvas({
             highlight={highlight}
           />
         ))}
+        <MeasureLayer measure={measure} snapPoints={snapPoints} zoom={viewport.zoom} />
       </g>
     </svg>
   );
