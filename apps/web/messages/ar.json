@@ -674,6 +674,26 @@
       "edge": "الحافة",
       "length": "الطول",
       "allowance": "سماحة الخياطة"
+    },
+    "report": {
+      "title": "تقرير التحقق",
+      "status": {
+        "pass": "ناجح",
+        "warn": "تنبيه",
+        "fail": "فشل"
+      },
+      "overall": {
+        "pass": "كل الفحوصات ناجحة",
+        "warn": "التقرير سليم عدا تنبيهات",
+        "fail": "في التقرير فحوصات فاشلة"
+      },
+      "failCount": "{count, plural, one {فشل واحد} two {فشلان} few {# حالات فشل} other {# فشل}}",
+      "warnCount": "{count, plural, one {تنبيه واحد} two {تنبيهان} few {# تنبيهات} other {# تنبيه}}",
+      "passCount": "{count} ناجحة",
+      "passedSummary": "{count, plural, one {فحص واحد ناجح} two {فحصان ناجحان} few {# فحوصات ناجحة} other {# فحصًا ناجحًا}}",
+      "measured": "المقاس {value} سم",
+      "expected": "المطلوب {value} سم",
+      "highlighted": "الموضع المعني مظلَّل على الباترون"
     }
   },
   "designPicker": {
