@@ -63,6 +63,9 @@ export interface ViewportGestures {
   readonly zoomToBox: (box: MmBox) => void;
 }
 
+/** Called when a press ends without moving: the element it started on and where, in container pixels. */
+export type TapHandler = (target: EventTarget | null, at: PxPoint) => void;
+
 /** A press in progress with one finger or the mouse. */
 interface Press {
   readonly start: PxPoint;
@@ -175,7 +178,7 @@ function useWheelZoom(
  */
 function usePointerHandlers(
   apply: (change: (vp: Viewport) => Viewport) => void,
-  onTap: (target: EventTarget | null) => void,
+  onTap: TapHandler,
 ): Pick<GestureHandlers, "onPointerDown" | "onPointerMove" | "onPointerUp" | "onPointerCancel"> {
   const pointers = useRef(new Map<number, PxPoint>());
   const press = useRef<Press | null>(null);
@@ -219,7 +222,7 @@ function usePointerHandlers(
       const current = press.current;
       if (pointers.current.size === 0) {
         press.current = null;
-        if (allowTap && current && !current.moved) onTap(current.target);
+        if (allowTap && current && !current.moved) onTap(current.target, current.start);
       } else if (current) current.moved = true;
     },
     [onTap],
@@ -242,7 +245,7 @@ function usePointerHandlers(
  */
 export function useViewportGestures(
   sheet: { readonly widthMm: number; readonly heightMm: number },
-  onTap: (target: EventTarget | null) => void,
+  onTap: TapHandler,
 ): ViewportGestures {
   const containerRef = useRef<HTMLDivElement>(null);
   const size = useContainerSize(containerRef);

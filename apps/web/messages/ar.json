@@ -704,6 +704,17 @@
       "measured": "المقاس {value} سم",
       "expected": "المطلوب {value} سم",
       "highlighted": "الموضع المعني مظلَّل على الباترون"
+    },
+    "measure": {
+      "toggle": "قياس مسافة",
+      "pickFirst": "المس النقطة الأولى على الباترون.",
+      "pickSecond": "المس النقطة الثانية.",
+      "result": "المسافة: {value} سم",
+      "from": "من",
+      "to": "إلى",
+      "choose": "اختر نقطة",
+      "vertex": "{piece}، الزاوية {index}",
+      "notch": "{piece}، العلامة {index}"
     }
   },
   "designPicker": {

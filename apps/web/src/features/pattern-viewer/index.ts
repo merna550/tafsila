@@ -3,6 +3,7 @@ export { LayerToggles } from "./components/LayerToggles";
 export { PieceList } from "./components/PieceList";
 export { PiecePanel } from "./components/PiecePanel";
 export { ValidationReport } from "./components/ValidationReport";
+export { MeasureReadout } from "./components/MeasureReadout";
 export { PatternViewer } from "./components/PatternViewer";
 export { DEFAULT_VIEWER_LAYERS, useViewerState, type ViewerController } from "./hooks/use-viewer-state";
 export type {
