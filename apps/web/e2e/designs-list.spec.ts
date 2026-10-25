@@ -41,5 +41,5 @@ test("new pattern from a client, see it in the list, filter by client and delete
   await expect(page.getByRole("link", { name: new RegExp(t.designPicker.category.dress) })).toBeVisible();
   await page.getByRole("button", { name: new RegExp(`^${t.designs.row.delete}`) }).click();
   await page.getByRole("button", { name: t.designs.delete.confirm }).click();
-  await expect(page.getByText(t.designs.noResults.title)).toBeVisible();
+  await expect(page.getByText(t.designs.empty.title)).toBeVisible();
 });
