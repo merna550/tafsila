@@ -38,6 +38,8 @@ src/shared/                   api client, i18n, query client, workers, analytics
 
 Import direction: `app → features → entities → shared → packages/*`. Another feature is imported only through its `index.ts`.
 
+**Option drawings:** `src/features/design-picker/illustrations/` holds the picker line drawings as SVG path data per feature (`OptionIllustration path value`). To replace one, edit its entry in the matching file; review at `/dev/option-illustrations`.
+
 ## State
 
 | Kind                   | Tool                                                         |
