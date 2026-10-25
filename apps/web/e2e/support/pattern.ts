@@ -99,7 +99,7 @@ export async function saveVersion(page: Page): Promise<number> {
 }
 
 /**
- * Chooses an ease preference in the options tab of the pattern page.
+ * Chooses an ease preference in the options tab of the pattern page, then returns to the report tab.
  *
  * @param page - The page.
  * @param env - Language prefix and messages.
@@ -116,6 +116,7 @@ export async function chooseEase(
     .getByRole("group", { name: t.patternOptions.ease.title })
     .getByRole("button", { name: t.patternOptions.ease.profiles[profile], exact: true })
     .click();
+  await page.getByRole("tab", { name: t.patternPage.tabs.report }).click();
 }
 
 /**
