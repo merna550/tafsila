@@ -41,5 +41,5 @@ test("choose a category from a client's profile, open the editor and keep the se
   await depth.fill("9");
   await expect(depth).toHaveValue("9");
   await depth.fill("99");
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.locator("p[role=alert]")).toBeVisible();
 });
