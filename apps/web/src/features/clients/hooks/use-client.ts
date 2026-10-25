@@ -8,12 +8,13 @@ import { clientKeys } from "./query-keys";
 /**
  * Loads one client; a client of another user answers NOT_FOUND like a missing one.
  *
- * @param id - Client id.
+ * @param id - Client id; null waits (no request).
  * @returns The TanStack query.
  */
-export function useClient(id: string): UseQueryResult<Client> {
+export function useClient(id: string | null): UseQueryResult<Client> {
   return useQuery({
-    queryKey: clientKeys.detail(id),
-    queryFn: ({ signal }) => apiRequest(`/clients/${id}`, { schema: clientSchema, signal }),
+    queryKey: clientKeys.detail(id ?? ""),
+    enabled: id !== null,
+    queryFn: ({ signal }) => apiRequest(`/clients/${id ?? ""}`, { schema: clientSchema, signal }),
   });
 }

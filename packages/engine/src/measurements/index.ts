@@ -3,3 +3,4 @@ export * from "../constants/measurement-ranges";
 export * from "./codes";
 export * from "./from-standard-size";
 export * from "./validate-measurements";
+export * from "../constants/ease";

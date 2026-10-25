@@ -827,5 +827,56 @@
       "skirt_lengthMm": "Skirt length",
       "skirt_slit_lengthMm": "Slit length"
     }
+  },
+  "patternOptions": {
+    "title": "Pattern options",
+    "save": "Save options",
+    "fabricWidth": "Fabric width",
+    "pick": {
+      "client": "Client",
+      "clientPlaceholder": "Choose a client",
+      "set": "Measurement set",
+      "setPlaceholder": "Choose a measurement set",
+      "clientFirst": "Choose a client first",
+      "newest": "{label} (newest)",
+      "newestFirst": "Newest first.",
+      "noSets": "This client has no measurement set yet.",
+      "addSet": "Add measurements"
+    },
+    "ease": {
+      "title": "Ease",
+      "profiles": {
+        "fitted": "Fitted",
+        "regular": "Regular",
+        "loose": "Loose"
+      },
+      "explain": {
+        "fitted": "Close to the body, with enough room to breathe and raise the arms.",
+        "regular": "The usual room for everyday wear.",
+        "loose": "A roomy cut, about a hand's width more."
+      },
+      "values": "Ease in cm: bust {bust}, waist {waist}, hip {hip}.",
+      "proposed": "Suggested: \"Fitted\" and \"Loose\" are suggested values, not final."
+    },
+    "seam": {
+      "title": "Seam allowance",
+      "hint": "The allowance of each edge kind, in cm.",
+      "resetAll": "Reset all to default",
+      "kinds": {
+        "side": "Side seams",
+        "neckline": "Neckline",
+        "armhole": "Armhole",
+        "hem": "Hem",
+        "other": "Other edges"
+      }
+    },
+    "field": {
+      "unit": "cm",
+      "range": "From {min} to {max} cm · Default {default}",
+      "error": "The value must be between {min} and {max} cm.",
+      "invalid": "Type a number in cm, such as {default}.",
+      "reset": "Default",
+      "resetNamed": "Reset {name} to default"
+    }
   }
 }

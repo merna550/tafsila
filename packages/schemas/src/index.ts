@@ -16,3 +16,4 @@ export * from "./profile";
 export * from "./admin";
 export * from "./pattern";
 export * from "./engine-options";
+export * from "./pattern-options";
