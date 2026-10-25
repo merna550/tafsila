@@ -4,3 +4,4 @@ export * from "./feature-paths";
 export * from "./normalize-spec";
 export * from "./refusals";
 export * from "./spec-options";
+export * from "./override-limits";

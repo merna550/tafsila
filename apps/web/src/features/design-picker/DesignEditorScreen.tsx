@@ -67,9 +67,16 @@ export function DesignEditorScreen({ id, query, children }: Readonly<DesignEdito
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-4">
                 <EditorNotice paths={frame.resetPaths} onUndo={frame.undo} onDismiss={frame.dismissNotice} />
-                <SectionPanel title={t(`sections.${active}`)}>
-                  <p className="text-base text-muted">{t("panelSoon")}</p>
-                </SectionPanel>
+                {frame.spec !== null && frame.options !== null ? (
+                  <SectionPanel
+                    title={t(`sections.${active}`)}
+                    section={active}
+                    spec={frame.spec}
+                    options={frame.options}
+                    onChange={frame.setFeature}
+                    onOverride={frame.setOverride}
+                  />
+                ) : null}
                 {children}
               </div>
             </div>

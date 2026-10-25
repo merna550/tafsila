@@ -5,7 +5,9 @@ import {
   withFeatureValue,
   type FeaturePath,
   type FeatureValue,
+  type OverridePath,
 } from "@tafsila/engine/spec-rules";
+import { withOverride } from "./override-spec";
 import { deepEqual } from "./spec-path";
 
 /** What the editor keeps: editing state only, never server data. */
@@ -89,6 +91,34 @@ export function setFeatureState(
     path === "pockets" && Array.isArray(value)
       ? { ...state.spec, pockets: value as DesignSpec["pockets"] }
       : withFeatureValue(state.spec, path, value as FeatureValue);
+  return commitState(state, raw);
+}
+
+/**
+ * Sets or removes a length override (in mm), applies the rules and fills the reset notice.
+ *
+ * @param state - The editor state.
+ * @param path - The override.
+ * @param mm - The new value, or undefined to remove it.
+ * @returns The next state; the same object when nothing changed.
+ */
+export function setOverrideState(
+  state: EditorState,
+  path: OverridePath,
+  mm: number | undefined,
+): EditorState {
+  if (state.spec === null) return state;
+  return commitState(state, withOverride(state.spec, path, mm));
+}
+
+/**
+ * Normalises a raw edit and records it as one undo step.
+ *
+ * @param state - The editor state, with a spec.
+ * @param raw - The edited design.
+ * @returns The next state; the same object when the design did not change.
+ */
+function commitState(state: EditorState, raw: DesignSpec): EditorState {
   const { spec, changed } = normalizeSpec(raw);
   if (deepEqual(spec, state.spec)) return state;
   return { ...state, spec, previous: state.spec, resetPaths: changed };

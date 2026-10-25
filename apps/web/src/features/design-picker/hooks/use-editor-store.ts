@@ -1,7 +1,7 @@
 "use client";
 /** The editor store (Zustand, ADR-011): the spec being edited, one undo level and the browser draft. */
 import type { DesignSpec } from "@tafsila/schemas";
-import type { FeaturePath, FeatureValue } from "@tafsila/engine/spec-rules";
+import type { FeaturePath, FeatureValue, OverridePath } from "@tafsila/engine/spec-rules";
 import { create } from "zustand";
 import { readJson, remove, writeJson } from "@/shared/storage/safe-storage";
 import {
@@ -12,6 +12,7 @@ import {
   isDirty,
   markSavedState,
   setFeatureState,
+  setOverrideState,
   undoState,
   type EditorState,
 } from "../model/editor-state";
@@ -22,6 +23,8 @@ export interface EditorStore extends EditorState {
   hydrate: (designId: string, spec: DesignSpec) => void;
   /** Sets a feature, applies the rules and fills `resetPaths`. */
   setFeature: (path: FeaturePath, value: FeatureValue | readonly string[]) => void;
+  /** Sets a length override in mm, or removes it with undefined. */
+  setOverride: (path: OverridePath, mm: number | undefined) => void;
   /** Restores the spec before the last change. */
   undo: () => void;
   /** Makes `spec` the baseline and drops the draft (called after saving). */
@@ -71,6 +74,7 @@ export const useEditorStore = create<EditorStore>((set, get) => {
       set(hydrateState(designId, spec, acceptDraft(readJson(draftKey(designId)), spec)));
     },
     setFeature: (path, value) => apply((state) => setFeatureState(state, path, value)),
+    setOverride: (path, mm) => apply((state) => setOverrideState(state, path, mm)),
     undo: () => apply(undoState),
     markSaved: (spec) => {
       const id = get().designId;
