@@ -36,7 +36,7 @@ export function DesignEditorScreen({ id, query, children }: Readonly<DesignEdito
   const { design, active, category } = frame;
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <DesignsBreadcrumb current={design.data?.title ?? t("title")} />
+      <DesignsBreadcrumb current={design.data?.design.title ?? t("title")} />
       <PageHeader title={t("title")} />
       <DataState
         isPending={design.isPending || (design.isSuccess && !frame.ready)}

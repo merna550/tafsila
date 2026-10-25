@@ -67,7 +67,7 @@ Uses `POST /api/designs`, `GET /api/designs/:id` from #242 through `shared/api` 
 
 ## Deviations
 
-- The design is loaded without a spec (`GET /api/designs/:id` returns the design only), so the frame starts the store at `defaultSpec(category)`. Loading the current version's spec is done with the editor composition in #251.
+- `GET /api/designs/:id` returns `{ design, currentVersion }`, so `useDesign` parses `designDetailSchema` and the store starts at the current version's spec, or `defaultSpec(category)` for a design without a version.
 - Summary in the section list is a done mark (section differs from `defaultSpec`), not value text: option labels arrive with the option cards in #246 (`spec-summary.ts` becomes `customisedSections`).
 - A dress has no waistband section (`waistband` does not apply to a dress in the engine rules), so "all sections" is "all except waistband".
 - `setFeature` takes `FeatureValue | string[]` (an array only for `pockets`); removing an optional field with `undefined` was not needed.

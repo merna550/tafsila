@@ -1,7 +1,7 @@
 "use client";
 /** Hook that loads the design, starts the editor store and derives what the frame shows. */
 import { defaultSpec, specOptions, type FeaturePath } from "@tafsila/engine/spec-rules";
-import type { Design, GarmentCategory } from "@tafsila/schemas";
+import type { DesignDetail, GarmentCategory } from "@tafsila/schemas";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { sectionsFor, type SectionId } from "../model/sections";
@@ -12,7 +12,7 @@ import { useEditorStore } from "./use-editor-store";
 /** What the editor frame needs to render. */
 export interface EditorFrame {
   /** The design query (loading and error states). */
-  readonly design: UseQueryResult<Design>;
+  readonly design: UseQueryResult<DesignDetail>;
   /** True once the store holds this design's spec. */
   readonly ready: boolean;
   /** The garment type, once loaded. */
@@ -46,10 +46,11 @@ export function useEditorFrame(id: string, requested: SectionId | undefined): Ed
   const hydrate = useEditorStore((s) => s.hydrate);
   const undo = useEditorStore((s) => s.undo);
   const dismissNotice = useEditorStore((s) => s.dismissNotice);
-  const category = design.data?.category;
+  const category = design.data?.design.category;
+  const savedSpec = design.data?.currentVersion?.spec;
   useEffect(() => {
-    if (category !== undefined) hydrate(id, defaultSpec(category));
-  }, [category, hydrate, id]);
+    if (category !== undefined) hydrate(id, savedSpec ?? defaultSpec(category));
+  }, [category, savedSpec, hydrate, id]);
   const sections = useMemo(() => (spec === null ? [] : sectionsFor(specOptions(spec))), [spec]);
   const done = useMemo(() => (spec === null ? [] : customisedSections(spec, sections)), [spec, sections]);
   return {
