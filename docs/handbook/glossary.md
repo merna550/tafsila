@@ -360,6 +360,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Deleting the auth user removes the profile, clients, measurement sets and OTP events; `trial_phones.user_id` is set to null so the hashed number stays. **Level:** intermediate  
 **Learn:** <https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK>
 
+<a id="catmull-rom-spline"></a>
+
+### Catmull-Rom spline
+
+**Plain words:** A smooth curve that passes through every given point, built from cubic Bézier pieces whose handles follow the neighbouring points; the maths version of drawing through dots with a French curve.  
+**In Tafsila:** `curveThroughPoints` in `src/geometry/bezier.ts`; `connectionCurve` for direct-cut curves (decision 284). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Catmull%E2%80%93Rom_spline>
+
 <a id="ci-cd"></a>
 
 ### CI/CD (continuous integration / delivery)
@@ -633,7 +641,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Direct-to-fabric mode
 
 **Plain words:** Cutting without a printed pattern: the app lists numbered measuring steps ("from the fold, measure 22.5 cm and mark point A") to draw the piece straight onto the fabric.  
-**In Tafsila:** FR-CUT-01 to FR-CUT-04 ([SRS section 4.8](../SRS.md)); curves are given as points every 2 to 3 cm. **Level:** beginner  
+**In Tafsila:** FR-CUT-01 to FR-CUT-04 ([SRS section 4.8](../SRS.md)); `cutSteps` in `packages/engine/src/cut/` makes the steps, with curve points every 2 to 3 cm ([engine README](../engine/README.md#direct-cut-steps-srccut), decision 284). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="dispatcher"></a>
