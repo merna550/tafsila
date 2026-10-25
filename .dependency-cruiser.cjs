@@ -25,6 +25,16 @@ module.exports = {
       },
     },
     {
+      name: "export-is-pure",
+      severity: "error",
+      comment:
+        "Print and PDF export is pure data in, data out: no app, API, UI or framework code (decision 283).",
+      from: { path: "^packages/export" },
+      to: {
+        path: ["^apps/", "^packages/(api|ui|config)", "node_modules/(@supabase|next|react|hono)"],
+      },
+    },
+    {
       name: "schemas-are-leaf",
       severity: "error",
       comment: "Shared schemas only depend on zod.",

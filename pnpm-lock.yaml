@@ -234,6 +234,25 @@ importers:
         specifier: ^4.23.15
         version: 4.23.15
 
+  packages/export:
+    dependencies:
+      '@tafsila/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@tafsila/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@tafsila/test-fixtures':
+        specifier: workspace:*
+        version: link:../test-fixtures
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(vitest@4.1.11)
+      fast-check:
+        specifier: ^4.10.2
+        version: 4.10.2
+
   packages/schemas:
     dependencies:
       zod:

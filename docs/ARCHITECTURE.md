@@ -15,6 +15,7 @@
 | `apps/web`          | Feature-sliced frontend                               | Each feature is self-contained; shared UI in one design system                                  |
 | `packages/api`      | Hexagonal (ports & adapters) / clean architecture     | Business rules independent of Supabase, Paymob, AI vendor; easy to test and swap                |
 | `packages/engine`   | Functional core + plugin pipeline                     | Deterministic, testable geometry; new garment features added as modules without touching others |
+| `packages/export`   | Pure data in, data out (print tiles, later PDF)       | The PDF code only draws what the tile maths returns; no UI or API code in it (`docs/export/`)   |
 | `services/sim` (v2) | Small hexagonal service                               | Same rules as the API, in Python                                                                |
 | Data                | Postgres + RLS, repository pattern, migrations in git | Security at the DB level; reproducible environments                                             |
 

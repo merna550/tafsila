@@ -1,0 +1,22 @@
+{
+  "name": "@tafsila/export",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@tafsila/engine": "workspace:*",
+    "@tafsila/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@tafsila/test-fixtures": "workspace:*",
+    "@vitest/coverage-v8": "4.1.11",
+    "fast-check": "^4.10.2"
+  }
+}
