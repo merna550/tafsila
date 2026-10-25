@@ -1,6 +1,6 @@
 # Export — `packages/export`
 
-Pure data in, data out: takes a `PatternResult`, returns plain JSON that the PDF code only draws. No UI, API or framework code (dependency-cruiser rule `export-is-pure`). PDF helpers (units, fonts, Arabic labels, test reader) are in `src/pdf/` ([ADR-282](../decisions/282-pdf-library.md)); the A4 PDF arrives with #288. Decisions: [283](../decisions/283-print-tiles.md), [281](../decisions/281-m4-scope.md).
+Pure data in, data out: takes a `PatternResult`, returns plain JSON that the PDF code only draws. No UI, API or framework code (dependency-cruiser rule `export-is-pure`). PDF helpers (units, fonts, Arabic labels, test reader) are in `src/pdf/` ([ADR-282](../decisions/282-pdf-library.md)); the A4 PDF is [ADR-288](../decisions/288-pdf-builder.md). Decisions: [283](../decisions/283-print-tiles.md), [281](../decisions/281-m4-scope.md).
 
 ## Print tiles
 
@@ -24,3 +24,18 @@ const map = pageMap(tiling, { widthMm: 120, heightMm: 160 });
 All numbers are named constants in `src/tiles/paper.ts`. #288 (A4 PDF) and #290 (A0 PDF) may retune them there. Physical accuracy of prints is checked in #295.
 
 Tests: `pnpm --filter @tafsila/export test` (unit, fast-check properties, a seed-dress fixture).
+
+## A4 PDF
+
+```ts
+import { buildA4Pdf } from "@tafsila/export";
+const { bytes, pageCount, tileCount } = await buildA4Pdf(result, buildPatternScene(result), meta, {
+  fonts,
+  onProgress,
+});
+```
+
+- Page 1 is the cover: 100 mm test square, "measure me", title, version, client, engine version, page map (empty tiles crossed out). Tile pages follow, one per non-empty tile, with alignment marks, a dashed overlap hint, the tile label (`B2`) and a footer.
+- Drawing is at 1:1 in vector paths; the same `drawPiecesInWindow` will draw A0 (#290) through `buildTiledPdf`.
+- Pure and reproducible: no clock, no random, dates from `meta.createdAt`. No DOM, so it runs in a worker (#289).
+- Look at it: `pnpm --filter @tafsila/export render:sample` writes the seed dress PDF and PNGs (needs `pdftoppm`) and prints the build time.

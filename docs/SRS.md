@@ -249,7 +249,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 ### 4.9 Export (EXP)
 | ID | Requirement | Pri |
 |---|---|---|
-| FR-EXP-01 | PDF A4 tiled with overlap marks, page grid map, and 10 cm test square on page 1 | M |
+| FR-EXP-01 | PDF A4 tiled with overlap marks, page grid map, and 10 cm test square on page 1. Built in a browser worker by `buildA4Pdf` ([ADR-288](decisions/288-pdf-builder.md)) | M |
 | FR-EXP-02 | PDF A0 (copy shop) single sheet(s) | M |
 | FR-EXP-03 | SVG export | S |
 | FR-EXP-04 | DXF (AAMA) export for plotters | C |

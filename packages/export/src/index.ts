@@ -1,7 +1,12 @@
-/** Public API of the export package: the print tile layout for A4 and A0 (decision 283). */
+/** Public API of the export package: print tiles (decision 283) and the A4 PDF (decision 288). */
 export { tileInput } from "./tiles/tile-input";
 export { tileSheet } from "./tiles/tile-sheet";
 export { pageMap } from "./tiles/page-map";
 export { columnLetter } from "./tiles/labels";
 export { PAPERS, type Orientation, type Paper, type PaperId } from "./tiles/paper";
 export type { AlignMark, PageMap, Tile, TileInput, TileSide, Tiling } from "./tiles/types";
+export { buildA4Pdf } from "./pdf/a4-pdf";
+export { buildTiledPdf } from "./pdf/tiled-pdf";
+export { PDF_STRINGS, type PdfStrings } from "./pdf/strings";
+export type { PdfBuildOptions, PdfMeta, PdfOutput, PdfProgress } from "./pdf/types";
+export type { PdfFonts } from "./pdf/fonts";

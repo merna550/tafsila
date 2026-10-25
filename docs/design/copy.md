@@ -70,4 +70,14 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | test square                        | مربع اختباري (10 سم)                     | test square (10 cm)                 |
 | use this version / mirror          | استخدمي هذه النسخة / عكس                 | use this version / mirror           |
 
+### PDF (A4 print file, `packages/export/src/pdf/strings.ts`)
+
+| Where                 | Arabic                                                  | English                                         |
+| --------------------- | ------------------------------------------------------- | ----------------------------------------------- |
+| Under the test square | قس هنا: 10 سم                                           | measure me: 10 cm                               |
+| Print line            | اطبع بحجم 100٪ (الحجم الفعلي)، ولا تختر «ملاءمة الصفحة» | Print at 100% / actual size, do not fit to page |
+| Page map heading      | خريطة الصفحات                                           | Page map                                        |
+| Page map note         | الصفحات المشطوبة فارغة ولا تُطبع                        | Crossed-out pages are empty and not printed     |
+| Overlap strip         | تداخل                                                   | overlap                                         |
+
 Add a row here in the same PR whenever a new product term appears.

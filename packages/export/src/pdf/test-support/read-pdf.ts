@@ -202,3 +202,38 @@ export async function markedRects(bytes: Uint8Array, tag: string, pageIndex = 0)
   }
   return rects;
 }
+
+/**
+ * Number of pages in the file.
+ *
+ * @param bytes - PDF file bytes.
+ * @returns The page count.
+ */
+export async function pageCount(bytes: Uint8Array): Promise<number> {
+  return (await PDFDocument.load(bytes)).getPageCount();
+}
+
+/**
+ * Names of all marked-content blocks on a page, in drawing order.
+ *
+ * @param bytes - PDF file bytes.
+ * @param pageIndex - Zero-based page index.
+ * @returns The tag names, without the slash.
+ */
+export async function markedTags(bytes: Uint8Array, pageIndex = 0): Promise<string[]> {
+  const content = await pageContent(bytes, pageIndex);
+  return [...content.matchAll(/^\/(\S+) BMC$/gm)].map((m) => m[1]!);
+}
+
+/**
+ * The content stream of a page with numbers rounded to 0.01, for snapshots. Text strings are glyph ids and stay as is.
+ *
+ * @param bytes - PDF file bytes.
+ * @param pageIndex - Zero-based page index.
+ * @returns The rounded operator text.
+ */
+export async function contentOps(bytes: Uint8Array, pageIndex = 0): Promise<string> {
+  const content = await pageContent(bytes, pageIndex);
+  // eslint-disable-next-line sonarjs/super-linear-regex -- test helper on trusted test output; the digits around the dot are short
+  return content.replace(/\d+\.\d+/g, (n) => String(Math.round(Number(n) * 100) / 100));
+}
