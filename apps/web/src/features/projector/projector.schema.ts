@@ -43,3 +43,20 @@ export const projectorPrefsSchema = z.object({
 
 /** Stored line width and colour. */
 export type ProjectorPrefs = z.infer<typeof projectorPrefsSchema>;
+
+/** The piece handling kept per viewer and version: which piece is shown and where pieces were moved (issue #287). The active piece is not kept. */
+export const projectorPlacementSchema = z.object({
+  version: z.literal(1),
+  selection: z.string(),
+  placements: z.record(
+    z.string(),
+    z.object({
+      offsetMm: z.object({ x: z.number(), y: z.number() }),
+      // eslint-disable-next-line no-magic-numbers -- the half turn is the one allowed angle besides 0
+      rotationDeg: z.union([z.literal(0), z.literal(180)]),
+    }),
+  ),
+});
+
+/** Stored selection and placements of one version. */
+export type ProjectorPlacementStored = z.infer<typeof projectorPlacementSchema>;

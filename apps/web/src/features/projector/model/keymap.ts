@@ -13,6 +13,7 @@ export type ProjectorAction =
   | { readonly kind: "prevPiece" }
   | { readonly kind: "allPieces" }
   | { readonly kind: "pieces" }
+  | { readonly kind: "clearActive" }
   | { readonly kind: "fullscreen" };
 
 /** The part of a keyboard event the map reads. */
@@ -41,6 +42,7 @@ const SIMPLE: Readonly<Record<string, ProjectorAction>> = {
   PageUp: { kind: "prevPiece" },
   PageDown: { kind: "nextPiece" },
   Digit0: { kind: "reset" },
+  Escape: { kind: "clearActive" },
 };
 
 /**
@@ -58,7 +60,20 @@ export function keyAction(e: KeyInput): ProjectorAction | null {
 
 /** Ids of the help rows: keys of `projector.help.rows`. */
 export type HelpRowId =
-  "pan1" | "pan10" | "pan50" | "mirror" | "widthLess" | "widthMore" | "fullscreen" | "help";
+  | "pan1"
+  | "pan10"
+  | "pan50"
+  | "rotate"
+  | "pieces"
+  | "nextPiece"
+  | "allPieces"
+  | "clearActive"
+  | "reset"
+  | "mirror"
+  | "widthLess"
+  | "widthMore"
+  | "fullscreen"
+  | "help";
 
 /** One row of the help window: message keys of `projector.help` and a sample key press that triggers it. */
 export interface HelpRow {
@@ -85,6 +100,12 @@ export const HELP_ROWS: readonly HelpRow[] = [
     keys: "Alt + ←",
     sample: { code: "ArrowLeft", key: "ArrowLeft", shiftKey: false, altKey: true },
   },
+  { id: "rotate", keys: "R", sample: { code: "KeyR", key: "r", ...NO_MODS } },
+  { id: "pieces", keys: "L", sample: { code: "KeyL", key: "l", ...NO_MODS } },
+  { id: "nextPiece", keys: "PgUp / PgDn", sample: { code: "PageDown", key: "PageDown", ...NO_MODS } },
+  { id: "allPieces", keys: "A", sample: { code: "KeyA", key: "a", ...NO_MODS } },
+  { id: "clearActive", keys: "Esc", sample: { code: "Escape", key: "Escape", ...NO_MODS } },
+  { id: "reset", keys: "0", sample: { code: "Digit0", key: "0", ...NO_MODS } },
   { id: "mirror", keys: "M", sample: { code: "KeyM", key: "m", ...NO_MODS } },
   { id: "widthLess", keys: "[", sample: { code: "BracketLeft", key: "[", ...NO_MODS } },
   { id: "widthMore", keys: "]", sample: { code: "BracketRight", key: "]", ...NO_MODS } },
