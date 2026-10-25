@@ -1,0 +1,124 @@
+import { expect, test, type Page } from "@playwright/test";
+import { projectLocale } from "./support/app";
+import { openSeedClient, openVersion, saveVersion, startDesign, waitForReport } from "./support/pattern";
+import { seedCalibration } from "./support/projector";
+
+/**
+ * Saves a dress and opens the projector view of its first version, with a calibration of 4 px/mm.
+ *
+ * @param page - The page.
+ * @param testInfo - The running test, for the language.
+ * @returns The language environment and the route of the version.
+ */
+async function openProjector(
+  page: Page,
+  testInfo: Parameters<typeof projectLocale>[0],
+): Promise<{ env: ReturnType<typeof projectLocale>; base: string }> {
+  const env = projectLocale(testInfo);
+  const clientId = await openSeedClient(page, env);
+  const designId = await startDesign(page, env, clientId, "dress");
+  await page.getByTestId("view-pattern").click();
+  await waitForReport(page);
+  await saveVersion(page);
+  await openVersion(page, env, designId, 1);
+  const versionId = page.url().split("/").pop()!;
+  return { env, base: `${env.prefix}/designs/${designId}/versions/${versionId}/projector` };
+}
+
+/**
+ * Reads the left edge of the first piece's cut line on screen.
+ *
+ * @param page - The page.
+ * @returns Left and width in px.
+ */
+async function cutBox(page: Page): Promise<{ x: number; width: number }> {
+  const box = await page.locator('[data-layer="cut"]').first().boundingBox();
+  return { x: box!.x, width: box!.width };
+}
+
+/** FR-PROJ-01, FR-PROJ-03: at 4 px/mm the square is 400 px and a piece is 4 times its width in mm. */
+test("projector: the square is 400 px and pieces are drawn at 4 px per mm", async ({ page }, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  const square = page.getByTestId("verification-square").locator("rect");
+  await expect(square).toBeVisible();
+  const sq = (await square.boundingBox())!;
+  expect(Math.abs(sq.width - 400)).toBeLessThanOrEqual(1);
+  expect(Math.abs(sq.height - 400)).toBeLessThanOrEqual(1);
+  const cut = page.locator('[data-layer="cut"]').first();
+  const widthMm = Number(await cut.getAttribute("data-width-mm"));
+  expect(Math.abs((await cutBox(page)).width - widthMm * 4)).toBeLessThanOrEqual(1);
+  await expect(page.getByTestId("projector-canvas")).toHaveAttribute("dir", "ltr");
+});
+
+/** FR-PROJ-05: arrows are physical, also after mirror; the square never moves. */
+test("projector: arrows pan 4, 40 and 200 px; mirror flips the pattern but not the square", async ({
+  page,
+}, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  const square = page.getByTestId("verification-square").locator("rect");
+  await expect(square).toBeVisible();
+  const squareBefore = (await square.boundingBox())!;
+  const before = await cutBox(page);
+
+  await page.keyboard.press("ArrowRight");
+  expect(Math.abs((await cutBox(page)).x - before.x - 4)).toBeLessThanOrEqual(1);
+  await page.keyboard.press("Shift+ArrowRight");
+  expect(Math.abs((await cutBox(page)).x - before.x - 44)).toBeLessThanOrEqual(1);
+  await page.keyboard.press("Alt+ArrowRight");
+  expect(Math.abs((await cutBox(page)).x - before.x - 244)).toBeLessThanOrEqual(1);
+
+  const group = page.getByTestId("pattern-group");
+  await page.keyboard.press("m");
+  await expect(group).toHaveAttribute("transform", /scale\(-1 1\)/);
+  const mirrored = await cutBox(page);
+  await page.keyboard.press("ArrowRight");
+  expect(Math.abs((await cutBox(page)).x - mirrored.x - 4)).toBeLessThanOrEqual(1);
+  expect(await square.boundingBox()).toEqual(squareBefore);
+});
+
+/** Dragging pans the pattern. */
+test("projector: dragging with the mouse pans the pattern", async ({ page }, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  await expect(page.getByTestId("pattern-group")).toBeVisible();
+  const before = await cutBox(page);
+  await page.mouse.move(600, 500);
+  await page.mouse.down();
+  await page.mouse.move(660, 500, { steps: 4 });
+  await page.mouse.up();
+  expect(Math.abs((await cutBox(page)).x - before.x - 60)).toBeLessThanOrEqual(1);
+});
+
+/** Help opens on ? and closes on Escape; the line width key changes the stroke. */
+test("projector: help window and line width are reachable by keyboard", async ({ page }, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  const { env, base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  const group = page.getByTestId("pattern-group");
+  await expect(group).toBeVisible();
+  await page.keyboard.press("Shift+Slash");
+  const help = page.getByRole("dialog", { name: env.t.projector.help.title });
+  await expect(help).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(help).toBeHidden();
+  await expect(group).toHaveCSS("stroke-width", "2px");
+  await page.keyboard.press("BracketRight");
+  await expect(group).toHaveCSS("stroke-width", "3px");
+  for (const name of [env.t.projector.view.mirror, env.t.projector.view.help, env.t.projector.view.exit]) {
+    await expect(
+      page.getByRole(name === env.t.projector.view.exit ? "link" : "button", { name }),
+    ).toBeVisible();
+  }
+});
+
+/** Without a stored calibration the route sends the user to calibrate. */
+test("projector: no stored calibration redirects to the calibration page", async ({ page }, testInfo) => {
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  await expect(page).toHaveURL(/\/projector\/calibrate$/);
+});

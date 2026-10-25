@@ -12,6 +12,7 @@ import { nominalSquarePx } from "../model/calibration";
 import type { CalibrationState } from "../model/calibration-store";
 import type { ScreenInfo } from "../projector.schema";
 import { FullscreenButton } from "./FullscreenButton";
+import { LINK_BUTTON } from "./link-button";
 import { Link } from "@/shared/i18n";
 
 /** Props of {@link CalibrationView}. */
@@ -35,9 +36,6 @@ export interface CalibrationViewProps {
   /** Called when the form is sent. */
   readonly onSubmit: () => void;
 }
-
-const LINK_BUTTON =
-  "inline-flex min-h-11 items-center justify-center rounded-md px-5 text-base font-semibold focus-visible:outline-2 focus-visible:outline-focus";
 
 /**
  * One size field with its unit and error text.
