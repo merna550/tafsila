@@ -24,6 +24,8 @@ export interface PreviewState {
   readonly durationMs?: number;
   /** Hash of the spec, measurements and options (`meta.createdFrom`); equals the saved version's `input_hash` when unchanged. */
   readonly inputHash?: string;
+  /** The exact input object this state answers; the page compares it with its current input to tell a stale draft. */
+  readonly input?: PreviewInput;
 }
 
 /** Starts drafts for inputs and reports the state. */
@@ -76,9 +78,9 @@ export function createPreviewController(
     if (mine !== generation || "stale" in outcome) return;
     if (outcome.ok) {
       const { result, scene, durationMs } = outcome;
-      emit({ status: "done", result, scene, durationMs, inputHash: result.meta.createdFrom });
+      emit({ status: "done", result, scene, durationMs, inputHash: result.meta.createdFrom, input });
     } else {
-      emit({ status: "error", error: outcome.error });
+      emit({ status: "error", error: outcome.error, input });
     }
   }
 

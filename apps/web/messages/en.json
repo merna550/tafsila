@@ -983,5 +983,56 @@
       "close": "Close",
       "done": "Design deleted"
     }
+  },
+  "patternPage": {
+    "viewPattern": "View pattern",
+    "editDesign": "Edit design",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "fallbackTitle": "Pattern",
+    "version": "Version {n}",
+    "status": {
+      "saved": "Saved",
+      "unsaved": "Unsaved changes",
+      "updating": "Updating",
+      "outdated": "Changed since version {n}",
+      "fail": "Check failed",
+      "error": "Could not draw the pattern",
+      "noSet": "Choose measurements",
+      "rejected": "Server refused the pattern",
+      "saving": "Saving"
+    },
+    "save": {
+      "label": "Save version",
+      "saving": "Saving...",
+      "hint": {
+        "noSet": "Choose a client and her measurements in Options first.",
+        "previewing": "Saving waits for the pattern to update.",
+        "error": "Saving is off because the pattern could not be drawn.",
+        "fail": "Saving is off until the problems in the validation report are fixed.",
+        "rejected": "Saving is off until the design or measurements change.",
+        "saved": "The pattern is saved as it is.",
+        "outdated": "The measurements or the engine changed since version {n}. A new version can be saved."
+      },
+      "done": "Saved as version {n}",
+      "reused": "Already saved as version {n}"
+    },
+    "tabs": {
+      "label": "Pattern panel",
+      "details": "Piece details",
+      "report": "Validation report",
+      "options": "Options"
+    },
+    "updating": "Updating the pattern...",
+    "noSet": {
+      "title": "No pattern yet",
+      "body": "Choose a client and her measurements in Options to draw the pattern.",
+      "action": "Open options"
+    },
+    "rejected": {
+      "title": "The server found a problem with this design",
+      "body": "No version was saved. The place concerned is in the report below."
+    },
+    "loading": "Loading the pattern"
   }
 }

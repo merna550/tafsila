@@ -89,7 +89,7 @@ The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue
 - `inputHash` is `result.meta.createdFrom`, the same hash the server stores, so the page can tell when the preview equals the saved version.
 - An error state carries a code; `previewErrorToApiError` turns it into an `ApiError` for the shared error display. An engine crash is shown as an unexpected error, never thrown in render.
 - Only the worker imports the engine geometry. Pages import `@tafsila/engine/measurements` for validation and `@tafsila/engine/spec-rules` for the picker rules. `scripts/check-engine-chunk.mjs` runs after `next build` in the e2e job and fails when a page bundle loads engine code.
-- `/dev/pattern-preview?design=seedDress` hosts the browser test until the pattern page (#251) exists.
+- The pattern page (#251) is the real host of the preview; the `/dev/pattern-preview` route and its probe were removed. A state carries `input`, the exact input object it answers, so the page can tell a stale draft without hashing in the main bundle.
 
 ## Design picker and editor store
 
@@ -106,7 +106,36 @@ The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue
 - **Layers and piece details (#248).** `LayerToggles` (five checkboxes), `PieceList` (a button per piece for keyboard and screen readers) and `PiecePanel` (name, cut text, size, edge lengths and seam allowances of the selected scene piece) are views over `ViewerController`; values come from the scene via `pieceDetails`, no maths in the UI.
 - **Validation report (#249).** `ValidationReport` lists the engine's checks (failures, warnings, passes collapsed; icon + status word + message + values in cm). It only calls `onSelect(key, targets)`; the page sets `highlight` and calls `zoomTo` (see `ViewerDevHost`). `reportRows` (pure) resolves refs with `resolveRef` and returns `FR-MEAS-01` checks as `formLevel` for the form to show.
 - Layers persist per viewer in `localStorage` (`tafsila.viewer.layers`), nothing else does.
-- `/dev/pattern-viewer` hosts the browser tests until the pattern page (#251) exists.
+- `/dev/pattern-viewer` stays as the host of the gesture and demo-report specs (they need a fixed seed dress and a demo failing check, which the real page cannot produce); the real page is covered by `e2e/pattern-page.spec.ts`.
+
+## Pattern page
+
+`features/pattern-page/` (issue #251) owns `/designs/[id]/pattern`; `/designs/[id]` stays the section editor and links to it (`PatternLink`). Data flows one way:
+
+```
+editor store (spec)  +  page store (options, base version)        <- sections / options panel
+   -> buildPreviewInput(spec, options, set, client)                  live measurement set
+   -> usePatternPreview(input)  (worker)  -> { scene, result, input }
+   -> PatternViewer, piece panel, ValidationReport read the result
+   -> saveStateOf(...) (pure) -> SaveVersionBar -> useSaveVersion -> POST /api/designs/:id/versions
+```
+
+Save states (`model/save-state.ts`, first match wins; Save is enabled only for `unsaved` and `outdated`):
+
+| kind              | when                                                                | Save                          |
+| ----------------- | ------------------------------------------------------------------- | ----------------------------- |
+| `loading`         | design or measurement set loading                                   | hidden                        |
+| `no-set`          | no measurement set chosen                                           | off, "choose measurements"    |
+| `previewing`      | worker idle or running, or its answer is for older inputs           | off                           |
+| `preview-error`   | the worker failed on the current inputs                             | off, shared error display     |
+| `server-rejected` | the server answered 422 for these same inputs                       | off, server report shown      |
+| `fail`            | report status `fail`                                                | off, "fix the problems first" |
+| `saving`          | request running                                                     | off                           |
+| `saved`           | preview hash equals the base version's `inputHash`                  | off, "Saved"                  |
+| `outdated`        | nothing edited, but the hash differs (set edited or engine changed) | on                            |
+| `unsaved`         | otherwise                                                           | on                            |
+
+A refused save (422 `PATTERN_INVALID`) keeps `ApiError.report` and shows it in the report panel, not a toast. Options live in the page store (kept while you move between the editor and the pattern page); the spec stays in the editor store.
 
 ## Testing
 

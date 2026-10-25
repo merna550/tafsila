@@ -48,4 +48,19 @@ describe("apiErrorFromBody", () => {
     );
     expect(error.retryAfterSeconds).toBeUndefined();
   });
+
+  it("keeps the failed report of a refused pattern", () => {
+    const report = { status: "fail" as const, checks: [] };
+    const error = apiErrorFromBody(
+      {
+        code: "PATTERN_INVALID",
+        message_ar: "ar",
+        message_en: "en",
+        details: { report },
+        request_id: "req-3",
+      },
+      422,
+    );
+    expect(error.report).toEqual(report);
+  });
 });

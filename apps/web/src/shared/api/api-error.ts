@@ -1,5 +1,5 @@
 /** The one error type the web app sees: every failed API call becomes an ApiError (ADR-030). */
-import type { ApiErrorBody } from "@tafsila/schemas";
+import type { ApiErrorBody, ValidationReport } from "@tafsila/schemas";
 import ar from "@messages/ar.json";
 import en from "@messages/en.json";
 
@@ -45,6 +45,8 @@ export interface ApiErrorInit {
   readonly requestId?: string;
   /** Seconds until a rate-limited action may be tried again (from `details.retryAfterSeconds`). */
   readonly retryAfterSeconds?: number;
+  /** The failed validation report the server attached (PATTERN_INVALID). */
+  readonly report?: ValidationReport;
 }
 
 /** A failed API call, already normalised: components read this and never a raw response. */
@@ -57,6 +59,7 @@ export class ApiError extends Error {
   public readonly fieldErrors: Readonly<Record<string, string>>;
   public readonly requestId?: string;
   public readonly retryAfterSeconds?: number;
+  public readonly report?: ValidationReport;
 
   /**
    * Creates an ApiError.
@@ -74,6 +77,7 @@ export class ApiError extends Error {
     this.fieldErrors = init.fieldErrors ?? {};
     this.requestId = init.requestId;
     this.retryAfterSeconds = init.retryAfterSeconds;
+    this.report = init.report;
   }
 
   /**
@@ -124,6 +128,7 @@ export function apiErrorFromBody(body: ApiErrorBody, status: number): ApiError {
     fieldErrors: body.details?.fields,
     requestId: body.request_id,
     retryAfterSeconds: body.details?.retryAfterSeconds,
+    report: body.details?.report,
   });
 }
 
