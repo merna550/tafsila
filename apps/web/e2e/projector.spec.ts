@@ -54,7 +54,8 @@ test("projector: the square is 400 px and pieces are drawn at 4 px per mm", asyn
   // The path's own width in mm (its geometry box) times 4 is what the screen shows; the engine's box is only close.
   const userMm = await cut.evaluate((el) => (el as SVGGraphicsElement).getBBox().width);
   expect(Math.abs(userMm - widthMm)).toBeLessThanOrEqual(5);
-  expect(Math.abs((await cutBox(page)).width - userMm * 4)).toBeLessThanOrEqual(3);
+  // Chrome adds the stroke (2 px wide by default) in user units to the reported box, so it counts 2 mm more.
+  expect(Math.abs((await cutBox(page)).width - (userMm + 2) * 4)).toBeLessThanOrEqual(1);
   await expect(page.getByTestId("projector-canvas")).toHaveAttribute("dir", "ltr");
 });
 
