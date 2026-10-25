@@ -39,6 +39,7 @@ export function PatternPageScreen({ designId, clientId }: Readonly<PatternPageSc
       <PatternPageHeader
         title={page.design.data?.design.title ?? t("fallbackTitle")}
         editHref={editorPath(designId, clientId)}
+        historyHref={`/designs/${designId}/versions`}
         state={saveState}
         versionNo={page.baseVersion?.versionNo}
         onSave={page.save}
