@@ -4,15 +4,12 @@
  */
 import type { DesignSpec, ValidationCheck } from "@tafsila/schemas";
 import { SKIRT_PIECE_ID } from "../../blocks/skirt/edges";
-import { SLIT_MAX_LENGTH_KEY, WALKING_HEM_MIN_MM } from "../../constants/skirt-style";
+import { SLIT_MAX_LENGTH_KEY, SLIT_SKIRT_TYPES, WALKING_HEM_MIN_MM } from "../../constants/skirt-style";
 import { bodyLineMultiplier } from "../../pieces/body-lines";
 import { edgeLengthMm } from "../../pieces/measure";
 import type { DraftContext } from "../../pipeline/draft-context";
 import type { ValidationRule } from "../../pipeline/feature-module";
 import { formatMessage } from "../../validation/messages";
-
-/** The skirt types the slit module drafts a slit for. */
-export const SLIT_SKIRT_TYPES: ReadonlySet<string> = new Set(["straight", "a-line"]);
 
 /** The skirt pieces' ids. */
 const SKIRT_PIECE_IDS: ReadonlySet<string> = new Set(Object.values(SKIRT_PIECE_ID));

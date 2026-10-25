@@ -4,11 +4,11 @@
  * slits", decision 135-straight-a-line-skirt.
  */
 import { type SkirtHalf, SKIRT_PIECE_ID } from "../../blocks/skirt/edges";
-import { SLIT_MAX_LENGTH_KEY } from "../../constants/skirt-style";
+import { SLIT_MAX_LENGTH_KEY, SLIT_SKIRT_TYPES } from "../../constants/skirt-style";
 import { type DraftContext, withPiece, withResolved } from "../../pipeline/draft-context";
 import type { FeatureModule } from "../../pipeline/feature-module";
 import { resolveDraftInputs } from "../../resolve/resolve-draft-inputs";
-import { SLIT_SKIRT_TYPES, slitLengthRule, slitTypeRule } from "./rules";
+import { slitLengthRule, slitTypeRule } from "./rules";
 import { maxSlitLengthMm, type SlitSeam, withSlit } from "./slit";
 
 /** The slit positions of the DesignSpec. */

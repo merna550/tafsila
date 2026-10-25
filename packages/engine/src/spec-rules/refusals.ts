@@ -3,11 +3,11 @@
  * and the property-test arbitrary both read it, and it calls the modules' own predicates, so nothing is copied.
  */
 import type { DesignSpec } from "@tafsila/schemas";
+import { SLIT_SKIRT_TYPES } from "../constants/skirt-style";
 import { closureIssue } from "../modules/closure/compatibility";
 import { collarCombinationIssue } from "../modules/collar/combinations";
 import { pocketAllowed } from "../modules/pocket/compatibility";
 import { sleeveCombinationIssue } from "../modules/sleeve/combinations";
-import { SLIT_SKIRT_TYPES } from "../modules/skirt/rules";
 import { CATEGORY_PARTS, isOnePieceDress, ONE_PIECE_SKIRT_TYPES } from "../pipeline/category-rules";
 import { INPUT_ERROR_MESSAGES, type InputErrorCode } from "../pipeline/input-errors";
 import { formatMessage } from "../validation/messages";
