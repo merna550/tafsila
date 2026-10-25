@@ -61,5 +61,12 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | facing / interfacing               | بطانة داخلية / حشوة لاصقة               | facing / interfacing                |
 | press / gather / bind              | اكوي / جمّعي / قفّلي بشريط مائل         | press / gather / bind               |
 | zip / buttonhole                   | سوستة / عروة                            | zip / buttonhole                    |
+| projector / calibration            | بروجكتر / معايرة                        | projector / calibration             |
+| verification square                | مربع التحقق                             | verification square                 |
+| direct cut / marking step          | قص مباشر / خطوة تعليم                   | direct cut / marking step           |
+| reference line / fold / selvedge   | خط مرجعي / الطيّة / حافة القماش         | reference line / fold / selvedge    |
+| tile / overlap                     | صفحة (من الباترون المقسّم) / تداخل      | tile / overlap                      |
+| test square                        | مربع اختباري (10 سم)                    | test square (10 cm)                 |
+| use this version / mirror          | استخدمي هذه النسخة / عكس                | use this version / mirror           |
 
 Add a row here in the same PR whenever a new product term appears.
