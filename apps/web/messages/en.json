@@ -682,6 +682,26 @@
       "edge": "Edge",
       "length": "Length",
       "allowance": "Seam allowance"
+    },
+    "report": {
+      "title": "Validation report",
+      "status": {
+        "pass": "Pass",
+        "warn": "Warning",
+        "fail": "Fail"
+      },
+      "overall": {
+        "pass": "All checks passed",
+        "warn": "The report is fine except for warnings",
+        "fail": "Some checks failed"
+      },
+      "failCount": "{count, plural, one {# failed} other {# failed}}",
+      "warnCount": "{count, plural, one {# warning} other {# warnings}}",
+      "passCount": "{count} passed",
+      "passedSummary": "{count, plural, one {# check passed} other {# checks passed}}",
+      "measured": "Measured {value} cm",
+      "expected": "Expected {value} cm",
+      "highlighted": "The place is shaded on the pattern"
     }
   },
   "designPicker": {
