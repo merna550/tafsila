@@ -1,6 +1,5 @@
 /** The viewer contract: props, state and handle shared by the pattern page and the panels around it (issue #243). */
 import type { PatternScene, ScenePiece, SnapPoint, ViewerTarget } from "@tafsila/engine/viewer";
-import type { RefObject } from "react";
 
 export type { PatternScene, ScenePiece, SnapPoint, ViewerTarget };
 
@@ -52,30 +51,6 @@ export interface PatternViewerHandle {
   fit(): void;
   /** Frames the given pieces, edges or darts. */
   zoomTo(targets: readonly ViewerTarget[]): void;
-}
-
-/** State the page owns for the viewer and passes to the viewer and the panels beside it. */
-export interface ViewerController {
-  /** Layers shown. */
-  readonly layers: ViewerLayers;
-  /** Replaces the layers. */
-  readonly setLayers: (layers: ViewerLayers) => void;
-  /** Flips one layer. */
-  readonly toggleLayer: (layer: keyof ViewerLayers) => void;
-  /** The selected piece, or null. */
-  readonly selectedPieceId: string | null;
-  /** Selects a piece, or clears the selection with null. */
-  readonly selectPiece: (id: string | null) => void;
-  /** What is highlighted. */
-  readonly highlight: readonly ViewerTarget[];
-  /** Replaces the highlight. */
-  readonly setHighlight: (targets: readonly ViewerTarget[]) => void;
-  /** The measure tool state. */
-  readonly measure: ViewerMeasure;
-  /** Replaces the measure tool state. */
-  readonly setMeasure: (measure: ViewerMeasure) => void;
-  /** Pass to the viewer's `ref` to call `fit` and `zoomTo`. */
-  readonly ref: RefObject<PatternViewerHandle | null>;
 }
 
 /** A point or size in screen pixels. */

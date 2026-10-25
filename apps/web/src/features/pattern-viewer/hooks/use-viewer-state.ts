@@ -1,13 +1,31 @@
 "use client";
 /** The state the pattern page owns for the viewer: layers, selection, highlight and measure (issue #243). */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type {
-  PatternViewerHandle,
-  ViewerController,
-  ViewerLayers,
-  ViewerMeasure,
-  ViewerTarget,
-} from "../model/types";
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import type { PatternViewerHandle, ViewerLayers, ViewerMeasure, ViewerTarget } from "../model/types";
+
+/** State the page owns for the viewer and passes to the viewer and the panels beside it. */
+export interface ViewerController {
+  /** Layers shown. */
+  readonly layers: ViewerLayers;
+  /** Replaces the layers. */
+  readonly setLayers: (layers: ViewerLayers) => void;
+  /** Flips one layer. */
+  readonly toggleLayer: (layer: keyof ViewerLayers) => void;
+  /** The selected piece, or null. */
+  readonly selectedPieceId: string | null;
+  /** Selects a piece, or clears the selection with null. */
+  readonly selectPiece: (id: string | null) => void;
+  /** What is highlighted. */
+  readonly highlight: readonly ViewerTarget[];
+  /** Replaces the highlight. */
+  readonly setHighlight: (targets: readonly ViewerTarget[]) => void;
+  /** The measure tool state. */
+  readonly measure: ViewerMeasure;
+  /** Replaces the measure tool state. */
+  readonly setMeasure: (measure: ViewerMeasure) => void;
+  /** Pass to the viewer's `ref` to call `fit` and `zoomTo`. */
+  readonly ref: RefObject<PatternViewerHandle | null>;
+}
 
 /** localStorage key of the layer choice; a per-viewer convenience only. */
 export const VIEWER_LAYERS_KEY = "tafsila.viewer.layers";

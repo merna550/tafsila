@@ -1,6 +1,8 @@
-# 243 - Pattern viewer contract
+# ADR-243 · 2026-10-25 · The pattern viewer draws an engine scene and is controlled by props
 
-Issue #243. Status: decided.
+**Context:** The pattern page (#251) and the panels around it (#248, #249, #253) share one viewer (issue #243); the web app must not run geometry and its unit tests have no DOM.
+
+**Decision:**
 
 1. The viewer draws from an engine `PatternScene` built in the preview worker (`buildPatternScene`); the UI never computes geometry. The worker answer carries `scene` next to `result`.
 2. Layers, selection, highlight and measure are controlled by props (`PatternViewerProps`); zoom and pan are internal and driven through a ref handle (`fit`, `zoomTo`).

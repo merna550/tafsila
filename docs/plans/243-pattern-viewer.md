@@ -104,3 +104,4 @@ Selected and highlighted pieces get `data-selected` / `data-highlighted` attribu
 - Layer mapping: `cut` = cut line, `stitch` = stitch line and edges, `notches` = notches, darts and grain line, `labels` = names, `grid` = background grid.
 - The visual baseline (Storybook/Playwright snapshot of the seed dress, `ar`, desktop and 360 px) is not added: no Docker here, so baselines would drift from CI. Moved to the follow-up #265.
 - Pinch is tested with CDP touch events in the new `mobile-360` project (one spec, `pattern-viewer-touch.spec.ts`); the other projects ignore it.
+- Layering (ADR-029, depcruise): components may not import `hooks/`, so the canvas-local gesture hook `use-viewport-gestures.ts` lives in `components/` (it is local UI state), `ViewerController` is defined with `useViewerState` in `hooks/`, and the dev host sits at the feature root.

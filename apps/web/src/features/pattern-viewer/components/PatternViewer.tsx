@@ -2,7 +2,7 @@
 /** The pattern viewer: a controlled canvas with zoom, pan, fit, selection and highlight (issue #243, FR-PAT-04). */
 import { forwardRef, useCallback, useImperativeHandle, type KeyboardEvent, type ReactElement } from "react";
 import { useTranslations } from "next-intl";
-import { useViewportGestures } from "../hooks/use-viewport-gestures";
+import { useViewportGestures } from "./use-viewport-gestures";
 import { targetBox } from "../model/scene-selectors";
 import type { PatternViewerHandle, PatternViewerProps } from "../model/types";
 import { ScaleBar, ViewerControls } from "./ViewerControls";

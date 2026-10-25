@@ -2,7 +2,7 @@
 import { loadPublicConfig } from "@tafsila/config";
 import { notFound } from "next/navigation";
 import type { ReactElement } from "react";
-import { ViewerDevHost } from "@/features/pattern-viewer/components/ViewerDevHost";
+import { ViewerDevHost } from "@/features/pattern-viewer/ViewerDevHost";
 
 /**
  * Renders the viewer host; answers 404 in production.

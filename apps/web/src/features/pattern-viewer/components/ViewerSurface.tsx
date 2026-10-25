@@ -1,6 +1,6 @@
 /** The element that receives the gestures and reports the viewport in data attributes for the browser tests (issue #243). */
 import type { KeyboardEvent, ReactElement, ReactNode } from "react";
-import type { ViewportGestures } from "../hooks/use-viewport-gestures";
+import type { ViewportGestures } from "./use-viewport-gestures";
 
 /** Digits of the zoom written in `data-zoom`. */
 const ZOOM_DIGITS = 4;
