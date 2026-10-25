@@ -2,6 +2,7 @@
 import { ChevronEndIcon } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
+import { NewPatternLink } from "@/entities/design";
 import { Link } from "@/shared/i18n";
 import type { ClientMeta, ClientRowView } from "../model/client-view";
 
@@ -32,11 +33,12 @@ function metaText(meta: ClientMeta, t: ReturnType<typeof useTranslations>): stri
  */
 export function ClientRow({ row }: Readonly<ClientRowProps>): ReactElement {
   const t = useTranslations("clients.meta");
+  const tNew = useTranslations("clients.newPattern");
   return (
-    <li>
+    <li className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-card">
       <Link
         href={`/clients/${row.id}`}
-        className="flex min-h-16 items-center gap-3 rounded-lg bg-surface p-4 shadow-card hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-focus"
+        className="flex min-h-16 items-center gap-3 rounded-md hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-focus"
       >
         <span
           aria-hidden="true"
@@ -50,6 +52,7 @@ export function ClientRow({ row }: Readonly<ClientRowProps>): ReactElement {
         </span>
         <ChevronEndIcon className="size-5 shrink-0 text-muted" />
       </Link>
+      <NewPatternLink clientId={row.id} variant="secondary" label={tNew("label")} className="self-start" />
     </li>
   );
 }

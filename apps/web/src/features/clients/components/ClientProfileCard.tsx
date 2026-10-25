@@ -2,6 +2,7 @@
 import { Button } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
+import { NewPatternLink } from "@/entities/design";
 import type { ClientProfileView } from "../model/client-view";
 
 /** Props for {@link ClientProfileCard}. */
@@ -46,6 +47,7 @@ export function ClientProfileCard({
           <p className="whitespace-pre-line break-words text-base leading-7 text-text">{client.notes}</p>
         </div>
       ) : null}
+      <NewPatternLink clientId={client.id} label={t("newPattern")} />
       <div className="flex flex-wrap gap-2">
         <Button variant="secondary" className="flex-1" onClick={onEdit}>
           {t("edit")}

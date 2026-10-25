@@ -31,6 +31,15 @@ describe("AppNav", () => {
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
   });
 
+  it("lists my designs and marks it on /designs and below it", () => {
+    for (const pathname of ["/designs", "/designs/abc"]) {
+      const html = renderWithIntl(<AppNavView pathname={pathname} initial="م" />, "ar");
+      expect(html).toContain('href="/designs"');
+      expect(html).toContain("تصاميمي");
+      expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+    }
+  });
+
   it("does not treat a longer name as the same area", () => {
     expect(isActive("/clientsx", "/clients")).toBe(false);
   });
