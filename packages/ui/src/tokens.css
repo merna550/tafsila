@@ -51,6 +51,9 @@
   --shadow-overlay: 0 8px 32px rgba(42, 34, 32, 0.18);
   /* END GENERATED */
 
+  /* The projector pages: a black stage that the beamer shows as no light (issue #285). */
+  --color-stage: #000000;
+
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* Spacing scale: p-1 = 0.25rem, p-4 = 1rem, h-11 = 2.75rem (44px touch target). */
