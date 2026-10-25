@@ -148,7 +148,8 @@
     "clients": "Clients",
     "account": "My account",
     "settings": "Settings",
-    "admin": "Admin"
+    "admin": "Admin",
+    "designs": "My designs"
   },
   "measurements": {
     "unit": "cm",
@@ -427,7 +428,13 @@
       "notes": "Notes",
       "edit": "Edit details",
       "delete": "Delete client",
-      "initialLabel": "First letter of the client's name"
+      "initialLabel": "First letter of the client's name",
+      "newPattern": "New pattern for her",
+      "designs": {
+        "title": "Designs",
+        "empty": "No designs for this client yet.",
+        "seeAll": "See all {count} designs"
+      }
     },
     "sets": {
       "title": "Measurements",
@@ -466,6 +473,9 @@
       "cancel": "Cancel",
       "close": "Close",
       "done": "Client deleted"
+    },
+    "newPattern": {
+      "label": "New pattern"
     }
   },
   "settings": {
@@ -928,6 +938,50 @@
       "invalid": "Type a number in cm, such as {default}.",
       "reset": "Default",
       "resetNamed": "Reset {name} to default"
+    }
+  },
+  "designs": {
+    "title": "My designs",
+    "count": "({count})",
+    "new": "New pattern",
+    "search": {
+      "label": "Search designs",
+      "placeholder": "Search by design title"
+    },
+    "clientFilter": {
+      "label": "Filter by client",
+      "all": "All clients"
+    },
+    "empty": {
+      "title": "No designs yet",
+      "description": "Choosing a garment and its details gives you a pattern ready to cut.",
+      "action": "Create your first pattern"
+    },
+    "noResults": {
+      "title": "No results",
+      "description": "No design matches your search.",
+      "clear": "Clear filters"
+    },
+    "loadMore": "Show more",
+    "loadingMore": "Loading",
+    "row": {
+      "client": "Client: {name}",
+      "updated": "Last change: {when}",
+      "versions": "{count, plural, =0 {No version} one {One version} other {# versions}}",
+      "delete": "Delete"
+    },
+    "status": {
+      "pass": "Sound",
+      "warn": "Has a warning",
+      "none": "No pattern"
+    },
+    "delete": {
+      "title": "Delete design",
+      "description": "“{title}” and all its saved versions will be deleted for good. This cannot be undone.",
+      "confirm": "Delete for good",
+      "cancel": "Cancel",
+      "close": "Close",
+      "done": "Design deleted"
     }
   }
 }

@@ -7,16 +7,17 @@ import { Link, usePathname } from "@/shared/i18n";
 /** One link of the bar. */
 export interface NavItem {
   /** Key under `nav` in messages. */
-  readonly key: "clients" | "settings" | "admin";
+  readonly key: "clients" | "designs" | "settings" | "admin";
   /** Path without the language prefix. */
   readonly href: string;
 }
 
 /**
- * The links of the bar. "My designs" and the credits chip come with their milestones (credits: M7).
+ * The links of the bar. The credits chip comes with its milestone (M7).
  */
 export const NAV_ITEMS: readonly NavItem[] = [
   { key: "clients", href: "/clients" },
+  { key: "designs", href: "/designs" },
   { key: "settings", href: "/settings" },
 ];
 

@@ -193,6 +193,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 | FR-DES-05 | User can edit any feature manually from catalogue options (no AI needed) | M |
 | FR-DES-06 | Start a design without photos: a visual design picker where the user chooses each feature manually (works with zero AI; built before the AI layer and kept as the fallback) | M |
 | FR-DES-07 | Features that exist in the photo but not in the catalogue are reported to the user ("not supported yet") and logged for product research | M |
+| FR-DES-08 | "My designs" list: designs with title, type, client, version count and state; title search, client filter, delete with confirmation; "New pattern" from the list, the clients page and the client profile (the profile also shows her latest designs) | M |
 
 ### 4.4 Pattern Generation (PAT)
 | ID | Requirement | Pri |

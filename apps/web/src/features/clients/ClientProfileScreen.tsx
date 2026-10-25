@@ -8,6 +8,8 @@ import { ApiError } from "@/shared/api";
 import { DataState } from "@/shared/data-state";
 import { DIRECTION, Link, useRouter, type AppLocale } from "@/shared/i18n";
 import type { Client } from "@tafsila/schemas";
+import { toDesignRow, useDesigns } from "@/entities/design";
+import { ClientDesignsSection } from "./components/ClientDesignsSection";
 import { ClientFormDialog } from "./components/ClientFormDialog";
 import { ClientProfileCard } from "./components/ClientProfileCard";
 import { DeleteClientDialog } from "./components/DeleteClientDialog";
@@ -88,6 +90,30 @@ function ClientSets({ clientId }: Readonly<{ clientId: string }>): ReactElement 
   );
 }
 
+/** Latest designs shown on a profile. */
+const PROFILE_DESIGNS_LIMIT = 5;
+
+/**
+ * Loads and shows the client's latest designs.
+ *
+ * @param props - Client id.
+ * @param props.clientId - Client id.
+ * @returns The designs section, or its loading or error state.
+ */
+function ClientDesigns({ clientId }: Readonly<{ clientId: string }>): ReactElement {
+  const locale = useLocale() as AppLocale;
+  const list = useDesigns({ clientId, limit: PROFILE_DESIGNS_LIMIT });
+  const rows = useMemo(
+    () => list.designs.map((design) => toDesignRow(design, new Date(), locale)),
+    [list.designs, locale],
+  );
+  return (
+    <DataState isPending={list.isPending} error={list.error} isEmpty={false} onRetry={list.refetch}>
+      <ClientDesignsSection clientId={clientId} designs={rows} total={list.total} />
+    </DataState>
+  );
+}
+
 /**
  * Shows the loaded client with her sets and the edit and delete dialogs.
  *
@@ -116,8 +142,9 @@ function ClientProfileContent({ client }: Readonly<ContentProps>): ReactElement 
             onDelete={() => setDeleting(true)}
           />
         </div>
-        <div className="min-w-0 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
           <ClientSets clientId={client.id} />
+          <ClientDesigns clientId={client.id} />
         </div>
       </div>
       <ClientFormDialog
