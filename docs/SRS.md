@@ -279,7 +279,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | FR-CHAT-02 | AI translates the request into a list of `DesignSpec` patch operations via tool calling; patches validated by Zod and the catalogue | M |
 | FR-CHAT-03 | Before applying, show a summary of changes; user confirms → new pattern version | M |
 | FR-CHAT-04 | Unsupported requests → AI explains politely what is not supported and suggests the closest supported option | M |
-| FR-CHAT-05 | Version history: list, compare two versions (overlay), restore | M |
+| FR-CHAT-05 | Version history: list, compare two versions (overlay), restore (list, read-only view and restore built in #252; compare is later) | M |
 | FR-CHAT-06 | Chat message quota per pattern (default 10 on pay-per-pattern; plan-defined on subscriptions) | M |
 
 ### 4.13 3D Assembly Preview (3D)

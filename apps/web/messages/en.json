@@ -1033,6 +1033,68 @@
       "title": "The server found a problem with this design",
       "body": "No version was saved. The place concerned is in the report below."
     },
-    "loading": "Loading the pattern"
+    "loading": "Loading the pattern",
+    "versionHistory": "Version history"
+  },
+  "versionHistory": {
+    "title": "Version history",
+    "count": "({count})",
+    "fallbackTitle": "Pattern",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "backToPattern": "Back to the pattern",
+    "loadMore": "Show more",
+    "loadingMore": "Loading...",
+    "empty": {
+      "title": "No saved versions yet",
+      "description": "Save a version from the pattern page and it will appear here."
+    },
+    "row": {
+      "version": "Version {n}",
+      "current": "Current",
+      "status": {
+        "pass": "Sound",
+        "warn": "Warning"
+      },
+      "saved": "{when} · {by}",
+      "by": {
+        "user": "by you",
+        "chat": "by the assistant"
+      },
+      "summary": "Size {size} · {ease} ease",
+      "summaryNoSize": "{ease} ease",
+      "open": "Open",
+      "restore": "Restore",
+      "engineOld": "This version was made with an older engine version, and the pattern may differ slightly."
+    },
+    "restoreDialog": {
+      "title": "Restore version {n}",
+      "description": "A new version is saved with the same inputs as version {n}. The existing versions stay as they are. Continue?",
+      "unsaved": "Your unsaved changes will be lost.",
+      "cancel": "Cancel",
+      "confirm": "Restore",
+      "close": "Close"
+    },
+    "toast": {
+      "done": "Restored as version {n}",
+      "already": "Already version {n}"
+    },
+    "readOnly": {
+      "lead": "This is an old version, view only.",
+      "rest": "It cannot be edited, but it can be restored as a new version.",
+      "back": "Back to the newest",
+      "restore": "Restore this version",
+      "badge": "View only",
+      "engineOld": "Older engine version"
+    },
+    "inputs": {
+      "title": "Version {n} inputs",
+      "client": "Client",
+      "set": "Measurements",
+      "ease": "Ease",
+      "fabric": "Fabric width",
+      "cm": "{value} cm",
+      "deletedSet": "Deleted set"
+    }
   }
 }

@@ -14,6 +14,8 @@ interface PatternPageHeaderProps {
   readonly title: string;
   /** Where "Edit design" goes. */
   readonly editHref: string;
+  /** Where "Version history" goes. */
+  readonly historyHref: string;
   /** The save state. */
   readonly state: SaveState;
   /** The version the page started from or last saved. */
@@ -31,6 +33,7 @@ interface PatternPageHeaderProps {
 export function PatternPageHeader({
   title,
   editHref,
+  historyHref,
   state,
   versionNo,
   onSave,
@@ -56,6 +59,13 @@ export function PatternPageHeader({
           <div className="flex flex-wrap items-start gap-3">
             <Link href={editHref} className="min-h-11 py-2 font-semibold text-primary underline">
               {t("editDesign")}
+            </Link>
+            <Link
+              href={historyHref}
+              className="min-h-11 py-2 font-semibold text-primary underline"
+              data-testid="version-history-link"
+            >
+              {t("versionHistory")}
             </Link>
             <SaveVersionBar state={state} onSave={onSave} />
           </div>

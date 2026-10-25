@@ -18,6 +18,8 @@ export interface PageState {
   readonly load: (designId: string, options: PatternOptionsValue, baseVersion: BaseVersion | null) => void;
   /** Replaces the edited options. */
   readonly setOptions: (options: PatternOptionsValue) => void;
+  /** Replaces the options and their baseline with a restored version's, and records it as the base version. */
+  readonly replace: (options: PatternOptionsValue, baseVersion: BaseVersion) => void;
   /** Makes the edited options the baseline and records the saved version. */
   readonly markSaved: (baseVersion: BaseVersion) => void;
 }
@@ -33,5 +35,6 @@ export const usePageStore = create<PageState>((set, get) => ({
     set({ designId, options, baseline: options, baseVersion });
   },
   setOptions: (options) => set({ options }),
+  replace: (options, baseVersion) => set({ options, baseline: options, baseVersion }),
   markSaved: (baseVersion) => set((state) => ({ baseline: state.options, baseVersion })),
 }));

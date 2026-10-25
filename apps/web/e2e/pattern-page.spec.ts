@@ -1,6 +1,15 @@
 import { expect, test } from "@playwright/test";
 import { projectLocale } from "./support/app";
-import { choosePuffSleeve, openSeedClient, saveVersion, startDesign, waitForReport } from "./support/pattern";
+import {
+  chooseEase,
+  choosePuffSleeve,
+  openSeedClient,
+  openVersion,
+  restoreOpenVersion,
+  saveVersion,
+  startDesign,
+  waitForReport,
+} from "./support/pattern";
 
 /** The dress path (issue #251, FR-PAT-04, FR-VER-01): edit, preview, report, save, reload. #254 reuses it. */
 test("dress: change the sleeve, see the pattern and report, save, reload and see the same version", async ({
@@ -76,4 +85,33 @@ test("the preview drafts in the worker and shows pieces", async ({ page }, testI
   await page.goto(`${env.prefix}/designs/${designId}/pattern?clientId=${clientId}`);
   await expect(page.locator("[data-piece-id]").first()).toBeAttached({ timeout: 30_000 });
   process.stdout.write(`PATTERN PAGE first draft: ${Date.now() - started} ms\n`);
+});
+
+/** Version history (issue #252, FR-VER-02): list, open an old version read only, restore it as the next number. */
+test("history: open version 1 read only and restore it as version 3", async ({ page }, testInfo) => {
+  const env = projectLocale(testInfo);
+  const { t, prefix } = env;
+  const clientId = await openSeedClient(page, env);
+  const designId = await startDesign(page, env, clientId, "dress");
+  await page.goto(`${prefix}/designs/${designId}/pattern?clientId=${clientId}`);
+  await waitForReport(page);
+  expect(await saveVersion(page)).toBe(1);
+  await chooseEase(page, env, "loose");
+  await waitForReport(page);
+  expect(await saveVersion(page)).toBe(2);
+
+  await page.getByTestId("version-history-link").click();
+  await expect(page.getByTestId("version-row")).toHaveCount(2);
+
+  await openVersion(page, env, designId, 1);
+  await expect(page.getByTestId("read-only-banner")).toContainText(t.versionHistory.readOnly.lead);
+  await expect(page.getByTestId("version-inputs")).toContainText(t.patternOptions.ease.profiles.regular);
+  await expect(page.getByTestId("validation-report")).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByTestId("save-version")).toHaveCount(0);
+
+  await restoreOpenVersion(page, env, designId);
+  await expect(page.getByTestId("version-badge")).toContainText("3", { timeout: 30_000 });
+  await page.reload();
+  await expect(page.getByTestId("save-status")).toHaveAttribute("data-kind", "saved", { timeout: 30_000 });
+  await expect(page.getByTestId("version-badge")).toContainText("3");
 });

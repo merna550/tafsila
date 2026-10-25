@@ -120,6 +120,8 @@ editor store (spec)  +  page store (options, base version)        <- sections / 
    -> saveStateOf(...) (pure) -> SaveVersionBar -> useSaveVersion -> POST /api/designs/:id/versions
 ```
 
+Version history (issue #252): `/designs/[id]/versions` lists the versions (hooks in `features/pattern-versions`, screens in `features/pattern-page`); `/designs/[id]/versions/[versionId]` draws an old version read only from its stored inputs in the same worker, and restore (`useRestoreAction`) asks, calls `POST /api/versions/:id/restore`, then replaces the stores of the loaded design. The running engine version comes from `@tafsila/engine/version`.
+
 Save states (`model/save-state.ts`, first match wins; Save is enabled only for `unsaved` and `outdated`):
 
 | kind              | when                                                                | Save                          |

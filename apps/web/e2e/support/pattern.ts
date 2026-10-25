@@ -97,3 +97,59 @@ export async function saveVersion(page: Page): Promise<number> {
   await expect(page.getByTestId("save-status")).toHaveAttribute("data-kind", "saved");
   return Number(/(\d+)/.exec((await page.getByTestId("version-badge").textContent()) ?? "")?.[1]);
 }
+
+/**
+ * Chooses an ease preference in the options tab of the pattern page, then returns to the report tab.
+ *
+ * @param page - The page.
+ * @param env - Language prefix and messages.
+ * @param profile - The ease preference.
+ */
+export async function chooseEase(
+  page: Page,
+  env: PatternEnv,
+  profile: "fitted" | "regular" | "loose",
+): Promise<void> {
+  const { t } = env;
+  await page.getByRole("tab", { name: t.patternPage.tabs.options }).click();
+  await page
+    .getByRole("group", { name: t.patternOptions.ease.title })
+    .getByRole("button", { name: t.patternOptions.ease.profiles[profile], exact: true })
+    .click();
+  await page.getByRole("tab", { name: t.patternPage.tabs.report }).click();
+}
+
+/**
+ * Opens the version history of the design and then one version of it, read only.
+ *
+ * @param page - The page.
+ * @param env - Language prefix and messages.
+ * @param designId - The design.
+ * @param versionNo - The version number to open.
+ */
+export async function openVersion(
+  page: Page,
+  env: PatternEnv,
+  designId: string,
+  versionNo: number,
+): Promise<void> {
+  await page.goto(`${env.prefix}/designs/${designId}/versions`);
+  await page
+    .locator(`[data-testid="version-row"][data-version-no="${versionNo}"]`)
+    .getByTestId("open-version")
+    .click();
+  await expect(page.getByTestId("read-only-banner")).toBeVisible();
+}
+
+/**
+ * Restores the version shown read only and waits for the pattern page.
+ *
+ * @param page - The page.
+ * @param env - Language prefix and messages.
+ * @param designId - The design.
+ */
+export async function restoreOpenVersion(page: Page, env: PatternEnv, designId: string): Promise<void> {
+  await page.getByTestId("restore-this").click();
+  await page.getByTestId("confirm-restore").click();
+  await expect(page).toHaveURL(new RegExp(`/designs/${designId}/pattern$`));
+}
