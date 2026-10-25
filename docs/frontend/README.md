@@ -103,6 +103,7 @@ The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue
 - **No mirroring.** The canvas is `dir="ltr"`; only the buttons follow the locale. Arrow keys move the content in the arrow's physical direction.
 - **Gestures.** Pointer Events only (mouse, touch, pen); wheel zooms at the cursor; two pointers pinch; `touch-action: none`. The maths is in `model/viewport.ts` (pure, unit-tested); real gestures are tested in Playwright (`pattern-viewer.spec.ts`, and `pattern-viewer-touch.spec.ts` in the `mobile-360` project).
 - **Drawing.** Each piece is a `<g data-piece-id>`; each edge a `<path data-edge-id>`; selected and highlighted ones carry `data-selected` / `data-highlighted`. Colours come from tokens. Lines use `non-scaling-stroke`.
+- **Layers and piece details (#248).** `LayerToggles` (five checkboxes), `PieceList` (a button per piece for keyboard and screen readers) and `PiecePanel` (name, cut text, size, edge lengths and seam allowances of the selected scene piece) are views over `ViewerController`; values come from the scene via `pieceDetails`, no maths in the UI.
 - Layers persist per viewer in `localStorage` (`tafsila.viewer.layers`), nothing else does.
 - `/dev/pattern-viewer` hosts the browser tests until the pattern page (#251) exists.
 
