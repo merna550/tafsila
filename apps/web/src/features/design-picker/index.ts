@@ -4,3 +4,4 @@ export { DesignEditorScreen } from "./DesignEditorScreen";
 export { useEditorStore, selectIsDirty, type EditorStore } from "./hooks/use-editor-store";
 export { parseEditorQuery, type EditorQuery } from "./model/editor-query";
 export { OptionIllustration } from "./illustrations";
+export { useDesign } from "./hooks/use-design";
