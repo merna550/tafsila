@@ -53,7 +53,7 @@ const SCALE_TICKS = SCALE_SQUARE_MM / GRID_MINOR_MM;
  * @param placement - Where the piece sits.
  * @returns The point on the sheet.
  */
-function onSheet(p: Point, placement: PiecePlacement): Point {
+export function onSheet(p: Point, placement: PiecePlacement): Point {
   return add(p, placement.offset);
 }
 
@@ -132,6 +132,19 @@ function notchTicks(piece: Piece, notch: Piece["notches"][number]): [Point, Poin
 }
 
 /**
+ * Path data of one notch (its ticks) on the sheet.
+ *
+ * @param pl - Where the notch's piece sits.
+ * @param notch - The notch.
+ * @returns Path commands, one `M .. L ..` per tick.
+ */
+export function notchData(pl: PiecePlacement, notch: Piece["notches"][number]): string {
+  return notchTicks(pl.piece, notch)
+    .map(([a, b]) => `M ${fmtPoint(onSheet(a, pl))} L ${fmtPoint(onSheet(b, pl))}`)
+    .join(" ");
+}
+
+/**
  * Notch ticks of every piece.
  *
  * @param layout - The sheet.
@@ -140,12 +153,10 @@ function notchTicks(piece: Piece, notch: Piece["notches"][number]): [Point, Poin
 export function notchesLayer(layout: SheetLayout): string {
   return layout.placements
     .flatMap((pl) =>
-      pl.piece.notches.map((notch) => {
-        const d = notchTicks(pl.piece, notch)
-          .map(([a, b]) => `M ${fmtPoint(onSheet(a, pl))} L ${fmtPoint(onSheet(b, pl))}`)
-          .join(" ");
-        return `<path id="piece-${escapeXml(pl.piece.id)}-notch-${escapeXml(notch.id)}" d="${d}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`;
-      }),
+      pl.piece.notches.map(
+        (notch) =>
+          `<path id="piece-${escapeXml(pl.piece.id)}-notch-${escapeXml(notch.id)}" d="${notchData(pl, notch)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`,
+      ),
     )
     .join("\n");
 }
@@ -170,7 +181,7 @@ function arrowhead(tip: Point, dir: Point): string {
  * @param to - End point on the sheet.
  * @returns Path data (just the line when the two points coincide).
  */
-function grainData(from: Point, to: Point): string {
+export function grainData(from: Point, to: Point): string {
   const line = `M ${fmtPoint(from)} L ${fmtPoint(to)}`;
   if (distance(from, to) <= ARROW_LENGTH_MM) return line;
   const dir = normalize(sub(to, from));
@@ -193,6 +204,18 @@ export function grainLayer(layout: SheetLayout): string {
 }
 
 /**
+ * Path data of one dart on the sheet: leg, apex, leg.
+ *
+ * @param pl - Where the dart's piece sits.
+ * @param dart - The dart.
+ * @returns Path commands.
+ */
+export function dartData(pl: PiecePlacement, dart: Piece["darts"][number]): string {
+  const [l1, l2] = dart.legs.map((p) => onSheet(p, pl));
+  return `M ${fmtPoint(l1!)} L ${fmtPoint(onSheet(dart.apex, pl))} L ${fmtPoint(l2!)}`;
+}
+
+/**
  * Darts of every piece as leg, apex, leg.
  *
  * @param layout - The sheet.
@@ -201,11 +224,10 @@ export function grainLayer(layout: SheetLayout): string {
 export function dartsLayer(layout: SheetLayout): string {
   return layout.placements
     .flatMap((pl) =>
-      pl.piece.darts.map((dart) => {
-        const [l1, l2] = dart.legs.map((p) => onSheet(p, pl));
-        const apex = onSheet(dart.apex, pl);
-        return `<path id="piece-${escapeXml(pl.piece.id)}-dart-${escapeXml(dart.id)}" d="M ${fmtPoint(l1!)} L ${fmtPoint(apex)} L ${fmtPoint(l2!)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`;
-      }),
+      pl.piece.darts.map(
+        (dart) =>
+          `<path id="piece-${escapeXml(pl.piece.id)}-dart-${escapeXml(dart.id)}" d="${dartData(pl, dart)}" fill="none" stroke="#000000" stroke-width="${fmt(STITCH_STROKE_MM)}"/>`,
+      ),
     )
     .join("\n");
 }

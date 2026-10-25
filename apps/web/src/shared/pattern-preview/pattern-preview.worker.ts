@@ -1,6 +1,12 @@
 /// <reference lib="webworker" />
 /** Web Worker that drafts the pattern off the main thread; the only place the engine geometry is loaded in the browser (issue #239). */
-import { DraftingError, INPUT_ERROR_MESSAGES, generatePattern, isInputError } from "@tafsila/engine";
+import {
+  DraftingError,
+  INPUT_ERROR_MESSAGES,
+  buildPatternScene,
+  generatePattern,
+  isInputError,
+} from "@tafsila/engine";
 import type { PreviewRequest, PreviewResponse, PreviewWorkerError } from "./protocol";
 
 /**
@@ -28,7 +34,13 @@ function draft(request: PreviewRequest): PreviewResponse {
   const started = performance.now();
   try {
     const result = generatePattern(request.spec, request.measurements, request.options);
-    return { id: request.id, ok: true, result, durationMs: performance.now() - started };
+    return {
+      id: request.id,
+      ok: true,
+      result,
+      scene: buildPatternScene(result),
+      durationMs: performance.now() - started,
+    };
   } catch (error) {
     return { id: request.id, ok: false, error: toWorkerError(error) };
   }

@@ -1,4 +1,5 @@
 /** Messages between the page and the pattern preview worker: one source of types for both sides (issue #239). */
+import type { PatternScene } from "@tafsila/engine/viewer";
 import type { PatternResult } from "@tafsila/schemas";
 
 /** What the page asks the worker to draft. */
@@ -31,7 +32,13 @@ export interface PreviewWorkerError {
 
 /** The worker's answer to one request. */
 export type PreviewResponse =
-  | { readonly id: number; readonly ok: true; readonly result: PatternResult; readonly durationMs: number }
+  | {
+      readonly id: number;
+      readonly ok: true;
+      readonly result: PatternResult;
+      readonly scene: PatternScene;
+      readonly durationMs: number;
+    }
   | { readonly id: number; readonly ok: false; readonly error: PreviewWorkerError };
 
 /** The answer `run` resolves with: a worker answer, or a mark that a newer request replaced this one. */

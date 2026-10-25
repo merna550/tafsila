@@ -643,5 +643,14 @@
         }
       }
     }
+  },
+  "patternViewer": {
+    "toolbar": "View tools",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "fit": "Fit to screen",
+    "scaleBar": "10 cm",
+    "canvasLabel": "Pattern drawing",
+    "hint": "Drag to move, pinch with two fingers to zoom. Keyboard: arrows move, + and - zoom, 0 fits."
   }
 }

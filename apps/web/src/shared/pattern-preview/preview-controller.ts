@@ -1,4 +1,5 @@
 /** Debounce and state of the preview, without React so it is tested with a fake worker and fake timers (issue #239). */
+import type { PatternScene } from "@tafsila/engine/viewer";
 import type { PatternResult } from "@tafsila/schemas";
 import type { PreviewClient } from "./preview-client";
 import type { PreviewInput, PreviewWorkerError } from "./protocol";
@@ -15,6 +16,8 @@ export interface PreviewState {
   readonly status: "idle" | "running" | "done" | "error";
   /** The latest successful pattern; kept while a newer draft runs. */
   readonly result?: PatternResult;
+  /** What the viewer draws for `result`, built in the worker so no geometry code reaches the page. */
+  readonly scene?: PatternScene;
   /** Set when `status` is `error`. */
   readonly error?: PreviewWorkerError;
   /** Time the worker needed for the latest draft. */
@@ -72,8 +75,8 @@ export function createPreviewController(
     const outcome = await client.run(input);
     if (mine !== generation || "stale" in outcome) return;
     if (outcome.ok) {
-      const { result, durationMs } = outcome;
-      emit({ status: "done", result, durationMs, inputHash: result.meta.createdFrom });
+      const { result, scene, durationMs } = outcome;
+      emit({ status: "done", result, scene, durationMs, inputHash: result.meta.createdFrom });
     } else {
       emit({ status: "error", error: outcome.error });
     }
