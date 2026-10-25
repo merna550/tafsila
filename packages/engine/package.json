@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./measurements": "./src/measurements/index.ts",
+    "./viewer": "./src/render/scene-queries.ts",
     "./testing": "./src/render/expect-svg-snapshot.ts"
   },
   "scripts": {

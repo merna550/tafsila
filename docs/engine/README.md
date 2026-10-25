@@ -150,6 +150,8 @@ Decision: [131](../decisions/131-marks-and-labels.md).
 3. Measure the scale square with a ruler: it must be 100 mm (plus or minus 1 mm). If it is not, the print was scaled; do not cut.
 4. If the shop has no Arabic font, open the file in Chrome and print to PDF first.
 
+**Viewer scene (`render/scene.ts`, issue #243):** `buildPatternScene(result)` returns plain, JSON-safe data for the web viewer: the same sheet layout and path data as `renderSvg` (they share the helpers in `layers.ts`), plus per-edge `lengthMm`, notch points and snap points. The browser builds it in the preview worker. `@tafsila/engine/viewer` exports only its types and two small queries, `resolveRef(scene, ref)` (a validation `refs` string to a piece, edge or dart) and `measureBetween(a, b)` (mm), so no drafting code reaches the page bundle.
+
 **Snapshot tests:** `import { expectSvgSnapshot } from "@tafsila/engine/testing"` and `await expectSvgSnapshot(result)` in a test. It writes `__snapshots__/<test name>.svg` next to the test (update with `vitest -u`); open the file in a browser to review it.
 
 ## Drafting methods and sources

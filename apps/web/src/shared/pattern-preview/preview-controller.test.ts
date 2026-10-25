@@ -48,7 +48,12 @@ describe("preview controller", () => {
     expect(states.at(-1)?.status).toBe("running");
     worker.answer(okResponse(1, "abc"));
     await flush();
-    expect(states.at(-1)).toMatchObject({ status: "done", durationMs: 12, inputHash: "abc" });
+    expect(states.at(-1)).toMatchObject({
+      status: "done",
+      durationMs: 12,
+      inputHash: "abc",
+      scene: { pieces: [] },
+    });
   });
 
   it("drops a slow first answer that arrives after the second request", async () => {

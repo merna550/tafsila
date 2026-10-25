@@ -1609,6 +1609,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Chat edits create new versions; none is ever changed ([SRS section 1.3](../SRS.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Version_control>
 
+<a id="pattern-scene"></a>
+
+### PatternScene
+
+**Plain words:** The pattern as drawing data: for each piece its lines as path text, its edges with lengths, notch points and points the measure tool can snap to. The viewer draws from it instead of doing any geometry itself.  
+**In Tafsila:** Built by `buildPatternScene` in `packages/engine/src/render/scene.ts` inside the preview worker; types in `@tafsila/engine/viewer`. See [decision 243](../decisions/243-viewer-contract.md). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths>
+
 <a id="pattern-result"></a>
 
 ### PatternResult

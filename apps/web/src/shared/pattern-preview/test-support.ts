@@ -46,5 +46,6 @@ export function createFakeWorker(): FakeWorker {
  */
 export function okResponse(id: number, hash = "hash"): PreviewResponse {
   const result = { meta: { createdFrom: hash }, pieces: [] } as unknown as PatternResult;
-  return { id, ok: true, result, durationMs: 12 };
+  const scene = { widthMm: 0, heightMm: 0, pieces: [] };
+  return { id, ok: true, result, scene, durationMs: 12 };
 }

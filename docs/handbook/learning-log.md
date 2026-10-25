@@ -6,6 +6,7 @@ Dated list of concepts introduced by pull requests, newest first. Add one file p
 
 | Date | PR / issue | Concept introduced | Read |
 | ---- | ---------- | ------------------ | ---- |
+| 2026-10-25 | #243 | The viewer draws a `PatternScene` the engine builds in the worker, so the page never does geometry. Zoom and pan are pure functions (easy to test); gestures use Pointer Events so mouse, touch and pen share one path, and a pinch is just two pointers. The canvas never mirrors in Arabic; only the buttons do. | [PatternScene](glossary.md#pattern-scene) |
 | 2026-10-24 | #267 | Patch releases fix security advisories without code changes: `next` is pinned to the exact patched version 16.4.1 (the two critical advisories were fixed there), the lockfile follows it, and the Trivy scan in CI can pass again. | [Next.js](tech/nextjs.md) |
 | 2026-10-24 | #241 | The 60 picker drawings are lists of SVG path strings drawn by one component with `currentColor`, keyed by the schema enums, so a new option without a drawing fails the type check and a test. | [Design system and RTL](../frontend/README.md) |
 | 2026-10-24 | #240 | A group of picture cards is a radio group (arrows) for one choice and a set of checkboxes (Tab, Space) for several; a disabled card shows its reason as visible text so touch and screen-reader users see it too, and the drawing is a slot the feature fills | [Storybook](tech/storybook.md) |

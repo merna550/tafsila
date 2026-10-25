@@ -4,3 +4,5 @@ export * from "./print-sheet";
 export * from "./sheet-layout";
 export * from "./svg";
 export { SVG_FONT_FAMILY } from "./layers";
+export { buildPatternScene } from "./scene";
+export * from "./scene-queries";

@@ -91,6 +91,17 @@ The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue
 - Only the worker imports the engine geometry. Pages import `@tafsila/engine/measurements` for validation. `scripts/check-engine-chunk.mjs` runs after `next build` in the e2e job and fails when a page bundle loads engine code.
 - `/dev/pattern-preview?design=seedDress` hosts the browser test until the pattern page (#251) exists.
 
+## Pattern viewer
+
+`src/features/pattern-viewer/` (issue #243) draws a `PatternScene` (built by the engine in the preview worker: `usePatternPreview(...).scene`) with zoom, pan and fit.
+
+- **Controlled model.** The page owns one `useViewerState()` and passes `layers`, `selectedPieceId`/`onSelectPiece`, `highlight`, `measure`/`onMeasureChange` to `PatternViewer`, and other pieces of it to the piece panel and the validation report. Zoom and pan stay inside the viewer; call `ref.current.fit()` or `.zoomTo(targets)` from outside. `resolveRef(scene, ref)` (from `@tafsila/engine/viewer`) turns a validation `refs` string into a `ViewerTarget`.
+- **No mirroring.** The canvas is `dir="ltr"`; only the buttons follow the locale. Arrow keys move the content in the arrow's physical direction.
+- **Gestures.** Pointer Events only (mouse, touch, pen); wheel zooms at the cursor; two pointers pinch; `touch-action: none`. The maths is in `model/viewport.ts` (pure, unit-tested); real gestures are tested in Playwright (`pattern-viewer.spec.ts`, and `pattern-viewer-touch.spec.ts` in the `mobile-360` project).
+- **Drawing.** Each piece is a `<g data-piece-id>`; each edge a `<path data-edge-id>`; selected and highlighted ones carry `data-selected` / `data-highlighted`. Colours come from tokens. Lines use `non-scaling-stroke`.
+- Layers persist per viewer in `localStorage` (`tafsila.viewer.layers`), nothing else does.
+- `/dev/pattern-viewer` hosts the browser tests until the pattern page (#251) exists.
+
 ## Testing
 
 - Component tests: Vitest + Testing Library, next to the component.
