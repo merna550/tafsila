@@ -140,6 +140,10 @@ Save states (`model/save-state.ts`, first match wins; Save is enabled only for `
 
 A refused save (422 `PATTERN_INVALID`) keeps `ApiError.report` and shows it in the report panel, not a toast. Options live in the page store (kept while you move between the editor and the pattern page); the spec stays in the editor store.
 
+## Projector
+
+`features/projector/` (issue #285, [ADR-285](../decisions/285-projector-calibration.md)) owns the projector pages under `(projector)/designs/[id]/versions/[versionId]/projector/`, outside the dashboard chrome. `model/calibration.ts` is the pure maths (`calibrationFrom`: CSS px per real mm on X and Y from the measured sides of a square drawn in CSS px); `model/calibration-store.ts` reads and writes `tafsila.projector.calibration` through `shared/storage` and answers `missing`, `stale` (screen size or pixel ratio changed) or `ok`; `useCalibration()` reads it after mount. #286 and #287 add the projector view on top; in e2e, `seedCalibration` (`e2e/support/projector.ts`) stores a valid entry for the page's own screen.
+
 ## Testing
 
 - Component tests: Vitest + Testing Library, next to the component.

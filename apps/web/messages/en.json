@@ -1107,5 +1107,36 @@
       "cm": "{value} cm",
       "deletedSet": "Deleted set"
     }
+  },
+  "projector": {
+    "calibrate": {
+      "title": "Projector calibration",
+      "back": "Back",
+      "loading": "Loading...",
+      "steps": {
+        "show": "Show this page with the projector, fullscreen.",
+        "measure": "Measure the width and height of the square on the table with a ruler.",
+        "type": "Type both sizes in millimetres."
+      },
+      "zoomHint": "Set the browser zoom to 100% (Ctrl+0) before measuring.",
+      "stale": "The screen or the zoom changed since the last calibration. Calibrate again.",
+      "width": "Measured width",
+      "height": "Measured height",
+      "unit": "mm",
+      "submit": "Calculate",
+      "errors": {
+        "invalid": "Enter a number greater than zero.",
+        "range": "Enter a size between 50 and 5000 mm.",
+        "storage": "The calibration could not be saved on this device. Try a normal, non-private window."
+      },
+      "done": "Calibration done",
+      "factorX": "Horizontal: {value} px per mm",
+      "factorY": "Vertical: {value} px per mm",
+      "details": "Screen: {width}×{height} · Calibrated: {date}",
+      "open": "Open the projector",
+      "redo": "Calibrate again",
+      "fullscreenEnter": "Fullscreen",
+      "fullscreenExit": "Exit fullscreen"
+    }
   }
 }

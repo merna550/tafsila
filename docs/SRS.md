@@ -232,7 +232,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-PROJ-01 | Fullscreen 1:1 display; black background, high-contrast lines (white/yellow), adjustable line width | M |
-| FR-PROJ-02 | **Calibration**: show a calibration grid/square; user measures it on the cutting surface and enters the real size; app computes `pxPerMm` (separate X/Y factors) and stores it per device | M |
+| FR-PROJ-02 | **Calibration**: show a calibration grid/square; user measures it on the cutting surface and enters the real size; app computes `pxPerMm` (separate X/Y factors) and stores it per device (`pxPerMm` is CSS px per real mm, see ADR-285) | M |
 | FR-PROJ-03 | Verification square (10 × 10 cm) always visible to re-check scale | M |
 | FR-PROJ-04 | Show one piece at a time or a full layout; move/rotate pieces (rotation limited to grain-respecting 0°/180°) | M |
 | FR-PROJ-05 | Mirror (flip) for projecting onto the wrong side; pan with keyboard/mouse in mm steps | M |
