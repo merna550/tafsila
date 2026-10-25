@@ -8,8 +8,11 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** Strings that exist only in the engine's drafting code (error codes thrown by the geometry kit and the sleeve block). */
-export const ENGINE_MARKERS = ["GEOMETRY_DEGENERATE_SEGMENT", "SLEEVE_CAP_UNSOLVABLE"];
+/**
+ * Strings that exist only in the engine's drafting code: the messages thrown by the geometry kit and the sleeve block.
+ * Not the error codes: the picker rules (`@tafsila/engine/spec-rules`, issue #244) legitimately carry the code names.
+ */
+export const ENGINE_MARKERS = ["Segment has zero length", "No cap height fits a"];
 
 /**
  * Lists files below a folder that match a name test.

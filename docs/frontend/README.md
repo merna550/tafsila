@@ -88,8 +88,12 @@ The pattern preview drafts in a Web Worker (`src/shared/pattern-preview/`, issue
 - Call `usePatternPreview(input)` with a memoised `{ spec, measurements, options? }` or `null`. It returns `{ status: idle | running | done | error, result, error, durationMs, inputHash }`. Input changes are debounced by `PATTERN_PREVIEW_DEBOUNCE_MS` (250 ms); the last input wins and older answers are dropped.
 - `inputHash` is `result.meta.createdFrom`, the same hash the server stores, so the page can tell when the preview equals the saved version.
 - An error state carries a code; `previewErrorToApiError` turns it into an `ApiError` for the shared error display. An engine crash is shown as an unexpected error, never thrown in render.
-- Only the worker imports the engine geometry. Pages import `@tafsila/engine/measurements` for validation. `scripts/check-engine-chunk.mjs` runs after `next build` in the e2e job and fails when a page bundle loads engine code.
+- Only the worker imports the engine geometry. Pages import `@tafsila/engine/measurements` for validation and `@tafsila/engine/spec-rules` for the picker rules. `scripts/check-engine-chunk.mjs` runs after `next build` in the e2e job and fails when a page bundle loads engine code.
 - `/dev/pattern-preview?design=seedDress` hosts the browser test until the pattern page (#251) exists.
+
+## Design picker and editor store
+
+`features/design-picker/` (issue #244) owns `/designs/new` (category step, creates the design) and `/designs/[id]` (frame: section list, open section, reset notice). The editor store (`hooks/use-editor-store.ts`, Zustand) holds the spec being edited, the baseline, one undo level and the reset notice; the pure steps are in `model/editor-state.ts`. A draft is kept in `localStorage` under `tafsila.editor-draft.<designId>` through `shared/storage/safe-storage.ts` and is used only when it was made from the loaded spec. Sections come from `sectionsFor(specOptions(spec))`. Import the rules only from `@tafsila/engine/spec-rules`; it must not reach the geometry kit.
 
 ## Pattern viewer
 

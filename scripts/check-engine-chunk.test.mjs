@@ -21,11 +21,11 @@ function fakeBuild(chunks, manifest) {
 }
 
 it("an engine chunk that no page loads is fine", () => {
-  const dir = fakeBuild({ "a.js": "GEOMETRY_DEGENERATE_SEGMENT", "b.js": "page code" }, '["b.js"]');
+  const dir = fakeBuild({ "a.js": "Segment has zero length", "b.js": "page code" }, '["b.js"]');
   expect(scanEngineChunks(dir)).toEqual({ chunks: ["a.js"], loadedByPage: [] });
 });
 
 it("an engine chunk that a page loads is reported", () => {
-  const dir = fakeBuild({ "a.js": "SLEEVE_CAP_UNSOLVABLE" }, '["a.js"]');
+  const dir = fakeBuild({ "a.js": "No cap height fits a 5 mm cap" }, '["a.js"]');
   expect(scanEngineChunks(dir).loadedByPage).toEqual(["a.js"]);
 });

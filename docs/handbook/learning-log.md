@@ -6,6 +6,7 @@ Dated list of concepts introduced by pull requests, newest first. Add one file p
 
 | Date | PR / issue | Concept introduced | Read |
 | ---- | ---------- | ------------------ | ---- |
+| 2026-10-25 | #244 | The design picker keeps the spec being edited in a small Zustand store whose steps are plain functions, so undo, dirty checks and the browser draft are tested without React; the sections shown come from the engine's `specOptions`, and the engine rules are imported by a subpath so the geometry stays out of page bundles | [Zustand](tech/zustand.md) |
 | 2026-10-25 | #243 | The viewer draws a `PatternScene` the engine builds in the worker, so the page never does geometry. Zoom and pan are pure functions (easy to test); gestures use Pointer Events so mouse, touch and pen share one path, and a pinch is just two pointers. The canvas never mirrors in Arabic; only the buttons do. | [PatternScene](glossary.md#pattern-scene) |
 | 2026-10-24 | #267 | Patch releases fix security advisories without code changes: `next` is pinned to the exact patched version 16.4.1 (the two critical advisories were fixed there), the lockfile follows it, and the Trivy scan in CI can pass again. | [Next.js](tech/nextjs.md) |
 | 2026-10-24 | #241 | The 60 picker drawings are lists of SVG path strings drawn by one component with `currentColor`, keyed by the schema enums, so a new option without a drawing fails the type check and a test. | [Design system and RTL](../frontend/README.md) |

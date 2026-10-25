@@ -34,3 +34,6 @@ export const A_LINE_HEM_GAIN_KEY = {
   front: "skirt.front.aLineHemGainMm",
   back: "skirt.back.aLineHemGainMm",
 } as const;
+
+/** The skirt types the slit module drafts a slit for (kept here so the picker rules need no drafting code). */
+export const SLIT_SKIRT_TYPES: ReadonlySet<string> = new Set(["straight", "a-line"]);

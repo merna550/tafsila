@@ -6,7 +6,7 @@ adr: ADR-011
 
 # Zustand
 
-**In one line:** A tiny store for state that lives only in the browser, used for the pattern-editor session. Planned for M3.
+**In one line:** A tiny store for state that lives only in the browser, used for the pattern-editor session. Used by the design picker (M3).
 
 ## What it is (plain words)
 

@@ -652,5 +652,61 @@
     "scaleBar": "10 cm",
     "canvasLabel": "Pattern drawing",
     "hint": "Drag to move, pinch with two fingers to zoom. Keyboard: arrows move, + and - zoom, 0 fits."
+  },
+  "designPicker": {
+    "title": "Choose the details",
+    "newTitle": "Choose the garment type",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "newDesign": "New pattern",
+    "categoryGroup": "Garment type",
+    "category": {
+      "dress": "Dress",
+      "skirt": "Skirt",
+      "blouse": "Blouse",
+      "pants": "Pants"
+    },
+    "soon": "Soon",
+    "creating": "Creating",
+    "forClient": "For: {name}",
+    "removeClient": "Remove client",
+    "sectionsLabel": "Choice steps",
+    "sections": {
+      "bodice": "Bodice (cut)",
+      "neckline": "Neckline and collar",
+      "sleeve": "Sleeves",
+      "skirt": "Skirt",
+      "waistband": "Waistband",
+      "closure": "Closure",
+      "pockets": "Pockets",
+      "extras": "Lining and belt"
+    },
+    "panelSoon": "The options for this step will appear here soon.",
+    "undo": "Undo",
+    "notice": {
+      "reset": "We changed these automatically: {features}, because they did not fit your last choice.",
+      "dismiss": "Close the notice"
+    },
+    "paths": {
+      "category": "Garment type",
+      "bodice_shaping": "Bodice shaping",
+      "bodice_fit": "Bodice fit",
+      "bodice_waistSeam": "Waist seam",
+      "skirt_type": "Skirt type",
+      "skirt_length": "Skirt length",
+      "skirt_slit": "Skirt slit",
+      "waistband": "Waistband",
+      "neckline_front": "Front neckline",
+      "neckline_back": "Back neckline",
+      "neckline_collar": "Collar",
+      "sleeve_type": "Sleeve type",
+      "sleeve_length": "Sleeve length",
+      "sleeve_cuff": "Sleeve cuff",
+      "closure_type": "Closure type",
+      "closure_position": "Closure position",
+      "pockets": "Pockets",
+      "belt": "Belt",
+      "lining": "Lining"
+    }
   }
 }
