@@ -32,8 +32,11 @@ test("choose a category from a client's profile, open the editor and keep the se
   await expect(page.getByRole("heading", { level: 2, name: t.designPicker.sections.sleeve })).toBeVisible();
 
   await page.getByRole("button", { name: t.designPicker.sections.neckline }).click();
-  await page.getByRole("radio", { name: t.designPicker.options.neckline_front.v }).click();
-  await expect(page.getByRole("radio", { name: t.designPicker.options.neckline_front.v })).toBeChecked();
+  const front = page
+    .getByRole("radiogroup", { name: t.designPicker.paths.neckline_front })
+    .getByRole("radio", { name: t.designPicker.options.neckline_front.v, exact: true });
+  await front.click();
+  await expect(front).toBeChecked();
   const depth = page.getByLabel(t.designPicker.overrides.neckline_depthFrontMm);
   await depth.fill("9");
   await expect(depth).toHaveValue("9");
