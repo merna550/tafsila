@@ -8,15 +8,20 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p .",
-    "test": "vitest run --coverage"
+    "test": "vitest run --coverage",
+    "spike:pdf": "tsx scripts/spike-pdf.ts"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "1.1.1",
     "@tafsila/engine": "workspace:*",
-    "@tafsila/schemas": "workspace:*"
+    "@tafsila/schemas": "workspace:*",
+    "pdf-lib": "1.17.1"
   },
   "devDependencies": {
     "@tafsila/test-fixtures": "workspace:*",
     "@vitest/coverage-v8": "4.1.11",
-    "fast-check": "^4.10.2"
+    "esbuild": "0.28.2",
+    "fast-check": "^4.10.2",
+    "tsx": "^4.23.15"
   }
 }

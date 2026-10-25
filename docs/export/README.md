@@ -1,6 +1,6 @@
 # Export — `packages/export`
 
-Pure data in, data out: takes a `PatternResult`, returns plain JSON that the PDF code only draws. No UI, API or framework code (dependency-cruiser rule `export-is-pure`). `pdf-lib` arrives with #288. Decisions: [283](../decisions/283-print-tiles.md), [281](../decisions/281-m4-scope.md).
+Pure data in, data out: takes a `PatternResult`, returns plain JSON that the PDF code only draws. No UI, API or framework code (dependency-cruiser rule `export-is-pure`). PDF helpers (units, fonts, Arabic labels, test reader) are in `src/pdf/` ([ADR-282](../decisions/282-pdf-library.md)); the A4 PDF arrives with #288. Decisions: [283](../decisions/283-print-tiles.md), [281](../decisions/281-m4-scope.md).
 
 ## Print tiles
 
