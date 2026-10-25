@@ -199,7 +199,7 @@ Priority: **M** = must (v1), **S** = should (v1 if time), **C** = could (later).
 |---|---|---|
 | FR-PAT-01 | Generate all pattern pieces from `DesignSpec + Measurements + EaseProfile` | M |
 | FR-PAT-02 | Each piece includes: stitching line, cutting line (SA), grain line, notches, darts, piece name (ar/en), cut quantity ("cut 2", "cut 1 on fold"), size/client label, scale check square | M |
-| FR-PAT-03 | Seam allowance configurable globally and per edge (default 1.5 cm sides, 1 cm necklines/armholes, 3 cm hems) | M |
+| FR-PAT-03 | Seam allowance configurable globally and per edge (default 1.5 cm sides, 1 cm necklines/armholes, 3 cm hems); panel limits 0-5 cm per edge kind, fabric width 50-300 cm, default 140 cm (#247) | M |
 | FR-PAT-04 | Regeneration after measurement/option change completes in < 500 ms in browser (no AI call) | M |
 | FR-PAT-05 | Supported features v1 (see catalogue §6.1): bodice with darts, princess seams; necklines; sleeves; skirts; waistbands; closures; pockets; lengths | M |
 | FR-PAT-06 | Output also includes a **sewing order** (ordered list of assembly steps referencing piece edges) used by 3D preview and instructions. Phases and the one-step-per-seam rule: decision 146 | M |

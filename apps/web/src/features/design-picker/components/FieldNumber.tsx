@@ -4,7 +4,7 @@ import { FormField, Input } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import { useState, type ReactElement } from "react";
 import type { OverrideLimit, OverridePath } from "@tafsila/engine/spec-rules";
-import { mmToCmText, parseOverride } from "../model/length-units";
+import { mmToCmText, parseOverride } from "@/shared/format";
 
 /** Props for {@link FieldNumber}. */
 interface FieldNumberProps {

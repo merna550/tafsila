@@ -11,17 +11,18 @@ const SETS_LIMIT = 100;
 /**
  * Loads the measurement sets saved for a client.
  *
- * @param clientId - Client id.
+ * @param clientId - Client id; null waits (no request) until a client is chosen.
  * @returns The TanStack query holding one page of sets.
  */
-export function useClientMeasurementSets(clientId: string): UseQueryResult<Page<MeasurementSet>> {
+export function useClientMeasurementSets(clientId: string | null): UseQueryResult<Page<MeasurementSet>> {
   return useQuery({
-    queryKey: clientKeys.sets(clientId),
+    queryKey: clientKeys.sets(clientId ?? ""),
+    enabled: clientId !== null,
     queryFn: ({ signal }) =>
       apiRequest("/measurements", {
         schema: measurementSetPageSchema,
         signal,
-        query: { clientId, limit: SETS_LIMIT, offset: 0 },
+        query: { clientId: clientId ?? undefined, limit: SETS_LIMIT, offset: 0 },
       }),
   });
 }
