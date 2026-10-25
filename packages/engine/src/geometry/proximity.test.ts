@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  closestPointOnPolyline,
   distancePointToPolyline,
   distancePointToSegment,
   distanceSegmentToRect,
@@ -45,5 +46,28 @@ describe("distancePointToPolyline", () => {
       { x: 10, y: 10 },
     ];
     expect(distancePointToPolyline({ x: 8, y: 6 }, line)).toBeCloseTo(2);
+  });
+});
+
+describe("closestPointOnPolyline", () => {
+  const line = [
+    { x: 0, y: 0 },
+    { x: 10, y: 0 },
+    { x: 10, y: 10 },
+  ];
+
+  it("drops a perpendicular onto the nearest piece", () => {
+    expect(closestPointOnPolyline({ x: 5, y: 3 }, line)).toEqual({ x: 5, y: 0 });
+    expect(closestPointOnPolyline({ x: 14, y: 6 }, line)).toEqual({ x: 10, y: 6 });
+  });
+
+  it("stops at the ends and copes with a repeated point", () => {
+    expect(closestPointOnPolyline({ x: -4, y: -1 }, line)).toEqual({ x: 0, y: 0 });
+    expect(
+      closestPointOnPolyline({ x: 3, y: 3 }, [
+        { x: 1, y: 1 },
+        { x: 1, y: 1 },
+      ]),
+    ).toEqual({ x: 1, y: 1 });
   });
 });

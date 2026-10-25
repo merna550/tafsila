@@ -1,0 +1,1802 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`direct-cut steps of the seed dress, size M (issue #284, AC 4) > bodice-back steps 1`] = `
+{
+  "frame": {
+    "across": {
+      "x": 1,
+      "y": 0,
+    },
+    "along": {
+      "x": 0,
+      "y": 1,
+    },
+    "kind": "grain",
+    "origin": {
+      "x": -20,
+      "y": -17.5,
+    },
+  },
+  "name": {
+    "ar": "الظهر",
+    "en": "Back bodice",
+  },
+  "pieceId": "bodice-back",
+  "points": [
+    {
+      "acrossMm": 0,
+      "alongMm": 27.5,
+      "at": {
+        "x": -20,
+        "y": 10,
+      },
+      "kind": "corner",
+      "label": "A",
+    },
+    {
+      "acrossMm": 20.3,
+      "alongMm": 27.5,
+      "at": {
+        "x": 0.3,
+        "y": 10,
+      },
+      "kind": "curve",
+      "label": "B",
+    },
+    {
+      "acrossMm": 40.6,
+      "alongMm": 27.3,
+      "at": {
+        "x": 20.6,
+        "y": 9.8,
+      },
+      "kind": "curve",
+      "label": "C",
+    },
+    {
+      "acrossMm": 60.8,
+      "alongMm": 26.1,
+      "at": {
+        "x": 40.8,
+        "y": 8.6,
+      },
+      "kind": "curve",
+      "label": "D",
+    },
+    {
+      "acrossMm": 70.8,
+      "alongMm": 24.1,
+      "at": {
+        "x": 50.8,
+        "y": 6.6,
+      },
+      "kind": "curve",
+      "label": "E",
+    },
+    {
+      "acrossMm": 79.2,
+      "alongMm": 18.8,
+      "at": {
+        "x": 59.2,
+        "y": 1.3,
+      },
+      "kind": "curve",
+      "label": "F",
+    },
+    {
+      "acrossMm": 83.2,
+      "alongMm": 9.5,
+      "at": {
+        "x": 63.2,
+        "y": -8,
+      },
+      "kind": "curve",
+      "label": "G",
+    },
+    {
+      "acrossMm": 86.7,
+      "alongMm": 0,
+      "at": {
+        "x": 66.7,
+        "y": -17.5,
+      },
+      "kind": "corner",
+      "label": "H",
+    },
+    {
+      "acrossMm": 228.6,
+      "alongMm": 51.1,
+      "at": {
+        "x": 208.6,
+        "y": 33.6,
+      },
+      "kind": "corner",
+      "label": "I",
+    },
+    {
+      "acrossMm": 221,
+      "alongMm": 74.4,
+      "at": {
+        "x": 201,
+        "y": 56.9,
+      },
+      "kind": "curve",
+      "label": "J",
+    },
+    {
+      "acrossMm": 221,
+      "alongMm": 98.9,
+      "at": {
+        "x": 201,
+        "y": 81.4,
+      },
+      "kind": "curve",
+      "label": "K",
+    },
+    {
+      "acrossMm": 223.9,
+      "alongMm": 123.3,
+      "at": {
+        "x": 203.9,
+        "y": 105.8,
+      },
+      "kind": "curve",
+      "label": "L",
+    },
+    {
+      "acrossMm": 224.6,
+      "alongMm": 147.8,
+      "at": {
+        "x": 204.6,
+        "y": 130.3,
+      },
+      "kind": "curve",
+      "label": "M",
+    },
+    {
+      "acrossMm": 223.9,
+      "alongMm": 172.4,
+      "at": {
+        "x": 203.9,
+        "y": 154.9,
+      },
+      "kind": "curve",
+      "label": "N",
+    },
+    {
+      "acrossMm": 224.9,
+      "alongMm": 196.9,
+      "at": {
+        "x": 204.9,
+        "y": 179.4,
+      },
+      "kind": "curve",
+      "label": "O",
+    },
+    {
+      "acrossMm": 230.8,
+      "alongMm": 220.7,
+      "at": {
+        "x": 210.8,
+        "y": 203.2,
+      },
+      "kind": "curve",
+      "label": "P",
+    },
+    {
+      "acrossMm": 246.7,
+      "alongMm": 238.9,
+      "at": {
+        "x": 226.7,
+        "y": 221.4,
+      },
+      "kind": "curve",
+      "label": "Q",
+    },
+    {
+      "acrossMm": 269.7,
+      "alongMm": 247,
+      "at": {
+        "x": 249.7,
+        "y": 229.5,
+      },
+      "kind": "curve",
+      "label": "R",
+    },
+    {
+      "acrossMm": 294.3,
+      "alongMm": 247.5,
+      "at": {
+        "x": 274.3,
+        "y": 230,
+      },
+      "kind": "corner",
+      "label": "S",
+    },
+    {
+      "acrossMm": 262.8,
+      "alongMm": 447.5,
+      "at": {
+        "x": 242.8,
+        "y": 430,
+      },
+      "kind": "corner",
+      "label": "T",
+    },
+    {
+      "acrossMm": 0,
+      "alongMm": 447.5,
+      "at": {
+        "x": -20,
+        "y": 430,
+      },
+      "kind": "corner",
+      "label": "U",
+    },
+    {
+      "acrossMm": 225.7,
+      "alongMm": 202.5,
+      "at": {
+        "x": 205.7,
+        "y": 185,
+      },
+      "kind": "notch",
+      "label": "V",
+    },
+    {
+      "acrossMm": 224.9,
+      "alongMm": 197,
+      "at": {
+        "x": 204.9,
+        "y": 179.5,
+      },
+      "kind": "notch",
+      "label": "W",
+    },
+    {
+      "acrossMm": 148.8,
+      "alongMm": 447.5,
+      "at": {
+        "x": 128.8,
+        "y": 430,
+      },
+      "kind": "notch",
+      "label": "X",
+    },
+    {
+      "acrossMm": 148.8,
+      "alongMm": 432.5,
+      "at": {
+        "x": 128.8,
+        "y": 415,
+      },
+      "kind": "dart",
+      "label": "Y",
+    },
+    {
+      "acrossMm": 135,
+      "alongMm": 345,
+      "at": {
+        "x": 115,
+        "y": 327.5,
+      },
+      "kind": "dart",
+      "label": "Z",
+    },
+    {
+      "acrossMm": 121.3,
+      "alongMm": 432.5,
+      "at": {
+        "x": 101.3,
+        "y": 415,
+      },
+      "kind": "dart",
+      "label": "AA",
+    },
+    {
+      "acrossMm": 60,
+      "alongMm": 67.5,
+      "at": {
+        "x": 40,
+        "y": 50,
+      },
+      "kind": "grain",
+      "label": "AB",
+    },
+    {
+      "acrossMm": 60,
+      "alongMm": 402.5,
+      "at": {
+        "x": 40,
+        "y": 385,
+      },
+      "kind": "grain",
+      "label": "AC",
+    },
+  ],
+  "steps": [
+    {
+      "key": "cut.reference.grain",
+      "n": 1,
+      "params": {},
+      "points": [],
+    },
+    {
+      "key": "cut.reference.top",
+      "n": 2,
+      "params": {},
+      "points": [],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 3,
+      "params": {
+        "acrossMm": 0,
+        "alongMm": 27.5,
+        "point": "A",
+      },
+      "points": [
+        "A",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 4,
+      "params": {
+        "acrossMm": 20.3,
+        "alongMm": 27.5,
+        "point": "B",
+      },
+      "points": [
+        "B",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 5,
+      "params": {
+        "acrossMm": 40.6,
+        "alongMm": 27.3,
+        "point": "C",
+      },
+      "points": [
+        "C",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 6,
+      "params": {
+        "acrossMm": 60.8,
+        "alongMm": 26.1,
+        "point": "D",
+      },
+      "points": [
+        "D",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 7,
+      "params": {
+        "acrossMm": 70.8,
+        "alongMm": 24.1,
+        "point": "E",
+      },
+      "points": [
+        "E",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 8,
+      "params": {
+        "acrossMm": 79.2,
+        "alongMm": 18.8,
+        "point": "F",
+      },
+      "points": [
+        "F",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 9,
+      "params": {
+        "acrossMm": 83.2,
+        "alongMm": 9.5,
+        "point": "G",
+      },
+      "points": [
+        "G",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 10,
+      "params": {
+        "acrossMm": 86.7,
+        "alongMm": 0,
+        "point": "H",
+      },
+      "points": [
+        "H",
+      ],
+    },
+    {
+      "key": "cut.connect.curve",
+      "n": 11,
+      "params": {
+        "from": "A",
+        "to": "H",
+      },
+      "points": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 12,
+      "params": {
+        "acrossMm": 228.6,
+        "alongMm": 51.1,
+        "point": "I",
+      },
+      "points": [
+        "I",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 13,
+      "params": {
+        "from": "H",
+        "to": "I",
+      },
+      "points": [
+        "H",
+        "I",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 14,
+      "params": {
+        "acrossMm": 221,
+        "alongMm": 74.4,
+        "point": "J",
+      },
+      "points": [
+        "J",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 15,
+      "params": {
+        "acrossMm": 221,
+        "alongMm": 98.9,
+        "point": "K",
+      },
+      "points": [
+        "K",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 16,
+      "params": {
+        "acrossMm": 223.9,
+        "alongMm": 123.3,
+        "point": "L",
+      },
+      "points": [
+        "L",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 17,
+      "params": {
+        "acrossMm": 224.6,
+        "alongMm": 147.8,
+        "point": "M",
+      },
+      "points": [
+        "M",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 18,
+      "params": {
+        "acrossMm": 223.9,
+        "alongMm": 172.4,
+        "point": "N",
+      },
+      "points": [
+        "N",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 19,
+      "params": {
+        "acrossMm": 224.9,
+        "alongMm": 196.9,
+        "point": "O",
+      },
+      "points": [
+        "O",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 20,
+      "params": {
+        "acrossMm": 230.8,
+        "alongMm": 220.7,
+        "point": "P",
+      },
+      "points": [
+        "P",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 21,
+      "params": {
+        "acrossMm": 246.7,
+        "alongMm": 238.9,
+        "point": "Q",
+      },
+      "points": [
+        "Q",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 22,
+      "params": {
+        "acrossMm": 269.7,
+        "alongMm": 247,
+        "point": "R",
+      },
+      "points": [
+        "R",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 23,
+      "params": {
+        "acrossMm": 294.3,
+        "alongMm": 247.5,
+        "point": "S",
+      },
+      "points": [
+        "S",
+      ],
+    },
+    {
+      "key": "cut.connect.curve",
+      "n": 24,
+      "params": {
+        "from": "I",
+        "to": "S",
+      },
+      "points": [
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 25,
+      "params": {
+        "acrossMm": 262.8,
+        "alongMm": 447.5,
+        "point": "T",
+      },
+      "points": [
+        "T",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 26,
+      "params": {
+        "from": "S",
+        "to": "T",
+      },
+      "points": [
+        "S",
+        "T",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 27,
+      "params": {
+        "acrossMm": 0,
+        "alongMm": 447.5,
+        "point": "U",
+      },
+      "points": [
+        "U",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 28,
+      "params": {
+        "from": "T",
+        "to": "U",
+      },
+      "points": [
+        "T",
+        "U",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 29,
+      "params": {
+        "from": "U",
+        "to": "A",
+      },
+      "points": [
+        "U",
+        "A",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 30,
+      "params": {
+        "acrossMm": 225.7,
+        "alongMm": 202.5,
+        "point": "V",
+      },
+      "points": [
+        "V",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 31,
+      "params": {
+        "acrossMm": 224.9,
+        "alongMm": 197,
+        "point": "W",
+      },
+      "points": [
+        "W",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 32,
+      "params": {
+        "acrossMm": 148.8,
+        "alongMm": 447.5,
+        "point": "X",
+      },
+      "points": [
+        "X",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 33,
+      "params": {
+        "acrossMm": 148.8,
+        "alongMm": 432.5,
+        "point": "Y",
+      },
+      "points": [
+        "Y",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 34,
+      "params": {
+        "acrossMm": 135,
+        "alongMm": 345,
+        "point": "Z",
+      },
+      "points": [
+        "Z",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 35,
+      "params": {
+        "acrossMm": 121.3,
+        "alongMm": 432.5,
+        "point": "AA",
+      },
+      "points": [
+        "AA",
+      ],
+    },
+    {
+      "key": "cut.connect.dart",
+      "n": 36,
+      "params": {
+        "apex": "Z",
+        "legA": "Y",
+        "legB": "AA",
+      },
+      "points": [
+        "Y",
+        "Z",
+        "AA",
+      ],
+    },
+    {
+      "key": "cut.mark.grain",
+      "n": 37,
+      "params": {
+        "acrossMm": 60,
+        "alongMm": 67.5,
+        "point": "AB",
+      },
+      "points": [
+        "AB",
+      ],
+    },
+    {
+      "key": "cut.mark.grain",
+      "n": 38,
+      "params": {
+        "acrossMm": 60,
+        "alongMm": 402.5,
+        "point": "AC",
+      },
+      "points": [
+        "AC",
+      ],
+    },
+    {
+      "key": "cut.connect.grain",
+      "n": 39,
+      "params": {
+        "from": "AB",
+        "to": "AC",
+      },
+      "points": [
+        "AB",
+        "AC",
+      ],
+    },
+    {
+      "key": "cut.cut",
+      "n": 40,
+      "params": {
+        "fabric": "main",
+        "mirror": 1,
+        "onFold": 0,
+        "quantity": 2,
+      },
+      "points": [],
+    },
+  ],
+}
+`;
+
+exports[`direct-cut steps of the seed dress, size M (issue #284, AC 4) > bodice-front steps 1`] = `
+{
+  "frame": {
+    "across": {
+      "x": 1,
+      "y": 0,
+    },
+    "along": {
+      "x": 0,
+      "y": 1,
+    },
+    "kind": "fold",
+    "origin": {
+      "x": 0,
+      "y": -17.6,
+    },
+  },
+  "name": {
+    "ar": "الصدر الأمامي",
+    "en": "Front bodice",
+  },
+  "pieceId": "bodice-front",
+  "points": [
+    {
+      "acrossMm": 67.3,
+      "alongMm": 0,
+      "at": {
+        "x": 67.3,
+        "y": -17.6,
+      },
+      "kind": "corner",
+      "label": "A",
+    },
+    {
+      "acrossMm": 207.4,
+      "alongMm": 56,
+      "at": {
+        "x": 207.4,
+        "y": 38.4,
+      },
+      "kind": "corner",
+      "label": "B",
+    },
+    {
+      "acrossMm": 198.2,
+      "alongMm": 78.5,
+      "at": {
+        "x": 198.2,
+        "y": 60.9,
+      },
+      "kind": "curve",
+      "label": "C",
+    },
+    {
+      "acrossMm": 189.1,
+      "alongMm": 101,
+      "at": {
+        "x": 189.1,
+        "y": 83.3,
+      },
+      "kind": "curve",
+      "label": "D",
+    },
+    {
+      "acrossMm": 184.8,
+      "alongMm": 124.8,
+      "at": {
+        "x": 184.8,
+        "y": 107.1,
+      },
+      "kind": "curve",
+      "label": "E",
+    },
+    {
+      "acrossMm": 183.4,
+      "alongMm": 149,
+      "at": {
+        "x": 183.4,
+        "y": 131.4,
+      },
+      "kind": "curve",
+      "label": "F",
+    },
+    {
+      "acrossMm": 181.6,
+      "alongMm": 173.2,
+      "at": {
+        "x": 181.6,
+        "y": 155.6,
+      },
+      "kind": "curve",
+      "label": "G",
+    },
+    {
+      "acrossMm": 181.7,
+      "alongMm": 197.4,
+      "at": {
+        "x": 181.7,
+        "y": 179.8,
+      },
+      "kind": "curve",
+      "label": "H",
+    },
+    {
+      "acrossMm": 186.4,
+      "alongMm": 221.2,
+      "at": {
+        "x": 186.4,
+        "y": 203.5,
+      },
+      "kind": "curve",
+      "label": "I",
+    },
+    {
+      "acrossMm": 200.7,
+      "alongMm": 240.1,
+      "at": {
+        "x": 200.7,
+        "y": 222.4,
+      },
+      "kind": "curve",
+      "label": "J",
+    },
+    {
+      "acrossMm": 224,
+      "alongMm": 246.4,
+      "at": {
+        "x": 224,
+        "y": 228.7,
+      },
+      "kind": "curve",
+      "label": "K",
+    },
+    {
+      "acrossMm": 248.2,
+      "alongMm": 247.6,
+      "at": {
+        "x": 248.2,
+        "y": 230,
+      },
+      "kind": "curve",
+      "label": "L",
+    },
+    {
+      "acrossMm": 272.5,
+      "alongMm": 247.6,
+      "at": {
+        "x": 272.5,
+        "y": 230,
+      },
+      "kind": "corner",
+      "label": "M",
+    },
+    {
+      "acrossMm": 272.5,
+      "alongMm": 306.2,
+      "at": {
+        "x": 272.5,
+        "y": 288.6,
+      },
+      "kind": "corner",
+      "label": "N",
+    },
+    {
+      "acrossMm": 242.5,
+      "alongMm": 475.3,
+      "at": {
+        "x": 242.5,
+        "y": 457.7,
+      },
+      "kind": "corner",
+      "label": "O",
+    },
+    {
+      "acrossMm": 108.5,
+      "alongMm": 471.1,
+      "at": {
+        "x": 108.5,
+        "y": 453.4,
+      },
+      "kind": "corner",
+      "label": "P",
+    },
+    {
+      "acrossMm": 80.9,
+      "alongMm": 471.1,
+      "at": {
+        "x": 80.9,
+        "y": 453.4,
+      },
+      "kind": "corner",
+      "label": "Q",
+    },
+    {
+      "acrossMm": -0.6,
+      "alongMm": 467.6,
+      "at": {
+        "x": -0.6,
+        "y": 450,
+      },
+      "kind": "corner",
+      "label": "R",
+    },
+    {
+      "acrossMm": 0,
+      "alongMm": 452.6,
+      "at": {
+        "x": 0,
+        "y": 435,
+      },
+      "kind": "corner",
+      "label": "S",
+    },
+    {
+      "acrossMm": 0,
+      "alongMm": 90.6,
+      "at": {
+        "x": 0,
+        "y": 73,
+      },
+      "kind": "corner",
+      "label": "T",
+    },
+    {
+      "acrossMm": 23.8,
+      "alongMm": 85.8,
+      "at": {
+        "x": 23.8,
+        "y": 68.2,
+      },
+      "kind": "curve",
+      "label": "U",
+    },
+    {
+      "acrossMm": 40.4,
+      "alongMm": 68.3,
+      "at": {
+        "x": 40.4,
+        "y": 50.7,
+      },
+      "kind": "curve",
+      "label": "V",
+    },
+    {
+      "acrossMm": 50,
+      "alongMm": 45.8,
+      "at": {
+        "x": 50,
+        "y": 28.2,
+      },
+      "kind": "curve",
+      "label": "W",
+    },
+    {
+      "acrossMm": 58.3,
+      "alongMm": 22.8,
+      "at": {
+        "x": 58.3,
+        "y": 5.1,
+      },
+      "kind": "curve",
+      "label": "X",
+    },
+    {
+      "acrossMm": 194.1,
+      "alongMm": 234.6,
+      "at": {
+        "x": 194.1,
+        "y": 217,
+      },
+      "kind": "notch",
+      "label": "Y",
+    },
+    {
+      "acrossMm": 201.8,
+      "alongMm": 70,
+      "at": {
+        "x": 201.8,
+        "y": 52.3,
+      },
+      "kind": "notch",
+      "label": "Z",
+    },
+    {
+      "acrossMm": 108.5,
+      "alongMm": 471.1,
+      "at": {
+        "x": 108.5,
+        "y": 453.4,
+      },
+      "kind": "notch",
+      "label": "AA",
+    },
+    {
+      "acrossMm": 257.5,
+      "alongMm": 277.6,
+      "at": {
+        "x": 257.5,
+        "y": 260,
+      },
+      "kind": "dart",
+      "label": "AB",
+    },
+    {
+      "acrossMm": 120,
+      "alongMm": 291.3,
+      "at": {
+        "x": 120,
+        "y": 273.6,
+      },
+      "kind": "dart",
+      "label": "AC",
+    },
+    {
+      "acrossMm": 257.5,
+      "alongMm": 304.9,
+      "at": {
+        "x": 257.5,
+        "y": 287.3,
+      },
+      "kind": "dart",
+      "label": "AD",
+    },
+    {
+      "acrossMm": 108.8,
+      "alongMm": 456.1,
+      "at": {
+        "x": 108.8,
+        "y": 438.4,
+      },
+      "kind": "dart",
+      "label": "AE",
+    },
+    {
+      "acrossMm": 95,
+      "alongMm": 292.6,
+      "at": {
+        "x": 95,
+        "y": 275,
+      },
+      "kind": "dart",
+      "label": "AF",
+    },
+    {
+      "acrossMm": 81.2,
+      "alongMm": 456.1,
+      "at": {
+        "x": 81.2,
+        "y": 438.4,
+      },
+      "kind": "dart",
+      "label": "AG",
+    },
+    {
+      "acrossMm": 40,
+      "alongMm": 130.6,
+      "at": {
+        "x": 40,
+        "y": 113,
+      },
+      "kind": "grain",
+      "label": "AH",
+    },
+    {
+      "acrossMm": 40,
+      "alongMm": 422.6,
+      "at": {
+        "x": 40,
+        "y": 405,
+      },
+      "kind": "grain",
+      "label": "AI",
+    },
+  ],
+  "steps": [
+    {
+      "key": "cut.reference.fold",
+      "n": 1,
+      "params": {},
+      "points": [],
+    },
+    {
+      "key": "cut.reference.top",
+      "n": 2,
+      "params": {},
+      "points": [],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 3,
+      "params": {
+        "acrossMm": 67.3,
+        "alongMm": 0,
+        "point": "A",
+      },
+      "points": [
+        "A",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 4,
+      "params": {
+        "acrossMm": 207.4,
+        "alongMm": 56,
+        "point": "B",
+      },
+      "points": [
+        "B",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 5,
+      "params": {
+        "from": "A",
+        "to": "B",
+      },
+      "points": [
+        "A",
+        "B",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 6,
+      "params": {
+        "acrossMm": 198.2,
+        "alongMm": 78.5,
+        "point": "C",
+      },
+      "points": [
+        "C",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 7,
+      "params": {
+        "acrossMm": 189.1,
+        "alongMm": 101,
+        "point": "D",
+      },
+      "points": [
+        "D",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 8,
+      "params": {
+        "acrossMm": 184.8,
+        "alongMm": 124.8,
+        "point": "E",
+      },
+      "points": [
+        "E",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 9,
+      "params": {
+        "acrossMm": 183.4,
+        "alongMm": 149,
+        "point": "F",
+      },
+      "points": [
+        "F",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 10,
+      "params": {
+        "acrossMm": 181.6,
+        "alongMm": 173.2,
+        "point": "G",
+      },
+      "points": [
+        "G",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 11,
+      "params": {
+        "acrossMm": 181.7,
+        "alongMm": 197.4,
+        "point": "H",
+      },
+      "points": [
+        "H",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 12,
+      "params": {
+        "acrossMm": 186.4,
+        "alongMm": 221.2,
+        "point": "I",
+      },
+      "points": [
+        "I",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 13,
+      "params": {
+        "acrossMm": 200.7,
+        "alongMm": 240.1,
+        "point": "J",
+      },
+      "points": [
+        "J",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 14,
+      "params": {
+        "acrossMm": 224,
+        "alongMm": 246.4,
+        "point": "K",
+      },
+      "points": [
+        "K",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 15,
+      "params": {
+        "acrossMm": 248.2,
+        "alongMm": 247.6,
+        "point": "L",
+      },
+      "points": [
+        "L",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 16,
+      "params": {
+        "acrossMm": 272.5,
+        "alongMm": 247.6,
+        "point": "M",
+      },
+      "points": [
+        "M",
+      ],
+    },
+    {
+      "key": "cut.connect.curve",
+      "n": 17,
+      "params": {
+        "from": "B",
+        "to": "M",
+      },
+      "points": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 18,
+      "params": {
+        "acrossMm": 272.5,
+        "alongMm": 306.2,
+        "point": "N",
+      },
+      "points": [
+        "N",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 19,
+      "params": {
+        "from": "M",
+        "to": "N",
+      },
+      "points": [
+        "M",
+        "N",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 20,
+      "params": {
+        "acrossMm": 242.5,
+        "alongMm": 475.3,
+        "point": "O",
+      },
+      "points": [
+        "O",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 21,
+      "params": {
+        "from": "N",
+        "to": "O",
+      },
+      "points": [
+        "N",
+        "O",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 22,
+      "params": {
+        "acrossMm": 108.5,
+        "alongMm": 471.1,
+        "point": "P",
+      },
+      "points": [
+        "P",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 23,
+      "params": {
+        "from": "O",
+        "to": "P",
+      },
+      "points": [
+        "O",
+        "P",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 24,
+      "params": {
+        "acrossMm": 80.9,
+        "alongMm": 471.1,
+        "point": "Q",
+      },
+      "points": [
+        "Q",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 25,
+      "params": {
+        "from": "P",
+        "to": "Q",
+      },
+      "points": [
+        "P",
+        "Q",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 26,
+      "params": {
+        "acrossMm": -0.6,
+        "alongMm": 467.6,
+        "point": "R",
+      },
+      "points": [
+        "R",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 27,
+      "params": {
+        "from": "Q",
+        "to": "R",
+      },
+      "points": [
+        "Q",
+        "R",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 28,
+      "params": {
+        "acrossMm": 0,
+        "alongMm": 452.6,
+        "point": "S",
+      },
+      "points": [
+        "S",
+      ],
+    },
+    {
+      "key": "cut.connect.straight",
+      "n": 29,
+      "params": {
+        "from": "R",
+        "to": "S",
+      },
+      "points": [
+        "R",
+        "S",
+      ],
+    },
+    {
+      "key": "cut.mark.corner",
+      "n": 30,
+      "params": {
+        "acrossMm": 0,
+        "alongMm": 90.6,
+        "point": "T",
+      },
+      "points": [
+        "T",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 31,
+      "params": {
+        "acrossMm": 23.8,
+        "alongMm": 85.8,
+        "point": "U",
+      },
+      "points": [
+        "U",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 32,
+      "params": {
+        "acrossMm": 40.4,
+        "alongMm": 68.3,
+        "point": "V",
+      },
+      "points": [
+        "V",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 33,
+      "params": {
+        "acrossMm": 50,
+        "alongMm": 45.8,
+        "point": "W",
+      },
+      "points": [
+        "W",
+      ],
+    },
+    {
+      "key": "cut.mark.curve",
+      "n": 34,
+      "params": {
+        "acrossMm": 58.3,
+        "alongMm": 22.8,
+        "point": "X",
+      },
+      "points": [
+        "X",
+      ],
+    },
+    {
+      "key": "cut.connect.curve",
+      "n": 35,
+      "params": {
+        "from": "T",
+        "to": "A",
+      },
+      "points": [
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "A",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 36,
+      "params": {
+        "acrossMm": 194.1,
+        "alongMm": 234.6,
+        "point": "Y",
+      },
+      "points": [
+        "Y",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 37,
+      "params": {
+        "acrossMm": 201.8,
+        "alongMm": 70,
+        "point": "Z",
+      },
+      "points": [
+        "Z",
+      ],
+    },
+    {
+      "key": "cut.mark.notch",
+      "n": 38,
+      "params": {
+        "acrossMm": 108.5,
+        "alongMm": 471.1,
+        "point": "AA",
+      },
+      "points": [
+        "AA",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 39,
+      "params": {
+        "acrossMm": 257.5,
+        "alongMm": 277.6,
+        "point": "AB",
+      },
+      "points": [
+        "AB",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 40,
+      "params": {
+        "acrossMm": 120,
+        "alongMm": 291.3,
+        "point": "AC",
+      },
+      "points": [
+        "AC",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 41,
+      "params": {
+        "acrossMm": 257.5,
+        "alongMm": 304.9,
+        "point": "AD",
+      },
+      "points": [
+        "AD",
+      ],
+    },
+    {
+      "key": "cut.connect.dart",
+      "n": 42,
+      "params": {
+        "apex": "AC",
+        "legA": "AB",
+        "legB": "AD",
+      },
+      "points": [
+        "AB",
+        "AC",
+        "AD",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 43,
+      "params": {
+        "acrossMm": 108.8,
+        "alongMm": 456.1,
+        "point": "AE",
+      },
+      "points": [
+        "AE",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 44,
+      "params": {
+        "acrossMm": 95,
+        "alongMm": 292.6,
+        "point": "AF",
+      },
+      "points": [
+        "AF",
+      ],
+    },
+    {
+      "key": "cut.mark.dart",
+      "n": 45,
+      "params": {
+        "acrossMm": 81.2,
+        "alongMm": 456.1,
+        "point": "AG",
+      },
+      "points": [
+        "AG",
+      ],
+    },
+    {
+      "key": "cut.connect.dart",
+      "n": 46,
+      "params": {
+        "apex": "AF",
+        "legA": "AE",
+        "legB": "AG",
+      },
+      "points": [
+        "AE",
+        "AF",
+        "AG",
+      ],
+    },
+    {
+      "key": "cut.mark.grain",
+      "n": 47,
+      "params": {
+        "acrossMm": 40,
+        "alongMm": 130.6,
+        "point": "AH",
+      },
+      "points": [
+        "AH",
+      ],
+    },
+    {
+      "key": "cut.mark.grain",
+      "n": 48,
+      "params": {
+        "acrossMm": 40,
+        "alongMm": 422.6,
+        "point": "AI",
+      },
+      "points": [
+        "AI",
+      ],
+    },
+    {
+      "key": "cut.connect.grain",
+      "n": 49,
+      "params": {
+        "from": "AH",
+        "to": "AI",
+      },
+      "points": [
+        "AH",
+        "AI",
+      ],
+    },
+    {
+      "key": "cut.cut",
+      "n": 50,
+      "params": {
+        "fabric": "main",
+        "mirror": 0,
+        "onFold": 1,
+        "quantity": 1,
+      },
+      "points": [],
+    },
+  ],
+}
+`;
+
+exports[`direct-cut steps of the seed dress, size M (issue #284, AC 4) > step counts per piece 1`] = `
+{
+  "bodice-back": 40,
+  "bodice-front": 50,
+  "neck-facing-back": 25,
+  "neck-facing-back-interfacing": 25,
+  "neck-facing-front": 25,
+  "neck-facing-front-interfacing": 25,
+  "skirt-back": 44,
+  "skirt-front": 42,
+  "sleeve": 45,
+}
+`;

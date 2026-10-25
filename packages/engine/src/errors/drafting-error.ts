@@ -36,6 +36,15 @@ export const SEWING_ERROR_CODES = ["SEWING_PAIR_UNCOVERED", "SEWING_PAIR_DUPLICA
 /** One of the sewing-order error codes. */
 export type SewingErrorCode = (typeof SEWING_ERROR_CODES)[number];
 
+/**
+ * Codes thrown by the direct-cut steps (issue #284): a curve step outside 20-30 mm (FR-CUT-02, an input error the
+ * caller shows) or a bent fold edge (a programming error: a fold is always straight).
+ */
+export const CUT_ERROR_CODES = ["CUT_STEP_OUT_OF_RANGE", "CUT_FOLD_NOT_STRAIGHT"] as const;
+
+/** One of the direct-cut error codes. */
+export type CutErrorCode = (typeof CUT_ERROR_CODES)[number];
+
 /** Thrown when a pattern cannot be drafted for the given design and measurements. */
 export class DraftingError extends Error {
   /**

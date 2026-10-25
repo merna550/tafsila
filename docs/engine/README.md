@@ -285,6 +285,18 @@ Cross-checks:
 - **Coverage rule:** each unique seam (a self pair once) is named by exactly one `sew` or `attach` step. `sewingCoverage(result)` returns `{ ok, uncovered, duplicated }`; the assembler throws `SEWING_PAIR_UNCOVERED` or `SEWING_PAIR_DUPLICATED` otherwise.
 - **Add a module with a seam:** give its edges a `pairsWith`, add a rule in `seamKey` (or it falls to `other-seams`) and a catalogue entry with Arabic and English text.
 
+## Direct-cut steps (`src/cut/`)
+
+`cutSteps(result, { curveStepMm })` turns every piece into numbered marking steps for a tailor with a ruler (FR-CUT-01, FR-CUT-02, ADR-281 item 5, decision 284). It is pure, runs in the worker from the main entry, and does not change `PatternResult` (no `ENGINE_VERSION` bump; `CutSteps.engineVersion` records the drafting version).
+
+- **Frame** (`frame.ts`): the reference is the `fold` edge, or a line parallel to the grain line through the leftmost cut point (the selvedge side). `along` points down the piece, `across` into it, and the origin is on the reference, level with the top of the cut line. So every distance is ≥ 0. `toFrame` and `fromFrame` convert piece mm both ways. A bent fold edge throws `CUT_FOLD_NOT_STRAIGHT`.
+- **Runs** (`runs.ts`): the cut line (seam allowance included) is split at corners: a turn above 15°, or above 1° between two straight lines. A run of collinear lines is `straight`; anything else is `curve`.
+- **Curve points** (`curve-points.ts`): `ceil(length / step)` equal gaps, never longer than the step (20-30 mm, default 25, else `CUT_STEP_OUT_OF_RANGE`). `connectionCurve(points)` is the smooth curve the tailor draws: a Catmull-Rom spline whose ends follow the first and last three points. Where it would stray more than 0.75 mm from the cut line, the worst gap is halved until it fits. The diagram (#292) draws the same curve.
+- **Order** (`steps.ts`): reference (`cut.reference.fold` or `.grain`), top line, then the cut line from the corner nearest the origin, along the top edge first. Each curve's points and the next corner are marked, then connected (`cut.connect.straight` or `.curve`); nothing is drawn along the fold. Then notches (nearest cut-line point), darts (legs and apex on the stitch line, `cut.connect.dart`), the grain line, and `cut.cut` with quantity, fold, mirror and fabric. Labels are `A`..`Z`, `AA`.. in both languages; steps are numbered 1..N.
+- **Units and texts:** points carry `at` (piece mm, for the diagram) and `alongMm` / `acrossMm`. Steps carry a key and parameters, never text. `src/i18n/cut-steps.ts` (`@tafsila/engine/cut-text`, no geometry) fills the Arabic or English template and shows `…Mm` values as cm with one decimal and Western digits.
+- **Known gap:** on V and sweetheart necklines cut on the fold, the cut line itself crosses the fold by up to 9 mm (bug #301), so those points read a small negative across distance until #301 is fixed.
+- **Tests:** unit tests per file, a property test over the catalogue x size matrix x steps 20/25/30 (points within 0.5 mm, connections within 1 mm, gaps), and a snapshot of the seed dress front and back with their texts.
+
 ## Units and constants
 
 - Millimetres everywhere; angles in radians. Numeric names end with the unit (`lengthMm`).

@@ -8,6 +8,7 @@
     "./measurements": "./src/measurements/index.ts",
     "./spec-rules": "./src/spec-rules/index.ts",
     "./viewer": "./src/render/scene-queries.ts",
+    "./cut-text": "./src/i18n/cut-steps.ts",
     "./version": "./src/version.ts",
     "./testing": "./src/render/expect-svg-snapshot.ts"
   },

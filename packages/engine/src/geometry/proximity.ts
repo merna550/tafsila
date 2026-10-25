@@ -46,6 +46,36 @@ function distanceCoordinatesToSegment(px: number, py: number, start: Point, end:
 }
 
 /**
+ * The point of a polyline nearest to a given point (issue #284: a notch's mark on the cut line).
+ *
+ * @param p - The point.
+ * @param line - At least two points.
+ * @returns The nearest point on the polyline.
+ * @example
+ * closestPointOnPolyline({ x: 5, y: 3 }, [{ x: 0, y: 0 }, { x: 10, y: 0 }]) // { x: 5, y: 0 }
+ */
+export function closestPointOnPolyline(p: Point, line: readonly Point[]): Point {
+  let best = line[0]!;
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (let i = 1; i < line.length; i += 1) {
+    const start = line[i - 1]!;
+    const end = line[i]!;
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const lengthSq = dx * dx + dy * dy;
+    const t =
+      lengthSq === 0 ? 0 : Math.min(1, Math.max(0, ((p.x - start.x) * dx + (p.y - start.y) * dy) / lengthSq));
+    const foot = { x: start.x + t * dx, y: start.y + t * dy };
+    const d = Math.hypot(p.x - foot.x, p.y - foot.y);
+    if (d < bestDistance) {
+      best = foot;
+      bestDistance = d;
+    }
+  }
+  return best;
+}
+
+/**
  * The four corners of a rectangle, clockwise on a y-down sheet starting at the top-left.
  *
  * @param r - The rectangle.
