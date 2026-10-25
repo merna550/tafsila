@@ -644,5 +644,61 @@
     "scaleBar": "10 سم",
     "canvasLabel": "رسم الباترون",
     "hint": "اسحب للتحريك، واقرص بإصبعين للتكبير. بلوحة المفاتيح: الأسهم للتحريك، + و - للتكبير، 0 للملاءمة."
+  },
+  "designPicker": {
+    "title": "اختيار التفاصيل",
+    "newTitle": "اختيار نوع القطعة",
+    "breadcrumb": "مسار التنقل",
+    "designs": "تصاميمي",
+    "newDesign": "باترون جديد",
+    "categoryGroup": "نوع القطعة",
+    "category": {
+      "dress": "فستان",
+      "skirt": "تنورة",
+      "blouse": "بلوزة",
+      "pants": "بنطلون"
+    },
+    "soon": "قريباً",
+    "creating": "جارٍ الإنشاء",
+    "forClient": "للعميلة: {name}",
+    "removeClient": "إزالة العميلة",
+    "sectionsLabel": "خطوات الاختيار",
+    "sections": {
+      "bodice": "الصدر (القَصّة)",
+      "neckline": "الرقبة والياقة",
+      "sleeve": "الأكمام",
+      "skirt": "التنورة",
+      "waistband": "حزام الخصر",
+      "closure": "الإغلاق",
+      "pockets": "الجيوب",
+      "extras": "البطانة والحزام"
+    },
+    "panelSoon": "خيارات هذه الخطوة تظهر هنا قريباً.",
+    "undo": "تراجع",
+    "notice": {
+      "reset": "غيّرنا تلقائياً: {features}، لأنها لا تناسب اختيارك الأخير.",
+      "dismiss": "إغلاق التنبيه"
+    },
+    "paths": {
+      "category": "نوع القطعة",
+      "bodice_shaping": "قصّة الصدر",
+      "bodice_fit": "اتساع الصدر",
+      "bodice_waistSeam": "خياطة الخصر",
+      "skirt_type": "نوع التنورة",
+      "skirt_length": "طول التنورة",
+      "skirt_slit": "فتحة التنورة",
+      "waistband": "حزام الخصر",
+      "neckline_front": "الرقبة الأمامية",
+      "neckline_back": "الرقبة الخلفية",
+      "neckline_collar": "الياقة",
+      "sleeve_type": "نوع الكم",
+      "sleeve_length": "طول الكم",
+      "sleeve_cuff": "أسوارة الكم",
+      "closure_type": "نوع الإغلاق",
+      "closure_position": "مكان الإغلاق",
+      "pockets": "الجيوب",
+      "belt": "الحزام",
+      "lining": "البطانة"
+    }
   }
 }
