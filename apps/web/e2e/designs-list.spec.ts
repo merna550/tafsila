@@ -29,7 +29,11 @@ test("new pattern from a client, see it in the list, filter by client and delete
   await expect(page.getByRole("heading", { level: 1, name: new RegExp(t.designs.title) })).toBeVisible();
   await expect(page.getByText(t.designs.status.none)).toBeVisible();
 
+  // A design with no saved version belongs to no client yet, so the client filter finds nothing.
   await page.goto(`${prefix}/designs?clientId=${clientId}`);
+  await expect(page.getByText(t.designs.noResults.title)).toBeVisible();
+  await page.getByRole("button", { name: t.designs.noResults.clear }).click();
+  await expect(page).toHaveURL(new RegExp(`${prefix}/designs$`));
   await expect(page.getByRole("link", { name: new RegExp(t.designPicker.category.dress) })).toBeVisible();
 
   await page.getByRole("button", { name: new RegExp(`^${t.designs.row.delete}`) }).click();
