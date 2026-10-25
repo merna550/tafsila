@@ -4,7 +4,7 @@ import { Badge, Card, PageHeader } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { ValidationReport, type ViewerController } from "@/features/pattern-viewer";
-import { ReadOnlyVersionBanner } from "@/features/pattern-versions";
+import { ReadOnlyVersionBanner, UseVersionBar } from "@/features/pattern-versions";
 import type { PatternVersionDetail } from "@tafsila/schemas";
 import type { ApiError } from "@/shared/api";
 import type { PreviewState } from "@/shared/pattern-preview";
@@ -61,6 +61,11 @@ export function ReadOnlyVersionBody(props: Readonly<ReadOnlyVersionBodyProps>): 
             {engineChanged ? <Badge tone="warning">{t("readOnly.engineOld")}</Badge> : null}
           </div>
         }
+      />
+      <UseVersionBar
+        versionNo={version.versionNo}
+        engineVersion={version.engineVersion}
+        projectorHref={`${props.backHref}/${version.id}/projector`}
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">

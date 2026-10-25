@@ -1106,6 +1106,12 @@
       "fabric": "Fabric width",
       "cm": "{value} cm",
       "deletedSet": "Deleted set"
+    },
+    "useBar": {
+      "title": "Use this version",
+      "text": "Printing, projecting and cutting use version {n}, engine {engine}.",
+      "projector": "View with projector",
+      "projectorDisabled": "Open on a computer connected to the projector"
     }
   },
   "projector": {
@@ -1137,6 +1143,38 @@
       "redo": "Calibrate again",
       "fullscreenEnter": "Fullscreen",
       "fullscreenExit": "Exit fullscreen"
+    },
+    "view": {
+      "canvas": "Pattern at actual size",
+      "loading": "Loading the pattern...",
+      "failed": "The pattern could not be loaded. Try again.",
+      "exit": "Exit",
+      "recalibrate": "Recalibrate",
+      "version": "{title} · Version {n} · Engine {engine}",
+      "untitled": "Design",
+      "color": "Line colour",
+      "colorWhite": "White",
+      "colorYellow": "Yellow",
+      "lineWidth": "Line width: {n} px",
+      "mirror": "Mirror",
+      "help": "Keyboard shortcuts",
+      "controls": "Projector controls",
+      "squareNote": "Verification square 10 × 10 cm"
+    },
+    "help": {
+      "title": "Keyboard shortcuts",
+      "close": "Close",
+      "rows": {
+        "pan1": "Move 1 mm",
+        "pan10": "Move 10 mm",
+        "pan50": "Move 50 mm",
+        "mirror": "Mirror",
+        "widthLess": "Thinner line",
+        "widthMore": "Thicker line",
+        "fullscreen": "Fullscreen",
+        "help": "This window"
+      },
+      "closeKey": "Esc"
     }
   }
 }

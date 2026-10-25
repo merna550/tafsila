@@ -22,3 +22,24 @@ export const projectorCalibrationSchema = z.object({
 
 /** One stored calibration. */
 export type ProjectorCalibration = z.infer<typeof projectorCalibrationSchema>;
+
+/** The line colours of the projector view; white or yellow shows best on a dark table cover. */
+export const PROJECTOR_COLORS = ["white", "yellow"] as const;
+
+/** One of {@link PROJECTOR_COLORS}. */
+export type ProjectorColor = (typeof PROJECTOR_COLORS)[number];
+
+/** Smallest line width the view allows, in CSS px. */
+export const LINE_WIDTH_MIN_PX = 1;
+/** Largest line width the view allows, in CSS px. */
+export const LINE_WIDTH_MAX_PX = 6;
+
+/** The view settings kept per device: line width and colour. Pan and mirror are not kept (issue #286). */
+export const projectorPrefsSchema = z.object({
+  version: z.literal(1),
+  lineWidthPx: z.number().min(LINE_WIDTH_MIN_PX).max(LINE_WIDTH_MAX_PX),
+  color: z.enum(PROJECTOR_COLORS),
+});
+
+/** Stored line width and colour. */
+export type ProjectorPrefs = z.infer<typeof projectorPrefsSchema>;

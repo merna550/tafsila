@@ -53,7 +53,7 @@ function violatedRules() {
         "--output-type",
         "json",
       ],
-      { cwd: ROOT, encoding: "utf8" },
+      { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
     );
   } catch (error) {
     output = error.stdout;

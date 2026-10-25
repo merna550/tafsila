@@ -4,7 +4,7 @@ import type { PatternVersionDetail } from "@tafsila/schemas";
 import { useMemo } from "react";
 import { useDesign } from "@/features/design-picker";
 import { useViewerState, type ViewerController } from "@/features/pattern-viewer";
-import { useVersion } from "@/features/pattern-versions";
+import { useVersion, versionPreviewInput } from "@/features/pattern-versions";
 import type { ApiError } from "@/shared/api";
 import { previewErrorToApiError, usePatternPreview, type PreviewState } from "@/shared/pattern-preview";
 import { useReportSelection } from "./use-report-selection";
@@ -43,11 +43,7 @@ export function useReadOnlyVersion(designId: string, versionId: string): ReadOnl
   const viewer = useViewerState();
   const selection = useReportSelection(viewer);
   const version = query.data?.version;
-  const input = useMemo(
-    () =>
-      version ? { spec: version.spec, measurements: version.measurements, options: version.options } : null,
-    [version],
-  );
+  const input = useMemo(() => (version ? versionPreviewInput(version) : null), [version]);
   const preview = usePatternPreview(input);
   const failure = preview.status === "error" && preview.error ? previewErrorToApiError(preview.error) : null;
   return {
