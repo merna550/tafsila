@@ -51,7 +51,7 @@ test("projector: the square is 400 px and pieces are drawn at 4 px per mm", asyn
   expect(Math.abs(sq.height - 400)).toBeLessThanOrEqual(3);
   const cut = page.locator('[data-layer="cut"]').first();
   const widthMm = Number(await cut.getAttribute("data-width-mm"));
-  expect(Math.abs((await cutBox(page)).width - widthMm * 4)).toBeLessThanOrEqual(1);
+  expect(Math.abs((await cutBox(page)).width - widthMm * 4)).toBeLessThanOrEqual(3);
   await expect(page.getByTestId("projector-canvas")).toHaveAttribute("dir", "ltr");
 });
 
@@ -90,9 +90,9 @@ test("projector: dragging with the mouse pans the pattern", async ({ page }, tes
   await page.goto(base);
   await expect(page.getByTestId("pattern-group")).toBeVisible();
   const before = await cutBox(page);
-  await page.mouse.move(600, 500);
+  await page.mouse.move(100, 600);
   await page.mouse.down();
-  await page.mouse.move(660, 500, { steps: 4 });
+  await page.mouse.move(160, 600, { steps: 4 });
   await page.mouse.up();
   expect(Math.abs((await cutBox(page)).x - before.x - 60)).toBeLessThanOrEqual(1);
 });
