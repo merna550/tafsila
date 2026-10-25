@@ -673,7 +673,6 @@
       "pockets": "الجيوب",
       "extras": "البطانة والحزام"
     },
-    "panelSoon": "خيارات هذه الخطوة تظهر هنا قريباً.",
     "undo": "تراجع",
     "notice": {
       "reset": "غيّرنا تلقائياً: {features}، لأنها لا تناسب اختيارك الأخير.",
@@ -699,6 +698,126 @@
       "pockets": "الجيوب",
       "belt": "الحزام",
       "lining": "البطانة"
+    },
+    "options": {
+      "bodice_shaping": {
+        "darts": "دارتات",
+        "princess-shoulder": "قَصّة برنسيس من الكتف",
+        "princess-armhole": "قَصّة برنسيس من تحت الإبط",
+        "none": "بدون قَصّة"
+      },
+      "bodice_fit": {
+        "fitted": "ضيّق على الجسم",
+        "semi-fitted": "نصف ضيّق",
+        "loose": "واسع"
+      },
+      "bodice_waistSeam": {
+        "true": "بخياطة عند الخصر",
+        "false": "بدون خياطة عند الخصر"
+      },
+      "skirt_type": {
+        "straight": "مستقيمة",
+        "a-line": "واسعة قليلاً (A)",
+        "circle-half": "نصف دائرة",
+        "circle-full": "دائرة كاملة",
+        "gathered": "مكسّرة",
+        "pleated": "بيكاسو (ثنيات)",
+        "tiered": "طبقات"
+      },
+      "skirt_length": {
+        "mini": "قصيرة",
+        "knee": "للركبة",
+        "midi": "تحت الركبة",
+        "ankle": "للكاحل",
+        "floor": "للأرض"
+      },
+      "skirt_slit": {
+        "none": "بدون فتحة",
+        "front": "فتحة أمامية",
+        "back": "فتحة خلفية",
+        "side": "فتحة جانبية"
+      },
+      "waistband": {
+        "none": "بدون حزام خصر",
+        "straight": "مستقيم",
+        "contour": "مقوّس",
+        "elastic": "مطاط"
+      },
+      "neckline_front": {
+        "round": "دائرية",
+        "v": "على شكل V",
+        "square": "مربّعة",
+        "sweetheart": "قلب",
+        "boat": "واسعة (بوت)",
+        "high-round": "دائرية عالية"
+      },
+      "neckline_back": {
+        "round": "دائرية",
+        "v": "على شكل V",
+        "square": "مربّعة",
+        "high-round": "دائرية عالية"
+      },
+      "neckline_collar": {
+        "none": "بدون ياقة",
+        "peter-pan": "ياقة بحّارة",
+        "shirt": "ياقة قميص",
+        "mandarin": "ياقة صينية"
+      },
+      "sleeve_type": {
+        "none": "بدون كم",
+        "set-in": "كم عادي",
+        "cap": "كم قصير جداً",
+        "puff": "كم منفوخ",
+        "bishop": "كم واسع من تحت",
+        "flutter": "كم متطاير"
+      },
+      "sleeve_length": {
+        "cap": "فوق الكتف",
+        "short": "قصير",
+        "elbow": "للكوع",
+        "three-quarter": "ثلاثة أرباع",
+        "long": "طويل"
+      },
+      "sleeve_cuff": {
+        "none": "بدون أسوارة",
+        "band": "أسوارة",
+        "elastic": "مطاط"
+      },
+      "closure_type": {
+        "zip": "سوستة",
+        "buttons": "أزرار",
+        "none": "بدون إغلاق"
+      },
+      "closure_position": {
+        "center-back": "في الضهر",
+        "side": "على الجنب",
+        "center-front": "في الوسط قدّام"
+      },
+      "pockets": {
+        "side-seam": "جيب في الجنب",
+        "patch": "جيب خارجي"
+      },
+      "belt": {
+        "none": "بدون حزام",
+        "self-tie": "حزام يُربط"
+      },
+      "lining": {
+        "true": "مبطّنة",
+        "false": "بدون بطانة"
+      }
+    },
+    "overrides": {
+      "title": "تعديل الأطوال",
+      "optional": "(اختياري)",
+      "hint": "الحقل الفارغ يعني القيمة الافتراضية.",
+      "unit": "سم",
+      "default": "الافتراضي",
+      "range": "من {min} إلى {max} سم",
+      "error": "اكتب طولاً من {min} إلى {max} سم.",
+      "invalid": "اكتب رقماً، مثل 60 أو 60.5.",
+      "neckline_depthFrontMm": "عمق الرقبة",
+      "skirt_lengthMm": "طول التنورة",
+      "skirt_slit_lengthMm": "طول الفتحة"
     }
   }
 }

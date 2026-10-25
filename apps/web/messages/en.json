@@ -681,7 +681,6 @@
       "pockets": "Pockets",
       "extras": "Lining and belt"
     },
-    "panelSoon": "The options for this step will appear here soon.",
     "undo": "Undo",
     "notice": {
       "reset": "We changed these automatically: {features}, because they did not fit your last choice.",
@@ -707,6 +706,126 @@
       "pockets": "Pockets",
       "belt": "Belt",
       "lining": "Lining"
+    },
+    "options": {
+      "bodice_shaping": {
+        "darts": "Darts",
+        "princess-shoulder": "Princess seam from shoulder",
+        "princess-armhole": "Princess seam from armhole",
+        "none": "No shaping"
+      },
+      "bodice_fit": {
+        "fitted": "Fitted",
+        "semi-fitted": "Semi-fitted",
+        "loose": "Loose"
+      },
+      "bodice_waistSeam": {
+        "true": "With waist seam",
+        "false": "No waist seam"
+      },
+      "skirt_type": {
+        "straight": "Straight",
+        "a-line": "A-line",
+        "circle-half": "Half circle",
+        "circle-full": "Full circle",
+        "gathered": "Gathered",
+        "pleated": "Pleated",
+        "tiered": "Tiered"
+      },
+      "skirt_length": {
+        "mini": "Mini",
+        "knee": "Knee",
+        "midi": "Midi",
+        "ankle": "Ankle",
+        "floor": "Floor"
+      },
+      "skirt_slit": {
+        "none": "No slit",
+        "front": "Front slit",
+        "back": "Back slit",
+        "side": "Side slit"
+      },
+      "waistband": {
+        "none": "No waistband",
+        "straight": "Straight",
+        "contour": "Contoured",
+        "elastic": "Elastic"
+      },
+      "neckline_front": {
+        "round": "Round",
+        "v": "V",
+        "square": "Square",
+        "sweetheart": "Sweetheart",
+        "boat": "Boat",
+        "high-round": "High round"
+      },
+      "neckline_back": {
+        "round": "Round",
+        "v": "V",
+        "square": "Square",
+        "high-round": "High round"
+      },
+      "neckline_collar": {
+        "none": "No collar",
+        "peter-pan": "Peter Pan",
+        "shirt": "Shirt collar",
+        "mandarin": "Mandarin"
+      },
+      "sleeve_type": {
+        "none": "Sleeveless",
+        "set-in": "Set-in",
+        "cap": "Cap",
+        "puff": "Puff",
+        "bishop": "Bishop",
+        "flutter": "Flutter"
+      },
+      "sleeve_length": {
+        "cap": "Cap",
+        "short": "Short",
+        "elbow": "Elbow",
+        "three-quarter": "Three-quarter",
+        "long": "Long"
+      },
+      "sleeve_cuff": {
+        "none": "No cuff",
+        "band": "Band",
+        "elastic": "Elastic"
+      },
+      "closure_type": {
+        "zip": "Zip",
+        "buttons": "Buttons",
+        "none": "None"
+      },
+      "closure_position": {
+        "center-back": "Centre back",
+        "side": "Side",
+        "center-front": "Centre front"
+      },
+      "pockets": {
+        "side-seam": "Side-seam pocket",
+        "patch": "Patch pocket"
+      },
+      "belt": {
+        "none": "No belt",
+        "self-tie": "Tie belt"
+      },
+      "lining": {
+        "true": "With lining",
+        "false": "No lining"
+      }
+    },
+    "overrides": {
+      "title": "Adjust lengths",
+      "optional": "(optional)",
+      "hint": "An empty field means the default value.",
+      "unit": "cm",
+      "default": "Default",
+      "range": "From {min} to {max} cm",
+      "error": "Enter a length from {min} to {max} cm.",
+      "invalid": "Enter a number, such as 60 or 60.5.",
+      "neckline_depthFrontMm": "Front neck depth",
+      "skirt_lengthMm": "Skirt length",
+      "skirt_slit_lengthMm": "Slit length"
     }
   }
 }

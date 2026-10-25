@@ -272,6 +272,7 @@ Cross-checks:
 - `specOptions(spec)`: per feature (`FEATURE_PATHS`) whether it applies to the category and every schema value as allowed or refused, with the first refusal code and its `{ ar, en }` text. Call it on a normalised design.
 - `defaultSpec(category)`: a valid starting design (dress, skirt, blouse).
 - `normalizeSpec(spec)`: drops parts the category ignores, adds missing ones, resolves each refusal by changing the add-on that causes it (never the category) and returns `{ spec, changed }`.
+- `OVERRIDE_LIMITS_MM`: the shortest and longest value of each length override (neck depth, skirt length, slit length, issue #246); minimums are the engine clamps, maximums fixed upper bounds because the picker has no body.
 - Refusals that depend on the body (pocket room, neckline depth, zip length) are not here; they stay report checks.
 
 ## Sewing order (FR-PAT-06)
