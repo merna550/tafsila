@@ -42,7 +42,7 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 ## Repo map
 
-`apps/web` (Next.js UI) · `packages/api` (Hono API: routes → services → ports/adapters) · `packages/engine` (pure pattern engine) · `packages/schemas` (Zod) · `packages/ui` (shared components) · `packages/config` (env) · `packages/utils` · `packages/test-fixtures` · `services/sim` (v2 Python) · `supabase/` · `postman/` · `docs/`
+`apps/web` (Next.js UI) · `packages/api` (Hono API: routes → services → ports/adapters) · `packages/engine` (pure pattern engine) · `packages/export` (print tiles, PDF) · `packages/schemas` (Zod) · `packages/ui` (shared components) · `packages/config` (env) · `packages/utils` · `packages/test-fixtures` · `services/sim` (v2 Python) · `supabase/` · `postman/` · `docs/`
 
 ## Commands
 

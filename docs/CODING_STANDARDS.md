@@ -21,6 +21,7 @@ Clean, readable, reusable code. Every rule marked **[enforced]** is checked by t
 | HTTP routes                                               | `packages/api/src/routes/` (validate → call service → map result)                       | business logic inside routes     |
 | Reusable UI (buttons, cards, inputs, layout, RTL helpers) | `packages/ui`                                                                           | copy-pasted JSX in pages         |
 | Feature UI (one screen's parts)                           | `apps/web/src/features/<feature>/components/`                                           | `app/` route files               |
+| Print tiles, PDF export                                   | `packages/export/src/`                                                                  | UI, API                          |
 | Generic helpers (formatting, units, arrays)               | `packages/utils`                                                                        | a `utils.ts` inside every folder |
 | Constants (ease tables, seam allowances, limits)          | `packages/engine/src/constants/` or `packages/config`                                   | inline numbers                   |
 | Arabic/English strings                                    | `apps/web/messages/{ar,en}.json`                                                        | hard-coded text in components    |
