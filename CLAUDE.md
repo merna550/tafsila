@@ -53,7 +53,8 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 _Updated when the milestone, the next step or an open decision changes. What was done is in the merged PRs, the learning log and the board: a per-PR log here conflicted in every PR (#76)._
 
 - Milestone: M1 - Accounts & data (built; closes after Merna's staging run of the exit check, #34)
-- Next: M3 design & pattern UI (screens #236 need Merna first)
+- Next: M4 outputs, `/plan-wave M4`
 - M2 engine built (#121–#147 merged); M2 exit #148 waits for toiles
-- M3 brief and issues drafted (#236–#254, `docs/milestones/M3-design-and-pattern-ui.md`, ADR-236); next for M3: `/plan-wave M3`
+- M3 UI built (#236–#253 merged); M3 exit #254 waits for engine bugs #229–#232
+- M4 brief and issues drafted (#281–#296, `docs/milestones/M4-outputs.md`, ADR-281); next for M4: `/plan-wave M4` (screens #281 need Merna first)
 - Open decisions: final product name/domain; AI provider after eval

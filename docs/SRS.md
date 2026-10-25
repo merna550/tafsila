@@ -253,7 +253,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | FR-EXP-02 | PDF A0 (copy shop) single sheet(s) | M |
 | FR-EXP-03 | SVG export | S |
 | FR-EXP-04 | DXF (AAMA) export for plotters | C |
-| FR-EXP-05 | Exports generated as background jobs for large files; user notified when ready; files stored 30 days | M |
+| FR-EXP-05 | Exports generated as background jobs for large files; user notified when ready; files stored 30 days. Deferred: M4 builds PDFs in a browser worker from a saved version, with no stored file ([ADR-281](decisions/281-m4-scope.md)) | M |
 
 ### 4.10 Fabric Yardage (FAB)
 | ID | Requirement | Pri |
@@ -450,7 +450,7 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `measurement_sets` | id, owner_id, client_id?, label, size_label?, data (jsonb Measurements), created_at (client must have the same owner) |
 | `designs` | id, owner_id, category (`dress`/`skirt`/`blouse`), title (1-120 chars), photo_paths (text[]), analysis (jsonb DesignAnalysisResult), current_version_id, created_at, updated_at (set by the API; unique id + owner_id) |
 | `pattern_versions` | id, design_id, owner_id (same owner as the design, composite FK), version_no (unique per design), spec (jsonb), measurement_set_id? (null if the set is deleted), measurements (jsonb snapshot), size_label?, ease_profile, options (jsonb), engine_version, validation_status (`pass`/`warn` only, a `fail` is never stored), input_hash (indexed, not unique), created_by (`user`/`chat`), created_at. Append-only: users can select and insert, never update or delete ([ADR-236](decisions/236-m3-scope.md)) |
-| `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at |
+| `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at. Not created in M4 (FR-EXP-05 deferred, [ADR-281](decisions/281-m4-scope.md)) |
 | `chat_messages` | id, design_id, role, content, proposed_patch (jsonb), applied_version_id?, created_at |
 | `fabric_calcs` | id, pattern_version_id, width_mm, layout, result (jsonb: length_mm, marker) |
 | `fabrics` | id, name_ar, name_en, properties (jsonb: drape, weight, stretch, sheen), care_notes |
@@ -485,7 +485,7 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | POST | `/api/versions/:id/restore` | Append a copy of the version's stored inputs (its measurements snapshot, re-run with today's engine) as version n+1; restoring the current version returns it (200) |
 | POST | `/api/designs/:id/chat` | Send chat message → proposed patch |
 | POST | `/api/designs/:id/chat/:msgId/apply` | Apply proposed patch → new version |
-| POST | `/api/versions/:id/exports` | Enqueue PDF export |
+| POST | `/api/versions/:id/exports` | Enqueue PDF export. Deferred: M4 builds the PDF in the browser ([ADR-281](decisions/281-m4-scope.md)) |
 | POST | `/api/versions/:id/fabric` | Save fabric calc result |
 | GET | `/api/fabrics/recommend?versionId=` | Fabric recommendations |
 | POST, GET | `/api/clients` | Create a client; list with `q` (name search), `limit` (1-100, default 20), `offset`; returns `{ items, total, limit, offset }` |
