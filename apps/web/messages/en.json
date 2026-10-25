@@ -651,7 +651,38 @@
     "fit": "Fit to screen",
     "scaleBar": "10 cm",
     "canvasLabel": "Pattern drawing",
-    "hint": "Drag to move, pinch with two fingers to zoom. Keyboard: arrows move, + and - zoom, 0 fits."
+    "hint": "Drag to move, pinch with two fingers to zoom. Keyboard: arrows move, + and - zoom, 0 fits.",
+    "layers": {
+      "title": "Layers",
+      "stitch": "Stitch line",
+      "cut": "Cut line (seam allowance)",
+      "notches": "Notches",
+      "labels": "Names",
+      "grid": "Grid"
+    },
+    "piece": {
+      "listLabel": "Pattern pieces",
+      "empty": "Choose a piece on the drawing or in the list to see its details.",
+      "position": "Piece {index} of {total}",
+      "cut": {
+        "fold": "Cut 1 on fold",
+        "pair": "Cut {count}",
+        "single": "Cut {count}"
+      },
+      "fabric": {
+        "main": "Main fabric",
+        "lining": "Lining",
+        "interfacing": "Interfacing"
+      },
+      "mirrored": "mirrored",
+      "width": "Piece width",
+      "height": "Piece height",
+      "cm": "{value} cm",
+      "edges": "Edges",
+      "edge": "Edge",
+      "length": "Length",
+      "allowance": "Seam allowance"
+    }
   },
   "designPicker": {
     "title": "Choose the details",
