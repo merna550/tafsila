@@ -1208,18 +1208,24 @@
         "label": "Tiled A4",
         "hint": "Print on a normal printer and glue the pages together. 10 mm overlap."
       },
+      "a0": {
+        "label": "A0 (copy shop)",
+        "hint": "One big sheet for a copy shop. Ask the shop to print at 100%."
+      },
       "svg": {
         "label": "SVG",
         "hint": "A drawing file to edit in another program."
       }
     },
     "instructions": "Print at 100%. Do not choose \"Fit to page\". After printing, measure the test square: it must be 10 cm.",
+    "instructionsShop": "Ask the copy shop to print at 100%, with no scaling. After printing, measure the test square: it must be 10 cm.",
     "progress": {
       "label": "Building the file: {done} of {total} pages",
       "starting": "Building the file…"
     },
     "done": {
       "pdf": "The file is ready. {pages} pages, 10 mm overlap, with the page map and the test square.",
+      "a0": "The file is ready. {pages, plural, one {# sheet} other {# sheets}} of A0, with the test square.",
       "svg": "The file is ready and the download started."
     },
     "errors": {

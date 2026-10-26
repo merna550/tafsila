@@ -1,6 +1,6 @@
 /** The export worker's logic without `self`: drafts the version again and builds the file (issue #289, ADR-289). */
 import { buildPatternScene, generatePattern, renderPrintSheet } from "@tafsila/engine";
-import { buildA4Pdf, type PdfFonts } from "@tafsila/export";
+import { buildA0Pdf, buildA4Pdf, type PdfFonts } from "@tafsila/export";
 import type { PatternResult } from "@tafsila/schemas";
 import type { PatternScene } from "@tafsila/engine/viewer";
 import type { ExportKind, ExportMessage, ExportMeta, ExportProgress, ExportRequest } from "./protocol";
@@ -48,16 +48,17 @@ class ExportFailure extends Error {
 }
 
 /**
- * Builds the A4 tiled PDF.
+ * Builds a tiled PDF with the given package builder.
  *
+ * @param build - `buildA4Pdf` or `buildA0Pdf`.
  * @param context - The drafted pattern and the helpers.
  * @returns The PDF bytes and page count.
  */
-async function buildA4(context: BuildContext): Promise<Built> {
+async function buildPdf(build: typeof buildA4Pdf, context: BuildContext): Promise<Built> {
   const fonts = await context.deps.loadFonts().catch((error: unknown) => {
     throw new ExportFailure("FONT_LOAD_FAILED", error);
   });
-  const output = await buildA4Pdf(context.result, context.scene, context.meta, {
+  const output = await build(context.result, context.scene, context.meta, {
     fonts,
     onProgress: (done, total) => context.onProgress({ done, total }),
   }).catch((error: unknown) => {
@@ -80,8 +81,12 @@ function buildSvg(context: BuildContext): Promise<Built> {
   });
 }
 
-/** One builder per kind; issue #290 adds `a0` here. */
-const BUILDERS: Record<ExportKind, Builder> = { a4: buildA4, svg: buildSvg };
+/** One builder per kind. */
+const BUILDERS: Record<ExportKind, Builder> = {
+  a4: (context) => buildPdf(buildA4Pdf, context),
+  a0: (context) => buildPdf(buildA0Pdf, context),
+  svg: buildSvg,
+};
 
 /**
  * Copies a view into its own buffer so it can be transferred without its neighbours.

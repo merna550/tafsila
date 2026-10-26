@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { PatternVersionDetail } from "@tafsila/schemas";
 import { clientApiError } from "@/shared/api";
 import { renderWithIntl } from "@/shared/i18n/testing";
-import type { ExportState } from "@/shared/pattern-export";
+import type { ExportKind, ExportState } from "@/shared/pattern-export";
 import { ExportDialogBody, type ExportDialogBodyProps } from "./components/ExportDialogBody";
 import { ExportButton } from "./components/ExportButton";
 import { EXPORT_OPTIONS } from "./model/export-options";
@@ -28,10 +28,11 @@ const BASE: ExportDialogBodyProps = {
  *
  * @param state - The export state.
  * @param locale - Language.
+ * @param kind - The chosen file kind.
  * @returns The HTML.
  */
-function body(state: ExportState, locale: "ar" | "en"): string {
-  const element: ReactElement = <ExportDialogBody {...BASE} state={state} />;
+function body(state: ExportState, locale: "ar" | "en", kind: ExportKind = "a4"): string {
+  const element: ReactElement = <ExportDialogBody {...BASE} kind={kind} state={state} />;
   return renderWithIntl(element, locale);
 }
 
@@ -57,6 +58,21 @@ describe("ExportDialogBody", () => {
     expect(html).toContain("Print at 100%");
     expect(html).toContain("10 cm");
     expect(html).toContain("Export</button>");
+  });
+
+  it("offers A0 between A4 and SVG in both languages", () => {
+    const en = body({ status: "idle" }, "en");
+    expect(en.indexOf("Tiled A4")).toBeLessThan(en.indexOf("A0 (copy shop)"));
+    expect(en.indexOf("A0 (copy shop)")).toBeLessThan(en.indexOf(">SVG<"));
+    expect(en).toContain("export-option-a0");
+    const ar = body({ status: "idle" }, "ar");
+    expect(ar).toContain("A0 (محل الطباعة)");
+  });
+
+  it("shows the copy-shop note once A0 is chosen", () => {
+    const html = body({ status: "idle" }, "en", "a0");
+    expect(html).toContain("Ask the copy shop to print at 100%");
+    expect(html).not.toContain("Do not choose");
   });
 
   it("shows the Arabic copy of the design", () => {
@@ -144,7 +160,7 @@ describe("exportSourceOf and EXPORT_OPTIONS", () => {
     });
   });
 
-  it("lists A4 first", () => {
-    expect(EXPORT_OPTIONS.map((o) => o.kind)).toEqual(["a4", "svg"]);
+  it("lists A4, A0, then SVG", () => {
+    expect(EXPORT_OPTIONS.map((o) => o.kind)).toEqual(["a4", "a0", "svg"]);
   });
 });

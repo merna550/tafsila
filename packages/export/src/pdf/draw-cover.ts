@@ -52,18 +52,18 @@ const MAP_LABEL_FILL = 0.4;
 const fromTop = (mm: number): number => A4_PT.height - mmToPt(mm);
 
 /**
- * Draws the 100 mm square inside a marked-content block.
+ * Draws the 100 mm square inside a marked-content block (A4 cover and A0 header).
  *
- * @param page - The cover page.
- * @param leftMm - Left edge in mm.
- * @param topMm - Top edge in mm from the top of the page.
+ * @param page - The page.
+ * @param leftPt - Left edge in points.
+ * @param topPt - Top edge in points (page y, up).
  */
-function drawTestSquare(page: PDFPage, leftMm: number, topMm: number): void {
+export function drawTestSquare(page: PDFPage, leftPt: number, topPt: number): void {
   const side = mmToPt(TEST_SQUARE_MM);
   withTag(page, TEST_SQUARE_TAG, () =>
     page.pushOperators(
       pushGraphicsState(),
-      rectangle(mmToPt(leftMm), fromTop(topMm) - side, side, side),
+      rectangle(leftPt, topPt - side, side, side),
       stroke(),
       popGraphicsState(),
     ),
@@ -71,17 +71,22 @@ function drawTestSquare(page: PDFPage, leftMm: number, topMm: number): void {
 }
 
 /**
- * Draws the title, version, client and engine lines.
+ * Draws the title, version, client and engine lines (A4 cover and A0 header).
  *
- * @param page - The cover page.
+ * @param page - The page.
  * @param fonts - Embedded fonts.
  * @param meta - The PDF metadata.
+ * @param at - Left edge and baseline of the title, in points.
  */
-function drawTitleBlock(page: PDFPage, fonts: EmbeddedFonts, meta: PdfMeta): void {
-  const x = mmToPt(SIDE_MM);
+export function drawTitleBlock(
+  page: PDFPage,
+  fonts: EmbeddedFonts,
+  meta: PdfMeta,
+  at: { readonly xPt: number; readonly yPt: number },
+): void {
   drawTurnedLabel(page, fonts, meta.title, {
-    x,
-    y: fromTop(TITLE_TOP_MM),
+    x: at.xPt,
+    y: at.yPt,
     sizePt: TITLE_PT,
     bold: true,
     align: "left",
@@ -93,25 +98,38 @@ function drawTitleBlock(page: PDFPage, fonts: EmbeddedFonts, meta: PdfMeta): voi
   ];
   lines.forEach((text, i) =>
     drawTurnedLabel(page, fonts, text, {
-      x,
-      y: fromTop(TITLE_TOP_MM + (i + 1) * LINE_MM),
+      x: at.xPt,
+      y: at.yPt - mmToPt((i + 1) * LINE_MM),
       sizePt: DETAIL_PT,
       align: "left",
     }),
   );
 }
 
+/** Where a page map goes and how much room it has. */
+export interface MapPlace {
+  /** Left edge in points. */
+  readonly leftPt: number;
+  /** Top edge in points (page y, up). */
+  readonly topPt: number;
+  /** Room for the map, width in mm. */
+  readonly widthMm: number;
+  /** Room for the map, height in mm. */
+  readonly heightMm: number;
+}
+
 /**
- * Draws the page map: one rectangle per tile with its label, empty tiles crossed out.
+ * Draws the page map: one rectangle per tile with its label, empty tiles crossed out (A4 cover and A0 header).
  *
- * @param page - The cover page.
+ * @param page - The page.
  * @param fonts - Embedded fonts.
  * @param tiling - The tiling.
+ * @param place - Top-left of the map in points (page y, up) and the room for it in mm.
  */
-function drawPageMap(page: PDFPage, fonts: EmbeddedFonts, tiling: Tiling): void {
-  const map = pageMap(tiling, MAP_BOX);
-  const left = mmToPt(SIDE_MM);
-  const top = fromTop(MAP_TOP_MM);
+export function drawPageMap(page: PDFPage, fonts: EmbeddedFonts, tiling: Tiling, place: MapPlace): void {
+  const map = pageMap(tiling, place);
+  const left = place.leftPt;
+  const top = place.topPt;
   drawTurnedLabel(page, fonts, `${PDF_STRINGS.ar.pageMap} / ${PDF_STRINGS.en.pageMap}`, {
     x: left,
     y: top + mmToPt(LINE_MM / 2),
@@ -155,8 +173,8 @@ function drawPageMap(page: PDFPage, fonts: EmbeddedFonts, tiling: Tiling): void 
  * @param tiling - The A4 tiling of the pattern.
  */
 export function drawCover(page: PDFPage, fonts: EmbeddedFonts, meta: PdfMeta, tiling: Tiling): void {
-  drawTitleBlock(page, fonts, meta);
-  drawTestSquare(page, SIDE_MM, SQUARE_TOP_MM);
+  drawTitleBlock(page, fonts, meta, { xPt: mmToPt(SIDE_MM), yPt: fromTop(TITLE_TOP_MM) });
+  drawTestSquare(page, mmToPt(SIDE_MM), fromTop(SQUARE_TOP_MM));
   const captionX = mmToPt(SIDE_MM + TEST_SQUARE_MM + SIDE_MM);
   const captionY = fromTop(SQUARE_TOP_MM + TEST_SQUARE_MM / 2);
   drawTurnedLabel(page, fonts, PDF_STRINGS.ar.measure, {
@@ -173,7 +191,7 @@ export function drawCover(page: PDFPage, fonts: EmbeddedFonts, meta: PdfMeta, ti
     bold: true,
     align: "left",
   });
-  drawPageMap(page, fonts, tiling);
+  drawPageMap(page, fonts, tiling, { leftPt: mmToPt(SIDE_MM), topPt: fromTop(MAP_TOP_MM), ...MAP_BOX });
   const printX = A4_PT.width / 2;
   drawTurnedLabel(page, fonts, PDF_STRINGS.ar.printActual, {
     x: printX,

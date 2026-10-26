@@ -51,6 +51,24 @@ test("export: A4 downloads a PDF and says 100 %", async ({ page }, testInfo) => 
   await expect(page.getByTestId("export-download-again")).toBeVisible();
 });
 
+/** FR-EXP-02: the A0 option downloads an A0 PDF named -A0.pdf. */
+test("export: A0 downloads a PDF with an A0 page size", async ({ page }, testInfo) => {
+  await openSavedVersion(page, testInfo);
+  await page.getByTestId("export-open").click();
+  await page.getByTestId("export-option-a0").check();
+  await expect(page.getByTestId("export-instructions")).toContainText("100%");
+  const download = page.waitForEvent("download");
+  await page.getByTestId("export-start").click();
+  const file = await download;
+  expect(file.suggestedFilename()).toMatch(/-v1-A0\.pdf$/);
+  const text = await textOf(file);
+  expect(text.startsWith("%PDF-")).toBe(true);
+  const box = /\/MediaBox \[\s*0\s+0\s+([\d.]+)\s+([\d.]+)\s*\]/.exec(text);
+  const sides = [Number(box![1]), Number(box![2])].sort((a, b) => a - b);
+  expect(sides[0]).toBeCloseTo(2383.94, 0);
+  expect(sides[1]).toBeCloseTo(3370.39, 0);
+});
+
 /** The SVG option downloads an SVG sheet at 1:1. */
 test("export: SVG downloads a drawing with a width in mm", async ({ page }, testInfo) => {
   await openSavedVersion(page, testInfo);

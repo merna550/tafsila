@@ -2,8 +2,8 @@
 import type { PdfMeta } from "@tafsila/export";
 import type { PreviewInput, PreviewWorkerError } from "../pattern-preview/protocol";
 
-/** The files the export worker can make (issue #290 adds `"a0"`). */
-export type ExportKind = "a4" | "svg";
+/** The files the export worker can make (`"a0"` added by issue #290). */
+export type ExportKind = "a4" | "a0" | "svg";
 
 /** What the printed file says about the version. */
 export type ExportMeta = PdfMeta;

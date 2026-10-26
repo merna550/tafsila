@@ -142,9 +142,9 @@ A refused save (422 `PATTERN_INVALID`) keeps `ApiError.report` and shows it in t
 
 ## Export
 
-`shared/pattern-export/` (issue #289, [ADR-289](../decisions/289-export-worker.md)) is the export worker and its client; `features/pattern-export/` is the dialog. The worker is separate from the preview worker, drafts the version again from its stored inputs and builds the file with `@tafsila/export` (`buildA4Pdf`) or `renderPrintSheet` (SVG).
+`shared/pattern-export/` (issue #289, [ADR-289](../decisions/289-export-worker.md)) is the export worker and its client; `features/pattern-export/` is the dialog. The worker is separate from the preview worker, drafts the version again from its stored inputs and builds the file with `@tafsila/export` (`buildA4Pdf`, `buildA0Pdf`) or `renderPrintSheet` (SVG).
 
-- Protocol (`protocol.ts`): `ExportRequest { id, kind: "a4" | "svg", input, meta }`; answers are `{ id, progress }` and a final `ExportResult` (`bytes` transferred, `mime`, `pageCount` or null). `export-handler.ts` is pure (`runExport(request, { loadFonts }, onProgress)`) and has a `BUILDERS` table by kind.
+- Protocol (`protocol.ts`): `ExportRequest { id, kind: "a4" | "a0" | "svg", input, meta }`; answers are `{ id, progress }` and a final `ExportResult` (`bytes` transferred, `mime`, `pageCount` or null). `export-handler.ts` is pure (`runExport(request, { loadFonts }, onProgress)`) and has a `BUILDERS` table by kind.
 - `createExportClient` keeps the latest request, resolves the older as stale and recreates the worker on `cancel()`. `usePatternExport()` wraps it: `{ state, start, cancel, reset, downloadAgain }`; the state is `idle | running | done | error` (`export-state.ts`). On success it downloads the file (`download.ts`) and sends `pattern_exported` (`kind`, `pages`).
 - Fonts are fetched by the worker from `/fonts/`; errors are `FONT_LOAD_FAILED`, `PDF_BUILD_FAILED`, `WORKER_FAILED` or `PATTERN_INVALID` ([errors](../errors.md)). File names come from `exportFileName`.
 - The dialog (`ExportDialog`, `ExportDialogBody`, option list, instructions, progress) follows `docs/design/screens/ExportDialog.dc.html`. `UseVersionBar` has an `actions` slot; `VersionExportButton` fills it on the version view.

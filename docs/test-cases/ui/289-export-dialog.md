@@ -33,6 +33,7 @@ Status legend: ⬜ not run · ✅ pass · ❌ fail (link issue)
 | TC-UI-289-07 | Keyboard only                  | Medium   | Same                            | Tab to Export, Enter, arrow keys between options, Enter, Esc.       | Focus is trapped in the dialog; Esc closes it and focus returns to the Export button                                        | `e2e/export-dialog.spec.ts`                       | ⬜  | ⬜      |
 | TC-UI-289-08 | English                        | Low      | Language set to English         | Open the dialog in every state.                                     | All texts are English, the layout is left to right                                                                          | `features/pattern-export/pattern-export.test.tsx` | ⬜  | ⬜      |
 | TC-UI-289-09 | Safari on iPhone               | Low      | iPhone                          | Export A4.                                                          | The PDF may open in a tab instead of downloading; "Download again" in the dialog still works                                | manual only                                       | ⬜  | ⬜      |
+| TC-UI-289-10 | A0 download                    | High     | A saved version is open         | 1. Press Export. 2. Choose A0. 3. Press Export.                     | The copy-shop note replaces the print note; the file downloads as `<title>-v<N>-A0.pdf`; the PDF page is A0                 | `e2e/export-dialog.spec.ts`                       | ⬜  | ⬜      |
 
 ## Manual run log
 
