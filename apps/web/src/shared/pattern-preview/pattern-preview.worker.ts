@@ -1,8 +1,15 @@
 /// <reference lib="webworker" />
 /** Web Worker that drafts the pattern off the main thread; the only place the engine geometry is loaded in the browser (issue #239). */
-import { buildPatternScene, generatePattern } from "@tafsila/engine";
+import { buildPatternScene, cutSteps, generatePattern } from "@tafsila/engine";
+import { toCutPlan } from "./cut-plan";
 import { toWorkerError } from "./worker-error";
-import type { PreviewRequest, PreviewResponse } from "./protocol";
+import type {
+  CutStepsRequest,
+  CutStepsResponse,
+  PreviewRequest,
+  PreviewResponse,
+  WorkerRequest,
+} from "./protocol";
 
 /**
  * Drafts one request.
@@ -26,6 +33,23 @@ function draft(request: PreviewRequest): PreviewResponse {
   }
 }
 
-self.onmessage = (event: MessageEvent<PreviewRequest>): void => {
-  self.postMessage(draft(event.data));
+/**
+ * Drafts one input and works out its direct-cut steps (issue #291).
+ *
+ * @param request - Spec, measurements, options and curve step with the request id.
+ * @returns The plan, or the error.
+ */
+function cut(request: CutStepsRequest): CutStepsResponse {
+  try {
+    const result = generatePattern(request.spec, request.measurements, request.options);
+    const steps = cutSteps(result, { curveStepMm: request.curveStepMm });
+    return { id: request.id, kind: "cut-steps", ok: true, plan: toCutPlan(steps, result.pieces) };
+  } catch (error) {
+    return { id: request.id, kind: "cut-steps", ok: false, error: toWorkerError(error) };
+  }
+}
+
+self.onmessage = (event: MessageEvent<WorkerRequest>): void => {
+  const request = event.data;
+  self.postMessage(request.kind === "cut-steps" ? cut(request) : draft(request));
 };

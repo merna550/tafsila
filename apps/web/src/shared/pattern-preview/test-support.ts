@@ -1,16 +1,16 @@
 /** Test helper: a fake preview worker the test answers by hand. */
 import type { PatternResult } from "@tafsila/schemas";
 import type { PreviewWorker } from "./preview-client";
-import type { PreviewRequest, PreviewResponse } from "./protocol";
+import type { PreviewResponse, WorkerRequest, WorkerResponse } from "./protocol";
 
 /** A fake worker that records requests and lets the test answer them. */
 export interface FakeWorker extends PreviewWorker {
   /** Requests received so far. */
-  readonly requests: PreviewRequest[];
+  readonly requests: WorkerRequest[];
   /** Whether `terminate` was called. */
   terminated: boolean;
   /** Delivers an answer as the real worker would. */
-  answer(response: PreviewResponse): void;
+  answer(response: WorkerResponse): void;
 }
 
 /**
