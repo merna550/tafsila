@@ -93,6 +93,9 @@ test("projector: dragging with the mouse pans the pattern", async ({ page }, tes
   const { base } = await openProjector(page, testInfo);
   await page.goto(base);
   await expect(page.getByTestId("pattern-group")).toBeVisible();
+  // The piece list sits over part of the canvas at the language end; hide it for the drag.
+  await page.keyboard.press("l");
+  await expect(page.getByTestId("piece-switcher")).toBeHidden();
   const before = await cutBox(page);
   await page.mouse.move(100, 600);
   await page.mouse.down();
@@ -128,4 +131,64 @@ test("projector: no stored calibration redirects to the calibration page", async
   const { base } = await openProjector(page, testInfo);
   await page.goto(base);
   await expect(page).toHaveURL(/\/projector\/calibrate$/);
+});
+
+/** FR-PROJ-04: one piece, centred; rotate by key; move by keys; the square never moves; reset; kept after reload. */
+test("projector: pick one piece, rotate it 180, move it and reset", async ({ page }, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  const pieces = page.locator("[data-piece-id]");
+  await expect(pieces.first()).toBeVisible();
+  const total = await pieces.count();
+  expect(total).toBeGreaterThan(1);
+  const square = page.getByTestId("verification-square").locator("rect");
+  const squareBefore = (await square.boundingBox())!;
+
+  await page.locator("[data-piece-row]").nth(1).click();
+  await expect(pieces).toHaveCount(1);
+  const piece = pieces.first();
+  const cut = page.locator('[data-layer="cut"]');
+  const svg = (await page.getByTestId("projector-canvas").locator("svg").boundingBox())!;
+  const centred = (await cut.boundingBox())!;
+  expect(Math.abs(centred.x + centred.width / 2 - (svg.x + svg.width / 2))).toBeLessThanOrEqual(2);
+  expect(Math.abs(centred.y + centred.height / 2 - (svg.y + svg.height / 2))).toBeLessThanOrEqual(2);
+
+  await page.keyboard.press("r");
+  await expect(piece).toHaveAttribute("transform", /rotate\(180 /);
+  const turned = (await cut.boundingBox())!;
+  expect(Math.abs(turned.x - centred.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(turned.width - centred.width)).toBeLessThanOrEqual(1);
+
+  await page.keyboard.press("Shift+ArrowRight");
+  expect(Math.abs((await cut.boundingBox())!.x - centred.x - 40)).toBeLessThanOrEqual(1);
+  expect(await square.boundingBox()).toEqual(squareBefore);
+
+  await page.reload();
+  await expect(pieces).toHaveCount(1);
+  await expect(pieces.first()).toHaveAttribute("transform", /translate\(10 0\) rotate\(180 /);
+
+  await page.keyboard.press("0");
+  await expect(pieces).toHaveCount(total);
+  await expect(page.locator("[data-piece-id][transform]")).toHaveCount(0);
+});
+
+/** Placements are kept per viewer in the browser only: with blocked storage everything still works. */
+test("projector: moving a piece works when storage refuses writes", async ({ page }, testInfo) => {
+  await seedCalibration(page, { pxPerMmX: 4, pxPerMmY: 4 });
+  await page.addInitScript(() => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- called back with the right `this` below
+    const set = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key: string, value: string): void {
+      if (key.startsWith("tafsila.projector.placement")) throw new Error("blocked");
+      set.call(this, key, value);
+    };
+  });
+  const { base } = await openProjector(page, testInfo);
+  await page.goto(base);
+  await page.locator("[data-piece-row]").first().click();
+  await page.keyboard.press("Shift+ArrowDown");
+  await expect(page.locator("[data-piece-id]").first()).toHaveAttribute("transform", /translate\(0 10\)/);
+  await page.reload();
+  await expect(page.locator("[data-piece-id][transform]")).toHaveCount(0);
 });

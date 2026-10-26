@@ -1172,9 +1172,24 @@
         "widthLess": "Thinner line",
         "widthMore": "Thicker line",
         "fullscreen": "Fullscreen",
-        "help": "This window"
+        "help": "This window",
+        "rotate": "Rotate 180°",
+        "pieces": "Piece list",
+        "nextPiece": "Next / previous piece",
+        "allPieces": "All pieces",
+        "clearActive": "Deselect the piece",
+        "reset": "Reset layout"
       },
       "closeKey": "Esc"
+    },
+    "pieces": {
+      "title": "Pieces",
+      "all": "All pieces",
+      "previous": "Previous",
+      "next": "Next",
+      "rotate": "Rotate 180°",
+      "rotateNeedsPiece": "Choose a piece first",
+      "reset": "Reset layout"
     }
   }
 }

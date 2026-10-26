@@ -1164,9 +1164,24 @@
         "widthLess": "خط أرفع",
         "widthMore": "خط أسمك",
         "fullscreen": "ملء الشاشة",
-        "help": "هذه النافذة"
+        "help": "هذه النافذة",
+        "rotate": "تدوير 180°",
+        "pieces": "قائمة القطع",
+        "nextPiece": "القطعة التالية / السابقة",
+        "allPieces": "كل القطع",
+        "clearActive": "إلغاء القطعة المحددة",
+        "reset": "إعادة الترتيب"
       },
       "closeKey": "Esc"
+    },
+    "pieces": {
+      "title": "القطع",
+      "all": "كل القطع",
+      "previous": "السابقة",
+      "next": "التالية",
+      "rotate": "تدوير 180°",
+      "rotateNeedsPiece": "اختر قطعة أولاً",
+      "reset": "إعادة الترتيب"
     }
   }
 }
