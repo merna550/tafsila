@@ -117,21 +117,23 @@ export interface FooterInfo {
  * Draws the tile label in the top margin and the footer in the bottom margin (both outside the printable area).
  *
  * @param ctx - The page and its printable rectangle.
- * @param label - The tile label such as "B2".
+ * @param label - The tile label such as "B2", or null to leave it out (a single-sheet A0 file).
  * @param footer - Footer content.
  */
-export function drawTileLabelAndFooter(ctx: PageContext, label: string, footer: FooterInfo): void {
+export function drawTileLabelAndFooter(ctx: PageContext, label: string | null, footer: FooterInfo): void {
   const { page, fonts, frame } = ctx;
   const gap = mmToPt(LABEL_GAP_MM);
-  withTag(page, `${TILE_TAG_PREFIX}${label}`, () =>
-    drawTurnedLabel(page, fonts, label, {
-      x: frame.leftPt,
-      y: frame.topPt + gap,
-      sizePt: TILE_LABEL_PT,
-      bold: true,
-      align: "left",
-    }),
-  );
+  if (label !== null) {
+    withTag(page, `${TILE_TAG_PREFIX}${label}`, () =>
+      drawTurnedLabel(page, fonts, label, {
+        x: frame.leftPt,
+        y: frame.topPt + gap,
+        sizePt: TILE_LABEL_PT,
+        bold: true,
+        align: "left",
+      }),
+    );
+  }
   const y = frame.topPt - frame.heightPt - gap - FOOTER_PT;
   const info = `v${footer.versionNo} - engine ${footer.engineVersion} - ${footer.page}/${footer.pages}`;
   drawTurnedLabel(page, fonts, footer.title, { x: frame.leftPt, y, sizePt: FOOTER_PT, align: "left" });

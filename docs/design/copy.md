@@ -80,4 +80,12 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 | Page map note         | الصفحات المشطوبة فارغة ولا تُطبع                        | Crossed-out pages are empty and not printed     |
 | Overlap strip         | تداخل                                                   | overlap                                         |
 
+A0 header (issue #290, sheet 1 of the A0 file):
+
+| Where          | Arabic                                              | English                                   |
+| -------------- | --------------------------------------------------- | ----------------------------------------- |
+| Copy-shop note | اطلب من المحل الطباعة بحجم 100٪ بدون تكبير أو تصغير | Ask the shop to print at 100%, no scaling |
+
+The export dialog rows: `A0 (محل الطباعة)` / `A0 (copy shop)`, hint "ورقة واحدة كبيرة لمحل الطباعة. اطلبي منهم الطباعة بحجم 100%." / "One big sheet for a copy shop. Ask the shop to print at 100%."
+
 Add a row here in the same PR whenever a new product term appears.

@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { exportFileName } from "./file-name";
 
 describe("exportFileName", () => {
+  it("ends an A0 file with -A0.pdf", () => {
+    expect(exportFileName({ title: "dress", versionNo: 2, kind: "a0" })).toBe("dress-v2-A0.pdf");
+  });
+
   it("keeps Arabic letters and joins words with dashes", () => {
     expect(exportFileName({ title: "فستان سهرة", versionNo: 3, kind: "a4" })).toBe("فستان-سهرة-v3-A4.pdf");
   });

@@ -65,6 +65,18 @@ describe("runExport", () => {
     expect(progress.every((m) => "progress" in m && m.id === 7)).toBe(true);
   });
 
+  it("makes an A0 PDF whose pages match the file and names no cover", async () => {
+    const answer = await runExport(request("a0"), DEPS, () => undefined);
+    if (!("ok" in answer) || !answer.ok) throw new Error("expected a file");
+    const text = latin1(answer.bytes);
+    expect(text.startsWith("%PDF-")).toBe(true);
+    expect(text.match(/\/Type \/Page(?!\w)/g) ?? []).toHaveLength(Number(answer.pageCount));
+    const box = /\/MediaBox \[\s*0\s+0\s+([\d.]+)\s+([\d.]+)\s*\]/.exec(text);
+    const sides = [Number(box![1]), Number(box![2])].sort((a, b) => a - b);
+    expect(sides[0]).toBeCloseTo(2383.94, 1);
+    expect(sides[1]).toBeCloseTo(3370.39, 1);
+  });
+
   it("refuses a pattern that fails validation instead of exporting it", async () => {
     const answer = await runExport(request("a4", null), DEPS, () => undefined);
     expect(answer).toMatchObject({ id: 7, ok: false, error: { code: "PATTERN_INVALID" } });

@@ -9,7 +9,7 @@ const MAX_TITLE_CODE_POINTS = 60;
 const UNSAFE = /[\\/:*?"<>|\u0000-\u001f\u007f]/g;
 
 /** The suffix and extension of each kind. */
-const SUFFIX: Record<ExportKind, string> = { a4: "-A4.pdf", svg: ".svg" };
+const SUFFIX: Record<ExportKind, string> = { a4: "-A4.pdf", a0: "-A0.pdf", svg: ".svg" };
 
 /**
  * Removes dashes from both ends (a loop, not a regex, so the cost stays linear).
@@ -39,7 +39,7 @@ function cleanTitle(title: string): string {
 }
 
 /**
- * Builds `<title>-v<N>-A4.pdf` or `<title>-v<N>.svg`.
+ * Builds `<title>-v<N>-A4.pdf`, `<title>-v<N>-A0.pdf` or `<title>-v<N>.svg`.
  *
  * @param input - Design title, version number and file kind.
  * @returns The file name.

@@ -35,6 +35,12 @@ interface Panel {
   readonly buttons: ReactNode;
 }
 
+/** The message of the done state for each kind (A0 has no overlap, so its own text). */
+const DONE_KEY = { a4: "done.pdf", a0: "done.a0", svg: "done.svg" } as const satisfies Record<
+  ExportKind,
+  string
+>;
+
 /**
  * Builds the panel of the done state.
  *
@@ -56,9 +62,9 @@ function donePanel(
           data-testid="export-done"
           className="rounded-md border border-primary bg-primary-soft px-3.5 py-2.5 text-base text-text"
         >
-          {pages === null ? t("done.svg") : t("done.pdf", { pages })}
+          {pages === null ? t("done.svg") : t(DONE_KEY[state.kind], { pages })}
         </p>
-        {pages === null ? null : <ExportInstructions />}
+        {pages === null ? null : <ExportInstructions kind={state.kind} />}
       </>
     ),
     buttons: (
@@ -142,7 +148,7 @@ function panelFor(
     content: (
       <>
         <ExportOptionList value={props.kind} onChange={props.onKindChange} disabled={false} />
-        <ExportInstructions />
+        <ExportInstructions kind={props.kind} />
       </>
     ),
     buttons: (
