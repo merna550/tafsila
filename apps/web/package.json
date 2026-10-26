@@ -20,6 +20,7 @@
     "@tafsila/api": "workspace:*",
     "@tafsila/config": "workspace:*",
     "@tafsila/engine": "workspace:*",
+    "@tafsila/export": "workspace:*",
     "@tafsila/schemas": "workspace:*",
     "@tafsila/ui": "workspace:*",
     "@tafsila/utils": "workspace:*",

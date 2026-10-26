@@ -64,4 +64,15 @@ describe("analytics events", () => {
     expect(() => parseAnalyticsEvent("account_deleted", { email: "a@b.com" })).toThrow();
     expect(() => parseAnalyticsEvent("locale_changed", { locale: "fr" })).toThrow();
   });
+
+  it("accepts the export event with a kind and a page count only", () => {
+    expect(parseAnalyticsEvent("pattern_exported", { kind: "a4", pages: 12 })).toEqual({
+      kind: "a4",
+      pages: 12,
+    });
+    expect(() => parseAnalyticsEvent("pattern_exported", { kind: "pdf", pages: 1 })).toThrow();
+    expect(() =>
+      parseAnalyticsEvent("pattern_exported", { kind: "svg", pages: 0, title: "فستان" }),
+    ).toThrow();
+  });
 });

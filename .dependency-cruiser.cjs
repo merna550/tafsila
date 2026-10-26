@@ -35,6 +35,24 @@ module.exports = {
       },
     },
     {
+      name: "pdf-export-only-in-export-worker",
+      severity: "error",
+      comment:
+        "The web app imports @tafsila/export only in the export worker, its handler and the protocol (type imports only, enforced by consistent-type-imports), so pdf-lib never reaches a page bundle (issue #289; scripts/check-engine-chunk.mjs checks the build).",
+      from: {
+        path: "^apps/web/src",
+        pathNot: ["^apps/web/src/shared/pattern-export/(export-handler|protocol)\\.ts$", "\\.worker\\.ts$"],
+      },
+      to: { path: "^@tafsila/export(/|$)" },
+    },
+    {
+      name: "no-pdf-lib-in-web",
+      severity: "error",
+      comment: "pdf-lib is used only inside packages/export; the web app never imports it (issue #289).",
+      from: { path: "^apps/web/src" },
+      to: { path: "(^|node_modules/)(pdf-lib|@pdf-lib/)" },
+    },
+    {
       name: "schemas-are-leaf",
       severity: "error",
       comment: "Shared schemas only depend on zod.",

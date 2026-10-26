@@ -48,6 +48,11 @@ const patternVersionSavedSchema = z
   })
   .strict();
 
+/** Browser event: a pattern file was made; only the kind and the page count, never the title, measurements or client (issue #289). */
+const patternExportedSchema = z
+  .object({ kind: z.enum(["a4", "a0", "svg"]), pages: z.number().int().min(0) })
+  .strict();
+
 /** Schema of the properties of each event, keyed by event name. */
 export const ANALYTICS_EVENTS = {
   app_opened: appOpenedSchema,
@@ -61,6 +66,7 @@ export const ANALYTICS_EVENTS = {
   account_deleted: accountDeletedSchema,
   locale_changed: localeChangedSchema,
   pattern_version_saved: patternVersionSavedSchema,
+  pattern_exported: patternExportedSchema,
 } as const;
 
 /** Names of all known analytics events. */

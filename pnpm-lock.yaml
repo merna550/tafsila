@@ -101,6 +101,9 @@ importers:
       '@tafsila/engine':
         specifier: workspace:*
         version: link:../../packages/engine
+      '@tafsila/export':
+        specifier: workspace:*
+        version: link:../../packages/export
       '@tafsila/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas

@@ -51,7 +51,7 @@ Rules
 - **Server vs client components:** pages and data loading are Server Components; interactive tools (viewer, projector, 3D, forms) are Client Components.
 - **Server state:** TanStack Query over a **typed API client** generated from the API (Hono RPC types / OpenAPI). No `fetch` inside components.
 - **Local UI state:** component state; Zustand only for the pattern editor session (selected piece, zoom, layers).
-- **Engine in the browser:** instant regeneration on the main thread; heavy work (fabric nesting, PDF tiling) in a **Web Worker**.
+- **Engine in the browser:** instant regeneration on the main thread; heavy work (fabric nesting, PDF tiling) in a **Web Worker**. The preview and the export each have their own worker (`shared/pattern-preview`, `shared/pattern-export`, [ADR-289](decisions/289-export-worker.md)); `pdf-lib` is loaded only by the export worker.
 - **Design system:** `packages/ui` (shadcn/ui based, RTL-first, tokens for colour/spacing); features never restyle primitives ad hoc.
 
 ## 2. Backend — `packages/api` (hexagonal / clean)

@@ -31,6 +31,17 @@ How the web app shows each case: [docs/frontend/README.md](frontend/README.md#er
 | `RATE_LIMITED`             | 429  | طلبات كتير، حاولي مرة أخرى بعد شوية                                        | Too many requests, retry later                                                            | Caller exceeded a throttle                                                                                                                                 | Wait and retry                                                                                                   | `routes/debug.ts`, Supabase Auth limits                                                            |
 | `INTERNAL_ERROR`           | 500  | حدث خطأ غير متوقع، حاولي مرة أخرى                                          | Unexpected error, please try again                                                        | Any error that is not an `AppError`; reported to Sentry                                                                                                    | Give the `request_id` to the team; check Sentry and logs                                                         | `middleware/error-handler.ts`                                                                      |
 
+## Browser-only codes (export worker, issue #289)
+
+These never come from the API. The export worker posts them and `exportErrorToApiError` (`apps/web/src/shared/pattern-export/export-error.ts`) turns them into the shared error display; the texts live in `messages/` under `patternExport.errors`.
+
+| Code               | Shown as                                         | Cause                                                                      | What to do                                  |
+| ------------------ | ------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------- |
+| `FONT_LOAD_FAILED` | "The font could not be loaded..." with Try again | `/fonts/IBMPlexSansArabic-*.ttf` could not be fetched (offline, blocked)   | Check the connection and try again          |
+| `PDF_BUILD_FAILED` | "The file could not be built. Try again."        | `pdf-lib` or the tile code threw                                           | Try again; if it repeats, report the design |
+| `WORKER_FAILED`    | Same as above                                    | The export worker crashed or could not load                                | Try again                                   |
+| `PATTERN_INVALID`  | "This design ... cannot be exported."            | The stored inputs no longer pass validation (saved versions never do this) | Open the version and read the report        |
+
 ## Adding a code
 
 1. Add it to `ERROR_CATALOGUE` with both messages (Arabic first).

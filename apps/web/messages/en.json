@@ -1191,5 +1191,41 @@
       "rotateNeedsPiece": "Choose a piece first",
       "reset": "Reset layout"
     }
+  },
+  "patternExport": {
+    "button": "Export",
+    "needsSave": "Save the version first to export it",
+    "title": "Export pattern",
+    "subtitle": "{title} · version {n} · engine {engine}",
+    "close": "Close",
+    "cancel": "Cancel",
+    "export": "Export",
+    "tryAgain": "Try again",
+    "downloadAgain": "Download again",
+    "optionsLabel": "File format",
+    "option": {
+      "a4": {
+        "label": "Tiled A4",
+        "hint": "Print on a normal printer and glue the pages together. 10 mm overlap."
+      },
+      "svg": {
+        "label": "SVG",
+        "hint": "A drawing file to edit in another program."
+      }
+    },
+    "instructions": "Print at 100%. Do not choose \"Fit to page\". After printing, measure the test square: it must be 10 cm.",
+    "progress": {
+      "label": "Building the file: {done} of {total} pages",
+      "starting": "Building the file…"
+    },
+    "done": {
+      "pdf": "The file is ready. {pages} pages, 10 mm overlap, with the page map and the test square.",
+      "svg": "The file is ready and the download started."
+    },
+    "errors": {
+      "build": "The file could not be built. Try again.",
+      "font": "The font could not be loaded. Check your connection and try again.",
+      "invalid": "This design with these measurements cannot be drawn as a pattern, so it cannot be exported."
+    }
   }
 }
