@@ -38,3 +38,21 @@ export function localizeDigits(text: string, style: DigitStyle): string {
 export function showText(text: LocalizedText, locale: "ar" | "en", style: DigitStyle = "western"): string {
   return localizeDigits(text[locale], style);
 }
+
+/** Millimetres in a centimetre. */
+const MM_PER_CM = 10;
+
+/**
+ * A length for a diagram label: millimetres as centimetres with at most one decimal, plus the unit.
+ *
+ * @param mm - Length, mm.
+ * @param locale - The page language (picks the unit word).
+ * @param style - The digits to show.
+ * @returns For example "12.5 cm" or "12.5 سم".
+ * @example
+ * formatCm(125, "en", "western") // "12.5 cm"
+ */
+export function formatCm(mm: number, locale: "ar" | "en", style: DigitStyle): string {
+  const cm = Number((mm / MM_PER_CM).toFixed(1));
+  return localizeDigits(`${cm} ${locale === "ar" ? "سم" : "cm"}`, style);
+}

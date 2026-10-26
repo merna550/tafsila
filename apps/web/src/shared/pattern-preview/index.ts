@@ -6,9 +6,11 @@ export { usePatternPreview } from "./use-pattern-preview";
 export type {
   CutPiecePlan,
   CutPlan,
+  CutPlanGuide,
   CutPlanLine,
   CutPlanPoint,
   CutPlanStep,
+  CutStepGroup,
   LocalizedText,
   PlanPoint,
 } from "./cut-plan-types";

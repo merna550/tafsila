@@ -158,6 +158,8 @@ A refused save (422 `PATTERN_INVALID`) keeps `ApiError.report` and shows it in t
 
 `features/direct-cut/` (issue #291, [ADR-291](../decisions/291-direct-cut-ui.md)) is the checklist at `/designs/[id]/versions/[versionId]/cut`, opened by `DirectCutLink` in the `actions` slot of `UseVersionBar`. The preview worker has a second message type, `{ kind: "cut-steps", id, spec, measurements, options?, curveStepMm }`, answered with `{ kind: "cut-steps", ok: true, plan: CutPlan }` or `{ ok: false, error }`; `shared/pattern-preview/cut-plan.ts` is the only file that knows the engine's `CutSteps` and fills the `CutPlan` (types in `cut-plan-types.ts`). `useCutSteps` runs it in its own worker. Ticks: `tafsila.cut.ticks.<versionId>.<curveStepMm>` = `{ v: 1, engineVersion, ticked }`, ignored when the engine version differs; setting: `tafsila.cut.settings` = `{ curveStepMm: 20 | 25 | 30 }`. `PrintSheet` is the same page in print (`print:` variants) or in the on-screen "Print view" state; it never reads ticks.
 
+The drawing highlights the current step (issue #292, [ADR-292](../decisions/292-step-diagram.md)): `useCurrentStep` keeps the tapped step id (tap or focus on a row), the current step is that or the first unticked one, and ticking clears the tap. `PieceDiagram` takes `highlight` (`model/steps.ts`): those points are big (`data-current`), the others dimmed (`data-dimmed`), and each guide is a dashed segment with its cm length. The adapter fills `guides` and `group` on each step; the print sheet draws one small diagram per group. The drawing is `dir="ltr"` and never mirrors.
+
 ## Testing
 
 - Component tests: Vitest + Testing Library, next to the component.

@@ -3,7 +3,8 @@
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import type { CutPiecePlan, CutPlan } from "@/shared/pattern-preview";
-import type { CutSettings, TicksController } from "../model/types";
+import type { CurrentStepController, CutSettings, TicksController } from "../model/types";
+import { highlightOf } from "../model/steps";
 import { pieceProgress } from "../model/ticks";
 import { CurveStepSelect } from "./CurveStepSelect";
 import { CutPieceList } from "./CutPieceList";
@@ -19,6 +20,8 @@ interface PieceWorkspaceProps {
   readonly piece: CutPiecePlan;
   /** The ticks. */
   readonly ticks: TicksController;
+  /** The current step. */
+  readonly current: CurrentStepController;
   /** The curve step setting. */
   readonly settings: CutSettings;
   /** Chooses a piece. */
@@ -35,12 +38,22 @@ export function PieceWorkspace({
   plan,
   piece,
   ticks,
+  current: step,
   settings,
   onChoosePiece,
 }: Readonly<PieceWorkspaceProps>): ReactElement {
   const t = useTranslations("directCut");
   const locale = useLocale() as "ar" | "en";
   const { done, total } = pieceProgress(piece.steps, ticks.ticked);
+  /**
+   * Ticks or unticks a step and lets the current step move on.
+   *
+   * @param id - The step id.
+   */
+  const toggle = (id: string): void => {
+    ticks.toggle(id);
+    step.clear();
+  };
   const pieceDone = total > 0 && done === total;
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-start">
@@ -59,12 +72,26 @@ export function PieceWorkspace({
               {t("pieceDone", { piece: piece.name[locale] })}
             </div>
           ) : null}
-          <StepList piece={piece} ticked={ticks.ticked} onToggle={ticks.toggle} />
+          <StepList
+            piece={piece}
+            ticked={ticks.ticked}
+            onToggle={toggle}
+            currentId={step.current?.id ?? null}
+            onSelect={step.select}
+          />
         </div>
-        <div className="flex flex-col gap-2 lg:sticky lg:top-4 lg:w-96 lg:flex-none">
-          <h2 className="text-sm font-semibold text-muted">{t("diagramTitle")}</h2>
-          <PieceDiagram piece={piece} label={t("diagramLabel", { piece: piece.name[locale] })} />
-          <p className="text-sm text-muted">{t("diagramCaption", { step: plan.curveStepMm })}</p>
+        <div className="sticky top-0 z-10 order-first flex flex-col gap-2 bg-background lg:top-4 lg:order-none lg:w-96 lg:flex-none [&_svg]:max-h-40 lg:[&_svg]:max-h-96">
+          <h2 className="hidden text-sm font-semibold text-muted lg:block">{t("diagramTitle")}</h2>
+          <PieceDiagram
+            piece={piece}
+            label={t("diagramLabel", { piece: piece.name[locale] })}
+            highlight={step.current ? highlightOf([step.current]) : null}
+            locale={locale}
+            digits="western"
+          />
+          <p className="hidden text-sm text-muted lg:block">
+            {t("diagramCaption", { step: plan.curveStepMm })}
+          </p>
         </div>
       </div>
     </div>

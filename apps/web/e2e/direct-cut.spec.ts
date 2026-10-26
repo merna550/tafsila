@@ -110,3 +110,35 @@ test("direct cut: no horizontal overflow at 360 px", async ({ page }, testInfo) 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+/** FR-CUT-01 (issue #292): the diagram highlights the step the tailor tapped, else the first unticked step. */
+test("direct cut: the diagram highlights the current step", async ({ page }, testInfo) => {
+  await openDirectCut(page, testInfo);
+  const current = page.locator('[data-testid="piece-diagram"] [data-current="true"]');
+  const steps = page.getByTestId("cut-step");
+  await expect(steps.nth(0)).toHaveAttribute("data-current", "true");
+  await expect(current.first()).toBeVisible();
+  await steps.nth(2).getByRole("checkbox").focus();
+  await expect(steps.nth(2)).toHaveAttribute("data-current", "true");
+  await expect(page.locator('[data-testid="piece-diagram"] [data-dimmed="true"]').first()).toBeAttached();
+  await steps.nth(0).getByRole("checkbox").click();
+  await expect(steps.nth(1)).toHaveAttribute("data-current", "true");
+});
+
+/** NFR-03 (issue #292): at 360 px the highlighted diagram stays on screen while the list is scrolled. */
+test("direct cut: the diagram stays visible while the list scrolls at 360 px", async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await openDirectCut(page, testInfo);
+  await page.getByTestId("cut-step").last().scrollIntoViewIfNeeded();
+  await expect(page.getByTestId("direct-cut-screen").getByTestId("piece-diagram")).toBeInViewport();
+});
+
+/** FR-CUT-03 (issue #292): the print sheet shows at most three small diagrams per piece. */
+test("direct cut: the print sheet has grouped diagrams", async ({ page }, testInfo) => {
+  await openDirectCut(page, testInfo);
+  await page.emulateMedia({ media: "print" });
+  const first = page.getByTestId("print-piece").first();
+  const count = await first.getByTestId("print-group-diagram").count();
+  expect(count).toBeGreaterThan(0);
+  expect(count).toBeLessThanOrEqual(3);
+});

@@ -36,6 +36,7 @@ function StepsArea({ data }: Readonly<{ data: DirectCut }>): ReactElement {
         plan={steps.plan}
         piece={piece}
         ticks={data.ticks}
+        current={data.current}
         settings={data.settings}
         onChoosePiece={data.choosePiece}
       />
