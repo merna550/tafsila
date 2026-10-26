@@ -93,6 +93,9 @@ test("projector: dragging with the mouse pans the pattern", async ({ page }, tes
   const { base } = await openProjector(page, testInfo);
   await page.goto(base);
   await expect(page.getByTestId("pattern-group")).toBeVisible();
+  // The piece list sits over part of the canvas at the language end; hide it for the drag.
+  await page.keyboard.press("l");
+  await expect(page.getByTestId("piece-switcher")).toBeHidden();
   const before = await cutBox(page);
   await page.mouse.move(100, 600);
   await page.mouse.down();
