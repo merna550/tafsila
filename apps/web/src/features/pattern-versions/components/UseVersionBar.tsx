@@ -1,7 +1,7 @@
 "use client";
-/** The "Use this version" bar of a saved version: says which version printing, projecting and cutting use, and offers the projector (issue #286). */
+/** The "Use this version" bar of a saved version: says which version printing, projecting and cutting use, and offers the projector (issue #286) and its other actions (issue #289). */
 import { useTranslations } from "next-intl";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { Link } from "@/shared/i18n";
 
 /** Props of {@link UseVersionBar}. */
@@ -12,6 +12,8 @@ interface UseVersionBarProps {
   readonly engineVersion: string;
   /** Where the projector view of this version is. */
   readonly projectorHref: string;
+  /** Further actions that use this version, shown after the projector button (the export button, issue #289). */
+  readonly actions?: ReactNode;
 }
 
 const BUTTON =
@@ -27,6 +29,7 @@ export function UseVersionBar({
   versionNo,
   engineVersion,
   projectorHref,
+  actions,
 }: Readonly<UseVersionBarProps>): ReactElement {
   const t = useTranslations("versionHistory.useBar");
   return (
@@ -60,6 +63,7 @@ export function UseVersionBar({
         <p id="projector-disabled-reason" className="w-full text-xs text-muted md:hidden">
           {t("projectorDisabled")}
         </p>
+        {actions}
       </div>
     </section>
   );

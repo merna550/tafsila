@@ -9,6 +9,7 @@ import type { PatternVersionDetail } from "@tafsila/schemas";
 import type { ApiError } from "@/shared/api";
 import type { PreviewState } from "@/shared/pattern-preview";
 import type { ReportSelection } from "../model/report-selection";
+import { VersionExportButton } from "./VersionExportButton";
 import { VersionInputs } from "./VersionInputs";
 import { ViewerPane } from "./ViewerPane";
 
@@ -66,6 +67,7 @@ export function ReadOnlyVersionBody(props: Readonly<ReadOnlyVersionBodyProps>): 
         versionNo={version.versionNo}
         engineVersion={version.engineVersion}
         projectorHref={`${props.backHref}/${version.id}/projector`}
+        actions={<VersionExportButton version={version} title={props.title ?? t("fallbackTitle")} />}
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">

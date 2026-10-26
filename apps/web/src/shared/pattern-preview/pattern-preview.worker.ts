@@ -1,28 +1,8 @@
 /// <reference lib="webworker" />
 /** Web Worker that drafts the pattern off the main thread; the only place the engine geometry is loaded in the browser (issue #239). */
-import {
-  DraftingError,
-  INPUT_ERROR_MESSAGES,
-  buildPatternScene,
-  generatePattern,
-  isInputError,
-} from "@tafsila/engine";
-import type { PreviewRequest, PreviewResponse, PreviewWorkerError } from "./protocol";
-
-/**
- * Turns anything thrown by the engine into a message the page can route.
- *
- * @param error - The thrown value.
- * @returns A stable code, a log message and, for input errors, bilingual text.
- */
-function toWorkerError(error: unknown): PreviewWorkerError {
-  const message = error instanceof Error ? error.message : String(error);
-  if (isInputError(error)) {
-    const text = INPUT_ERROR_MESSAGES[error.code];
-    return { code: error.code, message, messageAr: text.ar, messageEn: text.en };
-  }
-  return { code: error instanceof DraftingError ? error.code : "ENGINE_CRASH", message };
-}
+import { buildPatternScene, generatePattern } from "@tafsila/engine";
+import { toWorkerError } from "./worker-error";
+import type { PreviewRequest, PreviewResponse } from "./protocol";
 
 /**
  * Drafts one request.

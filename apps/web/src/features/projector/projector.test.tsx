@@ -137,4 +137,12 @@ describe("UseVersionBar", () => {
     expect(html).toContain("Open on a computer connected to the projector");
     expect(html).toContain("version 3, engine 1.4.0");
   });
+
+  it("shows the extra actions it is given after the projector button (the export button)", () => {
+    const html = renderWithIntl(
+      <UseVersionBar versionNo={3} engineVersion="1.4.0" projectorHref="/p" actions={<b>EXTRA</b>} />,
+      "en",
+    );
+    expect(html.indexOf("EXTRA")).toBeGreaterThan(html.indexOf("Open on a computer"));
+  });
 });

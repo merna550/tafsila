@@ -856,6 +856,12 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 <a id="letter-f"></a>
 
+### Export worker
+
+**Plain words:** A second background thread in the browser that builds the PDF or SVG file while the page stays responsive. It has its own copy of the pattern code, reports progress, and is thrown away when the user cancels. Arabic: عامل التصدير.  
+**In Tafsila:** `apps/web/src/shared/pattern-export/` ([decision 289](../decisions/289-export-worker.md)). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers>
+
 ## F
 
 <a id="fabric-width"></a>
