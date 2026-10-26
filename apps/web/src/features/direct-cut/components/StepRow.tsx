@@ -42,7 +42,10 @@ export function StepRow({
       className={`flex items-start gap-3 rounded-md border bg-surface p-3 ${current ? "border-2 border-primary" : "border-border"}`}
       data-testid="cut-step"
       data-current={current ? "true" : undefined}
-      onClick={() => onSelect(step.id)}
+      onClick={(event) => {
+        // Taps on the box or the sentence tick the step; only a tap on the row itself selects it.
+        if (event.target === event.currentTarget) onSelect(step.id);
+      }}
       onFocus={() => onSelect(step.id)}
     >
       <Checkbox

@@ -3,7 +3,7 @@
 **Context:** #292 draws the current marking step on the piece diagram of the direct-cut checklist (#291, ADR-291).
 **Decision:**
 
-1. **Current step** = the tapped (or keyboard-focused) step, otherwise the first unticked one. Ticking clears the tap.
+1. **Current step** = the focused step (keyboard, or a tap on the row itself; a tap on the box or sentence ticks the step instead), otherwise the first unticked one. Ticking clears the tap.
 2. **Guides are computed in the worker adapter** (`shared/pattern-preview/cut-plan.ts`) from each point's frame distances: one segment from the reference line and one from the top line, each ending at the point and labelled with its length. `apps/web` only draws them and prints `formatCm`.
 3. **Print** shows one diagram per step group (corners, curves, marks) instead of one per step; the adapter gives each step a `group`.
 4. **The diagram never mirrors** (`dir="ltr"`, as the pattern viewer, ADR-243); only its guide labels and the page follow the language.

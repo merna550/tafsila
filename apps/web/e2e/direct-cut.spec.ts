@@ -118,7 +118,7 @@ test("direct cut: the diagram highlights the current step", async ({ page }, tes
   const steps = page.getByTestId("cut-step");
   await expect(steps.nth(0)).toHaveAttribute("data-current", "true");
   await expect(current.first()).toBeVisible();
-  await steps.nth(2).locator("label").click();
+  await steps.nth(2).getByRole("checkbox").focus();
   await expect(steps.nth(2)).toHaveAttribute("data-current", "true");
   await expect(page.locator('[data-testid="piece-diagram"] [data-dimmed="true"]').first()).toBeAttached();
   await steps.nth(0).getByRole("checkbox").click();
@@ -130,7 +130,7 @@ test("direct cut: the diagram stays visible while the list scrolls at 360 px", a
   await page.setViewportSize({ width: 360, height: 740 });
   await openDirectCut(page, testInfo);
   await page.getByTestId("cut-step").last().scrollIntoViewIfNeeded();
-  await expect(page.getByTestId("piece-diagram")).toBeInViewport();
+  await expect(page.getByTestId("direct-cut-screen").getByTestId("piece-diagram")).toBeInViewport();
 });
 
 /** FR-CUT-03 (issue #292): the print sheet shows at most three small diagrams per piece. */
