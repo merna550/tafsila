@@ -1257,6 +1257,10 @@
     "onFold": "على الطيّة",
     "diagramTitle": "مرجع المنحنى",
     "diagramCaption": "كل نقطة تبعد {step} مم عن التي قبلها.",
+    "diagram": {
+      "group": "{piece}: {group}",
+      "groups": { "corners": "الأركان", "curves": "المنحنيات", "marks": "العلامات" }
+    },
     "diagramLabel": "رسم مرجعي للقطعة {piece}",
     "loading": "جارٍ حساب الخطوات...",
     "error": "تعذّر حساب خطوات القص لهذه النسخة. حاولي مرة أخرى.",

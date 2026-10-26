@@ -3,10 +3,25 @@
  * worker. Texts are filled here in both languages, the reference steps become the piece's reference text, and the
  * geometry is moved so the cut line's box starts at 0,0 for the diagram.
  */
-import { pathData, samplePath, type CutPoint, type CutSteps, type PieceCutSteps } from "@tafsila/engine";
+import {
+  pathData,
+  samplePath,
+  type CutPoint,
+  type CutStep,
+  type CutSteps,
+  type PieceCutSteps,
+} from "@tafsila/engine";
 import { cutStepText } from "@tafsila/engine/cut-text";
 import type { Piece, Point, Segment } from "@tafsila/schemas";
-import type { CutPiecePlan, CutPlan, CutPlanLine, CutPlanStep, LocalizedText } from "./cut-plan-types";
+import type {
+  CutPiecePlan,
+  CutPlan,
+  CutPlanGuide,
+  CutPlanLine,
+  CutPlanStep,
+  CutStepGroup,
+  LocalizedText,
+} from "./cut-plan-types";
 
 /** Step keys that describe the reference line instead of a mark; they become the piece's reference text. */
 const REFERENCE_KEYS: readonly string[] = ["cut.reference.fold", "cut.reference.grain", "cut.reference.top"];
@@ -111,12 +126,46 @@ function referenceLines(piece: PieceCutSteps, box: Box): CutPlanLine[] {
 }
 
 /**
+ * The printed diagram a step belongs to, by what it marks or connects.
+ *
+ * @param key - The engine step key.
+ * @returns The group.
+ */
+function groupOf(key: CutStep["key"]): CutStepGroup {
+  if (key === "cut.mark.corner" || key === "cut.connect.straight" || key === "cut.cut") return "corners";
+  if (key === "cut.mark.curve" || key === "cut.connect.curve") return "curves";
+  return "marks";
+}
+
+/**
+ * The two distance segments of a marked point: from the reference line and from the top line, each ending at the
+ * point. A zero distance has nothing to draw. Computed here (in the worker) so the page never does geometry.
+ *
+ * @param piece - The engine steps of the piece (for its frame).
+ * @param box - The cut line's box.
+ * @param point - The marked point.
+ * @returns Zero to two segments.
+ */
+function guidesOf(piece: PieceCutSteps, box: Box, point: CutPoint): CutPlanGuide[] {
+  const { origin, along, across } = piece.frame;
+  const to = shift(box, point.at);
+  const guides: CutPlanGuide[] = [];
+  if (point.acrossMm > 0)
+    guides.push({ from: alongLine(box, origin, along, point.alongMm), to, mm: point.acrossMm });
+  if (point.alongMm > 0)
+    guides.push({ from: alongLine(box, origin, across, point.acrossMm), to, mm: point.alongMm });
+  return guides;
+}
+
+/**
  * The marking steps of a piece as numbered rows (reference steps left out, numbers start at 1).
  *
  * @param piece - The engine steps of the piece.
+ * @param box - The cut line's box.
  * @returns The rows.
  */
-function planSteps(piece: PieceCutSteps): CutPlanStep[] {
+function planSteps(piece: PieceCutSteps, box: Box): CutPlanStep[] {
+  const byLabel = new Map(piece.points.map((p) => [p.label, p]));
   return piece.steps
     .filter((s) => !REFERENCE_KEYS.includes(s.key))
     .map((s, index) => ({
@@ -124,6 +173,13 @@ function planSteps(piece: PieceCutSteps): CutPlanStep[] {
       no: index + 1,
       text: { ar: cutStepText(s, "ar"), en: cutStepText(s, "en") },
       pointIds: [...s.points],
+      guides: s.key.startsWith("cut.mark.")
+        ? s.points.flatMap((label) => {
+            const point = byLabel.get(label);
+            return point ? guidesOf(piece, box, point) : [];
+          })
+        : [],
+      group: groupOf(s.key),
     }));
 }
 
@@ -154,7 +210,7 @@ function planPiece(steps: PieceCutSteps, piece: Piece): CutPiecePlan {
     onFold: piece.cut.onFold,
     reference: { text: referenceText(steps.steps), lines: referenceLines(steps, box) },
     points: steps.points.map((p) => planPoint(box, p)),
-    steps: planSteps(steps),
+    steps: planSteps(steps, box),
     diagram: {
       widthMm: box.widthMm,
       heightMm: box.heightMm,

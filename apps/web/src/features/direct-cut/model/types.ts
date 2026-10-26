@@ -1,6 +1,6 @@
 /** Shapes the direct-cut hooks return and the components take, kept apart from the hooks so components never import a hook. */
 import type { PatternVersionDetail } from "@tafsila/schemas";
-import type { CutPiecePlan, CutPlan, CutStepsState } from "@/shared/pattern-preview";
+import type { CutPiecePlan, CutPlan, CutPlanStep, CutStepsState } from "@/shared/pattern-preview";
 import type { CurveStepMm } from "./settings";
 
 /** What the checklist uses. */
@@ -10,6 +10,16 @@ export interface TicksController {
   /** Ticks or unticks a step. */
   readonly toggle: (id: string) => void;
   /** Unticks every step. */
+  readonly clear: () => void;
+}
+
+/** What the current-step hook returns. */
+export interface CurrentStepController {
+  /** The current step, or `null` when every step is ticked. */
+  readonly current: CutPlanStep | null;
+  /** Makes a step current (tap or keyboard focus). */
+  readonly select: (id: string) => void;
+  /** Clears the tap, so the current step moves to the first unticked one. */
   readonly clear: () => void;
 }
 
@@ -43,6 +53,8 @@ export interface DirectCut {
   readonly ticks: TicksController;
   /** The chosen piece, if the plan has pieces. */
   readonly piece: CutPiecePlan | undefined;
+  /** The current step of the chosen piece (the one the diagram highlights). */
+  readonly current: CurrentStepController;
   /** Chooses a piece. */
   readonly choosePiece: (pieceId: string) => void;
   /** True while the print view is shown on screen. */

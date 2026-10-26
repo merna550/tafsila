@@ -1265,6 +1265,10 @@
     "onFold": "on the fold",
     "diagramTitle": "Curve reference",
     "diagramCaption": "Each point is {step} mm from the one before.",
+    "diagram": {
+      "group": "{piece}: {group}",
+      "groups": { "corners": "Corners", "curves": "Curves", "marks": "Marks" }
+    },
     "diagramLabel": "Reference drawing of {piece}",
     "loading": "Working out the steps...",
     "error": "The cutting steps for this version could not be worked out. Try again.",

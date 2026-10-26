@@ -46,6 +46,20 @@ describe("toCutPlan", () => {
     }
   });
 
+  it("gives mark steps guides that end at their point and carry the step's distances", () => {
+    const marks = plan.pieces.flatMap((p) => p.steps.filter((s) => s.guides.length > 0));
+    expect(marks.length).toBeGreaterThan(0);
+    for (const piece of plan.pieces) {
+      for (const step of piece.steps) {
+        const ends = piece.points.filter((p) => step.pointIds.includes(p.id)).map((p) => p.at);
+        for (const guide of step.guides) {
+          expect(guide.mm).toBeGreaterThan(0);
+          expect(ends.some((at) => at.x === guide.to.x && at.y === guide.to.y)).toBe(true);
+        }
+      }
+    }
+  });
+
   it("is plain JSON, so it can cross the worker boundary", () => {
     expect(JSON.parse(JSON.stringify(plan))).toEqual(plan);
   });

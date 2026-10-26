@@ -15,6 +15,10 @@ interface StepRowProps {
   readonly checked: boolean;
   /** Ticks or unticks the step. */
   readonly onToggle: (id: string) => void;
+  /** Whether the diagram highlights this step. */
+  readonly current: boolean;
+  /** Makes the step current (tap or focus). */
+  readonly onSelect: (id: string) => void;
 }
 
 /**
@@ -23,13 +27,23 @@ interface StepRowProps {
  * @param props - The step, its text, state and handler.
  * @returns The list item.
  */
-export function StepRow({ step, text, checked, onToggle }: Readonly<StepRowProps>): ReactElement {
+export function StepRow({
+  step,
+  text,
+  checked,
+  onToggle,
+  current,
+  onSelect,
+}: Readonly<StepRowProps>): ReactElement {
   const t = useTranslations("directCut");
   const id = `step-${step.id}`;
   return (
     <li
-      className="flex items-start gap-3 rounded-md border border-border bg-surface p-3"
+      className={`flex items-start gap-3 rounded-md border bg-surface p-3 ${current ? "border-2 border-primary" : "border-border"}`}
       data-testid="cut-step"
+      data-current={current ? "true" : undefined}
+      onClick={() => onSelect(step.id)}
+      onFocus={() => onSelect(step.id)}
     >
       <Checkbox
         id={id}

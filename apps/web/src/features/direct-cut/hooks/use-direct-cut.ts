@@ -5,6 +5,7 @@ import { useDesign } from "@/features/design-picker";
 import { useVersion, versionPreviewInput } from "@/features/pattern-versions";
 import { useCutSteps } from "@/shared/pattern-preview";
 import { useCutSettings } from "./use-cut-settings";
+import { useCurrentStep } from "./use-current-step";
 import { useTicks } from "./use-ticks";
 import type { DirectCut } from "../model/types";
 
@@ -31,6 +32,7 @@ export function useDirectCut(designId: string, versionId: string): DirectCut {
   const [chosen, setChosen] = useState<string | null>(null);
   const [printView, setPrintView] = useState(false);
   const piece = plan?.pieces.find((p) => p.pieceId === chosen) ?? plan?.pieces[0];
+  const current = useCurrentStep(piece, ticks.ticked);
   return {
     query,
     detail: query.data,
@@ -38,6 +40,7 @@ export function useDirectCut(designId: string, versionId: string): DirectCut {
     steps: { ...cut, plan },
     settings,
     ticks,
+    current,
     piece,
     choosePiece: setChosen,
     printView,

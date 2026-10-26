@@ -29,6 +29,19 @@ export interface CutPlanPoint {
   readonly at: PlanPoint;
 }
 
+/** A distance segment drawn for the current step: it ends at the marked point and carries its length. */
+export interface CutPlanGuide {
+  /** Where the segment starts (on the reference or the top line). */
+  readonly from: PlanPoint;
+  /** Where it ends (at the marked point). */
+  readonly to: PlanPoint;
+  /** Its length, mm, as the step text measures it. */
+  readonly mm: number;
+}
+
+/** Which small diagram of the printed sheet a step belongs to. */
+export type CutStepGroup = "corners" | "curves" | "marks";
+
 /** One numbered step of a piece. */
 export interface CutPlanStep {
   /** Stable for one version, curve step and engine version: `<pieceId>#<engine step number>`. */
@@ -39,6 +52,10 @@ export interface CutPlanStep {
   readonly text: LocalizedText;
   /** The points this step marks or connects. */
   readonly pointIds: readonly string[];
+  /** The distance segments drawn while the step is current (issue #292); empty for connecting steps. */
+  readonly guides: readonly CutPlanGuide[];
+  /** The printed diagram the step belongs to. */
+  readonly group: CutStepGroup;
 }
 
 /** A reference line of the diagram. */

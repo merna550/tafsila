@@ -46,18 +46,30 @@ describe("CutPieceList", () => {
 
 describe("StepList", () => {
   it("renders the step text of the page language with unchecked boxes", () => {
-    const en = renderWithIntl(<StepList piece={front} ticked={new Set()} onToggle={noop} />, "en");
+    const en = renderWithIntl(
+      <StepList piece={front} ticked={new Set()} onToggle={noop} currentId={null} onSelect={noop} />,
+      "en",
+    );
     expect(en).toContain("Mark point A.");
     expect(en).not.toContain("وضعي");
     expect(en).toContain('aria-checked="false"');
     expect(en).not.toContain('aria-checked="true"');
-    const ar = renderWithIntl(<StepList piece={front} ticked={new Set()} onToggle={noop} />, "ar");
+    const ar = renderWithIntl(
+      <StepList piece={front} ticked={new Set()} onToggle={noop} currentId={null} onSelect={noop} />,
+      "ar",
+    );
     expect(ar).toContain("وضعي النقطة A.");
   });
 
   it("checks only the ticked steps", () => {
     const html = renderWithIntl(
-      <StepList piece={front} ticked={new Set([front.steps[1].id])} onToggle={noop} />,
+      <StepList
+        piece={front}
+        ticked={new Set([front.steps[1].id])}
+        onToggle={noop}
+        currentId={null}
+        onSelect={noop}
+      />,
       "en",
     );
     expect(html.match(/aria-checked="true"/g)).toHaveLength(1);
@@ -75,6 +87,13 @@ describe("PrintSheet", () => {
     expect(html).toContain("Front · Cut 1 on the fold");
     expect(html).not.toContain("aria-checked");
     expect(html).not.toContain("direction");
+  });
+
+  it("prints one small diagram per step group that has points, not one per step", () => {
+    const html = renderWithIntl(sheet, "en");
+    expect(html.match(/data-testid="print-group-diagram"/g)).toHaveLength(3);
+    expect(html).toContain("Corners");
+    expect(html).toContain("Curves");
   });
 
   it("prints in Arabic with the Arabic names", () => {

@@ -2,8 +2,9 @@
 /** The printable checklist: every piece on its own page with empty boxes (it never reads the ticks), the title block and the reference drawing. */
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import type { CutPlan } from "@/shared/pattern-preview";
+import type { CutPiecePlan, CutPlan } from "@/shared/pattern-preview";
 import { showText } from "../model/format";
+import { groupHighlights } from "../model/steps";
 import { PieceDiagram } from "./PieceDiagram";
 
 /** Props of {@link PrintSheet}. */
@@ -16,6 +17,34 @@ interface PrintSheetProps {
   readonly versionNo: number;
   /** Size label of the version. */
   readonly sizeLabel: string;
+}
+
+/**
+ * The small diagrams of one piece, one per step group that has points.
+ *
+ * @param props - The piece.
+ * @param props.piece - The piece.
+ * @returns The diagrams.
+ */
+function GroupDiagrams({ piece }: Readonly<{ piece: CutPiecePlan }>): ReactElement {
+  const t = useTranslations("directCut");
+  const locale = useLocale() as "ar" | "en";
+  return (
+    <div className="grid grid-cols-3 gap-2">
+      {groupHighlights(piece.steps).map(({ group, highlight }) => (
+        <figure key={group} className="m-0" data-testid="print-group-diagram">
+          <PieceDiagram
+            piece={piece}
+            label={t("diagram.group", { piece: piece.name[locale], group: t(`diagram.groups.${group}`) })}
+            highlight={highlight}
+            locale={locale}
+            digits="western"
+          />
+          <figcaption className="text-center text-xs">{t(`diagram.groups.${group}`)}</figcaption>
+        </figure>
+      ))}
+    </div>
+  );
 }
 
 /**
@@ -63,7 +92,7 @@ export function PrintSheet({ plan, title, versionNo, sizeLabel }: Readonly<Print
               </li>
             ))}
           </ol>
-          <PieceDiagram piece={piece} label={t("diagramLabel", { piece: piece.name[locale] })} />
+          <GroupDiagrams piece={piece} />
           <p className="text-sm">{t("print.caption", { step: plan.curveStepMm })}</p>
         </section>
       ))}

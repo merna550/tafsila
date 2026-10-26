@@ -14,15 +14,25 @@ interface StepListProps {
   readonly ticked: ReadonlySet<string>;
   /** Ticks or unticks a step. */
   readonly onToggle: (id: string) => void;
+  /** The current step id, or `null`. */
+  readonly currentId: string | null;
+  /** Makes a step current. */
+  readonly onSelect: (id: string) => void;
 }
 
 /**
  * Renders the ordered list.
  *
- * @param props - The piece, the ticks and the handler.
+ * @param props - The piece, the ticks, the current step and the handlers.
  * @returns The list.
  */
-export function StepList({ piece, ticked, onToggle }: Readonly<StepListProps>): ReactElement {
+export function StepList({
+  piece,
+  ticked,
+  onToggle,
+  currentId,
+  onSelect,
+}: Readonly<StepListProps>): ReactElement {
   const t = useTranslations("directCut");
   const locale = useLocale() as "ar" | "en";
   return (
@@ -34,6 +44,8 @@ export function StepList({ piece, ticked, onToggle }: Readonly<StepListProps>): 
           text={showText(step.text, locale)}
           checked={ticked.has(step.id)}
           onToggle={onToggle}
+          current={step.id === currentId}
+          onSelect={onSelect}
         />
       ))}
     </ol>
