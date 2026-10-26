@@ -9,7 +9,7 @@ import type { PatternVersionDetail } from "@tafsila/schemas";
 import type { ApiError } from "@/shared/api";
 import type { PreviewState } from "@/shared/pattern-preview";
 import type { ReportSelection } from "../model/report-selection";
-import { VersionExportButton } from "./VersionExportButton";
+import { VersionUseActions } from "./VersionUseActions";
 import { VersionInputs } from "./VersionInputs";
 import { ViewerPane } from "./ViewerPane";
 
@@ -46,6 +46,8 @@ export function ReadOnlyVersionBody(props: Readonly<ReadOnlyVersionBodyProps>): 
   const { detail, preview, viewer, selection } = props;
   if (detail === undefined) return null;
   const { version, engineChanged } = detail;
+  const title = props.title ?? t("fallbackTitle");
+  const failed = preview.status === "error";
   return (
     <>
       <ReadOnlyVersionBanner
@@ -54,7 +56,7 @@ export function ReadOnlyVersionBody(props: Readonly<ReadOnlyVersionBodyProps>): 
         onRestore={props.onRestore}
       />
       <PageHeader
-        title={props.title ?? t("fallbackTitle")}
+        title={title}
         actions={
           <div className="flex flex-wrap gap-2">
             <Badge tone="info">{t("row.version", { n: version.versionNo })}</Badge>
@@ -67,7 +69,9 @@ export function ReadOnlyVersionBody(props: Readonly<ReadOnlyVersionBodyProps>): 
         versionNo={version.versionNo}
         engineVersion={version.engineVersion}
         projectorHref={`${props.backHref}/${version.id}/projector`}
-        actions={<VersionExportButton version={version} title={props.title ?? t("fallbackTitle")} />}
+        actions={
+          <VersionUseActions version={version} title={title} backHref={props.backHref} failed={failed} />
+        }
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">

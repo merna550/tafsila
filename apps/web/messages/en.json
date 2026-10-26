@@ -1233,5 +1233,53 @@
       "font": "The font could not be loaded. Check your connection and try again.",
       "invalid": "This design with these measurements cannot be drawn as a pattern, so it cannot be exported."
     }
+  },
+  "directCut": {
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "title": "Direct cut",
+    "version": "Version {n}",
+    "meta": "Version {n} · engine {engine}",
+    "engineOld": "Older engine version",
+    "viewPrint": "Print view",
+    "clearTicks": "Clear ticks",
+    "backToVersion": "Back to the version",
+    "clearDialog": {
+      "title": "Clear all ticks?",
+      "description": "This removes every tick of this version from this device.",
+      "cancel": "Cancel",
+      "confirm": "Clear ticks",
+      "close": "Close"
+    },
+    "pieces": "Pieces",
+    "pieceLabel": "{name}",
+    "progress": "{done} of {total}",
+    "storedLocally": "Progress is saved on this device only.",
+    "pieceDone": "All steps of {piece} are done. Go to the next piece.",
+    "reference": "Reference line",
+    "curveStep": "Curve point spacing",
+    "curveStepOption": "{n} mm",
+    "steps": "Marking steps",
+    "stepLabel": "Step {no}",
+    "cutCount": "Cut {count}",
+    "onFold": "on the fold",
+    "diagramTitle": "Curve reference",
+    "diagramCaption": "Each point is {step} mm from the one before.",
+    "diagramLabel": "Reference drawing of {piece}",
+    "loading": "Working out the steps...",
+    "error": "The cutting steps for this version could not be worked out. Try again.",
+    "retry": "Try again",
+    "link": {
+      "label": "Direct cut",
+      "disabled": "This version cannot be drawn, so it has no cutting steps."
+    },
+    "print": {
+      "title": "Print cutting steps",
+      "print": "Print",
+      "back": "Back",
+      "sizeLine": "Direct cut · size {size}",
+      "caption": "Curve reference: a point every {step} mm. Make the line pass through every point.",
+      "emptyBox": "Empty box"
+    }
   }
 }

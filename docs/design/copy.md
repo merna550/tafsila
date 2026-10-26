@@ -21,54 +21,56 @@ Every user-facing string lives in `apps/web/messages/ar.json` and `en.json`. Bot
 
 ## Glossary (use these words, nothing else)
 
-| Concept                            | Arabic                                   | English                             |
-| ---------------------------------- | ---------------------------------------- | ----------------------------------- |
-| client (the tailor's customer)     | عميلة / العميلات / عميلاتي               | client / clients / my clients       |
-| delete account (confirmation word) | حذف الحساب (الكلمة: حذف)                 | delete account (word: DELETE)       |
-| measurement set                    | مجموعة مقاسات                            | measurement set                     |
-| a single measurement               | قياس                                     | measurement                         |
-| standard size                      | مقاس جاهز                                | standard size                       |
-| base size                          | المقاس الأساسي                           | base size                           |
-| override / overridden              | تعديل / معدَّل                           | override / adjusted                 |
-| custom measurements                | مقاسات مخصّصة                            | custom measurements                 |
-| pattern                            | باترون / باترونات                        | pattern / patterns                  |
-| my designs                         | تصاميمي                                  | my designs                          |
-| design (one garment design)        | تصميم / تصاميم                           | design / designs                    |
-| version (saved copy of a pattern)  | نسخة / النسخ                             | version / versions                  |
-| save version / restore version     | حفظ نسخة / استعادة النسخة                | save version / restore version      |
-| ease preference                    | الراحة: ضيّق / عادي / فضفاض              | ease: fitted / regular / loose      |
-| seam allowance                     | سماحة الخياطة                            | seam allowance                      |
-| validation report                  | تقرير التحقق                             | validation report                   |
-| dress / skirt / blouse             | فستان / تنورة / بلوزة                    | dress / skirt / blouse              |
-| phone number                       | رقم الهاتف                               | phone number                        |
-| verification code                  | رمز التأكيد                              | verification code                   |
-| verified / not verified            | مؤكَّد / غير مؤكَّد                      | verified / not verified             |
-| admin panel                        | لوحة الإدارة                             | admin panel                         |
-| admin (the link)                   | الإدارة                                  | admin                               |
-| users (admin list)                 | المستخدمون                               | users                               |
-| size chart                         | جدول المقاسات                            | size chart                          |
-| import / export CSV                | استيراد CSV / تصدير CSV                  | import CSV / export CSV             |
-| discard changes                    | تجاهل التعديلات                          | discard changes                     |
-| password                           | كلمة المرور                              | password                            |
-| sign in / sign up / sign out       | تسجيل الدخول / حساب جديد / تسجيل الخروج  | sign in / create account / sign out |
-| admin panel                        | لوحة الإدارة                             | admin                               |
-| size chart                         | جدول المقاسات                            | size chart                          |
-| centimetre                         | سم / سنتيمتر                             | cm / centimetres                    |
-| back                               | العودة                                   | back                                |
-| free trial                         | تجربة مجانية                             | free trial                          |
-| resend code                        | إعادة الإرسال                            | resend code                         |
-| seam / dart / hem                  | خياطة / دارت / ذيل                       | seam / dart / hem                   |
-| facing / interfacing               | بطانة داخلية / حشوة لاصقة                | facing / interfacing                |
-| press / gather / bind              | اكوي / جمّعي / قفّلي بشريط مائل          | press / gather / bind               |
-| zip / buttonhole                   | سوستة / عروة                             | zip / buttonhole                    |
-| projector / calibration            | بروجكتر / معايرة                         | projector / calibration             |
-| verification square                | مربع التحقق                              | verification square                 |
-| direct cut / marking step          | قص مباشر / خطوة تعليم                    | direct cut / marking step           |
-| reference line / fold / selvedge   | خط مرجعي / الطيّة / حافة القماش          | reference line / fold / selvedge    |
-| top line / notch / grain line      | الخط العلوي / علامة المطابقة / خط النسيج | top line / notch / grain line       |
-| tile / overlap                     | صفحة (من الباترون المقسّم) / تداخل       | tile / overlap                      |
-| test square                        | مربع اختباري (10 سم)                     | test square (10 cm)                 |
-| use this version / mirror          | استخدمي هذه النسخة / عكس                 | use this version / mirror           |
+| Concept                            | Arabic                                             | English                             |
+| ---------------------------------- | -------------------------------------------------- | ----------------------------------- |
+| client (the tailor's customer)     | عميلة / العميلات / عميلاتي                         | client / clients / my clients       |
+| delete account (confirmation word) | حذف الحساب (الكلمة: حذف)                           | delete account (word: DELETE)       |
+| measurement set                    | مجموعة مقاسات                                      | measurement set                     |
+| a single measurement               | قياس                                               | measurement                         |
+| standard size                      | مقاس جاهز                                          | standard size                       |
+| base size                          | المقاس الأساسي                                     | base size                           |
+| override / overridden              | تعديل / معدَّل                                     | override / adjusted                 |
+| custom measurements                | مقاسات مخصّصة                                      | custom measurements                 |
+| pattern                            | باترون / باترونات                                  | pattern / patterns                  |
+| my designs                         | تصاميمي                                            | my designs                          |
+| design (one garment design)        | تصميم / تصاميم                                     | design / designs                    |
+| version (saved copy of a pattern)  | نسخة / النسخ                                       | version / versions                  |
+| save version / restore version     | حفظ نسخة / استعادة النسخة                          | save version / restore version      |
+| ease preference                    | الراحة: ضيّق / عادي / فضفاض                        | ease: fitted / regular / loose      |
+| seam allowance                     | سماحة الخياطة                                      | seam allowance                      |
+| validation report                  | تقرير التحقق                                       | validation report                   |
+| dress / skirt / blouse             | فستان / تنورة / بلوزة                              | dress / skirt / blouse              |
+| phone number                       | رقم الهاتف                                         | phone number                        |
+| verification code                  | رمز التأكيد                                        | verification code                   |
+| verified / not verified            | مؤكَّد / غير مؤكَّد                                | verified / not verified             |
+| admin panel                        | لوحة الإدارة                                       | admin panel                         |
+| admin (the link)                   | الإدارة                                            | admin                               |
+| users (admin list)                 | المستخدمون                                         | users                               |
+| size chart                         | جدول المقاسات                                      | size chart                          |
+| import / export CSV                | استيراد CSV / تصدير CSV                            | import CSV / export CSV             |
+| discard changes                    | تجاهل التعديلات                                    | discard changes                     |
+| password                           | كلمة المرور                                        | password                            |
+| sign in / sign up / sign out       | تسجيل الدخول / حساب جديد / تسجيل الخروج            | sign in / create account / sign out |
+| admin panel                        | لوحة الإدارة                                       | admin                               |
+| size chart                         | جدول المقاسات                                      | size chart                          |
+| centimetre                         | سم / سنتيمتر                                       | cm / centimetres                    |
+| back                               | العودة                                             | back                                |
+| free trial                         | تجربة مجانية                                       | free trial                          |
+| resend code                        | إعادة الإرسال                                      | resend code                         |
+| seam / dart / hem                  | خياطة / دارت / ذيل                                 | seam / dart / hem                   |
+| facing / interfacing               | بطانة داخلية / حشوة لاصقة                          | facing / interfacing                |
+| press / gather / bind              | اكوي / جمّعي / قفّلي بشريط مائل                    | press / gather / bind               |
+| zip / buttonhole                   | سوستة / عروة                                       | zip / buttonhole                    |
+| projector / calibration            | بروجكتر / معايرة                                   | projector / calibration             |
+| verification square                | مربع التحقق                                        | verification square                 |
+| direct cut / marking step          | قص مباشر / خطوة تعليم                              | direct cut / marking step           |
+| clear ticks / curve point spacing  | إعادة ضبط التقدّم / المسافة بين النقاط على المنحنى | clear ticks / curve point spacing   |
+| print view                         | عرض الطباعة                                        | print view                          |
+| reference line / fold / selvedge   | خط مرجعي / الطيّة / حافة القماش                    | reference line / fold / selvedge    |
+| top line / notch / grain line      | الخط العلوي / علامة المطابقة / خط النسيج           | top line / notch / grain line       |
+| tile / overlap                     | صفحة (من الباترون المقسّم) / تداخل                 | tile / overlap                      |
+| test square                        | مربع اختباري (10 سم)                               | test square (10 cm)                 |
+| use this version / mirror          | استخدمي هذه النسخة / عكس                           | use this version / mirror           |
 
 ### PDF (A4 print file, `packages/export/src/pdf/strings.ts`)
 

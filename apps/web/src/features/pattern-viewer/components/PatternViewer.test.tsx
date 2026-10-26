@@ -85,10 +85,13 @@ function sources(dir: string): string[] {
   });
 }
 
+/** Worker-only files that may sample a path: the preview worker's cut-plan adapter (#291) never reaches a page bundle (`scripts/check-engine-chunk.mjs` checks it). */
+const WORKER_ONLY = ["shared/pattern-preview/cut-plan.ts"];
+
 describe("no geometry in the web app", () => {
   it("never imports the engine geometry or samples a path", () => {
     const root = join(__dirname, "../../..");
-    for (const file of sources(root)) {
+    for (const file of sources(root).filter((f) => !WORKER_ONLY.some((w) => f.endsWith(w)))) {
       const text = readFileSync(file, "utf8");
       expect(text, file).not.toMatch(/@tafsila\/engine\/geometry/);
       expect(text, file).not.toMatch(/\bsamplePath\b/);
