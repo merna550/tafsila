@@ -9,6 +9,7 @@ One page per active milestone: goal, scope, SRS IDs, deliverables, exit criteria
 | M2 - Engine core               | [M2-engine-core.md](M2-engine-core.md)                     |
 | M3 - Design & pattern UI       | [M3-design-and-pattern-ui.md](M3-design-and-pattern-ui.md) |
 | M4 - Outputs                   | [M4-outputs.md](M4-outputs.md)                             |
+| M5 - Fabric                    | [M5-fabric.md](M5-fabric.md)                               |
 
 Rules (issue #22, [ADR-024](../DECISIONS.md)):
 
