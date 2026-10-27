@@ -284,6 +284,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Each `Piece` has `bbox: { w, h }` ([SRS section 6.3](../SRS.md)); used by nesting. **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Minimum_bounding_box>
 
+<a id="bottom-left-fill"></a>
+
+### Bottom-left fill (BLF)
+
+**Plain words:** A simple way to lay pieces on a strip: take the pieces one by one in a fixed order and put each one as far toward the start of the strip as it fits, then as low as it fits. Trying a few orders and keeping the shortest strip is often good enough.  
+**In Tafsila:** The nesting algorithm chosen by [ADR-313](../decisions/313-nesting-algorithm.md). It places pieces on 3 mm column slices, tries three piece orders, and uses no random numbers, so it is deterministic. See [Nesting / marker](#nesting). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Packing_problems>
+
 <a id="branch"></a>
 
 ### Branch
@@ -1516,7 +1524,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Nesting / marker
 
 **Plain words:** Arranging all pattern pieces on a given fabric width to use as little fabric as possible. The resulting layout is called a marker.  
-**In Tafsila:** Planned `packages/nesting` run in a Web Worker ([SRS section 4.10](../SRS.md)). **Level:** intermediate  
+**In Tafsila:** Planned `packages/nesting` run in a Web Worker ([SRS section 4.10](../SRS.md)), using [bottom-left fill](#bottom-left-fill) ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="next-intl"></a>
@@ -1534,6 +1542,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A React framework that provides routing, server rendering and API route handlers.  
 **In Tafsila:** `apps/web`. See [App Router](#app-router). **Card:** [Next.js](tech/nextjs.md) · **Level:** beginner  
 **Learn:** <https://nextjs.org/docs>
+
+<a id="no-fit-polygon"></a>
+
+### No-fit polygon (NFP)
+
+**Plain words:** For two shapes A and B, the outline of all positions where B would touch A without overlapping it. Nesting tools such as SVGnest compute one for each pair of pieces (a Minkowski sum), then pick a position on it.  
+**In Tafsila:** Used by the SVGnest port that the spike #313 looked at; not used by the chosen algorithm ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** advanced  
+**Learn:** <https://en.wikipedia.org/wiki/Minkowski_addition>
 
 <a id="node"></a>
 
