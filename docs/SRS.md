@@ -453,8 +453,8 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at. Not created in M4 (FR-EXP-05 deferred, [ADR-281](decisions/281-m4-scope.md)) |
 | `chat_messages` | id, design_id, role, content, proposed_patch (jsonb), applied_version_id?, created_at |
 | `fabric_calcs` | id, pattern_version_id, width_mm, layout, result (jsonb: length_mm, marker) |
-| `fabrics` | id, name_ar, name_en, properties (jsonb: drape, weight, stretch, sheen), care_notes |
-| `fabric_rules` | id, condition (jsonb), required_properties (jsonb), priority |
+| `fabrics` | id, name_ar, name_en, properties (jsonb: drape, weight, body, stretch, sheen; integers 0 to 4, [ADR-314](decisions/314-fabric-kb-model.md)), care_notes (jsonb ar/en) |
+| `fabric_rules` | id, condition (jsonb: list of path/op/values tests), required_properties (jsonb: property, min, max, `strength` prefer/must), priority 1 to 5, reason (jsonb ar/en) |
 | `size_charts` | id, name, sizes (jsonb), is_default, owner_id? (null = system chart; set = a user's private chart), updated_by, updated_at |
 | `admin_audit` | id, who, action, target, before (jsonb), after (jsonb), at (append-only, admin only) |
 | `products` | id, code, kind (`single`/`pack`/`subscription`), price_egp, credits, period_days, active |

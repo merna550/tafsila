@@ -308,6 +308,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Chosen during triage to save tokens; rubric in [WORKFLOW section 2](../WORKFLOW.md). **Level:** intermediate  
 **Learn:** <https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels>
 
+<a id="fabric-body"></a>
+
+### Body (of a fabric)
+
+**Plain words:** How crisp and self-supporting a fabric is, whether it holds a shape or flops. Collars, pleats and puffed sleeves need body. Also called the "hand" of a fabric. Arabic: تماسك القماش.  
+**In Tafsila:** one of the five fabric properties (0 to 4) used by the fabric recommendation rules (`packages/fabric-kb`). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Textile>
+
 <a id="body-line-declaration"></a>
 
 ### Body-line declaration
@@ -699,6 +707,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** Two checklists. **Ready**: an issue may be started. **Done**: a pull request may be reviewed.  
 **In Tafsila:** [WORKFLOW sections 4 and 5](../WORKFLOW.md). **Level:** beginner  
 **Learn:** <https://scrumguides.org/scrum-guide.html>
+
+<a id="drape"></a>
+
+### Drape
+
+**Plain words:** How softly a fabric falls and folds under its own weight. Chiffon drapes a lot, taffeta hardly at all. Arabic: سقوط القماش (الوقعة).  
+**In Tafsila:** one of the five fabric properties (0 to 4) in `@tafsila/schemas` `fabric.ts`; circle and gathered skirts ask for a high value (`packages/fabric-kb`). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Drape_(textiles)>
 
 <a id="drizzle"></a>
 

@@ -317,3 +317,5 @@ Cross-checks:
 | New garment feature     | `.claude/skills/add-garment-module/SKILL.md`   |
 | Step-by-step tutorial   | `docs/backend/tutorials/add-garment-module.md` |
 | Path-scoped agent rules | `.claude/rules/engine/drafting.md`             |
+
+Fabric catalogue and recommendation rules (a separate pure package): [fabric-kb](fabric-kb.md).
