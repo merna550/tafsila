@@ -25,6 +25,20 @@ module.exports = {
       },
     },
     {
+      name: "fabric-kb-is-pure",
+      severity: "error",
+      comment:
+        "The fabric knowledge base is pure data and logic over DesignSpec: it depends on @tafsila/schemas only (ADR-314).",
+      from: { path: "^packages/fabric-kb" },
+      to: {
+        path: [
+          "^apps/",
+          "^packages/(api|ui|config|engine|export)",
+          "node_modules/(@supabase|next|react|hono)",
+        ],
+      },
+    },
+    {
       name: "export-is-pure",
       severity: "error",
       comment:

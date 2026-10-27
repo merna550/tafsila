@@ -1,0 +1,310 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`recommend, snapshots > dartedBlouse 1`] = `
+{
+  "avoid": [],
+  "recommended": [
+    [
+      "chiffon",
+      0,
+      "A versatile choice for this design",
+    ],
+    [
+      "cotton-poplin",
+      0,
+      "A versatile choice for this design",
+    ],
+    [
+      "crepe",
+      0,
+      "A versatile choice for this design",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > gatheredKneeSkirt 1`] = `
+{
+  "avoid": [
+    [
+      "heavy-polyester",
+      "gathered-skirt-bulk",
+    ],
+    [
+      "jacquard",
+      "gathered-skirt-bulk",
+    ],
+    [
+      "velvet",
+      "gathered-skirt-bulk",
+    ],
+  ],
+  "recommended": [
+    [
+      "chiffon",
+      7,
+      "Gathers look best in a soft fabric that falls well",
+    ],
+    [
+      "crepe",
+      7,
+      "Gathers look best in a soft fabric that falls well",
+    ],
+    [
+      "crepe-satin",
+      7,
+      "Gathers look best in a soft fabric that falls well",
+    ],
+    [
+      "georgette",
+      7,
+      "Gathers look best in a soft fabric that falls well",
+    ],
+    [
+      "lace",
+      7,
+      "Gathers look best in a soft fabric that falls well",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > linedCircleSkirt 1`] = `
+{
+  "avoid": [
+    [
+      "chiffon",
+      "pockets-opaque",
+    ],
+    [
+      "cotton-poplin",
+      "circle-skirt-drape",
+    ],
+    [
+      "jacquard",
+      "circle-skirt-drape",
+    ],
+    [
+      "linen",
+      "circle-skirt-drape",
+    ],
+    [
+      "printed-cotton",
+      "circle-skirt-drape",
+    ],
+    [
+      "taffeta",
+      "circle-skirt-drape",
+    ],
+    [
+      "tulle",
+      "circle-skirt-drape",
+    ],
+  ],
+  "recommended": [
+    [
+      "crepe",
+      13,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "crepe-satin",
+      13,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "georgette",
+      13,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "lace",
+      13,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "linen-blend",
+      13,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > pleatedKneeSkirt 1`] = `
+{
+  "avoid": [
+    [
+      "chiffon",
+      "pleats-hold",
+    ],
+    [
+      "crepe-satin",
+      "pleats-hold",
+    ],
+    [
+      "georgette",
+      "pleats-hold",
+    ],
+    [
+      "satin",
+      "pleats-hold",
+    ],
+    [
+      "viscose",
+      "pleats-hold",
+    ],
+  ],
+  "recommended": [
+    [
+      "cotton-poplin",
+      5,
+      "Pleats need a fabric that holds a crease",
+    ],
+    [
+      "crepe",
+      5,
+      "Pleats need a fabric that holds a crease",
+    ],
+    [
+      "heavy-polyester",
+      5,
+      "Pleats need a fabric that holds a crease",
+    ],
+    [
+      "jacquard",
+      5,
+      "Pleats need a fabric that holds a crease",
+    ],
+    [
+      "lace",
+      5,
+      "Pleats need a fabric that holds a crease",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > puffSleeveBlouse 1`] = `
+{
+  "avoid": [],
+  "recommended": [
+    [
+      "cotton-poplin",
+      4,
+      "A puffed sleeve needs a fabric with body to hold its volume",
+    ],
+    [
+      "crepe",
+      4,
+      "A puffed sleeve needs a fabric with body to hold its volume",
+    ],
+    [
+      "heavy-polyester",
+      4,
+      "A puffed sleeve needs a fabric with body to hold its volume",
+    ],
+    [
+      "jacquard",
+      4,
+      "A puffed sleeve needs a fabric with body to hold its volume",
+    ],
+    [
+      "lace",
+      4,
+      "A puffed sleeve needs a fabric with body to hold its volume",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > seedDress 1`] = `
+{
+  "avoid": [],
+  "recommended": [
+    [
+      "cotton-poplin",
+      7,
+      "A fitted bodice needs a fabric with body to hold its shape",
+    ],
+    [
+      "crepe",
+      7,
+      "A fitted bodice needs a fabric with body to hold its shape",
+    ],
+    [
+      "heavy-polyester",
+      7,
+      "A fitted bodice needs a fabric with body to hold its shape",
+    ],
+    [
+      "jacquard",
+      7,
+      "A fitted bodice needs a fabric with body to hold its shape",
+    ],
+    [
+      "lace",
+      7,
+      "A fitted bodice needs a fabric with body to hold its shape",
+    ],
+  ],
+}
+`;
+
+exports[`recommend, snapshots > vNeckHalfCircleDress 1`] = `
+{
+  "avoid": [
+    [
+      "cotton-poplin",
+      "circle-skirt-drape",
+    ],
+    [
+      "jacquard",
+      "circle-skirt-drape",
+    ],
+    [
+      "linen",
+      "circle-skirt-drape",
+    ],
+    [
+      "printed-cotton",
+      "circle-skirt-drape",
+    ],
+    [
+      "taffeta",
+      "circle-skirt-drape",
+    ],
+    [
+      "tulle",
+      "circle-skirt-drape",
+    ],
+  ],
+  "recommended": [
+    [
+      "crepe",
+      12,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "lace",
+      12,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "linen-blend",
+      12,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "heavy-polyester",
+      10.5,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+    [
+      "velvet",
+      10.5,
+      "A circle skirt needs a fabric that drapes so it falls in soft folds",
+    ],
+  ],
+}
+`;
