@@ -1,20 +1,15 @@
 "use client";
-/** The /designs/[id]/versions/[versionId]/projector screen: the saved pattern at 1:1 for the calibrated projector (issue #286). */
-import { useCallback, useState, type ReactElement } from "react";
+/** The /designs/[id]/versions/[versionId]/projector screen: the saved pattern at 1:1 for the calibrated projector (issue #286), or with `layout` the fabric marker (issue #321). */
+import type { ReactElement } from "react";
+import { LayoutProjector } from "./LayoutProjector";
 import { PieceSwitcher } from "./components/PieceSwitcher";
 import { PlacementControls } from "./components/PlacementControls";
-import { KeyboardHelp } from "./components/KeyboardHelp";
-import { ProjectorMessage } from "./components/ProjectorMessages";
-import { ProjectorStage } from "./ProjectorStage";
-import { ProjectorToolbar } from "./components/ProjectorToolbar";
+import { ProjectorFrame } from "./ProjectorFrame";
 import { useCalibrationGuard } from "./hooks/use-calibration-guard";
-import { useFullscreen } from "./hooks/use-fullscreen";
-import { useProjectorActions } from "./hooks/use-projector-actions";
-import { useProjectorKeys } from "./hooks/use-projector-keys";
 import { useProjectorPieces } from "./hooks/use-projector-pieces";
 import { useProjectorScene } from "./hooks/use-projector-scene";
 import { useProjectorView } from "./hooks/use-projector-view";
-import { useVersionLine } from "./hooks/use-version-line";
+import type { FabricKind } from "@/shared/fabric-nesting";
 
 /** Props of {@link ProjectorScreen}. */
 interface ProjectorScreenProps {
@@ -22,69 +17,64 @@ interface ProjectorScreenProps {
   readonly designId: string;
   /** Version id from the URL. */
   readonly versionId: string;
+  /** The fabric kind whose marker to project; absent for the pattern pieces. */
+  readonly layout?: FabricKind | null;
 }
 
 /**
- * Connects the hooks to the stage and the toolbar, and sends the user to calibrate when this device has no valid calibration.
+ * The pattern pieces of one version.
  *
  * @param props - Design and version ids.
  * @returns The screen.
  */
-export function ProjectorScreen({ designId, versionId }: Readonly<ProjectorScreenProps>): ReactElement {
-  const versionHref = `/designs/${designId}/versions/${versionId}`;
-  const calibration = useCalibrationGuard(`${versionHref}/projector/calibrate`);
+function PatternProjector({ designId, versionId }: Readonly<ProjectorScreenProps>): ReactElement {
+  const calibration = useCalibrationGuard(`/designs/${designId}/versions/${versionId}/projector/calibrate`);
   const { version, scene, failure, loading } = useProjectorScene(versionId);
   const projector = useProjectorView();
-  const fullscreen = useFullscreen();
-  const [helpOpen, setHelpOpen] = useState(false);
-  const openHelp = useCallback(() => setHelpOpen(true), []);
-  const closeHelp = useCallback(() => setHelpOpen(false), []);
   const pieces = useProjectorPieces(versionId, scene, projector);
-  useProjectorKeys(useProjectorActions(projector, fullscreen, pieces, openHelp), !helpOpen);
-  const versionLine = useVersionLine(designId, version);
-
   return (
-    <div className="fixed inset-0 z-modal overflow-hidden bg-stage text-surface">
-      <ProjectorStage
-        scene={scene}
-        calibration={calibration}
-        view={projector.view}
-        onPan={projector.pan}
-        pieces={pieces}
-      />
-      {calibration ? (
-        <ProjectorToolbar
-          versionLine={versionLine}
-          view={projector.view}
-          fullscreen={fullscreen}
-          recalibrateHref={`${versionHref}/projector/calibrate`}
-          exitHref={versionHref}
-          onMirror={projector.toggleMirror}
-          onLineWidth={projector.setLineWidth}
-          onColor={projector.setColor}
-          onHelp={openHelp}
-        />
-      ) : null}
-      {calibration && scene && pieces.panelOpen ? (
-        <aside className="absolute end-4 top-20 z-sticky flex w-64 flex-col gap-3 text-surface">
-          <PieceSwitcher
-            scene={scene}
-            selection={pieces.state.selection}
-            onChoose={pieces.choose}
-            onAll={pieces.showAll}
-            onStep={pieces.step}
-          />
-          <PlacementControls
-            hasActive={pieces.state.activePieceId !== null}
-            onRotate={pieces.rotateActive}
-            onReset={pieces.reset}
-          />
-        </aside>
-      ) : null}
-      {calibration && (loading || failure) ? (
-        <ProjectorMessage failed={failure !== null} exitHref={versionHref} />
-      ) : null}
-      {helpOpen ? <KeyboardHelp onClose={closeHelp} /> : null}
-    </div>
+    <ProjectorFrame
+      designId={designId}
+      versionId={versionId}
+      calibration={calibration}
+      version={version}
+      scene={scene}
+      failure={failure}
+      loading={loading}
+      projector={projector}
+      pieces={pieces}
+      panel={
+        scene ? (
+          <>
+            <PieceSwitcher
+              scene={scene}
+              selection={pieces.state.selection}
+              onChoose={pieces.choose}
+              onAll={pieces.showAll}
+              onStep={pieces.step}
+            />
+            <PlacementControls
+              hasActive={pieces.state.activePieceId !== null}
+              onRotate={pieces.rotateActive}
+              onReset={pieces.reset}
+            />
+          </>
+        ) : null
+      }
+    />
+  );
+}
+
+/**
+ * Chooses the pattern or the layout projector from the route.
+ *
+ * @param props - Design id, version id and the optional layout kind.
+ * @returns The screen.
+ */
+export function ProjectorScreen(props: Readonly<ProjectorScreenProps>): ReactElement {
+  return props.layout ? (
+    <LayoutProjector designId={props.designId} versionId={props.versionId} kind={props.layout} />
+  ) : (
+    <PatternProjector designId={props.designId} versionId={props.versionId} />
   );
 }

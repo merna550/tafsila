@@ -3,6 +3,7 @@
 import { Card } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import { useState, type ReactElement } from "react";
+import { layoutHref } from "@/features/projector";
 import { DataState } from "@/shared/data-state";
 import type { FabricKind } from "@/shared/fabric-nesting";
 import { CalcResultsPanel } from "./components/CalcResultsPanel";
@@ -14,15 +15,17 @@ import { useFabricCalculator } from "./hooks/use-fabric-calculator";
 interface FabricCalculatorProps {
   /** The saved version to calculate for. */
   readonly versionId: string;
+  /** The design the version belongs to, for the projector link. */
+  readonly designId: string;
 }
 
 /**
  * Renders the calculator. It opens with the saved result and options, if any, and calculates only when asked.
  *
- * @param props - The version id.
+ * @param props - The design and version ids.
  * @returns The section.
  */
-export function FabricCalculator({ versionId }: Readonly<FabricCalculatorProps>): ReactElement {
+export function FabricCalculator({ versionId, designId }: Readonly<FabricCalculatorProps>): ReactElement {
   const t = useTranslations("fabric.calc");
   const model = useFabricCalculator(versionId);
   const [kind, setKind] = useState<FabricKind>("main");
@@ -69,6 +72,7 @@ export function FabricCalculator({ versionId }: Readonly<FabricCalculatorProps>)
                 kind={kind}
                 onKindChange={setKind}
                 onTryOpen={model.tryOpen}
+                projectHref={(k) => layoutHref(designId, versionId, k)}
               />
             ) : null}
             {!running && !model.view ? <p className="text-muted">{t("results.empty")}</p> : null}

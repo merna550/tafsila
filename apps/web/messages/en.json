@@ -1376,6 +1376,18 @@
       "rotate": "Rotate 180°",
       "rotateNeedsPiece": "Choose a piece first",
       "reset": "Reset layout"
+    },
+    "layout": {
+      "loading": "Calculating the layout...",
+      "needsCalc": "Calculate the fabric first, then project the layout.",
+      "goCalculate": "Open the calculator",
+      "label": "{kind}, {length} m",
+      "backToStart": "Back to the start",
+      "kind": {
+        "main": "Main fabric",
+        "lining": "Lining",
+        "interfacing": "Interfacing"
+      }
     }
   },
   "patternExport": {
@@ -1576,7 +1588,9 @@
         "width": "Enter a width between 50 and 300 cm.",
         "shrinkage": "Enter a number between 0 and 20.",
         "repeat": "Enter a number between 0 and 100."
-      }
+      },
+      "project": "Project the layout",
+      "projectDisabled": "Calculate the fabric first"
     }
   }
 }

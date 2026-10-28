@@ -3,3 +3,4 @@ export { ProjectorScreen } from "./ProjectorScreen";
 export { CalibrationScreen } from "./CalibrationScreen";
 export { useCalibration, type CalibrationController } from "./hooks/use-calibration";
 export type { ProjectorCalibration, ScreenInfo } from "./projector.schema";
+export { layoutHref, parseLayoutKind } from "./model/projector-mode";
