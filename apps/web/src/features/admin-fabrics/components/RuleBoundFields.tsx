@@ -60,19 +60,6 @@ export function RuleBoundFields({ form, errorOf, dir }: Readonly<RuleBoundFields
           />
         )}
       />
-      <Controller
-        control={control}
-        name="priority"
-        render={({ field }) => (
-          <Select
-            dir={dir}
-            aria-label={t("priority")}
-            value={String(field.value)}
-            onValueChange={(v) => field.onChange(Number(v))}
-            options={PRIORITIES.map((p) => ({ value: String(p), label: t("priorityOption", { n: p }) }))}
-          />
-        )}
-      />
     </>
   );
 }

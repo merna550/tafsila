@@ -138,6 +138,6 @@ describe("RuleConditions and RuleEffectFields", () => {
     expect(html).toContain("At least");
     expect(html).toContain("At most");
     expect(html.match(/No limit/g)).toHaveLength(2);
-    expect(html).toContain("Priority");
+    expect(html.match(/Priority 3/g)).toHaveLength(1);
   });
 });

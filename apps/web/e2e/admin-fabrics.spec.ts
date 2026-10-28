@@ -100,6 +100,7 @@ test.describe("admin fabrics and rules", () => {
     await dialog.getByRole("checkbox", { name: t.designPicker.options.skirt_type["circle-half"] }).click();
     await dialog.getByLabel(form.reasonAr, { exact: true }).fill("س");
     await dialog.getByLabel(form.reasonEn, { exact: true }).fill("r");
+    await dialog.getByRole("button", { name: form.must, exact: true }).click();
     await dialog.getByRole("radio", { name: form.noLimit }).first().click();
     await dialog
       .getByRole("radiogroup", { name: form.max })
