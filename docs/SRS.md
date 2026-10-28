@@ -261,7 +261,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | FR-FAB-01 | User selects fabric width (90, 115, 140, 150, 160 cm or custom) and layout (folded / open), directional nap yes/no | M |
 | FR-FAB-02 | Nesting algorithm arranges all cut pieces (respecting cut quantities, fold edges, grain rotation constraints) and returns required length in metres, rounded up to 0.1 m. _Status: placement and length built in `packages/nesting` (issue #316, [decision 316](decisions/316-nesting-placement.md)); nesting worker and calculator screen built in issue #318, [decision 318](decisions/318-fabric-calculator.md)_ | M |
 | FR-FAB-03 | Optional shrinkage allowance (default +5%) and pattern-matching allowance. _Status: added to the length to buy, one pattern repeat per row of cut pieces (issue #316, [decision 316](decisions/316-nesting-placement.md))_ | S |
-| FR-FAB-04 | Show the layout diagram (marker) and allow projector display of the whole layout. _Status: the marker diagram with zoom is on the calculator (issue #318); projector display follows_ | M |
+| FR-FAB-04 | Show the layout diagram (marker) and allow projector display of the whole layout. _Status: the marker diagram with zoom is on the calculator (issue #318); the layout is projected at 1:1 from the calculator (issue #321)_ | M |
 | FR-FAB-05 | Separate calculations for main fabric, lining, interfacing | S |
 
 ### 4.11 Fabric Recommendation (REC)
