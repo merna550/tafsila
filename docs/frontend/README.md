@@ -192,3 +192,7 @@ Rules v2: [components](../../.claude/rules/frontend/components.md) · [layering]
 ## Settings feature (`features/settings`)
 
 `/settings` has three cards (account, display, delete account) and a sign-out link. The language toggle calls `router.replace(pathname, { locale })` and saves `locale` to the profile in the background (`useSwitchLanguage`); the URL and the `NEXT_LOCALE` cookie make the choice stick on this device. Account deletion (`useDeleteAccount`) calls `DELETE /api/account`, clears the local session (`clearLocalSession` in `shared/auth`) and opens the home page with `?account=deleted`, where `AccountDeletedNotice` shows a toast once.
+
+## Fabric feature (`features/fabric`)
+
+The "Recommended fabrics" section of the saved-version page (`/designs/[id]/versions/[versionId]`, issue #319, FR-REC-02). `FabricRecommendations({ versionId })` is the only export: it calls `useFabricRecommendations` (TanStack Query over `GET /api/fabrics/recommend`, 5-minute `staleTime`) and shows loading, empty and error through `DataState`. `components/` holds the cards (`FabricCard`, `PropertyMeter`, `AvoidList`) and `model/` the pure helpers (`pickLocalized`, `propertyRows`). The response carries each fabric's names and properties, so no second request is needed ([decision 319](../decisions/319-fabric-recommend-ui.md)). The yardage calculator (#318) joins this feature.

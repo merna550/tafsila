@@ -73,7 +73,11 @@ describe("GET /api/fabrics/recommend", () => {
     expect(parsed.recommended.length).toBeGreaterThanOrEqual(3);
     expect(parsed.recommended.length).toBeLessThanOrEqual(5);
     expect(parsed.recommended.every((r) => r.reason.ar.length > 0 && r.reason.en.length > 0)).toBe(true);
+    expect(parsed.recommended.every((r) => r.fabric.id === r.fabricId && r.fabric.nameAr.length > 0)).toBe(
+      true,
+    );
     expect(parsed.avoid.length).toBeGreaterThan(0);
+    expect(parsed.avoid.every((a) => a.fabric.id === a.fabricId && a.fabric.nameEn.length > 0)).toBe(true);
     expect(parsed.isDraft).toBe(true);
   });
 

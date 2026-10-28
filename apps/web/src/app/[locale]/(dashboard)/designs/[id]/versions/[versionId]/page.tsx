@@ -1,5 +1,6 @@
-/** The old-version route: composes the read-only version screen with the design and version ids. */
+/** The old-version route: composes the read-only version screen and the fabric recommendations with the design and version ids. */
 import type { ReactElement } from "react";
+import { FabricRecommendations } from "@/features/fabric";
 import { ReadOnlyVersionScreen } from "@/features/pattern-page";
 
 /**
@@ -13,5 +14,10 @@ export default async function DesignVersionPage({
   params,
 }: Readonly<{ params: Promise<{ id: string; versionId: string }> }>): Promise<ReactElement> {
   const { id, versionId } = await params;
-  return <ReadOnlyVersionScreen designId={id} versionId={versionId} />;
+  return (
+    <>
+      <ReadOnlyVersionScreen designId={id} versionId={versionId} />
+      <FabricRecommendations versionId={versionId} />
+    </>
+  );
 }

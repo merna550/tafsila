@@ -1267,7 +1267,11 @@
     "diagramCaption": "Each point is {step} mm from the one before.",
     "diagram": {
       "group": "{piece}: {group}",
-      "groups": { "corners": "Corners", "curves": "Curves", "marks": "Marks" }
+      "groups": {
+        "corners": "Corners",
+        "curves": "Curves",
+        "marks": "Marks"
+      }
     },
     "diagramLabel": "Reference drawing of {piece}",
     "loading": "Working out the steps...",
@@ -1284,6 +1288,31 @@
       "sizeLine": "Direct cut · size {size}",
       "caption": "Curve reference: a point every {step} mm. Make the line pass through every point.",
       "emptyBox": "Empty box"
+    }
+  },
+  "fabric": {
+    "recommend": {
+      "title": "Recommended fabrics",
+      "subtitle": "Fabrics that suit this design's features, with a reason for each.",
+      "best": "Best fit",
+      "draftLabel": "Draft:",
+      "draftNote": "Fabric properties and suggestion rules are still under review. A test on a small piece before buying stays the reference.",
+      "avoidTitle": "Better avoided",
+      "emptyTitle": "No matching fabrics",
+      "emptyDescription": "The chosen features need properties that no fabric in the current catalogue combines. You can change the design, for example a less full sleeve.",
+      "properties": {
+        "drape": "Drape",
+        "weight": "Weight",
+        "body": "Body",
+        "sheen": "Sheen"
+      },
+      "levels": {
+        "none": "None",
+        "low": "Low",
+        "mid": "Medium",
+        "high": "High",
+        "max": "Very high"
+      }
     }
   }
 }
