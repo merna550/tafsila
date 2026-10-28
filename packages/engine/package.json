@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./geometry": "./src/geometry/index.ts",
     "./measurements": "./src/measurements/index.ts",
     "./spec-rules": "./src/spec-rules/index.ts",
     "./viewer": "./src/render/scene-queries.ts",
