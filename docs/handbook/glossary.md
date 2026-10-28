@@ -2623,3 +2623,9 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A short list of 3 to 5 fabrics that suit the chosen design, each with a one-line reason, plus a list of fabrics to avoid. Arabic: الأقمشة المقترحة.  
 **In Tafsila:** `FabricRecommendations` in `apps/web/src/features/fabric/`, fed by `GET /api/fabrics/recommend` ([decision 319](../decisions/319-fabric-recommend-ui.md)). **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/region_role>
+
+### Rule preview
+
+**Plain words:** A box in the rule editor that shows which fabrics a sample design would get with the rule as you edited it, next to what the saved rules give, before anything is saved. Arabic: معاينة القاعدة.  
+**In Tafsila:** `PreviewBox` and `previewRule` in `apps/web/src/features/admin-fabrics/`; it runs `recommend` from `@tafsila/fabric-kb` in the browser ([decision 320](../decisions/320-admin-fabrics-ui.md)). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Glossary/Pure_function>

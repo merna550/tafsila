@@ -1,27 +1,10 @@
 import { readFileSync } from "node:fs";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { newEmail, signUpAndConfirm } from "./support/accounts";
-import { MESSAGES, projectLocale, type Messages } from "./support/app";
+import { signInAsAdmin } from "./support/admin";
+import { MESSAGES, projectLocale } from "./support/app";
 
-/** The seeded admin account (supabase/seed.sql); CI has no service-role helper, so the UI signs in. */
-const ADMIN_EMAIL = "admin@tafsila.test";
-const ADMIN_PASSWORD = "Test1234!";
 const ar = MESSAGES.ar;
-
-/**
- * Signs in as the seeded admin through the sign-in form and waits until the form is gone.
- *
- * @param page - The page.
- * @param t - Messages of the page language.
- * @param prefix - Language URL prefix.
- */
-async function signInAsAdmin(page: Page, t: Messages, prefix: string): Promise<void> {
-  await page.goto(`${prefix}/sign-in`);
-  await page.getByLabel(t.auth.fields.email).fill(ADMIN_EMAIL);
-  await page.getByLabel(t.auth.fields.password, { exact: true }).fill(ADMIN_PASSWORD);
-  await page.getByRole("button", { name: t.auth.signIn.submit }).click();
-  await expect(page).not.toHaveURL(/sign-in/);
-}
 
 test.describe("admin area", () => {
   test("a signed-out visitor on /admin/users is sent to sign-in", async ({ page }, testInfo) => {

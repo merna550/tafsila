@@ -269,7 +269,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 |---|---|---|
 | FR-REC-01 | Rules engine maps `DesignSpec` features → required fabric properties (drape, weight, body, stretch) | M |
 | FR-REC-02 | Return top 3–5 fabrics from the catalogue (local Egyptian market names, e.g. كريب، شيفون، جورجيت، ستان، كتان، قطن بوبلين، فسكوز، تافتا) with a one-line reason each and "avoid" list | M |
-| FR-REC-03 | Admin can edit fabric catalogue and rules without a deploy | M |
+| FR-REC-03 | Admin can edit fabric catalogue and rules without a deploy. API built in #317; screens built in #320 (`/admin/fabrics`, `/admin/fabric-rules`: add, edit, delete, conditions picked from the DesignSpec paths, preview before saving) | M |
 | FR-REC-04 | Optional AI-written explanation (from rules output, not free invention) | C |
 
 ### 4.12 Chat Edits & Versions (CHAT)
@@ -309,7 +309,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-ADM-01 | Dashboard: signups, trials, conversions, revenue, AI cost per pattern, failed validations | M |
-| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens built in #32 (Part B: `/admin/users`, `/admin/sizes`, CSV import and export); the default chart holds the Egyptian S-XXL values from #158 | M |
+| FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens built in #32 (Part B: `/admin/users`, `/admin/sizes`, CSV import and export); the default chart holds the Egyptian S-XXL values from #158. Fabric catalogue and recommendation rules: screens built in #320 | M |
 | FR-ADM-03 | View user designs (with consent flag) and unsupported-feature log | M |
 | FR-ADM-04 | Grant credits / refund | M |
 
