@@ -37462,12 +37462,73 @@
                               "ar",
                               "en"
                             ]
+                          },
+                          "fabric": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                              },
+                              "nameAr": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "nameEn": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "properties": {
+                                "type": "object",
+                                "properties": {
+                                  "drape": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "weight": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "body": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "stretch": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "sheen": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  }
+                                },
+                                "required": [
+                                  "drape",
+                                  "weight",
+                                  "body",
+                                  "stretch",
+                                  "sheen"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "nameAr",
+                              "nameEn",
+                              "properties"
+                            ]
                           }
                         },
                         "required": [
                           "fabricId",
                           "score",
-                          "reason"
+                          "reason",
+                          "fabric"
                         ]
                       },
                       "maxItems": 5
@@ -37501,12 +37562,73 @@
                               "ar",
                               "en"
                             ]
+                          },
+                          "fabric": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                              },
+                              "nameAr": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "nameEn": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "properties": {
+                                "type": "object",
+                                "properties": {
+                                  "drape": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "weight": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "body": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "stretch": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  },
+                                  "sheen": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 4
+                                  }
+                                },
+                                "required": [
+                                  "drape",
+                                  "weight",
+                                  "body",
+                                  "stretch",
+                                  "sheen"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "nameAr",
+                              "nameEn",
+                              "properties"
+                            ]
                           }
                         },
                         "required": [
                           "fabricId",
                           "ruleId",
-                          "reason"
+                          "reason",
+                          "fabric"
                         ]
                       }
                     },

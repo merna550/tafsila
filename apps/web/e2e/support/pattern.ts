@@ -42,14 +42,14 @@ export async function openSeedClient(page: Page, env: PatternEnv): Promise<strin
  * @param page - The page.
  * @param env - Language prefix and messages.
  * @param clientId - The client.
- * @param category - The garment type (`dress`).
+ * @param category - The garment type (dress, skirt or blouse).
  * @returns The design id.
  */
 export async function startDesign(
   page: Page,
   env: PatternEnv,
   clientId: string,
-  category: "dress",
+  category: "dress" | "skirt" | "blouse",
 ): Promise<string> {
   await page.goto(`${env.prefix}/designs/new?clientId=${clientId}`);
   await page.getByRole("radio", { name: env.t.designPicker.category[category] }).click();

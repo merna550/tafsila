@@ -2617,3 +2617,9 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** One SVG file with every pattern piece side by side at real size and a 10 cm square, so you can print it at 100%, check the square with a ruler, and cut a test garment (toile). Arabic: ورقة طباعة التجربة.  
 **In Tafsila:** `renderPrintSheet` in `packages/engine/src/render/print-sheet.ts`, run by `pnpm engine:print` ([decision 127](../decisions/127-svg-renderer.md)). **Level:** beginner  
 **Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Positions>
+
+### Fabric recommendation
+
+**Plain words:** A short list of 3 to 5 fabrics that suit the chosen design, each with a one-line reason, plus a list of fabrics to avoid. Arabic: الأقمشة المقترحة.  
+**In Tafsila:** `FabricRecommendations` in `apps/web/src/features/fabric/`, fed by `GET /api/fabrics/recommend` ([decision 319](../decisions/319-fabric-recommend-ui.md)). **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/region_role>

@@ -1,6 +1,6 @@
 /** Contracts of the saved fabric calculation (PUT and GET /api/versions/{id}/fabric) and of the recommendation response (FR-FAB-01, FR-REC-02; ADR-312 item 5). */
 import { z } from "zod";
-import { fabricAvoidSchema, fabricRecommendationSchema, RECOMMENDED_COUNT } from "./fabric";
+import { fabricAvoidSchema, fabricRecommendationSchema, fabricSchema, RECOMMENDED_COUNT } from "./fabric";
 import { fabricOptionsSchema } from "./fabric-options";
 
 /** The fabric kinds a calculation covers (FR-FAB-05). */
@@ -107,10 +107,33 @@ export const recommendFabricsQuerySchema = z.object({
 /** Parsed recommend query. */
 export type RecommendFabricsQuery = z.infer<typeof recommendFabricsQuerySchema>;
 
+/** What the screen shows of a catalogue fabric: its names and its properties (ADR-319 item 1). */
+export const fabricSummarySchema = fabricSchema.pick({
+  id: true,
+  nameAr: true,
+  nameEn: true,
+  properties: true,
+});
+
+/** A catalogue fabric as the recommendation response carries it. */
+export type FabricSummary = z.infer<typeof fabricSummarySchema>;
+
+/** A recommended fabric with its catalogue summary, so the screen needs no second request. */
+export const recommendedFabricSchema = fabricRecommendationSchema.extend({ fabric: fabricSummarySchema });
+
+/** A recommended fabric with its summary. */
+export type RecommendedFabric = z.infer<typeof recommendedFabricSchema>;
+
+/** An avoided fabric with its catalogue summary. */
+export const avoidedFabricSchema = fabricAvoidSchema.extend({ fabric: fabricSummarySchema });
+
+/** An avoided fabric with its summary. */
+export type AvoidedFabric = z.infer<typeof avoidedFabricSchema>;
+
 /** Response of GET /api/fabrics/recommend: the ranked fabrics, the avoid list and whether the data is still a draft. */
 export const recommendFabricsResponseSchema = z.object({
-  recommended: z.array(fabricRecommendationSchema).max(RECOMMENDED_COUNT.max),
-  avoid: z.array(fabricAvoidSchema),
+  recommended: z.array(recommendedFabricSchema).max(RECOMMENDED_COUNT.max),
+  avoid: z.array(avoidedFabricSchema),
   isDraft: z.boolean().meta({ description: "True while the catalogue or rules used are not yet reviewed" }),
 });
 

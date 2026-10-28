@@ -55,4 +55,18 @@ describe("recommendFabricsResponseSchema", () => {
       recommendFabricsResponseSchema.safeParse({ recommended: [], avoid: [], isDraft: true }).success,
     ).toBe(true);
   });
+
+  it("requires the fabric summary on every recommended fabric", () => {
+    const item = { fabricId: "crepe", score: 1, reason: { ar: "س", en: "r" } };
+    const body = { recommended: [item], avoid: [], isDraft: false };
+    expect(recommendFabricsResponseSchema.safeParse(body).success).toBe(false);
+    const fabric = {
+      id: "crepe",
+      nameAr: "كريب",
+      nameEn: "Crepe",
+      properties: { drape: 4, weight: 2, body: 1, stretch: 0, sheen: 1 },
+    };
+    const withFabric = { ...body, recommended: [{ ...item, fabric }] };
+    expect(recommendFabricsResponseSchema.safeParse(withFabric).success).toBe(true);
+  });
 });
