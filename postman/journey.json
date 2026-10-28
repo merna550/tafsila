@@ -380,13 +380,57 @@
     "has": ["version", "reused"]
   },
   {
-    "name": "26 Delete the versions set",
+    "name": "26 Recommend fabrics for the version",
+    "method": "GET",
+    "path": "/api/fabrics/recommend?versionId={{versionId}}",
+    "status": 200,
+    "has": ["recommended", "avoid", "isDraft"]
+  },
+  {
+    "name": "27 Save the fabric calculation",
+    "method": "PUT",
+    "path": "/api/versions/{{versionId}}/fabric",
+    "body": {
+      "options": {
+        "widthMm": 1400,
+        "layout": "folded"
+      },
+      "result": {
+        "kinds": [
+          {
+            "kind": "main",
+            "lengthM": 2.3,
+            "placements": [
+              {
+                "shapeId": "front#1",
+                "xMm": 0,
+                "yMm": 0,
+                "turn": 0
+              }
+            ]
+          }
+        ]
+      },
+      "nestingVersion": "1.0.0"
+    },
+    "status": 200,
+    "has": ["versionId", "options", "result", "nestingVersion", "updatedAt"]
+  },
+  {
+    "name": "28 Read the fabric calculation",
+    "method": "GET",
+    "path": "/api/versions/{{versionId}}/fabric",
+    "status": 200,
+    "has": ["versionId", "result"]
+  },
+  {
+    "name": "29 Delete the versions set",
     "method": "DELETE",
     "path": "/api/measurements/{{versionSetId}}",
     "status": 204
   },
   {
-    "name": "27 Delete the design",
+    "name": "30 Delete the design",
     "method": "DELETE",
     "path": "/api/designs/{{designId}}",
     "status": 204

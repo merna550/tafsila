@@ -22,6 +22,10 @@ describe("OpenAPI document", () => {
     expect(doc.openapi).toBe("3.1.0");
     expect(Object.keys(doc.paths).sort((a, b) => a.localeCompare(b))).toEqual([
       "/api/account",
+      "/api/admin/fabric-rules",
+      "/api/admin/fabric-rules/{id}",
+      "/api/admin/fabrics",
+      "/api/admin/fabrics/{id}",
       "/api/admin/size-charts/default",
       "/api/admin/stats",
       "/api/admin/users",
@@ -32,6 +36,7 @@ describe("OpenAPI document", () => {
       "/api/designs",
       "/api/designs/{id}",
       "/api/designs/{id}/versions",
+      "/api/fabrics/recommend",
       "/api/health",
       "/api/me",
       "/api/measurements",
@@ -42,8 +47,24 @@ describe("OpenAPI document", () => {
       "/api/profile",
       "/api/size-charts/default",
       "/api/versions/{id}",
+      "/api/versions/{id}/fabric",
       "/api/versions/{id}/restore",
     ]);
+  });
+
+  it("documents the fabric operations with their error responses", () => {
+    expect(Object.keys(doc.paths["/api/versions/{id}/fabric"]!).sort((a, b) => a.localeCompare(b))).toEqual([
+      "get",
+      "put",
+    ]);
+    expect(Object.keys(doc.paths["/api/admin/fabrics/{id}"]!).sort((a, b) => a.localeCompare(b))).toEqual([
+      "delete",
+      "patch",
+    ]);
+    const rules = doc.paths["/api/admin/fabric-rules"]!.post!.responses as object;
+    expect(Object.keys(rules)).toEqual(expect.arrayContaining(["201", "401", "403", "409", "422"]));
+    const calc = doc.paths["/api/versions/{id}/fabric"]!.put!.responses as object;
+    expect(Object.keys(calc)).toEqual(expect.arrayContaining(["200", "404", "422"]));
   });
 
   it("documents the account deletion with its 403 and 204 responses and the profile operations", () => {

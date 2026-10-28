@@ -452,9 +452,9 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `pattern_versions` | id, design_id, owner_id (same owner as the design, composite FK), version_no (unique per design), spec (jsonb), measurement_set_id? (null if the set is deleted), measurements (jsonb snapshot), size_label?, ease_profile, options (jsonb), engine_version, validation_status (`pass`/`warn` only, a `fail` is never stored), input_hash (indexed, not unique), created_by (`user`/`chat`), created_at. Append-only: users can select and insert, never update or delete ([ADR-236](decisions/236-m3-scope.md)) |
 | `exports` | id, pattern_version_id, kind (`pdf_a4`/`pdf_a0`/`svg`), status, file_path, expires_at. Not created in M4 (FR-EXP-05 deferred, [ADR-281](decisions/281-m4-scope.md)) |
 | `chat_messages` | id, design_id, role, content, proposed_patch (jsonb), applied_version_id?, created_at |
-| `fabric_calcs` | id, pattern_version_id, width_mm, layout, result (jsonb: length_mm, marker) |
-| `fabrics` | id, name_ar, name_en, properties (jsonb: drape, weight, body, stretch, sheen; integers 0 to 4, [ADR-314](decisions/314-fabric-kb-model.md)), care_notes (jsonb ar/en) |
-| `fabric_rules` | id, condition (jsonb: list of path/op/values tests), required_properties (jsonb: property, min, max, `strength` prefer/must), priority 1 to 5, reason (jsonb ar/en) |
+| `fabric_calcs` | id, pattern_version_id, owner_id (same owner as the version, composite FK), options (jsonb: width, layout, nap, shrinkage, repeat), options_hash (unique with the version: one row per version and options, the last save replaces it), result (jsonb: per fabric kind `lengthM`, a positive multiple of 0.1, and the `placements`), nesting_version, created_at, updated_at. Owner-only through RLS, admins can read ([decision 317](decisions/317-fabric-api.md)) |
+| `fabrics` | id (text slug), name_ar, name_en, properties (jsonb: drape, weight, body, stretch, sheen; integers 0 to 4, [ADR-314](decisions/314-fabric-kb-model.md)), care_notes (jsonb ar/en), is_draft, created_at, updated_at, updated_by. Read by signed-in users, written by admins (RLS), seeded by a migration ([decision 317](decisions/317-fabric-api.md)) |
+| `fabric_rules` | id (text slug), condition (jsonb: list of path/op/values tests), required_properties (jsonb: property, min, max, `strength` prefer/must), priority 1 to 5, reason (jsonb ar/en), is_draft, created_at, updated_at, updated_by. Same access as `fabrics` |
 | `size_charts` | id, name, sizes (jsonb), is_default, owner_id? (null = system chart; set = a user's private chart), updated_by, updated_at |
 | `admin_audit` | id, who, action, target, before (jsonb), after (jsonb), at (append-only, admin only) |
 | `products` | id, code, kind (`single`/`pack`/`subscription`), price_egp, credits, period_days, active |
@@ -486,8 +486,10 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | POST | `/api/designs/:id/chat` | Send chat message → proposed patch |
 | POST | `/api/designs/:id/chat/:msgId/apply` | Apply proposed patch → new version |
 | POST | `/api/versions/:id/exports` | Enqueue PDF export. Deferred: M4 builds the PDF in the browser ([ADR-281](decisions/281-m4-scope.md)) |
-| POST | `/api/versions/:id/fabric` | Save fabric calc result |
-| GET | `/api/fabrics/recommend?versionId=` | Fabric recommendations |
+| PUT, GET | `/api/versions/:id/fabric` | Save the fabric calculation the browser computed (`{ options, result, nestingVersion }`; `PUT` because one row is kept per version and options and the last save replaces it); the server checks that every length is a positive multiple of 0.1 m (422 `FABRIC_CALC_INVALID`). `GET` returns the latest saved calculation. Another user's version gives 404 |
+| GET | `/api/fabrics/recommend?versionId=` | 3 to 5 recommended fabrics with a reason each, the avoid list and `isDraft`, from the database catalogue and rules; another user's version gives 404 |
+| GET, POST | `/api/admin/fabrics`, `/api/admin/fabric-rules` | Admin: list; add (409 `FABRIC_ID_TAKEN` for a used id). Rules with an unknown path or value give 422 `FABRIC_RULE_INVALID` |
+| PATCH, DELETE | `/api/admin/fabrics/:id`, `/api/admin/fabric-rules/:id` | Admin: change fields, delete. Each write and its `admin_audit` row (`fabric.*`, `fabric_rule.*`) are saved in one transaction; a non-admin gets 403 |
 | POST, GET | `/api/clients` | Create a client; list with `q` (name search), `limit` (1-100, default 20), `offset`; returns `{ items, total, limit, offset }` |
 | GET, PATCH, DELETE | `/api/clients/:id` | Read, change name/notes, delete (its measurement sets go with it) |
 | POST, GET | `/api/measurements` | Save a measurement set (errors block with 422 `MEASUREMENTS_INVALID`, warnings are returned); list with `clientId`, `limit`, `offset` |

@@ -1,8 +1,12 @@
 /** In-memory tables shared by the memory repositories, so deleting a client can cascade to its sets like the database does. */
+import { DRAFT, DRAFT_CATALOGUE, DRAFT_RULES } from "@tafsila/fabric-kb";
 import { patternVersionSchema } from "@tafsila/schemas";
 import type {
+  AdminFabric,
+  AdminFabricRule,
   Client,
   Design,
+  FabricCalc,
   MeasurementSet,
   PatternVersion,
   Profile,
@@ -34,6 +38,15 @@ export interface ChartRow extends SizeChartResponse {
   readonly updatedAt?: string;
   readonly updatedBy?: string | null;
 }
+
+/** A fabric calculation row plus its owner and the hash of its options. */
+export interface FabricCalcRow extends FabricCalc {
+  readonly ownerId: string;
+  readonly optionsHash: string;
+}
+
+/** Edit time of a seeded fabric or rule (the migration's insert time in the database). */
+const SEEDED_AT = "1970-01-01T00:00:00.000Z";
 
 /** A user as the admin list sees it: the profile row plus the sign-in data of auth.users. */
 export interface UserRow {
@@ -70,6 +83,12 @@ export interface MemoryStore {
   versions: VersionRow[];
   /** System size charts; the first default one is served. */
   sizeCharts: ChartRow[];
+  /** The fabric catalogue; starts as the package's draft data, like the migration's seed. */
+  fabrics: AdminFabric[];
+  /** The recommendation rules; starts as the package's draft data. */
+  fabricRules: AdminFabricRule[];
+  /** Saved fabric calculations (written by the version fabric routes). */
+  fabricCalcs: FabricCalcRow[];
   /** Users the admin screens list (the fake of profiles joined with auth.users); an admin check reads `role` here. */
   users: UserRow[];
   /** Rows written to admin_audit, oldest first. */
@@ -100,6 +119,9 @@ export function createMemoryStore(): MemoryStore {
     designs: [],
     versions: [],
     sizeCharts: [],
+    fabrics: DRAFT_CATALOGUE.map((f) => ({ ...f, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),
+    fabricRules: DRAFT_RULES.map((r) => ({ ...r, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),
+    fabricCalcs: [],
     users: [],
     audit: [],
     profiles: new Map(),

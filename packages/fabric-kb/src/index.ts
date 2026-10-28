@@ -7,3 +7,4 @@ export { NEUTRAL_REASON } from "./reasons";
 export { DRAFT_CATALOGUE } from "./draft-catalogue";
 export { DRAFT_RULES } from "./draft-rules";
 export { DRAFT } from "./draft-status";
+export { fabricSeedSql, fabricsInsertSql, fabricRulesInsertSql } from "./seed-sql";

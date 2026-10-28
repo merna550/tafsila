@@ -7,6 +7,9 @@ import {
   adminAudit,
   clients,
   designs,
+  fabricCalcs,
+  fabricRules,
+  fabrics,
   measurementSets,
   patternVersions,
   profiles,
@@ -80,6 +83,24 @@ describe("Drizzle schema mirror", () => {
   it("has the same columns as the generated Supabase types (pattern_versions)", () => {
     expect(drizzleColumns(patternVersions).sort((a, b) => a.localeCompare(b))).toEqual(
       generatedColumns("pattern_versions").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (fabrics)", () => {
+    expect(drizzleColumns(fabrics).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("fabrics").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (fabric_rules)", () => {
+    expect(drizzleColumns(fabricRules).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("fabric_rules").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (fabric_calcs)", () => {
+    expect(drizzleColumns(fabricCalcs).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("fabric_calcs").sort((a, b) => a.localeCompare(b)),
     );
   });
 });

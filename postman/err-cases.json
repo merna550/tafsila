@@ -237,5 +237,93 @@
     },
     "status": 404,
     "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/fabrics/recommend for an unknown version returns 404",
+    "method": "GET",
+    "path": "/api/fabrics/recommend?versionId=00000000-0000-4000-8000-00000000dead",
+    "auth": true,
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/fabrics/recommend without a token returns 401",
+    "method": "GET",
+    "path": "/api/fabrics/recommend?versionId=00000000-0000-4000-8000-00000000dead",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR PUT /api/versions/{unknown id}/fabric returns 404",
+    "method": "PUT",
+    "path": "/api/versions/00000000-0000-4000-8000-00000000dead/fabric",
+    "auth": true,
+    "body": {
+      "options": {},
+      "result": {
+        "kinds": [
+          {
+            "kind": "main",
+            "lengthM": 2.3,
+            "placements": []
+          }
+        ]
+      },
+      "nestingVersion": "1.0.0"
+    },
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/versions/{unknown id}/fabric returns 404",
+    "method": "GET",
+    "path": "/api/versions/00000000-0000-4000-8000-00000000dead/fabric",
+    "auth": true,
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/admin/fabrics without a token returns 401",
+    "method": "GET",
+    "path": "/api/admin/fabrics",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR POST /api/admin/fabrics as a normal user returns 403",
+    "method": "POST",
+    "path": "/api/admin/fabrics",
+    "auth": true,
+    "body": {
+      "id": "organza",
+      "nameAr": "أورجانزا",
+      "nameEn": "Organza",
+      "properties": {
+        "drape": 1,
+        "weight": 0,
+        "body": 3,
+        "stretch": 0,
+        "sheen": 2
+      },
+      "careNotes": {
+        "ar": "غسيل يدوي",
+        "en": "Hand wash"
+      }
+    },
+    "status": 403,
+    "code": "FORBIDDEN"
+  },
+  {
+    "name": "ERR PATCH /api/admin/fabric-rules/circle-skirt-drape as a normal user returns 403",
+    "method": "PATCH",
+    "path": "/api/admin/fabric-rules/circle-skirt-drape",
+    "auth": true,
+    "body": {
+      "priority": 4
+    },
+    "status": 403,
+    "code": "FORBIDDEN"
   }
 ]

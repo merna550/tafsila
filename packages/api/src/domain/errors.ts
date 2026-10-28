@@ -127,6 +127,31 @@ export const ERROR_CATALOGUE = {
     messageAr: "جدول المقاسات فيه قيم غير منطقية، راجعي الخانات المحددة",
     messageEn: "The size chart has impossible values, check the highlighted cells",
   },
+  FABRIC_NOT_FOUND: {
+    status: 404,
+    messageAr: "الخامة غير موجودة في الكتالوج",
+    messageEn: "That fabric is not in the catalogue",
+  },
+  FABRIC_RULE_NOT_FOUND: {
+    status: 404,
+    messageAr: "قاعدة الترشيح غير موجودة",
+    messageEn: "That recommendation rule does not exist",
+  },
+  FABRIC_RULE_INVALID: {
+    status: 422,
+    messageAr: "القاعدة فيها شرط غير معروف، راجعي الحقول المحددة",
+    messageEn: "The rule has an unknown path or value, check the highlighted fields",
+  },
+  FABRIC_CALC_INVALID: {
+    status: 422,
+    messageAr: "حساب القماش غير صالح: الأطوال تكون بالمتر وبمضاعفات 0.1",
+    messageEn: "The fabric calculation is invalid: lengths are positive metres in steps of 0.1",
+  },
+  FABRIC_ID_TAKEN: {
+    status: 409,
+    messageAr: "يوجد عنصر بنفس الرمز بالفعل، اختاري رمزا آخر",
+    messageEn: "An item with this id already exists, choose another id",
+  },
   RATE_LIMITED: {
     status: 429,
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",
@@ -257,5 +282,29 @@ export class SizeChartInvalidError extends AppError {
     for (const issue of issues)
       for (const field of issue.fields) fields[`${issue.size}.${field}`] ??= issue.message_en;
     super("SIZE_CHART_INVALID", { details: { fields, issues } });
+  }
+}
+
+/** Raised when a rule from an admin names a path or value the engine does not know; nothing is saved. */
+export class FabricRuleInvalidError extends AppError {
+  /**
+   * Creates the error from the problems of each condition.
+   *
+   * @param fields - Field path (`when.<index>`) to the problem text.
+   */
+  constructor(fields: Readonly<Record<string, string>>) {
+    super("FABRIC_RULE_INVALID", { details: { fields } });
+  }
+}
+
+/** Raised when a fabric calculation from the browser has a wrong shape or length; nothing is saved. */
+export class FabricCalcInvalidError extends AppError {
+  /**
+   * Creates the error from the schema issues.
+   *
+   * @param fields - Field path in the result to the problem text.
+   */
+  constructor(fields: Readonly<Record<string, string>>) {
+    super("FABRIC_CALC_INVALID", { details: { fields } });
   }
 }

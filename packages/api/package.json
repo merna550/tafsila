@@ -17,6 +17,7 @@
     "@sentry/node": "11.6.0",
     "@tafsila/config": "workspace:*",
     "@tafsila/engine": "workspace:*",
+    "@tafsila/fabric-kb": "workspace:*",
     "@tafsila/schemas": "workspace:*",
     "@tafsila/utils": "workspace:*",
     "drizzle-orm": "^0.45.4",
