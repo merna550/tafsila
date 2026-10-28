@@ -692,6 +692,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `scripts/check-handbook.mjs`; runs inside `pnpm quality` and the Code quality workflow ([ADR-015](../DECISIONS.md)). **Card:** [Handbook checks](tech/handbook-checks.md) · **Level:** intermediate  
 **Learn:** <https://lychee.cli.rs/>
 
+<a id="douglas-peucker"></a>
+
+### Douglas-Peucker simplification
+
+**Plain words:** A way to draw a curve with fewer points: keep the two ends, find the point farthest from the straight line between them, keep it if it is farther than a tolerance, and repeat on both halves. Every dropped point stays within the tolerance of the result.  
+**In Tafsila:** Cut lines are simplified at 2 mm before nesting, then pushed out by 2 mm so the outline never lies inside the real cut line (`packages/nesting/src/flatten.ts`, [ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm>
+
 <a id="domain"></a>
 
 ### Domain (layer)
@@ -895,6 +903,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** How wide the roll of fabric is (commonly 90, 115, 140, 150 or 160 cm). It limits how pieces can be placed.  
 **In Tafsila:** Chosen by the user for yardage (FR-FAB-01). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Textile>
+
+<a id="folded-layout"></a>
+
+### Folded and open layout
+
+**Plain words:** Two ways to lay fabric on the table. Folded: the fabric is folded in half lengthwise, selvedge on selvedge, so every cut goes through two layers; a piece marked "on fold" is laid with its centre line on the fold, and a left-and-right pair is cut once. Open: the fabric lies flat in one layer; fold pieces are drawn whole and pairs are drawn twice, one flipped. Arabic: القماش مطوي / مفرود.  
+**In Tafsila:** `preparePieces` in `packages/nesting` ([docs/engine/nesting.md](../engine/nesting.md), [decision 315](../decisions/315-nesting-preparation.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Marker_making>
 
 <a id="facing"></a>
 
@@ -1540,7 +1556,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Nesting / marker
 
 **Plain words:** Arranging all pattern pieces on a given fabric width to use as little fabric as possible. The resulting layout is called a marker.  
-**In Tafsila:** Planned `packages/nesting` run in a Web Worker ([SRS section 4.10](../SRS.md)), using [bottom-left fill](#bottom-left-fill) ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
+**In Tafsila:** `packages/nesting` (piece preparation: [docs/engine/nesting.md](../engine/nesting.md)), run in a Web Worker ([SRS section 4.10](../SRS.md)), using [bottom-left fill](#bottom-left-fill) ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="next-intl"></a>
@@ -2417,6 +2433,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** See [service](#service).  
 **In Tafsila:** **Level:** intermediate  
 **Learn:** <https://alistair.cockburn.us/hexagonal-architecture/>
+
+<a id="usable-width"></a>
+
+### Usable width
+
+**Plain words:** How much of the fabric's width the pieces may use: half the fabric when it is folded, all of it when it is open. A piece wider than this does not fit and is reported, not squeezed in. Arabic: العرض المتاح.  
+**In Tafsila:** `usableWidthMm` and `doesNotFit` of `preparePieces` (FR-VAL-08, [decision 315](../decisions/315-nesting-preparation.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Marker_making>
 
 <a id="uv"></a>
 

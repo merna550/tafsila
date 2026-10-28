@@ -1,0 +1,197 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`preparePieces snapshot > lists the shapes of gatheredKneeSkirt M 1`] = `
+[
+  {
+    "doesNotFit": [],
+    "layout": "folded",
+    "shapes": [
+      "skirt-back#1 619.0x391.0",
+      "skirt-front#1 619.0x391.0",
+      "waist-facing#1 854.0x94.0",
+      "waist-facing-interfacing#1 854.0x94.0",
+    ],
+  },
+  {
+    "doesNotFit": [],
+    "layout": "open",
+    "shapes": [
+      "skirt-back#1 619.0x782.0",
+      "skirt-front#1 619.0x782.0",
+      "waist-facing#1 854.0x94.0",
+      "waist-facing-interfacing#1 854.0x94.0",
+    ],
+  },
+]
+`;
+
+exports[`preparePieces snapshot > lists the shapes of linedSidePocketDress M 1`] = `
+[
+  {
+    "doesNotFit": [],
+    "layout": "folded",
+    "shapes": [
+      "bodice-back#1 452.0x298.6",
+      "bodice-front#1 480.0x274.5",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-front#1 180.2x148.8",
+      "pocket-bag-back#1 234.0x214.0",
+      "pocket-bag-front#1 234.0x214.0",
+      "skirt-back#1 619.6x309.0",
+      "skirt-front#1 619.0x287.0",
+      "sleeve#1 290.0x384.3",
+      "lining-bodice-back#1 452.0x298.6",
+      "lining-bodice-front#1 480.0x274.5",
+      "lining-skirt-back#1 584.6x309.0",
+      "lining-skirt-front#1 584.0x287.0",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x148.8",
+    ],
+  },
+  {
+    "doesNotFit": [],
+    "layout": "open",
+    "shapes": [
+      "bodice-back#1 452.0x298.6",
+      "bodice-back#2 452.0x298.6",
+      "bodice-front#1 480.0x549.0",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-back#2 117.2x166.2",
+      "neck-facing-front#1 180.2x297.7",
+      "pocket-bag-back#1 234.0x214.0",
+      "pocket-bag-back#2 234.0x214.0",
+      "pocket-bag-front#1 234.0x214.0",
+      "pocket-bag-front#2 234.0x214.0",
+      "skirt-back#1 619.6x309.0",
+      "skirt-back#2 619.6x309.0",
+      "skirt-front#1 619.0x574.0",
+      "sleeve#1 290.0x384.3",
+      "sleeve#2 290.0x384.3",
+      "lining-bodice-back#1 452.0x298.6",
+      "lining-bodice-back#2 452.0x298.6",
+      "lining-bodice-front#1 480.0x549.0",
+      "lining-skirt-back#1 584.6x309.0",
+      "lining-skirt-back#2 584.6x309.0",
+      "lining-skirt-front#1 584.0x574.0",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-back-interfacing#2 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x297.7",
+    ],
+  },
+]
+`;
+
+exports[`preparePieces snapshot > lists the shapes of seedDress M 1`] = `
+[
+  {
+    "doesNotFit": [],
+    "layout": "folded",
+    "shapes": [
+      "bodice-back#1 452.0x298.6",
+      "bodice-front#1 480.0x274.5",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-front#1 180.2x148.8",
+      "skirt-back#1 619.6x309.0",
+      "skirt-front#1 619.0x287.0",
+      "sleeve#1 290.0x384.3",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x148.8",
+    ],
+  },
+  {
+    "doesNotFit": [],
+    "layout": "open",
+    "shapes": [
+      "bodice-back#1 452.0x298.6",
+      "bodice-back#2 452.0x298.6",
+      "bodice-front#1 480.0x549.0",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-back#2 117.2x166.2",
+      "neck-facing-front#1 180.2x297.7",
+      "skirt-back#1 619.6x309.0",
+      "skirt-back#2 619.6x309.0",
+      "skirt-front#1 619.0x574.0",
+      "sleeve#1 290.0x384.3",
+      "sleeve#2 290.0x384.3",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-back-interfacing#2 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x297.7",
+    ],
+  },
+]
+`;
+
+exports[`preparePieces snapshot > lists the shapes of setInSleeveBlouse M 1`] = `
+[
+  {
+    "doesNotFit": [],
+    "layout": "folded",
+    "shapes": [
+      "bodice-back#1 452.0x301.1",
+      "bodice-front#1 480.0x277.0",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-front#1 180.2x148.8",
+      "sleeve#1 619.1x384.3",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x148.8",
+    ],
+  },
+  {
+    "doesNotFit": [],
+    "layout": "open",
+    "shapes": [
+      "bodice-back#1 452.0x301.1",
+      "bodice-back#2 452.0x301.1",
+      "bodice-front#1 480.0x554.0",
+      "neck-facing-back#1 117.2x166.2",
+      "neck-facing-back#2 117.2x166.2",
+      "neck-facing-front#1 180.2x297.7",
+      "sleeve#1 619.1x384.3",
+      "sleeve#2 619.1x384.3",
+      "neck-facing-back-interfacing#1 117.2x166.2",
+      "neck-facing-back-interfacing#2 117.2x166.2",
+      "neck-facing-front-interfacing#1 180.2x297.7",
+    ],
+  },
+]
+`;
+
+exports[`preparePieces snapshot > lists the shapes of vNeckHalfCircleDress M 1`] = `
+[
+  {
+    "doesNotFit": [],
+    "layout": "folded",
+    "shapes": [
+      "bodice-back#1 448.7x298.6",
+      "bodice-front#1 476.3x274.5",
+      "neck-facing-back#1 117.2x175.7",
+      "neck-facing-front#1 426.6x158.1",
+      "skirt-back#1 731.5x663.3",
+      "skirt-front#1 731.5x641.3",
+      "sleeve#1 290.0x384.3",
+      "neck-facing-back-interfacing#1 117.2x175.7",
+      "neck-facing-front-interfacing#1 426.6x158.1",
+    ],
+  },
+  {
+    "doesNotFit": [],
+    "layout": "open",
+    "shapes": [
+      "bodice-back#1 448.7x298.6",
+      "bodice-back#2 448.7x298.6",
+      "bodice-front#1 476.3x549.0",
+      "neck-facing-back#1 117.2x175.7",
+      "neck-facing-back#2 117.2x175.7",
+      "neck-facing-front#1 426.6x316.2",
+      "skirt-back#1 731.5x663.3",
+      "skirt-back#2 731.5x663.3",
+      "skirt-front#1 731.5x1282.6",
+      "sleeve#1 290.0x384.3",
+      "sleeve#2 290.0x384.3",
+      "neck-facing-back-interfacing#1 117.2x175.7",
+      "neck-facing-back-interfacing#2 117.2x175.7",
+      "neck-facing-front-interfacing#1 426.6x316.2",
+    ],
+  },
+]
+`;

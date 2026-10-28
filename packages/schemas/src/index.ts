@@ -18,3 +18,4 @@ export * from "./pattern";
 export * from "./engine-options";
 export * from "./pattern-options";
 export * from "./fabric";
+export * from "./fabric-options";

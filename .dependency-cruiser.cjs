@@ -39,6 +39,21 @@ module.exports = {
       },
     },
     {
+      name: "nesting-is-pure",
+      severity: "error",
+      comment:
+        "Nesting is pure geometry over a PatternResult: it imports @tafsila/schemas and the engine's geometry entry only (ADR-312 item 1, decision 315). Tests may draft fixtures with the whole engine.",
+      from: { path: "^packages/nesting/src", pathNot: "\\.test\\.ts$" },
+      to: {
+        path: [
+          "^apps/",
+          "^packages/(api|ui|config|export|fabric-kb)",
+          "^packages/engine/src/(?!geometry/)",
+          "node_modules/(@supabase|next|react|hono)",
+        ],
+      },
+    },
+    {
       name: "export-is-pure",
       severity: "error",
       comment:
