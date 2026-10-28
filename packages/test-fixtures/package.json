@@ -13,5 +13,6 @@
   "dependencies": {
     "@tafsila/schemas": "workspace:*",
     "fast-check": "^4.10.2"
-  }
+  },
+  "sideEffects": false
 }

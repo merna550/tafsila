@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     "@tafsila/ui",
     "@tafsila/engine",
     "@tafsila/export",
+    "@tafsila/fabric-kb",
     "@tafsila/test-fixtures",
     "@tafsila/schemas",
     "@tafsila/utils",

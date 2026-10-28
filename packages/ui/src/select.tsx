@@ -40,6 +40,8 @@ export interface SelectProps {
   readonly "aria-describedby"?: string;
   /** Marks the field as invalid. */
   readonly "aria-invalid"?: boolean;
+  /** Accessible name when there is no visible label (already translated). */
+  readonly "aria-label"?: string;
 }
 
 /** Classes of the open list. */
@@ -66,6 +68,7 @@ export function Select({
   dir,
   "aria-describedby": describedBy,
   "aria-invalid": invalid,
+  "aria-label": ariaLabel,
   ...root
 }: Readonly<SelectProps>): ReactElement {
   return (
@@ -74,6 +77,7 @@ export function Select({
         id={id}
         aria-describedby={describedBy}
         aria-invalid={invalid}
+        aria-label={ariaLabel}
         className={cx(FIELD_BASE, "flex min-h-11 items-center justify-between gap-2 text-start", className)}
       >
         <RadixSelect.Value placeholder={placeholder} />
