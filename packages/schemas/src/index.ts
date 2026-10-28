@@ -19,3 +19,5 @@ export * from "./engine-options";
 export * from "./pattern-options";
 export * from "./fabric";
 export * from "./fabric-options";
+export * from "./fabric-calc";
+export * from "./fabric-admin";

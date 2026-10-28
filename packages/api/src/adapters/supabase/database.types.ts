@@ -66,6 +66,92 @@ export type Database = {
         };
         Update: { name?: string; sizes?: Json; is_default?: boolean; updated_by?: string | null };
       };
+      fabrics: {
+        Row: {
+          id: string;
+          name_ar: string;
+          name_en: string;
+          properties: Json;
+          care_notes: Json;
+          is_draft: boolean;
+          created_at: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          id: string;
+          name_ar: string;
+          name_en: string;
+          properties: Json;
+          care_notes: Json;
+          is_draft?: boolean;
+          updated_by?: string | null;
+        };
+        Update: {
+          name_ar?: string;
+          name_en?: string;
+          properties?: Json;
+          care_notes?: Json;
+          is_draft?: boolean;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+      };
+      fabric_rules: {
+        Row: {
+          id: string;
+          condition: Json;
+          required_properties: Json;
+          priority: number;
+          reason: Json;
+          is_draft: boolean;
+          created_at: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          id: string;
+          condition: Json;
+          required_properties: Json;
+          priority: number;
+          reason: Json;
+          is_draft?: boolean;
+          updated_by?: string | null;
+        };
+        Update: {
+          condition?: Json;
+          required_properties?: Json;
+          priority?: number;
+          reason?: Json;
+          is_draft?: boolean;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+      };
+      fabric_calcs: {
+        Row: {
+          id: string;
+          pattern_version_id: string;
+          owner_id: string;
+          options: Json;
+          options_hash: string;
+          result: Json;
+          nesting_version: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          pattern_version_id: string;
+          owner_id?: string;
+          options: Json;
+          options_hash: string;
+          result: Json;
+          nesting_version: string;
+          updated_at?: string;
+        };
+        Update: { options?: Json; result?: Json; nesting_version?: string; updated_at?: string };
+      };
       designs: {
         Row: {
           id: string;

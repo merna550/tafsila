@@ -5,6 +5,8 @@ import { NotFoundError, ValidationError } from "./domain/errors";
 import { createErrorHandler } from "./middleware/error-handler";
 import { requestId, type AppEnv } from "./middleware/request-id";
 import { adminRoutes } from "./routes/admin";
+import { adminFabricRoutes } from "./routes/admin-fabrics";
+import { fabricRoutes } from "./routes/fabrics";
 import { accountRoutes } from "./routes/account";
 import { clientRoutes } from "./routes/clients";
 import { designRoutes } from "./routes/designs";
@@ -54,6 +56,8 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", profileRoutes(container));
   app.route("/", accountRoutes(container));
   app.route("/", adminRoutes(container));
+  app.route("/", adminFabricRoutes(container));
+  app.route("/", fabricRoutes(container));
   app.doc31("/openapi.json", OPENAPI_DOCUMENT_CONFIG);
   app.route("/", docsRoutes(container));
   if (container.appInfo.environment !== "production") app.route("/", debugRoutes(container));

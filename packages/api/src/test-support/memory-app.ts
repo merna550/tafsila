@@ -11,6 +11,11 @@ import {
   createMemoryPhoneVerification,
   type MemoryPhoneVerification,
 } from "../adapters/memory/phone-verification-repository";
+import { createMemoryFabricCalcRepository } from "../adapters/memory/fabric-calc-repository";
+import {
+  createMemoryFabricRepository,
+  createMemoryFabricRuleRepository,
+} from "../adapters/memory/fabric-repository";
 import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
 import { createHmacPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createMemoryStore, type MemoryStore } from "../adapters/memory/memory-store";
@@ -79,6 +84,9 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
       versions: createMemoryPatternVersionRepository(store),
       measurementSets: createMemoryMeasurementSetRepository(store),
       sizeCharts: createMemorySizeChartRepository(store),
+      fabrics: createMemoryFabricRepository(store),
+      fabricRules: createMemoryFabricRuleRepository(store),
+      fabricCalcs: createMemoryFabricCalcRepository(store),
       profiles: createMemoryProfileRepository(store),
       admin: createMemoryAdminRepository(store),
       accountDeleter: deletion.accountDeleter,

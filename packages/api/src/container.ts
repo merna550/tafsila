@@ -33,6 +33,8 @@ import {
 import { createWithApiRole, createWithUser } from "./adapters/supabase/with-user";
 import { createHmacPhoneHasher, createRejectingPhoneHasher } from "./adapters/system/hmac-phone-hasher";
 import { createMeasurementSetRepository } from "./adapters/supabase/measurement-set-repository";
+import { createFabricCalcRepository } from "./adapters/supabase/fabric-calc-repository";
+import { createFabricRepository, createFabricRuleRepository } from "./adapters/supabase/fabric-repository";
 import { createSizeChartRepository } from "./adapters/supabase/size-chart-repository";
 import { createRejectingRepositories, type Repositories } from "./adapters/supabase/rejecting-repositories";
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
@@ -49,6 +51,8 @@ import type { Clock } from "./ports/clock";
 import type { ClientRepository } from "./ports/client-repository";
 import type { DesignRepository } from "./ports/design-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
+import type { FabricCalcRepository } from "./ports/fabric-calc-repository";
+import type { FabricRepository, FabricRuleRepository } from "./ports/fabric-repository";
 import type { MeasurementSetRepository } from "./ports/measurement-set-repository";
 import type { PatternVersionRepository } from "./ports/pattern-version-repository";
 import type { PhoneHasher } from "./ports/phone-hasher";
@@ -85,6 +89,12 @@ export interface Container {
   readonly measurementSets: MeasurementSetRepository;
   /** The default size chart (system data, readable by every signed-in user). */
   readonly sizeCharts: SizeChartRepository;
+  /** The fabric catalogue (read by every signed-in user, written by admins). */
+  readonly fabrics: FabricRepository;
+  /** The fabric recommendation rules (read by every signed-in user, written by admins). */
+  readonly fabricRules: FabricRuleRepository;
+  /** The signed-in user's saved fabric calculations. */
+  readonly fabricCalcs: FabricCalcRepository;
   /** Users and stats for the admin screens (admin only; the database checks the admin again). */
   readonly admin: AdminRepository;
   /** What the user's plan allows (unlimited until M7). */
@@ -131,6 +141,9 @@ export function createRepositories(source: Record<string, string | undefined> = 
     versions: createPatternVersionRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
     sizeCharts: createSizeChartRepository(withUser),
+    fabrics: createFabricRepository(withUser),
+    fabricRules: createFabricRuleRepository(withUser),
+    fabricCalcs: createFabricCalcRepository(withUser),
     profiles: createProfileRepository(withUser),
     accountAudit: createAccountAudit(withApiRole),
     admin: createAdminRepository(withApiRole),

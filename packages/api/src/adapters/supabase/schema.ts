@@ -1,11 +1,22 @@
 /** Drizzle mirror of the SQL tables the API uses (supabase/migrations is the source of truth; schema.test.ts compares the columns). */
-import type { DesignSpec, Measurements, SizeChart } from "@tafsila/schemas";
+import type {
+  BilingualText,
+  DesignSpec,
+  FabricCalcResult,
+  FabricOptions,
+  FabricProperties,
+  Measurements,
+  RuleCondition,
+  RuleEffect,
+  SizeChart,
+} from "@tafsila/schemas";
 import {
   boolean,
   foreignKey,
   index,
   integer,
   jsonb,
+  smallint,
   pgTable,
   text,
   timestamp,
@@ -117,7 +128,57 @@ export const patternVersions = pgTable(
   },
   (table) => [
     unique().on(table.designId, table.versionNo),
+    unique().on(table.id, table.ownerId),
     foreignKey({ columns: [table.designId, table.ownerId], foreignColumns: [designs.id, designs.ownerId] }),
     index().on(table.designId, table.inputHash),
+  ],
+);
+
+/** public.fabrics. Read by every signed-in user, written by admins only (RLS); the API sets `updatedAt`. */
+export const fabrics = pgTable("fabrics", {
+  id: text("id").primaryKey(),
+  nameAr: text("name_ar").notNull(),
+  nameEn: text("name_en").notNull(),
+  properties: jsonb("properties").$type<FabricProperties>().notNull(),
+  careNotes: jsonb("care_notes").$type<BilingualText>().notNull(),
+  isDraft: boolean("is_draft").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedBy: uuid("updated_by"),
+});
+
+/** public.fabric_rules. `condition` is the package's `when`, `requiredProperties` its `effect`. */
+export const fabricRules = pgTable("fabric_rules", {
+  id: text("id").primaryKey(),
+  condition: jsonb("condition").$type<RuleCondition[]>().notNull(),
+  requiredProperties: jsonb("required_properties").$type<RuleEffect>().notNull(),
+  priority: smallint("priority").notNull(),
+  reason: jsonb("reason").$type<BilingualText>().notNull(),
+  isDraft: boolean("is_draft").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedBy: uuid("updated_by"),
+});
+
+/** public.fabric_calcs. One row per version and options hash; owner-only (RLS). */
+export const fabricCalcs = pgTable(
+  "fabric_calcs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    patternVersionId: uuid("pattern_version_id").notNull(),
+    ownerId: uuid("owner_id").notNull(),
+    options: jsonb("options").$type<FabricOptions>().notNull(),
+    optionsHash: text("options_hash").notNull(),
+    result: jsonb("result").$type<FabricCalcResult>().notNull(),
+    nestingVersion: text("nesting_version").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    unique().on(table.patternVersionId, table.optionsHash),
+    foreignKey({
+      columns: [table.patternVersionId, table.ownerId],
+      foreignColumns: [patternVersions.id, patternVersions.ownerId],
+    }),
   ],
 );

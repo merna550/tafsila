@@ -896,6 +896,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## F
 
+<a id="fabric-catalogue"></a>
+
+### Fabric catalogue and rules
+
+**Plain words:** The list of fabrics we can recommend (with drape, weight, body, stretch and sheen from 0 to 4) and the rules that turn a design into the properties it needs, such as "a circle skirt needs drape". They are data, not code, so Merna can change them without a new release. Arabic: كتالوج الخامات وقواعد الترشيح.  
+**In Tafsila:** tables `fabrics` and `fabric_rules`, seeded by a migration and edited through `/api/admin/fabrics` and `/api/admin/fabric-rules` with an audit row per change ([decision 317](../decisions/317-fabric-api.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Textile>
+
 <a id="fabric-width"></a>
 
 ### Fabric width
@@ -2425,6 +2433,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 <a id="letter-u"></a>
 
 ## U
+
+<a id="upsert"></a>
+
+### Upsert
+
+**Plain words:** "Update or insert": write a row, and if a row with the same key already exists, replace it instead of failing or adding a second one.  
+**In Tafsila:** saving a fabric calculation uses `insert ... on conflict (pattern_version_id, options_hash) do update`, so there is one row per version and options ([decision 317](../decisions/317-fabric-api.md)). **Level:** intermediate  
+**Learn:** <https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT>
 
 <a id="use-case"></a>
 
