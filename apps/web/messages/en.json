@@ -537,7 +537,8 @@
     "nav": {
       "label": "Admin sections",
       "users": "Users",
-      "sizes": "Size chart"
+      "sizes": "Size chart",
+      "fabrics": "Fabrics and rules"
     },
     "users": {
       "title": "Users",
@@ -650,6 +651,191 @@
             "notANumber": "Line {line}, size {size}: {field} is not a number.",
             "tooManyDecimals": "Line {line}, size {size}: {field} has more than one decimal."
           }
+        }
+      }
+    },
+    "fabrics": {
+      "title": "Fabrics and rules",
+      "subtitle": "The fabric catalogue · scale 1 to 5",
+      "add": "New fabric",
+      "caption": "Fabric catalogue",
+      "levelOf": "{level} of 5",
+      "edit": "Edit",
+      "deleteAction": "Delete",
+      "deleteNamed": "Delete {name}",
+      "draftNote": {
+        "label": "Draft:",
+        "text": "The current values are a draft from general sewing knowledge and keep the \"draft\" tag until reviewed. Every change is saved in the audit log."
+      },
+      "tabs": {
+        "label": "Catalogue sections",
+        "fabrics": "Fabrics",
+        "rules": "Rules"
+      },
+      "columns": {
+        "fabric": "Fabric",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "draft": "Draft",
+        "reviewed": "Reviewed"
+      },
+      "empty": {
+        "title": "No fabrics yet",
+        "description": "Add the first fabric to the catalogue."
+      },
+      "missing": {
+        "title": "Fabric not found",
+        "description": "This fabric is not in the catalogue. It may have been deleted.",
+        "back": "Back to the fabrics"
+      },
+      "delete": {
+        "title": "Delete this fabric?",
+        "description": "{name} is removed from the catalogue and from every recommendation. The audit log keeps its old values.",
+        "confirm": "Delete",
+        "cancel": "Keep it",
+        "close": "Close",
+        "done": "Fabric deleted"
+      },
+      "form": {
+        "breadcrumb": "Breadcrumb",
+        "newTitle": "New fabric",
+        "editTitle": "Edit fabric: {name}",
+        "statusLine": "Status: {status}",
+        "nameAr": "Name in Arabic",
+        "nameEn": "Name in English",
+        "id": "Id",
+        "idHint": "Lowercase English letters, digits and hyphens, such as cotton-poplin. It cannot be changed later.",
+        "idFixed": "The id cannot be changed.",
+        "properties": "Properties (1 to 5)",
+        "stretchNote": "Stretch is fixed at the lowest level: every fabric in the catalogue is woven.",
+        "hints": {
+          "drape": "1 stiff, 5 drapes a lot",
+          "weight": "1 very light, 5 heavy",
+          "body": "1 soft, holds no shape, 5 holds its shape",
+          "sheen": "1 matte, 5 very shiny"
+        },
+        "careAr": "Care notes in Arabic",
+        "careEn": "Care notes in English",
+        "reviewed": "This fabric was reviewed (the \"draft\" tag is removed)",
+        "save": "Save",
+        "cancel": "Cancel",
+        "created": "Fabric added",
+        "updated": "Fabric saved",
+        "auditNote": "Every save is recorded in the audit log."
+      },
+      "errors": {
+        "idInvalid": "The id may use lowercase English letters, digits and hyphens only.",
+        "nameArRequired": "The Arabic name is required.",
+        "nameEnRequired": "The English name is required.",
+        "careArRequired": "The Arabic care notes are required.",
+        "careEnRequired": "The English care notes are required.",
+        "levelRange": "The level must be from 1 to 5."
+      }
+    },
+    "fabricRules": {
+      "title": "Recommendation rules",
+      "subtitle": "Listed by priority, the most decisive first",
+      "add": "New rule",
+      "caption": "Recommendation rules",
+      "columns": {
+        "when": "When the design has",
+        "strength": "Type",
+        "effect": "The fabric needs",
+        "priority": "Priority",
+        "reason": "Reason shown",
+        "actions": "Actions"
+      },
+      "strength": {
+        "must": "Required",
+        "prefer": "Preferred"
+      },
+      "bound": {
+        "min": "{property} at least {level}",
+        "max": "{property} at most {level}"
+      },
+      "editAction": "Edit",
+      "deleteAction": "Delete",
+      "editNamed": "Edit rule {id}",
+      "deleteNamed": "Delete rule {id}",
+      "empty": {
+        "title": "No rules yet",
+        "description": "Add a rule to steer the recommendations."
+      },
+      "delete": {
+        "title": "Delete this rule?",
+        "description": "The rule {name} is removed. Recommendations stop using it. The audit log keeps its old values.",
+        "confirm": "Delete",
+        "cancel": "Keep it",
+        "close": "Close",
+        "done": "Rule deleted"
+      },
+      "form": {
+        "titleNew": "New rule",
+        "titleEdit": "Edit rule",
+        "close": "Close",
+        "id": "Id",
+        "idHint": "Lowercase English letters, digits and hyphens, such as circle-skirt-drape. It cannot be changed later.",
+        "idFixed": "The id cannot be changed.",
+        "conditions": "When the design has",
+        "conditionN": "Condition {n}",
+        "path": "Feature of condition {n}",
+        "op": "Operator of condition {n}",
+        "ops": {
+          "in": "is one of",
+          "not-in": "is none of",
+          "is-true": "is on"
+        },
+        "addCondition": "Add a condition",
+        "remove": "Remove",
+        "removeCondition": "Remove condition {n}",
+        "effect": "What the fabric needs",
+        "strength": "Type",
+        "must": "Required",
+        "prefer": "Preferred",
+        "property": "Property",
+        "min": "At least",
+        "max": "At most",
+        "noLimit": "No limit",
+        "priority": "Priority",
+        "priorityOption": "Priority {n}",
+        "reasonAr": "Reason in Arabic",
+        "reasonEn": "Reason in English",
+        "reviewed": "This rule was reviewed (the \"draft\" tag is removed)",
+        "save": "Save rule",
+        "cancel": "Cancel",
+        "created": "Rule added",
+        "updated": "Rule saved",
+        "auditNote": "Every save is recorded in the audit log."
+      },
+      "errors": {
+        "idInvalid": "The id may use lowercase English letters, digits and hyphens only.",
+        "levelRange": "The value must be from 1 to 5.",
+        "priorityRange": "The priority must be from 1 to 5.",
+        "reasonArRequired": "The Arabic reason is required.",
+        "reasonEnRequired": "The English reason is required.",
+        "boundRequired": "Choose at least a minimum or a maximum.",
+        "boundOrder": "The maximum cannot be below the minimum."
+      },
+      "preview": {
+        "title": "Preview before saving",
+        "note": "Shows the recommendations for a sample design with this edit applied. Nothing is saved yet.",
+        "design": "Sample design",
+        "before": "Saved rules",
+        "after": "With this edit",
+        "avoid": "Avoid:",
+        "changed": "This edit changes the recommendations.",
+        "unchanged": "This edit does not change the recommendations for this design.",
+        "incomplete": "Complete the conditions and fields to see the preview.",
+        "designs": {
+          "halfCircleDress": "Half-circle dress",
+          "fullCircleSkirt": "Full-circle skirt",
+          "straightSkirt": "Straight skirt",
+          "shirtCollarBlouse": "Shirt-collar blouse",
+          "bishopSleeveBlouse": "Bishop-sleeve blouse",
+          "linedPocketDress": "Lined dress with pockets",
+          "seedDress": "Basic dress"
         }
       }
     }
@@ -1304,7 +1490,8 @@
         "drape": "Drape",
         "weight": "Weight",
         "body": "Body",
-        "sheen": "Sheen"
+        "sheen": "Sheen",
+        "stretch": "Stretch"
       },
       "levels": {
         "none": "None",

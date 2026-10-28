@@ -153,3 +153,25 @@ export async function restoreOpenVersion(page: Page, env: PatternEnv, designId: 
   await page.getByTestId("confirm-restore").click();
   await expect(page).toHaveURL(new RegExp(`/designs/${designId}/pattern$`));
 }
+
+/**
+ * Signs up a user with a client, saves a design of one category and opens its first version read only.
+ *
+ * @param page - The page.
+ * @param env - Language prefix and messages.
+ * @param category - The garment type.
+ * @returns The design id.
+ */
+export async function saveAndOpenVersion(
+  page: Page,
+  env: PatternEnv,
+  category: "dress" | "skirt" | "blouse",
+): Promise<string> {
+  const clientId = await openSeedClient(page, env);
+  const designId = await startDesign(page, env, clientId, category);
+  await page.getByTestId("view-pattern").click();
+  await waitForReport(page);
+  await saveVersion(page);
+  await openVersion(page, env, designId, 1);
+  return designId;
+}

@@ -104,9 +104,15 @@ importers:
       '@tafsila/export':
         specifier: workspace:*
         version: link:../../packages/export
+      '@tafsila/fabric-kb':
+        specifier: workspace:*
+        version: link:../../packages/fabric-kb
       '@tafsila/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@tafsila/test-fixtures':
+        specifier: workspace:*
+        version: link:../../packages/test-fixtures
       '@tafsila/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -144,9 +150,6 @@ importers:
       '@playwright/test':
         specifier: ^1.64.0
         version: 1.64.0
-      '@tafsila/test-fixtures':
-        specifier: workspace:*
-        version: link:../../packages/test-fixtures
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3

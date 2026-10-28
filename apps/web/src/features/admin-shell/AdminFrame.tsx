@@ -1,5 +1,5 @@
 "use client";
-/** The admin area frame: a dark title bar ("Admin panel" and a link back to the site) and a side menu with the two sections. */
+/** The admin area frame: a dark title bar ("Admin panel" and a link back to the site) and a side menu with the sections. */
 import { useTranslations } from "next-intl";
 import type { ReactElement, ReactNode } from "react";
 import { Link, usePathname } from "@/shared/i18n";
@@ -8,15 +8,18 @@ import { isActive } from "@/shared/layout";
 /** One section of the admin menu. */
 interface AdminSection {
   /** Key under `admin.nav` in messages. */
-  readonly key: "users" | "sizes";
+  readonly key: "users" | "sizes" | "fabrics";
   /** Path without the language prefix. */
   readonly href: string;
+  /** Other paths that belong to the same section (the rules page belongs to "fabrics"). */
+  readonly alsoActiveOn?: readonly string[];
 }
 
 /** The sections that exist; the design's "overview" and "audit log" come later. */
 export const ADMIN_SECTIONS: readonly AdminSection[] = [
   { key: "users", href: "/admin/users" },
   { key: "sizes", href: "/admin/sizes" },
+  { key: "fabrics", href: "/admin/fabrics", alsoActiveOn: ["/admin/fabric-rules"] },
 ];
 
 /** Props for {@link AdminFrameView}. */
@@ -54,7 +57,9 @@ export function AdminFrameView({ pathname, children }: Readonly<AdminFrameViewPr
           className="flex flex-1 basis-48 flex-col gap-1 rounded-lg bg-surface p-2 shadow-card"
         >
           {ADMIN_SECTIONS.map((section) => {
-            const active = isActive(pathname, section.href);
+            const active = [section.href, ...(section.alsoActiveOn ?? [])].some((href) =>
+              isActive(pathname, href),
+            );
             return (
               <Link
                 key={section.key}
