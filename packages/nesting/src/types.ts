@@ -1,6 +1,9 @@
 /** Types of the prepared nesting input: shapes per fabric kind, ready to place on a strip (decision 315). */
 import type { FabricLayout, Piece, Point } from "@tafsila/schemas";
-import type { HALF_TURN_DEG } from "./constants";
+import type { HALF_TURN_DEG, PIECE_ORDERS } from "./constants";
+
+/** One piece order of the placement: by outline area, by width across the fabric, or by length along the grain. */
+export type PieceOrder = (typeof PIECE_ORDERS)[number];
 
 /** Which fabric a piece is cut from: main, lining or interfacing (FR-FAB-05). */
 export type FabricKind = Piece["cut"]["fabric"];
@@ -35,6 +38,8 @@ export interface Shape {
 export interface DoesNotFit {
   /** The piece that does not fit. */
   readonly pieceId: string;
+  /** The fabric the piece is cut from, so each fabric kind can list its own (#316). */
+  readonly fabric: FabricKind;
   /** Its width across the fabric in this layout, in mm. */
   readonly widthMm: number;
   /** The usable width it was checked against, in mm. */
@@ -58,5 +63,55 @@ export interface PreparedFabrics {
   /** Pieces too wide for the usable width, sorted by piece id. */
   readonly doesNotFit: readonly DoesNotFit[];
   /** True when the folded layout left a piece out that the open layout would hold (the UI suggests "open"). */
+  readonly suggestOpen: boolean;
+}
+
+/** Where one shape lies on the strip (FR-FAB-02). */
+export interface Placement {
+  /** The shape's id, `<pieceId>#<n>`. */
+  readonly shapeId: string;
+  /** The pattern piece it cuts. */
+  readonly pieceId: string;
+  /** Copy number of the shape, from 1 (the n of its id). */
+  readonly copyIndex: number;
+  /** x of the turned shape's box along the strip, in mm (a multiple of the 3 mm column). */
+  readonly xMm: number;
+  /** y of the turned shape's box across the fabric, in mm; 0 is the fold in a folded layout. */
+  readonly yMm: number;
+  /** The turn given: 0 or 180 (a fold shape's 180 is a flip along x). */
+  readonly rotation: Turn;
+  /** True when the shape is the mirror image of the piece. */
+  readonly mirrored: boolean;
+}
+
+/** The placement of one fabric kind. */
+export interface NestKindResult {
+  /** The fabric kind. */
+  readonly kind: FabricKind;
+  /** Where each placed shape lies, in placement order. */
+  readonly placements: readonly Placement[];
+  /** Used strip length: the largest x reached by a placed shape, in mm (0 when nothing is placed). */
+  readonly stripLengthMm: number;
+  /** Rows of cut pieces, for the pattern repeat (decision 316 item 1). */
+  readonly rows: number;
+  /** Pieces of this kind left out: too wide in the preparation, or wider than the strip here. */
+  readonly doesNotFit: readonly DoesNotFit[];
+  /** The piece order that gave the shortest strip. */
+  readonly order: PieceOrder;
+}
+
+/** The placement of every fabric kind of a preparation. */
+export interface NestResult {
+  /** The layout the shapes were placed in. */
+  readonly layout: FabricLayout;
+  /** Width the shapes may use across the fabric, in mm. */
+  readonly usableWidthMm: number;
+  /** Main fabric. */
+  readonly main: NestKindResult;
+  /** Lining. */
+  readonly lining: NestKindResult;
+  /** Interfacing. */
+  readonly interfacing: NestKindResult;
+  /** True when the folded layout left a piece out that the open layout would hold. */
   readonly suggestOpen: boolean;
 }
