@@ -44,6 +44,14 @@ describe("runFabric", () => {
     expect(answer.kinds.map((k) => k.kind)).toContain("lining");
   });
 
+  it("names a piece that is wider than the fabric and says the open layout would hold it", () => {
+    const answer = runFabric(request(seedDress, { widthMm: 500 }), () => undefined);
+    if (!("ok" in answer) || !answer.ok) throw new Error("expected an answer");
+    expect(answer.doesNotFit.length).toBeGreaterThan(0);
+    expect(answer.doesNotFit[0]?.name.en).toBeTruthy();
+    expect(answer.doesNotFit.every((d) => d.widthMm > d.usableWidthMm)).toBe(true);
+  });
+
   it("answers an error for an input the engine rejects, instead of throwing", () => {
     const answer = runFabric(request({ garment: "nope" }), () => undefined);
     expect(answer).toMatchObject({ id: 4, ok: false });
