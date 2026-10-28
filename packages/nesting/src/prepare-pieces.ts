@@ -164,7 +164,7 @@ export function preparePieces(pattern: PatternResult, options: FabricOptions): P
     const widthMm = bbox(outline.polygon).maxY;
     if (widthMm > usableWidthMm) {
       const fitsOpen = openWidthMm(selvedge) <= options.widthMm;
-      doesNotFit.push({ pieceId: piece.id, widthMm, usableWidthMm, fitsOpen });
+      doesNotFit.push({ pieceId: piece.id, fabric: piece.cut.fabric, widthMm, usableWidthMm, fitsOpen });
       continue;
     }
     shapeCopies(piece.cut, options.layout).forEach((copy, i) => {

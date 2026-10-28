@@ -1,0 +1,83 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fabricResult > keeps the placements of dartedBlouse M on 140 cm folded (snapshot) 1`] = `
+[
+  {
+    "kind": "main",
+    "lengthM": 0.7,
+    "order": "area",
+    "placements": [
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "bodice-back",
+        "rotation": 0,
+        "shapeId": "bodice-back#1",
+        "xMm": 0,
+        "yMm": 398.91,
+      },
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "bodice-front",
+        "rotation": 0,
+        "shapeId": "bodice-front#1",
+        "xMm": 0,
+        "yMm": 0,
+      },
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "neck-facing-front",
+        "rotation": 180,
+        "shapeId": "neck-facing-front#1",
+        "xMm": 474,
+        "yMm": 0,
+      },
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "neck-facing-back",
+        "rotation": 180,
+        "shapeId": "neck-facing-back#1",
+        "xMm": 0,
+        "yMm": 308.61,
+      },
+    ],
+    "stripLengthMm": 654.24,
+  },
+  {
+    "kind": "lining",
+    "lengthM": 0,
+    "order": "area",
+    "placements": [],
+    "stripLengthMm": 0,
+  },
+  {
+    "kind": "interfacing",
+    "lengthM": 0.2,
+    "order": "area",
+    "placements": [
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "neck-facing-front-interfacing",
+        "rotation": 0,
+        "shapeId": "neck-facing-front-interfacing#1",
+        "xMm": 0,
+        "yMm": 0,
+      },
+      {
+        "copyIndex": 1,
+        "mirrored": false,
+        "pieceId": "neck-facing-back-interfacing",
+        "rotation": 0,
+        "shapeId": "neck-facing-back-interfacing#1",
+        "xMm": 0,
+        "yMm": 533.75,
+      },
+    ],
+    "stripLengthMm": 180.24,
+  },
+]
+`;
