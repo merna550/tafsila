@@ -2,7 +2,11 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  test: { exclude: ["e2e/**", "node_modules/**"] },
+  test: {
+    exclude: ["e2e/**", "node_modules/**"],
+    // next-intl imports `next/navigation` without an extension; inlining lets Vite resolve it (a feature index may now pull it in).
+    server: { deps: { inline: [/next-intl/] } },
+  },
   oxc: { jsx: { runtime: "automatic" } },
   resolve: {
     alias: {

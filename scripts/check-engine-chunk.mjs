@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Build-output guard (issues #239 and #289): heavy code must load only in a Web Worker, never in a page bundle. There
- * is one marker group per kind of code: the engine geometry (preview worker) and `pdf-lib` with its font reader
- * (export worker). After `next build`, finds the chunks that contain each group and fails when a group is in no chunk
+ * Build-output guard (issues #239, #289 and #318): heavy code must load only in a Web Worker, never in a page bundle. There
+ * is one marker group per kind of code: the engine geometry (preview worker), `pdf-lib` with its font reader
+ * (export worker) and the fabric nesting (nesting worker). After `next build`, finds the chunks that contain each group and fails when a group is in no chunk
  * (the worker did not bundle it) or when any page's client manifest loads a chunk that holds it.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -24,8 +24,14 @@ export const PDF_MARKERS = [
   "Calling transform done when still transforming",
 ];
 
+/**
+ * The piece orders `@tafsila/nesting` tries, as the minifier writes the array (`PIECE_ORDERS`, issue #318). No page
+ * code holds this sequence; the nesting code is the only place it is written.
+ */
+export const NESTING_MARKERS = ['["area","width","length"]'];
+
 /** The marker groups the guard checks, by name. */
-export const MARKER_GROUPS = { engine: ENGINE_MARKERS, pdf: PDF_MARKERS };
+export const MARKER_GROUPS = { engine: ENGINE_MARKERS, pdf: PDF_MARKERS, nesting: NESTING_MARKERS };
 
 /**
  * Lists files below a folder that match a name test.

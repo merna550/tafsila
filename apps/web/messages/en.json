@@ -1500,6 +1500,83 @@
         "high": "High",
         "max": "Very high"
       }
+    },
+    "calc": {
+      "title": "Fabric lengths",
+      "subtitle": "How many metres to buy for each fabric, with the layout of the pieces.",
+      "options": {
+        "title": "Fabric options",
+        "width": "Fabric width",
+        "widthHint": "In centimetres.",
+        "widthGroup": "Fabric width in centimetres",
+        "custom": "Custom",
+        "customLabel": "Custom width (cm)",
+        "layout": "Layout",
+        "layoutGroup": "Layout",
+        "folded": "Folded",
+        "open": "Open",
+        "foldedHint": "Folded cuts mirrored pieces once on two layers.",
+        "openHint": "Open lays the fabric in one layer, each piece cut on its own.",
+        "nap": "Fabric with a direction (pile or print)",
+        "napHint": "All pieces keep the same direction and none is turned.",
+        "shrinkage": "Shrinkage (%)",
+        "repeat": "Pattern repeat (cm)",
+        "calculate": "Calculate fabric",
+        "recalculate": "Recalculate"
+      },
+      "results": {
+        "title": "Lengths to buy",
+        "metres": "{value} m",
+        "none": "—",
+        "kind": {
+          "main": "Main fabric",
+          "lining": "Lining",
+          "interfacing": "Interfacing"
+        },
+        "detail": {
+          "folded": "{width} cm wide, folded",
+          "open": "{width} cm wide, open"
+        },
+        "blocked": "Cannot calculate before the problem is solved",
+        "rounding": "Lengths are rounded up to the nearest 0.1 m and include {shrinkage}% shrinkage.",
+        "empty": "Choose the fabric options and press Calculate fabric."
+      },
+      "notFit": {
+        "title": "The piece \"{piece}\" is wider than the fabric ({usable} cm).",
+        "hint": "Try the open layout or a wider fabric.",
+        "tryOpen": "Try the open layout"
+      },
+      "marker": {
+        "title": "Layout",
+        "label": "Layout of the pieces on the fabric",
+        "kindGroup": "Fabric to draw",
+        "usable": "Usable width: {width} cm",
+        "fold": "Fold",
+        "selvedge": "Selvedge",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "zoomReset": "Reset zoom",
+        "note": "The layout is an estimate of the length. Check it by hand before you cut.",
+        "notDrawn": "The layout is drawn when you calculate. Press Recalculate to see it."
+      },
+      "progress": {
+        "running": "Calculating the layout…",
+        "draft": "Drawing the pattern…",
+        "nest": "Placing the pieces…",
+        "slow": "This is taking longer than usual. You can cancel and try again.",
+        "cancel": "Cancel"
+      },
+      "saved": {
+        "line": "Saved result",
+        "olderVersion": "This result was calculated with an older version of the calculator. Recalculate to update it."
+      },
+      "errors": {
+        "invalid": "This pattern did not pass validation, so the fabric cannot be calculated.",
+        "failed": "The calculation stopped unexpectedly. Try again.",
+        "width": "Enter a width between 50 and 300 cm.",
+        "shrinkage": "Enter a number between 0 and 20.",
+        "repeat": "Enter a number between 0 and 100."
+      }
     }
   }
 }

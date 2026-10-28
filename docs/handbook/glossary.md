@@ -914,6 +914,12 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 <a id="fabric-width"></a>
 
+### Fabric nesting worker
+
+**Plain words:** A background thread in the browser that works out how the pattern pieces lie on the fabric and how many metres to buy, while the page stays responsive. It drafts the pattern again from the saved version, reports each step, and is thrown away when the user cancels. Arabic: عامل حساب القماش.  
+**In Tafsila:** `apps/web/src/shared/fabric-nesting/` ([decision 318](../decisions/318-fabric-calculator.md)). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers>
+
 ### Fabric width
 
 **Plain words:** How wide the roll of fabric is (commonly 90, 115, 140, 150 or 160 cm). It limits how pieces can be placed.  

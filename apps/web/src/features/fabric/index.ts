@@ -1,4 +1,5 @@
 /** Public entry of the fabric feature: the only file other code may import. */
+export { FabricCalculator } from "./FabricCalculator";
 export { FabricRecommendations } from "./FabricRecommendations";
 export { LevelDots } from "./components/LevelDots";
 export { fabricAltName, fabricName, pickLocalized, type TextLocale } from "./model/localized";

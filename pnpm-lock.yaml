@@ -107,6 +107,9 @@ importers:
       '@tafsila/fabric-kb':
         specifier: workspace:*
         version: link:../../packages/fabric-kb
+      '@tafsila/nesting':
+        specifier: workspace:*
+        version: link:../../packages/nesting
       '@tafsila/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas

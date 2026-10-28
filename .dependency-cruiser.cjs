@@ -75,6 +75,17 @@ module.exports = {
       to: { path: "^@tafsila/export(/|$)" },
     },
     {
+      name: "nesting-only-in-nesting-worker",
+      severity: "error",
+      comment:
+        "The web app imports @tafsila/nesting only in the nesting worker, its handler and the protocol (type imports only, enforced by consistent-type-imports), so the placement code never reaches a page bundle; the one-line `@tafsila/nesting/version` is free to import for the older-version note (issue #318; scripts/check-engine-chunk.mjs checks the build).",
+      from: {
+        path: "^apps/web/src",
+        pathNot: ["^apps/web/src/shared/fabric-nesting/(fabric-handler|protocol)\\.ts$", "\\.worker\\.ts$"],
+      },
+      to: { path: "^packages/nesting/", pathNot: "^packages/nesting/src/nesting-version\\.ts$" },
+    },
+    {
       name: "no-pdf-lib-in-web",
       severity: "error",
       comment: "pdf-lib is used only inside packages/export; the web app never imports it (issue #289).",

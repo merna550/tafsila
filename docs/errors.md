@@ -47,6 +47,15 @@ These never come from the API. The export worker posts them and `exportErrorToAp
 | `WORKER_FAILED`    | Same as above                                    | The export worker crashed or could not load                                | Try again                                   |
 | `PATTERN_INVALID`  | "This design ... cannot be exported."            | The stored inputs no longer pass validation (saved versions never do this) | Open the version and read the report        |
 
+## Browser-only codes (fabric nesting worker, issue #318)
+
+The nesting worker posts these and `fabricErrorToApiError` (`apps/web/src/shared/fabric-nesting/fabric-error.ts`) turns them into the shared error display; the texts live in `messages/` under `fabric.calc.errors`. Engine input errors keep their own text.
+
+| Code              | Shown as                                           | Cause                                        | What to do                           |
+| ----------------- | -------------------------------------------------- | -------------------------------------------- | ------------------------------------ |
+| `PATTERN_INVALID` | "This pattern did not pass validation..."          | The stored inputs no longer pass validation  | Open the version and read the report |
+| `WORKER_FAILED`   | "The calculation stopped unexpectedly. Try again." | The nesting worker crashed or could not load | Try again                            |
+
 ## Adding a code
 
 1. Add it to `ERROR_CATALOGUE` with both messages (Arabic first).

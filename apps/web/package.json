@@ -22,6 +22,7 @@
     "@tafsila/engine": "workspace:*",
     "@tafsila/export": "workspace:*",
     "@tafsila/fabric-kb": "workspace:*",
+    "@tafsila/nesting": "workspace:*",
     "@tafsila/schemas": "workspace:*",
     "@tafsila/test-fixtures": "workspace:*",
     "@tafsila/ui": "workspace:*",
