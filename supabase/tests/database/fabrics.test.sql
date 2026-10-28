@@ -18,7 +18,14 @@ begin
   reset role;
   perform set_config('request.jwt.claims', '', true);
 end $$;
-grant execute on function pg_temp.act_as(uuid), pg_temp.reset() to public;
+create function pg_temp.affected(q text) returns int language plpgsql as $$
+declare n int;
+begin
+  execute q;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+grant execute on function pg_temp.act_as(uuid), pg_temp.reset(), pg_temp.affected(text) to public;
 
 -- 1-3 the migration seed is readable by signed-in users, not by anon
 select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000002');
@@ -34,14 +41,14 @@ select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000002');
 select throws_ok(
   $$ insert into public.fabrics (id, name_ar, name_en, properties, care_notes) values ('x-fabric', 'س', 'X', '{}', '{}') $$,
   '42501', null, '4 a non-admin cannot insert a fabric');
-select is((with u as (update public.fabrics set name_en = 'hacked' where id = 'crepe' returning 1) select count(*)::int from u), 0,
+select is(pg_temp.affected($q$update public.fabrics set name_en = 'hacked' where id = 'crepe'$q$), 0,
   '5 a non-admin update of a fabric changes no row');
-select is((with d as (delete from public.fabrics where id = 'crepe' returning 1) select count(*)::int from d), 0,
+select is(pg_temp.affected($q$delete from public.fabrics where id = 'crepe'$q$), 0,
   '6 a non-admin delete of a fabric removes no row');
 select throws_ok(
   $$ insert into public.fabric_rules (id, condition, required_properties, priority, reason) values ('x-rule', '[]', '{}', 3, '{}') $$,
   '42501', null, '7 a non-admin cannot insert a rule');
-select is((with u as (update public.fabric_rules set priority = 1 returning 1) select count(*)::int from u), 0,
+select is(pg_temp.affected($q$update public.fabric_rules set priority = 1$q$), 0,
   '8 a non-admin update of rules changes no row');
 
 -- 9-14 an admin can write; the id slug and the priority range are checked
@@ -50,13 +57,13 @@ select lives_ok(
   $$ insert into public.fabrics (id, name_ar, name_en, properties, care_notes, is_draft, updated_by)
      values ('organza', 'أورجانزا', 'Organza', '{"drape":1}', '{"ar":"x","en":"y"}', false, 'cccccccc-0000-4000-8000-000000000003') $$,
   '9 an admin can insert a fabric');
-select is((with u as (update public.fabrics set name_en = 'Organza silk' where id = 'organza' returning 1) select count(*)::int from u), 1,
+select is(pg_temp.affected($q$update public.fabrics set name_en = 'Organza silk' where id = 'organza'$q$), 1,
   '10 an admin can update a fabric');
 select lives_ok(
   $$ insert into public.fabric_rules (id, condition, required_properties, priority, reason)
      values ('test-rule', '[]', '{"property":"drape"}', 3, '{"ar":"x","en":"y"}') $$,
   '11 an admin can insert a rule');
-select is((with d as (delete from public.fabric_rules where id = 'test-rule' returning 1) select count(*)::int from d), 1,
+select is(pg_temp.affected($q$delete from public.fabric_rules where id = 'test-rule'$q$), 1,
   '12 an admin can delete a rule');
 select throws_ok(
   $$ insert into public.fabrics (id, name_ar, name_en, properties, care_notes) values ('Bad Id', 'س', 'X', '{}', '{}') $$,
@@ -93,9 +100,9 @@ select throws_ok(
   $$ insert into public.fabric_calcs (pattern_version_id, options, options_hash, result, nesting_version)
      values ('aaaaaaaa-0000-4000-8000-0000000000f1', '{}', 'hash-3', '{}', '1.0.0') $$,
   '23503', null, '20 another user cannot attach a calculation to the version of A (composite FK)');
-select is((with u as (update public.fabric_calcs set nesting_version = 'x' returning 1) select count(*)::int from u), 0,
+select is(pg_temp.affected($q$update public.fabric_calcs set nesting_version = 'x'$q$), 0,
   '21 another user cannot update the calculation of A');
-select is((with d as (delete from public.fabric_calcs returning 1) select count(*)::int from d), 0,
+select is(pg_temp.affected($q$delete from public.fabric_calcs$q$), 0,
   '22 another user cannot delete the calculation of A');
 
 -- 23-24 an admin reads but does not write calculations of users
