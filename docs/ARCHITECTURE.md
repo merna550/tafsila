@@ -17,6 +17,7 @@
 | `packages/engine`    | Functional core + plugin pipeline                     | Deterministic, testable geometry; new garment features added as modules without touching others                   |
 | `packages/export`    | Pure data in, data out (print tiles, later PDF)       | The PDF code only draws what the tile maths returns; no UI or API code in it (`docs/export/`)                     |
 | `packages/fabric-kb` | Pure data + rules (catalogue, recommendation)         | `DesignSpec` in, 3 to 5 fabrics with reasons out; depends on `@tafsila/schemas` only (`docs/engine/fabric-kb.md`) |
+| `packages/nesting`   | Pure geometry (fabric piece preparation, placement)   | `PatternResult` + fabric options in, shapes per fabric out; deterministic (`docs/engine/nesting.md`)              |
 | `services/sim` (v2)  | Small hexagonal service                               | Same rules as the API, in Python                                                                                  |
 | Data                 | Postgres + RLS, repository pattern, migrations in git | Security at the DB level; reproducible environments                                                               |
 

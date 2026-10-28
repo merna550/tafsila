@@ -319,3 +319,5 @@ Cross-checks:
 | Path-scoped agent rules | `.claude/rules/engine/drafting.md`             |
 
 Fabric catalogue and recommendation rules (a separate pure package): [fabric-kb](fabric-kb.md).
+
+Fabric nesting (piece preparation, then placement; a separate pure package): [nesting](nesting.md).
