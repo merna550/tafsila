@@ -1,11 +1,12 @@
 # Nesting (`packages/nesting`)
 
-Pure package `@tafsila/nesting`. Today it holds the **piece preparation** (#315): `preparePieces(pattern, options)` turns a `PatternResult` and the fabric options into the exact shapes to lay on each fabric. The placement on the strip and the length to buy follow in #316 ([ADR-313](../decisions/313-nesting-algorithm.md)).
+Pure package `@tafsila/nesting`. It holds the **piece preparation** (#315): `preparePieces(pattern, options)` turns a `PatternResult` and the fabric options into the exact shapes to lay on each fabric; and the **placement** (#316): `nest(prepared)` lays the shapes on the strip ([ADR-313](../decisions/313-nesting-algorithm.md)), `fabricLengthM` gives the length to buy and `buildMarkerScene` turns a layout into drawing data. `fabricResult(pattern, options)` runs all of it.
 
 - Requirements: FR-FAB-01 (options), FR-FAB-02 (nesting), FR-FAB-05 (main, lining, interfacing apart), FR-VAL-08 (pieces wider than the fabric), NFR-08 (deterministic).
-- Decisions: [ADR-312](../decisions/312-m5-scope.md) item 4 (fabric model), [ADR-313](../decisions/313-nesting-algorithm.md) items 3 and 5 (tolerance, fold crossings), [decision 315](../decisions/315-nesting-preparation.md) (this package's rules).
+- Requirements also: FR-FAB-03 (shrinkage and pattern repeat), NFR-02 (3 s per fabric kind).
+- Decisions: [ADR-312](../decisions/312-m5-scope.md) item 4 (fabric model), [ADR-313](../decisions/313-nesting-algorithm.md) (algorithm, tolerance, fold crossings), [decision 315](../decisions/315-nesting-preparation.md) (preparation rules), [decision 316](../decisions/316-nesting-placement.md) (placement, length and version rules).
 - Dependencies: `@tafsila/schemas` and the engine's geometry entry `@tafsila/engine/geometry` only (dependency-cruiser rule `nesting-is-pure`). No `Math.random`, no clock.
-- Try it: `pnpm --filter @tafsila/nesting print seedDress folded 140 M` lists the shapes of a fixture design.
+- Try it: `pnpm --filter @tafsila/nesting print seedDress folded 140 M` lists the shapes of a fixture design; `pnpm --filter @tafsila/nesting print nest seedDress folded 140 M` lists the placements and the length to buy per fabric kind. `pnpm --filter @tafsila/nesting bench` times the slowest cases.
 
 ## Fabric options (`packages/schemas/src/fabric-options.ts`)
 
@@ -19,7 +20,7 @@ Pure package `@tafsila/nesting`. Today it holds the **piece preparation** (#315)
 | `shrinkagePercent` | 0 – 20                                                                                  | 5        |
 | `patternRepeatMm`  | 0 – 1000                                                                                | 0        |
 
-Shrinkage and repeat are used by the length step (#316), not by the preparation.
+Shrinkage and repeat are used by the length step, not by the preparation or the placement.
 
 ## Frame
 
@@ -84,3 +85,64 @@ A mirrored copy is flipped across a line along the grain (y → −y), so its gr
 - Unit tests per rule: `packages/nesting/src/*.test.ts` (outline, grain, fold, copies, the whole preparation).
 - Property tests over the fixture designs `seedDress`, `vNeckHalfCircleDress`, `setInSleeveBlouse`, `gatheredKneeSkirt`, `linedSidePocketDress` in sizes M and XXL, both layouts, 115 and 140 cm: shape count, grain parallel within 0.01°, fold shapes on y = 0, no negative y, every shape inside the usable width or reported, deterministic and independent of piece order; plus a snapshot of shape ids and sizes.
 - Manual cases: [nesting preparation](../test-cases/engine/nesting-preparation.md).
+
+## Placement (`nest`)
+
+Each fabric kind (main, lining, interfacing) has its own strip: `usableWidthMm` across (y) and open along x.
+
+1. **Column profile.** The strip is cut into columns 3 mm wide (`SLICE_MM`). Each shape, in each allowed turn, becomes a list of covered y-intervals per column (`columnProfile`). A column covers every y the outline reaches **anywhere inside the column** (computed per trapezoid between corners), so a profile always contains its shape and two profiles that do not overlap mean two outlines that do not overlap (decision 316 item 5). The strip keeps the same intervals per column (`Occupancy`).
+2. **Turns.** 0°, and 180° unless the fabric has directional nap. An ordinary shape turns about its box centre; a **fold** shape is flipped along x instead, so its fold edge stays on y = 0.
+3. **Bottom-left fill.** For each shape, each turn is tried from column 0 until its profile fits without overlapping (touching is allowed). The earliest column wins; then the **lowest** free y in an open layout, or the **highest** in a folded layout so ordinary pieces stay at the selvedge and leave the fold free. Fold shapes may only sit at y = 0. Ties keep the earlier turn (0°).
+4. **Piece orders.** The whole kind is filled three times: by area, by width across the fabric, by length along the grain, each largest first with ties by shape id. The shortest strip wins; equal strips keep the earlier order. The input order of the shapes never matters (NFR-08).
+5. **Result per kind.** `{ kind, placements, stripLengthMm, rows, doesNotFit, order }`. A placement is `{ shapeId, pieceId, copyIndex, xMm, yMm, rotation, mirrored }`: x is a multiple of 3 mm, (x, y) is the corner of the turned shape's box. `doesNotFit` lists the preparation's too-wide pieces of this fabric, then any shape wider than the strip. `stripLengthMm` is the largest x a placed shape reaches.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" width="640" role="img" aria-label="Bottom-left fill on 3 mm columns: each shape is a set of covered intervals per column; the next shape goes to the first column where its intervals fit between the ones already placed.">
+  <rect x="20" y="20" width="600" height="180" fill="#f5efe6" stroke="#6b5b4b"/>
+  <g stroke="#c9bba8" stroke-width="0.5">
+    <line x1="60" y1="20" x2="60" y2="200"/><line x1="100" y1="20" x2="100" y2="200"/><line x1="140" y1="20" x2="140" y2="200"/><line x1="180" y1="20" x2="180" y2="200"/><line x1="220" y1="20" x2="220" y2="200"/><line x1="260" y1="20" x2="260" y2="200"/><line x1="300" y1="20" x2="300" y2="200"/><line x1="340" y1="20" x2="340" y2="200"/><line x1="380" y1="20" x2="380" y2="200"/>
+  </g>
+  <path d="M20 200 L20 90 L140 60 L180 90 L180 200 Z" fill="#d6e4f0" stroke="#1f4e79"/>
+  <g fill="#1f4e79" opacity="0.25"><rect x="20" y="85" width="40" height="115"/><rect x="60" y="75" width="40" height="125"/><rect x="100" y="60" width="40" height="140"/><rect x="140" y="60" width="40" height="140"/></g>
+  <text x="40" y="150" font-size="13" fill="#1f4e79">shape A</text>
+  <path d="M20 20 L180 20 L180 50 L20 50 Z" fill="#e3f0d6" stroke="#3d6b1f"/>
+  <text x="40" y="40" font-size="12" fill="#3d6b1f">shape B fits above A</text>
+  <path d="M180 200 L180 110 L300 110 L300 200 Z" fill="#fbe3d6" stroke="#9c4a1a"/>
+  <text x="195" y="160" font-size="12" fill="#9c4a1a">shape C: next column</text>
+  <text x="400" y="80" font-size="12" fill="#333">columns 3 mm wide (drawn wider)</text>
+  <text x="400" y="100" font-size="12" fill="#333">shaded: A's covered intervals</text>
+  <line x1="400" y1="140" x2="600" y2="140" stroke="#333" marker-end="url(#a3)"/>
+  <text x="400" y="132" font-size="12" fill="#333">strip length (x), grain</text>
+  <text x="24" y="222" font-size="12" fill="#333">y = 0 (fold when folded)</text>
+  <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#333"/></marker></defs>
+</svg>
+
+## Length to buy (`fabricLengthM`)
+
+Length in mm = **strip** + strip × **shrinkage %** + **pattern repeat** × **rows**, then rounded **up** to 0.1 m. A total within 0.01 mm of a step stays on it (1000 mm with no shrinkage is 1.0 m, not 1.1 m). A kind with no pieces is 0 m. Main, lining and interfacing are computed apart (FR-FAB-05).
+
+**Rows** (decision 316 item 1): the x-bands `[x, x + length]` of the placed shapes are joined where they overlap; each joined band is one row. Bands that only touch are two rows. With repeat 0 (the default) rows change nothing.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 170" width="640" role="img" aria-label="Rows of cut pieces: pieces that share part of the strip length form one row; here two rows, so two pattern repeats are added.">
+  <rect x="20" y="20" width="600" height="100" fill="#f5efe6" stroke="#6b5b4b"/>
+  <rect x="20" y="25" width="200" height="45" fill="#d6e4f0" stroke="#1f4e79"/>
+  <rect x="160" y="72" width="180" height="45" fill="#d6e4f0" stroke="#1f4e79"/>
+  <rect x="380" y="30" width="220" height="80" fill="#e3f0d6" stroke="#3d6b1f"/>
+  <line x1="20" y1="140" x2="340" y2="140" stroke="#1f4e79" stroke-width="3"/>
+  <text x="120" y="160" font-size="13" fill="#1f4e79">row 1 (shared length)</text>
+  <line x1="380" y1="140" x2="600" y2="140" stroke="#3d6b1f" stroke-width="3"/>
+  <text x="450" y="160" font-size="13" fill="#3d6b1f">row 2</text>
+</svg>
+
+Example: strip 1230 mm, 5 % shrinkage, no repeat: 1291.5 mm, so **1.3 m**.
+
+## Result and version (`fabricResult`)
+
+`fabricResult(pattern, options)` returns `{ prepared, main, lining, interfacing, suggestOpen, nestingVersion }`; each kind adds `lengthM` to its placement. `nestingVersion` (`NESTING_VERSION`, now `1.0.0`) is stored with a saved calculation (ADR-312 item 5) and is bumped whenever the same input could give another layout or length (decision 316 item 3). The recorded lengths of the five fixture patterns are pinned in `nest.regression.test.ts` and listed in [the yardage regression test cases](../test-cases/engine/yardage-regression.md).
+
+## Marker scene (`buildMarkerScene`)
+
+`buildMarkerScene(pattern, prepared, kindResult)` returns drawing data for one kind: `widthMm` (strip length) × `heightMm` (usable width), and per placement the closed cut outline and grain line as path data in mm (2 decimals, like the engine renderer), the piece name and a label point at the box centre, plus the fold line (y = 0, folded) or a selvedge, and the selvedge at y = usable width. It is data only (decision 316 item 4): the viewer, the A4/A0 PDF and the projector draw it in later issues.
+
+## Speed
+
+ADR-313's slowest case took 1.9 s with a 4× CPU slowdown. `nest.bench.test.ts` times the three slowest cases, all three kinds together, against the 3 s budget of one kind; it is skipped on CI unless `NESTING_BENCH` is set.

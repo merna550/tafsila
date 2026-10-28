@@ -456,6 +456,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `neckline.collar` values `none`, `peter-pan`, `shirt`, `mandarin`. Drafted by `src/modules/collar/` (#141) from the finished bodice neck: the collar's neck edge is split at the shoulder into `neck-back` and `neck-front`, each paired with the bodice neck (FR-VAL-01) and notched at CB, shoulder and CF (FR-VAL-04). Collars need a round or high-round neck; a stand collar also needs a neck opening, otherwise the pattern is refused with a bilingual message ([decision 141](../decisions/141-collars.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Collar_(clothing)>
 
+<a id="column-profile"></a>
+
+### Column profile (strip slices)
+
+**Plain words:** A shape cut into thin vertical strips, keeping for each strip only the heights it covers. Two shapes whose strips never cover the same height in the same strip cannot overlap, so checking a placement is a few interval comparisons instead of polygon maths.  
+**In Tafsila:** `columnProfile` in `packages/nesting/src/rasterize.ts`: 3 mm columns ([ADR-313](../decisions/313-nesting-algorithm.md)); each column keeps the y-intervals the outline covers anywhere inside it, so the profile always contains the shape ([decision 316](../decisions/316-nesting-placement.md)). See [bottom-left fill](#bottom-left-fill). **Level:** intermediate  
+**Learn:** <https://en.wikipedia.org/wiki/Rasterisation>
+
 <a id="composition-root"></a>
 
 ### Composition root
@@ -1564,7 +1572,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Nesting / marker
 
 **Plain words:** Arranging all pattern pieces on a given fabric width to use as little fabric as possible. The resulting layout is called a marker.  
-**In Tafsila:** `packages/nesting` (piece preparation: [docs/engine/nesting.md](../engine/nesting.md)), run in a Web Worker ([SRS section 4.10](../SRS.md)), using [bottom-left fill](#bottom-left-fill) ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
+**In Tafsila:** `packages/nesting` (piece preparation, placement with `nest`, length to buy and the marker scene: [docs/engine/nesting.md](../engine/nesting.md)), run in a Web Worker ([SRS section 4.10](../SRS.md)), using [bottom-left fill](#bottom-left-fill) ([ADR-313](../decisions/313-nesting-algorithm.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
 
 <a id="next-intl"></a>
@@ -1670,6 +1678,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** One shape to cut from fabric (front bodice, sleeve, skirt panel).  
 **In Tafsila:** The `Piece` interface in the `PatternResult` ([SRS section 6.3](../SRS.md)). **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Sewing_pattern>
+
+<a id="pattern-repeat"></a>
+
+### Pattern repeat
+
+**Plain words:** The length after which a printed or woven motif (checks, stripes, flowers) starts again. To match the motif across seams, the tailor buys extra fabric, so each piece can slide to the same point of the print.  
+**In Tafsila:** `patternRepeatMm` in the fabric options (0 to 1000 mm, default 0). The length to buy adds one repeat per row of cut pieces ([decision 316](../decisions/316-nesting-placement.md), `fabricLengthM` in `packages/nesting/src/length.ts`). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Pattern_(sewing)>
 
 <a id="pattern-version"></a>
 
