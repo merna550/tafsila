@@ -1,18 +1,18 @@
 "use client";
 /** The area the canvas fills: measures itself, turns a mouse drag into a pan (or a piece move when it starts on a piece) and draws the canvas once the scene is ready (issue #286). */
-import type { PatternScene } from "@tafsila/engine/viewer";
 import { useRef, type ReactElement } from "react";
 import { useDragPan } from "./hooks/use-drag-pan";
 import { useViewportSize } from "./hooks/use-viewport-size";
 import { pxToMm, type ProjectorView } from "./model/projector-view";
 import type { PiecesController } from "./model/controllers";
+import type { ProjectorSceneData } from "./model/projector-mode";
 import type { ProjectorCalibration } from "./projector.schema";
 import { ProjectorCanvas } from "./components/ProjectorCanvas";
 
 /** Props of {@link ProjectorStage}. */
 interface ProjectorStageProps {
   /** The scene, or undefined while it is drafted. */
-  readonly scene: PatternScene | undefined;
+  readonly scene: ProjectorSceneData | undefined;
   /** The calibration, or null while it is read. */
   readonly calibration: ProjectorCalibration | null;
   /** Pan, mirror, line width and colour. */

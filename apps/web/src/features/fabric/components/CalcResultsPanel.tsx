@@ -20,6 +20,8 @@ interface CalcResultsPanelProps {
   readonly onKindChange: (kind: FabricKind) => void;
   /** Called by "Try the open layout". */
   readonly onTryOpen: () => void;
+  /** Builds the projector link of a fabric kind (FR-FAB-04). */
+  readonly projectHref?: (kind: FabricKind) => string;
 }
 
 /**
@@ -33,6 +35,7 @@ export function CalcResultsPanel({
   kind,
   onKindChange,
   onTryOpen,
+  projectHref,
 }: Readonly<CalcResultsPanelProps>): ReactElement {
   const t = useTranslations("fabric.calc");
   const shown = view.kinds.find((k) => k.kind === kind) ?? view.kinds[0];
@@ -52,7 +55,7 @@ export function CalcResultsPanel({
         </p>
       ) : null}
       <Card>
-        <FabricResults view={view} blocked={blocked} />
+        <FabricResults view={view} blocked={blocked} projectHref={projectHref} />
       </Card>
       <Card title={t("marker.title")}>
         {view.kinds.length > 1 ? (

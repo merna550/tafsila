@@ -1,7 +1,8 @@
 /** The projected drawing: one full-size SVG, pieces in mm inside one scaled group, the verification square outside it (issue #286). Pure, no state, no geometry. */
-import type { PatternScene, ScenePiece } from "@tafsila/engine/viewer";
+import type { ScenePiece } from "@tafsila/engine/viewer";
 import { useTranslations } from "next-intl";
 import type { PointerEventHandler, ReactElement } from "react";
+import type { ProjectorSceneData } from "../model/projector-mode";
 import { IDENTITY_PLACEMENT, placementTransform, type Placements } from "../model/placement";
 import {
   patternTransform,
@@ -23,7 +24,7 @@ const SQUARE_LABEL = "10 cm";
 /** Props of {@link ProjectorCanvas}. */
 export interface ProjectorCanvasProps {
   /** The pattern scene to draw. */
-  readonly scene: PatternScene;
+  readonly scene: ProjectorSceneData;
   /** The calibration of this device. */
   readonly calibration: ProjectorCalibration;
   /** Pan, mirror, line width and colour. */
@@ -161,6 +162,16 @@ export function ProjectorCanvas(props: Readonly<ProjectorCanvasProps>): ReactEle
           stroke="currentColor"
           style={{ strokeWidth: `${view.lineWidthPx}px` }}
         >
+          {scene.lines?.map((line) => (
+            <path
+              key={`${line.kind}-${line.d}`}
+              data-layer={line.kind}
+              d={line.d}
+              fill="none"
+              strokeDasharray={line.kind === "selvedge" ? STITCH_DASH_PX : undefined}
+              {...LINE}
+            />
+          ))}
           {pieces.map((piece) => (
             <PieceLines
               key={piece.id}

@@ -11,17 +11,19 @@ import { LINK_BUTTON } from "./link-button";
  * @param props - What to show.
  * @param props.failed - True when the version or the draft failed.
  * @param props.exitHref - Where "Exit" goes.
+ * @param props.loadingText - Replaces the loading line (layout mode).
  * @returns The message.
  */
 export function ProjectorMessage({
   failed,
   exitHref,
-}: Readonly<{ failed: boolean; exitHref: string }>): ReactElement {
+  loadingText,
+}: Readonly<{ failed: boolean; exitHref: string; loadingText?: string }>): ReactElement {
   const t = useTranslations("projector.view");
   if (!failed) {
     return (
       <p role="status" className="absolute inset-x-0 top-1/2 text-center">
-        {t("loading")}
+        {loadingText ?? t("loading")}
       </p>
     );
   }

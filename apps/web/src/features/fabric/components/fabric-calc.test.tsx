@@ -1,5 +1,6 @@
 import { DEFAULT_FABRIC_OPTIONS } from "@tafsila/schemas";
-import { describe, expect, it } from "vitest";
+import type { AnchorHTMLAttributes } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { renderWithIntl } from "@/shared/i18n/testing";
 import type { FabricDoesNotFit, MarkerScene } from "@/shared/fabric-nesting";
 import { DoesNotFitNotice } from "./DoesNotFitNotice";
@@ -9,6 +10,10 @@ import { MarkerDiagram } from "./MarkerDiagram";
 import { NestingProgress } from "./NestingProgress";
 import { optionsToForm } from "../model/fabric-form";
 import type { CalcView } from "../model/calc-view";
+
+vi.mock("@/shared/i18n", () => ({
+  Link: ({ href, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement>) => <a href={href} {...rest} />,
+}));
 
 const SCENE: MarkerScene = {
   kind: "main",
@@ -182,5 +187,38 @@ describe("MarkerDiagram", () => {
 
   it("writes the piece names in Arabic", () => {
     expect(renderWithIntl(<MarkerDiagram scene={SCENE} />, "ar")).toContain("الأمام");
+  });
+});
+
+describe("FabricResults project button", () => {
+  const view: CalcView = {
+    ...VIEW,
+    kinds: [
+      { kind: "main", lengthM: 1.8, scene: SCENE },
+      { kind: "lining", lengthM: 0, scene: null },
+    ],
+  };
+  const href = (kind: string): string => `/p?layout=${kind}`;
+
+  it("links to the projector for a kind that has a layout, in both languages", () => {
+    expect(renderWithIntl(<FabricResults view={view} blocked={false} projectHref={href} />, "en")).toContain(
+      'href="/p?layout=main"',
+    );
+    expect(renderWithIntl(<FabricResults view={view} blocked={false} projectHref={href} />, "ar")).toContain(
+      "عرض التوزيع بالبروجكتور",
+    );
+  });
+  it("is disabled with the reason when nothing was placed or the layout is blocked", () => {
+    const html = renderWithIntl(<FabricResults view={view} blocked={false} projectHref={href} />, "en");
+    expect(html).not.toContain("layout=lining");
+    expect(html).toContain('title="Calculate the fabric first"');
+    expect(renderWithIntl(<FabricResults view={view} blocked projectHref={href} />, "en")).not.toContain(
+      "href=",
+    );
+  });
+  it("shows no button without a link builder", () => {
+    expect(renderWithIntl(<FabricResults view={view} blocked={false} />, "en")).not.toContain(
+      "Project the layout",
+    );
   });
 });

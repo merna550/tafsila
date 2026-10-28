@@ -17,7 +17,7 @@ export default async function DesignVersionPage({
   return (
     <>
       <ReadOnlyVersionScreen designId={id} versionId={versionId} />
-      <FabricCalculator versionId={versionId} />
+      <FabricCalculator versionId={versionId} designId={id} />
       <FabricRecommendations versionId={versionId} />
     </>
   );
