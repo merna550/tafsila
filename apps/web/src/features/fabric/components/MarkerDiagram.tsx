@@ -20,6 +20,9 @@ const LABEL_SIZE_MM = 34;
 /** Stroke widths in mm of the drawing: the fold, a selvedge, a cut outline and a grain line. */
 const STROKE_MM = { fold: 10, selvedge: 4, cut: 4, grain: 3 } as const;
 
+/** Width in mm of the halo that keeps a label readable over the grain line. */
+const HALO_MM = 8;
+
 /** Dash pattern of a selvedge, in mm. */
 const SELVEDGE_DASH = "30 20";
 
@@ -95,7 +98,9 @@ function SceneShapes({ scene }: Readonly<SceneShapesProps>): ReactElement {
             fontSize={LABEL_SIZE_MM}
             textAnchor="middle"
             dominantBaseline="middle"
-            className="fill-text"
+            paintOrder="stroke"
+            strokeWidth={HALO_MM}
+            className="fill-text stroke-surface-hover"
           >
             {piece.name[locale]}
           </text>
@@ -144,7 +149,7 @@ export function MarkerDiagram({ scene }: Readonly<MarkerDiagramProps>): ReactEle
         data-testid="marker-diagram"
         viewBox={viewBoxAttr(view)}
         className="h-auto w-full rounded-md border border-border bg-surface"
-        style={{ aspectRatio: `${full.width} / ${full.height}` }}
+        style={{ aspectRatio: `${full.width} / ${full.height}`, direction: "ltr" }}
       >
         <SceneShapes scene={scene} />
       </svg>
