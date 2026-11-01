@@ -4,7 +4,9 @@
  */
 import type { LanguageModel } from "ai";
 import { fakeAnalysis, fakeChatCalls } from "./fixtures/answers";
-import type { ModelKind } from "./provider";
+
+/** Which of the two configured models a call uses. */
+export type ModelKind = "analyze" | "chat";
 
 /** Marker the analysis prompt writes before the category hint; the fake model reads it back. */
 export const CATEGORY_HINT_MARKER = "Category hint:";

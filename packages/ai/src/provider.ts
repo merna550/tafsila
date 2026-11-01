@@ -6,10 +6,9 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import type { AiConfig } from "@tafsila/config";
 import type { LanguageModel } from "ai";
-import { createFakeModel } from "./fake-model";
+import { createFakeModel, type ModelKind } from "./fake-model";
 
-/** Which of the two configured models a call uses. */
-export type ModelKind = "analyze" | "chat";
+export type { ModelKind } from "./fake-model";
 
 /** What the two functions need: the configuration, and optionally a model to use instead (tests). */
 export interface AiDeps {
