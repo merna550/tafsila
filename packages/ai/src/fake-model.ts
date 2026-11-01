@@ -9,6 +9,12 @@ import type { ModelKind } from "./provider";
 /** Marker the analysis prompt writes before the category hint; the fake model reads it back. */
 export const CATEGORY_HINT_MARKER = "Category hint:";
 
+/** Marker the chat prompt writes before the user's request; the fake model matches keywords after it only. */
+export const REQUEST_MARKER = "Request:";
+
+/** Photo URLs the models read directly, so the SDK never downloads a photo itself. */
+export const PHOTO_URLS: Readonly<Record<string, RegExp[]>> = { "image/*": [/^https:\/\//] };
+
 /** A model object (not a model id string). */
 type Model = Exclude<LanguageModel, string>;
 
@@ -75,7 +81,9 @@ function answer(kind: ModelKind, options: CallOptions): GenerateResult {
   if (kind === "analyze") {
     return result([{ type: "text", text: JSON.stringify(fakeAnalysis(categoryHint(text))) }], false);
   }
-  const calls = fakeChatCalls(text).map((call, index) => ({
+  const marker = text.lastIndexOf(REQUEST_MARKER);
+  const request = marker < 0 ? text : text.slice(marker + REQUEST_MARKER.length);
+  const calls = fakeChatCalls(request).map((call, index) => ({
     type: "tool-call" as const,
     toolCallId: `fake-${index}`,
     toolName: call.toolName,
@@ -95,7 +103,7 @@ export function createFakeModel(kind: ModelKind): LanguageModel {
     specificationVersion: "v4",
     provider: "fake",
     modelId: "fake",
-    supportedUrls: {},
+    supportedUrls: PHOTO_URLS,
     doGenerate: (options: CallOptions) => Promise.resolve(answer(kind, options)),
     doStream: () => Promise.reject(new Error("The fake AI model does not stream")),
   };

@@ -15,6 +15,7 @@ import {
 } from "@tafsila/schemas";
 import { generateText, tool, type LanguageModelUsage, type ModelMessage, type ToolSet } from "ai";
 import { z } from "zod";
+import { REQUEST_MARKER } from "./fake-model";
 import { chatSystemPrompt } from "./prompts";
 import { modelId, resolveModel, type AiDeps } from "./provider";
 import { buildUsage, type AiUsage } from "./usage";
@@ -176,7 +177,10 @@ function chatMessages(input: ProposeEditInput): ModelMessage[] {
   }));
   return [
     ...history,
-    { role: "user", content: `Current design: ${JSON.stringify(input.spec)}\nRequest: ${input.message}` },
+    {
+      role: "user",
+      content: `Current design: ${JSON.stringify(input.spec)}\n${REQUEST_MARKER} ${input.message}`,
+    },
   ];
 }
 
