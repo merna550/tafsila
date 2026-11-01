@@ -1,33 +1,18 @@
 /** The design features the picker offers, how to read and set one, and where its values come from (issue #238). */
-import { designSpecSchema, type DesignSpec } from "@tafsila/schemas";
+import {
+  DESIGN_FEATURE_PATHS,
+  designSpecSchema,
+  type DesignFeaturePath,
+  type DesignSpec,
+} from "@tafsila/schemas";
 import { CATEGORY_PARTS, isUsed, type SpecPart } from "../pipeline/category-rules";
 import { defaultSpec } from "./default-spec";
 
-/** Every feature the picker lists, parents first: this is also the order `normalizeSpec` walks. */
-export const FEATURE_PATHS = [
-  "category",
-  "bodice.shaping",
-  "bodice.fit",
-  "bodice.waistSeam",
-  "skirt.type",
-  "skirt.length",
-  "skirt.slit",
-  "waistband",
-  "neckline.front",
-  "neckline.back",
-  "neckline.collar",
-  "sleeve.type",
-  "sleeve.length",
-  "sleeve.cuff",
-  "closure.type",
-  "closure.position",
-  "pockets",
-  "belt",
-  "lining",
-] as const;
+/** Every feature the picker lists, parents first: this is also the order `normalizeSpec` walks (one list, in `@tafsila/schemas`). */
+export const FEATURE_PATHS = DESIGN_FEATURE_PATHS;
 
 /** One feature of a design, such as `"skirt.type"`. */
-export type FeaturePath = (typeof FEATURE_PATHS)[number];
+export type FeaturePath = DesignFeaturePath;
 
 /** A value a feature can take: an enum value, a boolean, `"none"` for no slit, or a pocket style. */
 export type FeatureValue = string | boolean;

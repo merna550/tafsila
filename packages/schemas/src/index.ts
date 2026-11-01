@@ -21,3 +21,5 @@ export * from "./fabric";
 export * from "./fabric-options";
 export * from "./fabric-calc";
 export * from "./fabric-admin";
+export * from "./design-analysis";
+export * from "./spec-patch";
