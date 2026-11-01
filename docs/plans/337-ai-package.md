@@ -72,3 +72,4 @@ Size M, `plan:opus`, `build:opus` stay. `needs-interactive` on the planned files
 - **Price table** has only the `fake` row; real model prices are added when #347 picks the models (cost is `undefined` until then, not guessed).
 - **`proposeEdit`** returns `{ patch, outcome, usage }`, where `outcome` is `applySpecPatch`'s result, so the API does not apply the patch a second time.
 - **Print script:** `pnpm --filter @tafsila/ai print [category] [message] [photo URL]` (TC-AI-337-01 to 03).
+- **CI lint heap:** a lockfile change makes CI lint every file, and that type-aware lint peaks near 5 GB, above Node's default heap, so the job ran out of memory. The lint step in `.github/workflows/quality.yml` now sets `NODE_OPTIONS=--max-old-space-size=6144` (logged in ADR-337).
