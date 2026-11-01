@@ -3,6 +3,7 @@ import {
   loadAccountErasureConfig,
   loadBuildInfo,
   loadDatabaseUrl,
+  loadAiConfig,
   loadPhoneConfig,
   loadPublicConfig,
   loadServerEnv,
@@ -17,7 +18,9 @@ const valid = {
 const observability = { SENTRY_DSN: "https://key@o1.ingest.sentry.io/1", POSTHOG_KEY: "phc_test" };
 const phoneSecret = { PHONE_HASH_SECRET: "s".repeat(32) };
 const aiAndPaymob = {
+  AI_PROVIDER: "anthropic",
   AI_MODEL_ANALYZE: "model",
+  AI_MODEL_CHAT: "chat-model",
   AI_API_KEY: "key",
   PAYMOB_API_KEY: "pay",
   ...observability,
@@ -52,7 +55,7 @@ describe("loadServerEnv", () => {
 
   it("requires AI and Paymob variables in production", () => {
     expect(() => loadServerEnv({ ...valid, ...phoneSecret, APP_ENV: "production" })).toThrow(
-      /AI_MODEL_ANALYZE, AI_API_KEY, PAYMOB_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
+      /AI_PROVIDER, AI_MODEL_ANALYZE, AI_MODEL_CHAT, AI_API_KEY, PAYMOB_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
     );
     expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, APP_ENV: "production" })).not.toThrow();
   });
@@ -227,5 +230,40 @@ describe("account erasure configuration", () => {
 
   it("accepts the pair in the server environment", () => {
     expect(loadServerEnv({ ...valid, ...posthog }).POSTHOG_PROJECT_ID).toBe("123");
+  });
+});
+
+describe("AI configuration (decision 337)", () => {
+  it("defaults to the fake provider outside production", () => {
+    expect(loadServerEnv(valid).AI_PROVIDER).toBe("fake");
+    expect(loadAiConfig({})).toEqual({
+      provider: "fake",
+      analyzeModel: "fake",
+      chatModel: "fake",
+      apiKey: undefined,
+    });
+  });
+
+  it("refuses the fake provider in production", () => {
+    expect(() =>
+      loadServerEnv({ ...valid, ...aiAndPaymob, AI_PROVIDER: "fake", APP_ENV: "production" }),
+    ).toThrow(/AI_PROVIDER/);
+  });
+
+  it("switches provider by env only", () => {
+    const google = loadAiConfig({ ...aiAndPaymob, AI_PROVIDER: "google" });
+    expect(google).toEqual({
+      provider: "google",
+      analyzeModel: "model",
+      chatModel: "chat-model",
+      apiKey: "key",
+    });
+  });
+
+  it("requires models and a key for a real provider", () => {
+    expect(() => loadAiConfig({ AI_PROVIDER: "anthropic" })).toThrow(
+      /AI_MODEL_ANALYZE, AI_MODEL_CHAT, AI_API_KEY/,
+    );
+    expect(() => loadAiConfig({ AI_PROVIDER: "openai" })).toThrow(/AI_PROVIDER/);
   });
 });
