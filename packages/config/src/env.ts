@@ -75,6 +75,12 @@ function refinePhoneEnv(
   }
 }
 
+/** AI providers (decision 337): `fake` answers from fixtures and is the default everywhere except production. */
+export const AI_PROVIDERS = ["fake", "anthropic", "google"] as const;
+
+/** An AI provider name. */
+export type AiProviderName = (typeof AI_PROVIDERS)[number];
+
 /** Fields of the server environment before the production-only rules are applied. */
 const baseServerEnvSchema = z.object({
   APP_ENV: z.enum(APP_ENVIRONMENTS).default("local"),
@@ -86,8 +92,9 @@ const baseServerEnvSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   DATABASE_URL: z.string().min(1).optional(),
   AUTH_GOOGLE_ENABLED: z.stringbool().default(false),
-  AI_PROVIDER: z.enum(["anthropic", "google"]).default("anthropic"),
+  AI_PROVIDER: z.enum(AI_PROVIDERS).default("fake"),
   AI_MODEL_ANALYZE: z.string().min(1).optional(),
+  AI_MODEL_CHAT: z.string().min(1).optional(),
   AI_API_KEY: z.string().min(1).optional(),
   PAYMOB_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
   PAYMOB_API_KEY: z.string().min(1).optional(),
@@ -123,6 +130,7 @@ function refinePosthogErasureEnv(
 /** Variables that are optional until their milestone (AI in M6, Paymob in M7) or locally (observability) but mandatory in production. */
 export const PRODUCTION_REQUIRED_KEYS = [
   "AI_MODEL_ANALYZE",
+  "AI_MODEL_CHAT",
   "AI_API_KEY",
   "PAYMOB_API_KEY",
   "SENTRY_DSN",
@@ -134,6 +142,13 @@ export const serverEnvSchema = baseServerEnvSchema.superRefine((env, ctx) => {
   refinePhoneEnv(env, ctx);
   refinePosthogErasureEnv(env, ctx);
   if (env.APP_ENV !== "production") return;
+  if (env.AI_PROVIDER === "fake") {
+    ctx.addIssue({
+      code: "custom",
+      path: ["AI_PROVIDER"],
+      message: "AI_PROVIDER=fake is not allowed in production",
+    });
+  }
   for (const key of PRODUCTION_REQUIRED_KEYS) {
     if (env[key] === undefined) {
       ctx.addIssue({ code: "custom", path: [key], message: `${key} is required in production` });
@@ -336,5 +351,47 @@ export function loadAccountErasureConfig(
             projectId: POSTHOG_PROJECT_ID,
           }
         : undefined,
+  };
+}
+
+/** What `@tafsila/ai` needs to pick a model (decision 337); the API passes it in, the package never reads env. */
+export interface AiConfig {
+  /** Provider name; `fake` needs no key. */
+  readonly provider: AiProviderName;
+  /** Model id for photo analysis (unused by `fake`). */
+  readonly analyzeModel: string;
+  /** Model id for chat edits (unused by `fake`). */
+  readonly chatModel: string;
+  /** Provider API key; undefined only for `fake`. */
+  readonly apiKey: string | undefined;
+}
+
+/** Model id the fake provider reports in usage. */
+export const FAKE_AI_MODEL = "fake";
+
+/**
+ * Reads the AI settings without validating the rest of the configuration. Switching provider is an env change only.
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns Provider, models and key; `fake` when AI_PROVIDER is unset.
+ * @throws {Error} When the provider name is unknown, or a real provider lacks its key or a model.
+ * @example
+ * loadAiConfig({}).provider; // "fake"
+ */
+export function loadAiConfig(source: Record<string, string | undefined> = process.env): AiConfig {
+  const provider = z.enum(AI_PROVIDERS).safeParse(source.AI_PROVIDER || "fake");
+  if (!provider.success) throw new Error("Invalid AI configuration: AI_PROVIDER");
+  if (provider.data === "fake") {
+    return { provider: "fake", analyzeModel: FAKE_AI_MODEL, chatModel: FAKE_AI_MODEL, apiKey: undefined };
+  }
+  const missing = (["AI_MODEL_ANALYZE", "AI_MODEL_CHAT", "AI_API_KEY"] as const).filter(
+    (key) => !source[key],
+  );
+  if (missing.length > 0) throw new Error(`Invalid AI configuration: ${missing.join(", ")}`);
+  return {
+    provider: provider.data,
+    analyzeModel: source.AI_MODEL_ANALYZE!,
+    chatModel: source.AI_MODEL_CHAT!,
+    apiKey: source.AI_API_KEY,
   };
 }

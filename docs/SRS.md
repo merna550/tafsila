@@ -511,12 +511,12 @@ Background jobs (Inngest): `design.analyze`, `export.pdf`, `subscription.renewal
 
 | Topic | Requirement |
 |---|---|
-| Provider abstraction | `packages/ai` exposes `analyzeDesign(photos, hint)` and `proposeEdit(spec, message, history)`; provider/model chosen by env config |
-| Structured output | Use schema-constrained output (Zod → JSON schema); reject and retry once on invalid output |
-| Catalogue in prompt | System prompt lists the allowed enum values and short visual definitions of each; few-shot examples (photo description → spec) |
-| Edit via tools | `proposeEdit` uses tool calls such as `setFeature(path, value)`, `setLength(path, mm)`, `addPocket(type)`, `explainUnsupported(text)` |
+| Provider abstraction | `packages/ai` exposes `analyzeDesign(photos, hint)` and `proposeEdit(spec, message, history)`; provider/model chosen by env config (`AI_PROVIDER`, `AI_MODEL_ANALYZE`, `AI_MODEL_CHAT`, `AI_API_KEY`). A `fake` provider answers from fixtures with no key; it is the default outside production and refused in production (ADR-337) |
+| Structured output | Use schema-constrained output (Zod → JSON schema); reject and retry once on invalid output, sending the validation error back; a second invalid analysis is a typed error (`AI_OUTPUT_INVALID`), a second refused chat patch is answered as unsupported. A spec the engine refuses is corrected by its spec rules, each changed feature at confidence 0 with a note |
+| Catalogue in prompt | System prompt lists the allowed enum values and short visual definitions of each, generated from `designSpecSchema` (a test fails on drift); few-shot examples (photo description → spec) |
+| Edit via tools | `proposeEdit` uses tool calls such as `setFeature(path, value)`, `setLength(path, mm)`, `addPocket(type)`, `removePocket(type)`, `explainUnsupported(text)`; the calls become a `SpecPatch` that the pure `applySpecPatch` checks with the engine's spec rules |
 | Model tiering | Stronger vision model for `analyze`; cheaper model for chat edits |
-| Cost control | Log every call to `ai_usage`; per-user daily caps; chat quota per pattern; never call AI for measurement-only regeneration; target ≤ 5 EGP AI cost per pattern |
+| Cost control | Every call returns its usage (provider, model, tokens, latency, estimated cost) and is logged to `ai_usage`; per-user daily caps; chat quota per pattern; never call AI for measurement-only regeneration; target ≤ 5 EGP AI cost per pattern |
 | Safety & privacy | Photos sent only to the configured provider; no training opt-in by default; strip EXIF before upload |
 | Evaluation | Maintain `ai-evals/` set of ≥ 50 labelled garment photos; track feature-level accuracy per model before switching providers |
 

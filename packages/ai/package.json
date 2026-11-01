@@ -1,0 +1,28 @@
+{
+  "name": "@tafsila/ai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run --coverage",
+    "print": "tsx scripts/print.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "4.0.81",
+    "@ai-sdk/google": "4.0.98",
+    "@tafsila/config": "workspace:*",
+    "@tafsila/engine": "workspace:*",
+    "@tafsila/schemas": "workspace:*",
+    "ai": "7.0.142",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tafsila/test-fixtures": "workspace:*",
+    "@vitest/coverage-v8": "4.1.11",
+    "tsx": "^4.23.15"
+  }
+}

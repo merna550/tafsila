@@ -1,9 +1,10 @@
 /** The limits of the optional length overrides the picker offers (issue #246). */
+import type { DesignLengthPath } from "@tafsila/schemas";
 import { FRONT_NECK_DEPTH_MIN_MM } from "../constants/neckline";
 import { MIN_SKIRT_LENGTH_MM } from "../constants/skirt-length";
 
 /** A length override of the design, such as the front neck depth. */
-export type OverridePath = "neckline.depthFrontMm" | "skirt.lengthMm" | "skirt.slit.lengthMm";
+export type OverridePath = DesignLengthPath;
 
 /** The shortest and longest value of one override, in mm. */
 export interface OverrideLimit {

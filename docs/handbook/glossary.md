@@ -488,6 +488,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `Container` interface and `createContainer()` in `packages/api/src/container.ts`. **Level:** intermediate  
 **Learn:** <https://martinfowler.com/articles/injection.html>
 
+<a id="confidence-score"></a>
+
+### Confidence score
+
+**Plain words:** A number from 0 to 1 the AI gives with each answer to say how sure it is: 0 is a guess, 1 is certain.  
+**In Tafsila:** `DesignAnalysisResult.confidence` holds one per feature; a feature the engine had to change gets 0 and a note, and the confirmation screen asks the user to check low ones (FR-DES-07, [ADR-335](../decisions/335-m6-scope.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Confidence_score>
+
 <a id="construction-mark"></a>
 
 ### Construction mark
@@ -941,6 +949,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A facing is a shaped piece that finishes a raw edge such as a neckline from the inside. Interfacing is a stiffening layer fused or sewn to a piece (collars, waistbands).  
 **In Tafsila:** Cut `fabric` kinds: `main`, `lining`, `interfacing`; facings generated where needed (FR-PAT-07). The neckline module (#139) traces `neck-facing-front` / `neck-facing-back` 60 mm wide from the drafted neck, cut on the fold, plus a matching `-interfacing` piece; the facing's `neck` edge pairs with the bodice neck, so FR-VAL-01 checks them within 2 mm ([decision 139](../decisions/139-necklines-facings.md)). **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Interfacing>
+
+<a id="fake-provider"></a>
+
+### Fake provider
+
+**Plain words:** A pretend AI that answers from prepared fixtures instead of calling a real service, so tests and local work need no key and cost nothing.  
+**In Tafsila:** `AI_PROVIDER=fake` (the default outside production) answers `analyzeDesign` by category hint and `proposeEdit` by keyword, from `packages/ai/src/fixtures/answers.ts` ([ADR-337](../decisions/337-ai-package.md)). Like a [memory adapter](#memory-adapter), but at the AI model level. **Card:** [AI providers](tech/ai-providers.md) · **Level:** beginner  
+**Learn:** <https://ai-sdk.dev/docs/ai-sdk-core/testing>
 
 <a id="fastapi"></a>
 
@@ -2288,7 +2304,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Structured output
 
 **Plain words:** Forcing an AI model to answer in a fixed shape (JSON that matches a schema) instead of free text.  
-**In Tafsila:** The AI must fill a `DesignSpec`; invalid output is retried once ([SRS section 9](../SRS.md)). **Card:** [Zod](tech/zod.md) · **Level:** intermediate  
+**In Tafsila:** The AI must fill a `DesignSpec`: `analyzeDesign` sends `designAnalysisResultSchema` as JSON Schema; invalid output is retried once, then `AI_OUTPUT_INVALID` ([SRS section 9](../SRS.md), [ADR-337](../decisions/337-ai-package.md)). **Card:** [Zod](tech/zod.md) · **Level:** intermediate  
 **Learn:** <https://ai-sdk.dev/docs>
 
 <a id="subagent"></a>
@@ -2363,6 +2379,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A skirt of stacked bands (tiers), each wider than the one above and gathered onto it, so the skirt flares in steps.
 **In Tafsila:** `tieredSkirtModule` in `packages/engine/src/modules/skirt/tiered.ts`: three tiers, each `TIER_WIDTH_RATIO` (1.5) times wider; every tier panel is a rectangle and every tier seam is paired with its gathering as intended ease ([decision 137](../decisions/137-gathered-pleated-tiered.md)). **Level:** beginner
 **Learn:** <https://en.wikipedia.org/wiki/Tiered_skirt>
+
+<a id="tool-calling"></a>
+
+### Tool calling
+
+**Plain words:** Instead of writing free text, the AI model answers by "calling" named functions with typed arguments that we define; our code then decides what to do with them.  
+**In Tafsila:** `proposeEdit` gives the model `setFeature`, `setLength`, `addPocket`, `removePocket` and `explainUnsupported`; the calls become a `SpecPatch` that `applySpecPatch` checks ([ADR-337](../decisions/337-ai-package.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** intermediate  
+**Learn:** <https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling>
 
 <a id="transpile"></a>
 

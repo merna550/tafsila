@@ -57,6 +57,8 @@ jobs:
       - name: Lint (complexity, JSDoc on every function, no any, cycles)
         env:
           LINT_FILES: ${{ steps.scope.outputs.lint_files }}
+          # Type-aware lint of the whole repo peaks near 5 GB, above Node's default heap (issue #337).
+          NODE_OPTIONS: --max-old-space-size=6144
         run: |
           if [ "$LINT_FILES" = "all" ]; then pnpm eslint . --max-warnings 0
           elif [ -n "$LINT_FILES" ]; then xargs -a "$LINT_FILES" pnpm eslint --max-warnings 0 --no-warn-ignored

@@ -5,3 +5,4 @@ export * from "./normalize-spec";
 export * from "./refusals";
 export * from "./spec-options";
 export * from "./override-limits";
+export * from "./apply-spec-patch";

@@ -93,6 +93,22 @@ module.exports = {
       to: { path: "(^|node_modules/)(pdf-lib|@pdf-lib/)" },
     },
     {
+      name: "ai-only-in-api",
+      severity: "error",
+      comment:
+        "@tafsila/ai is server-only and holds the provider SDKs (decision 337): only packages/api imports it, and it never imports the API, the web app or the UI.",
+      from: { path: "^(apps/|packages/(?!api|ai)[^/]+/)" },
+      to: { path: "^packages/ai/" },
+    },
+    {
+      name: "ai-not-app",
+      severity: "error",
+      comment:
+        "The AI package is called through the API; it does not reach back into the API, the web app or the UI.",
+      from: { path: "^packages/ai" },
+      to: { path: ["^apps/", "^packages/(api|ui|export|nesting)"] },
+    },
+    {
       name: "schemas-are-leaf",
       severity: "error",
       comment: "Shared schemas only depend on zod.",
