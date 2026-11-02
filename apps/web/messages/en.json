@@ -1264,7 +1264,8 @@
       "summaryNoSize": "{ease} ease",
       "open": "Open",
       "restore": "Restore",
-      "engineOld": "This version was made with an older engine version, and the pattern may differ slightly."
+      "engineOld": "This version was made with an older engine version, and the pattern may differ slightly.",
+      "compare": "Compare"
     },
     "restoreDialog": {
       "title": "Restore version {n}",
@@ -1300,6 +1301,10 @@
       "text": "Printing, projecting and cutting use version {n}, engine {engine}.",
       "projector": "View with projector",
       "projectorDisabled": "Open on a computer connected to the projector"
+    },
+    "compare": {
+      "hint": "Tick two versions to compare them.",
+      "button": "Compare the two versions"
     }
   },
   "projector": {
@@ -1673,6 +1678,43 @@
       "stepDone": "Step done",
       "stepActive": "In progress",
       "stepFailed": "Step failed"
+    }
+  },
+  "compare": {
+    "title": "Compare two versions",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "fallbackTitle": "Pattern",
+    "first": "First version",
+    "second": "Second version",
+    "swap": "Swap the two versions",
+    "option": "Version {n}",
+    "same": "The two versions are the same. Choose two different versions to see the differences.",
+    "building": "Building the two versions...",
+    "failed": "One of the versions could not be drawn. Try again later.",
+    "overlayLabel": "Overlay of version {a} and version {b}",
+    "zoom": {
+      "label": "Zoom",
+      "in": "Zoom in",
+      "out": "Zoom out"
+    },
+    "legend": {
+      "title": "Legend",
+      "version": "Version {n}",
+      "show": "Show version {n}"
+    },
+    "changes": {
+      "title": "What changed",
+      "none": "No difference in the saved choices.",
+      "absent": "None",
+      "yes": "Yes",
+      "no": "No",
+      "cm": "{value} cm",
+      "to": " to ",
+      "added": "Added pieces: {names}",
+      "removed": "Removed pieces: {names}",
+      "note": "The list shows the saved choices, measurements and ease of each version. A comparison in numbers is not available yet.",
+      "engineDiffers": "These versions were made with different engine versions, so the drawing may differ slightly."
     }
   }
 }
