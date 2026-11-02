@@ -1,8 +1,9 @@
 /** Runtime configuration: every environment variable is declared and validated here (ADR-004, build once / run anywhere). */
 import { z } from "zod";
+import { APP_ENVIRONMENTS } from "./app-env";
+import { JOB_QUEUES, positiveInt, refineJobQueueEnv } from "./jobs";
 
-/** Deployment environments the app can run in. */
-export const APP_ENVIRONMENTS = ["local", "ci", "preview", "staging", "production"] as const;
+export { APP_ENVIRONMENTS } from "./app-env";
 
 /** Ten test numbers (ADR-021, decision 26-phone-otp-trial): GoTrue knows them, the code is always 123456. */
 export const DEFAULT_PHONE_TEST_NUMBERS = [
@@ -96,6 +97,11 @@ const baseServerEnvSchema = z.object({
   AI_MODEL_ANALYZE: z.string().min(1).optional(),
   AI_MODEL_CHAT: z.string().min(1).optional(),
   AI_API_KEY: z.string().min(1).optional(),
+  JOB_QUEUE: z.enum(JOB_QUEUES).default("inline"),
+  INNGEST_EVENT_KEY: z.string().min(1).optional(),
+  INNGEST_SIGNING_KEY: z.string().min(1).optional(),
+  AI_ANALYZE_DAILY_LIMIT: positiveInt("AI_ANALYZE_DAILY_LIMIT").optional(),
+  AI_RATE_LIMIT_PER_MINUTE: positiveInt("AI_RATE_LIMIT_PER_MINUTE").optional(),
   PAYMOB_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
   PAYMOB_API_KEY: z.string().min(1).optional(),
   SENTRY_DSN: z.url().optional(),
@@ -141,6 +147,7 @@ export const PRODUCTION_REQUIRED_KEYS = [
 export const serverEnvSchema = baseServerEnvSchema.superRefine((env, ctx) => {
   refinePhoneEnv(env, ctx);
   refinePosthogErasureEnv(env, ctx);
+  refineJobQueueEnv(env, ctx);
   if (env.APP_ENV !== "production") return;
   if (env.AI_PROVIDER === "fake") {
     ctx.addIssue({

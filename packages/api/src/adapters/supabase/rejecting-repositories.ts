@@ -1,4 +1,5 @@
 /** Repositories used when DATABASE_URL is not configured: every call fails, so the API never falls back to memory silently. */
+import type { UnsupportedFeatureRepository } from "../../ports/unsupported-feature-repository";
 import type { AiUsageRepository } from "../../ports/ai-usage-repository";
 import type { AdminRepository } from "../../ports/admin-repository";
 import type { AccountAudit } from "../../ports/account-audit";
@@ -29,6 +30,7 @@ export interface Repositories {
   readonly accountAudit: AccountAudit;
   readonly admin: AdminRepository;
   readonly aiUsage: AiUsageRepository;
+  readonly unsupportedFeatures: UnsupportedFeatureRepository;
 }
 
 /**
@@ -63,6 +65,8 @@ export function createRejectingRepositories(): Repositories {
       remove: failing(),
       getPhotoPaths: failing(),
       setPhotoPaths: failing(),
+      getAnalysis: failing(),
+      setAnalysis: failing(),
     },
     versions: { appendVersion: failing(), list: failing(), get: failing() },
     measurementSets: {
@@ -82,5 +86,6 @@ export function createRejectingRepositories(): Repositories {
     accountAudit: { recordDeleted: failing() },
     admin: { stats: failing(), list: failing(), get: failing() },
     aiUsage: { record: failing(), countToday: failing() },
+    unsupportedFeatures: { recordMany: failing() },
   };
 }

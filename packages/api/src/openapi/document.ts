@@ -5,6 +5,10 @@ import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
 import { createRejectingTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
 import { createRejectingRepositories } from "../adapters/supabase/rejecting-repositories";
+import { createFakeAi } from "@tafsila/ai";
+import { loadJobsConfig } from "@tafsila/config";
+import { createInlineJobQueue } from "../adapters/memory/inline-job-queue";
+import { createMemoryPhotoDownloader } from "../adapters/memory/photo-downloader";
 import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryPhoneOtp } from "../adapters/memory/phone-otp";
 import { createRejectingPhoneHasher } from "../adapters/system/hmac-phone-hasher";
@@ -28,6 +32,11 @@ const DOCUMENT_CONTAINER: Container = {
   userFilesRemover: { removeAll: () => Promise.resolve() },
   identityEraser: createNoopIdentityEraser(),
   photoStorage: createMemoryPhotoStorage(),
+  photoDownloader: createMemoryPhotoDownloader(),
+  jobsConfig: loadJobsConfig({}),
+  jobQueue: createInlineJobQueue(() => Promise.resolve()),
+  inngest: undefined,
+  aiDeps: () => createFakeAi(),
 };
 
 /**

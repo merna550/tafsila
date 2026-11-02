@@ -54,6 +54,10 @@ Prints the fake analysis and the chat patch. With `AI_PROVIDER` set to a real pr
 3. Add one branch in `createModel` (`packages/ai/src/provider.ts`) and a constructed-only test in `provider.test.ts`.
 4. Add its models to `PRICE_TABLE_USD_PER_MTOK` once they are chosen.
 
+## Testing helpers
+
+`@tafsila/ai/testing` exports `scriptedModel`, `scriptedDeps` and `fakeAnalysis` for API tests that need a scripted provider answer (issue #340). `AiOutputInvalidError.usage` carries the tokens of a refused answer so the API can still record its cost.
+
 ## Boundaries
 
 Server-only. dependency-cruiser allows only `packages/api` to import `@tafsila/ai`, and the package never imports the API, web or UI. No prompts or photos are logged (NFR-05).

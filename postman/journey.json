@@ -246,14 +246,45 @@
     "has": ["uploads"]
   },
   {
-    "name": "19b List the photos (none uploaded yet)",
+    "name": "19b List the photos (uploaded)",
     "method": "GET",
     "path": "/api/designs/{{designId}}/photos",
     "status": 200,
     "has": ["photos"]
   },
   {
-    "name": "19c Delete the front photo",
+    "name": "19c Read the analysis before it starts",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}/analysis",
+    "status": 200,
+    "has": ["status"]
+  },
+  {
+    "name": "19d Analyse the photos (fake provider, runs inline)",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/analyze",
+    "body": {
+      "categoryHint": "dress"
+    },
+    "status": 202,
+    "has": ["status", "startedAt"]
+  },
+  {
+    "name": "19e Poll the analysis: done with the result",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}/analysis",
+    "status": 200,
+    "has": ["status", "startedAt", "finishedAt", "result"]
+  },
+  {
+    "name": "19g Analyse without a body",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/analyze",
+    "status": 202,
+    "has": ["status"]
+  },
+  {
+    "name": "19h Delete the front photo",
     "method": "DELETE",
     "path": "/api/designs/{{designId}}/photos/front",
     "status": 204

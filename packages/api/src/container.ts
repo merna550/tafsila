@@ -1,6 +1,10 @@
 /** Composition root: the only place that chooses which adapter implements each port (ADR-006). */
+import type { AiDeps } from "@tafsila/ai";
 import {
   loadAccountErasureConfig,
+  loadAiConfig,
+  loadJobsConfig,
+  type JobsConfig,
   loadBuildInfo,
   loadDatabaseUrl,
   loadPhoneConfig,
@@ -8,6 +12,12 @@ import {
   type BuildInfo,
   type PhoneConfig,
 } from "@tafsila/config";
+import type { Inngest } from "inngest";
+import { createInngestClient } from "./adapters/inngest/inngest-client";
+import { createInngestJobQueue } from "./adapters/inngest/inngest-job-queue";
+import { createInlineJobQueue } from "./adapters/memory/inline-job-queue";
+import { createFetchPhotoDownloader } from "./adapters/system/fetch-photo-downloader";
+import { createUnsupportedFeatureRepository } from "./adapters/supabase/unsupported-feature-repository";
 import { createNoopIdentityEraser } from "./adapters/noop/noop-identity-eraser";
 import { createPosthogIdentityEraser } from "./adapters/posthog/posthog-identity-eraser";
 import { createAiUsageRepository } from "./adapters/supabase/ai-usage-repository";
@@ -44,6 +54,10 @@ import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
 import type { AiUsageRepository } from "./ports/ai-usage-repository";
+import type { JobName, JobPayloads, JobQueue } from "./ports/job-queue";
+import type { PhotoDownloader } from "./ports/photo-downloader";
+import type { UnsupportedFeatureRepository } from "./ports/unsupported-feature-repository";
+import { runDesignAnalysis } from "./services/run-design-analysis";
 import type { PhotoStorage } from "./ports/photo-storage";
 import type { AdminRepository } from "./ports/admin-repository";
 import type { AccountAudit } from "./ports/account-audit";
@@ -124,6 +138,18 @@ export interface Container {
   readonly photoStorage: PhotoStorage;
   /** One row per AI call and the daily counts (written through the API role). */
   readonly aiUsage: AiUsageRepository;
+  /** Unsupported garment features the analysis saw, for product research (written through the API role). */
+  readonly unsupportedFeatures: UnsupportedFeatureRepository;
+  /** Reads the bytes behind a signed photo URL. */
+  readonly photoDownloader: PhotoDownloader;
+  /** Starts background jobs: inline (local, CI) or Inngest (staging, production). */
+  readonly jobQueue: JobQueue;
+  /** The Inngest client when `JOB_QUEUE=inngest`; undefined otherwise (the `/api/inngest` route is then empty). */
+  readonly inngest: Inngest | undefined;
+  /** Job queue and cost-control settings (daily cap, rate limit). */
+  readonly jobsConfig: JobsConfig;
+  /** The AI configuration, read when a job runs (a bad one fails the job, never the app). */
+  readonly aiDeps: () => AiDeps;
   /** Erases the person at the analytics provider. */
   readonly identityEraser: IdentityEraser;
   /** Records the anonymous deletion row. */
@@ -157,6 +183,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     accountAudit: createAccountAudit(withApiRole),
     admin: createAdminRepository(withApiRole),
     aiUsage: createAiUsageRepository(withApiRole),
+    unsupportedFeatures: createUnsupportedFeatureRepository(withApiRole),
   };
 }
 
@@ -278,13 +305,43 @@ export function createObservability(
 }
 
 /**
+ * Chooses the job queue: the Inngest client sends events in staging and production, otherwise jobs run inline.
+ * A bad configuration must not take the API down: the queue then fails when a job is started.
+ *
+ * @param run - Runs one job inline (the composition root passes the services).
+ * @param source - Environment variables to read (defaults to process.env).
+ * @returns The jobs configuration, the queue and the Inngest client (undefined for the inline queue).
+ */
+export function createJobs(
+  run: Parameters<typeof createInlineJobQueue>[0],
+  source: Record<string, string | undefined> = process.env,
+): Pick<Container, "jobsConfig" | "jobQueue" | "inngest"> {
+  let jobsConfig: JobsConfig;
+  try {
+    jobsConfig = loadJobsConfig(source);
+  } catch (error) {
+    console.error(JSON.stringify({ level: "error", message: (error as Error).message }));
+    jobsConfig = loadJobsConfig({});
+    return {
+      jobsConfig,
+      inngest: undefined,
+      jobQueue: { enqueue: () => Promise.reject(new Error("Invalid jobs configuration")) },
+    };
+  }
+  if (jobsConfig.queue !== "inngest")
+    return { jobsConfig, inngest: undefined, jobQueue: createInlineJobQueue(run) };
+  const inngest = createInngestClient(jobsConfig);
+  return { jobsConfig, inngest, jobQueue: createInngestJobQueue(inngest) };
+}
+
+/**
  * Wires real adapters for the running environment; tests pass overrides with fakes.
  *
  * @param overrides - Ports to replace (e.g. a fixed clock in tests).
  * @returns The dependency container.
  */
 export function createContainer(overrides: Partial<Container> = {}): Container {
-  return {
+  const container: Container = {
     clock: createSystemClock(),
     appInfo: loadBuildInfo(),
     ...createObservability(),
@@ -293,6 +350,22 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     planLimits: createUnlimitedPlanLimits(),
     ...createPhoneServices(),
     ...createAccountErasure(),
+    photoDownloader: createFetchPhotoDownloader(),
+    aiDeps: () => ({ config: loadAiConfig() }),
+    ...createJobs((name, payload) => runJob(container, name, payload)),
     ...overrides,
   };
+  return container;
+}
+
+/**
+ * Runs one job with the services of the container (the inline queue calls this; the Inngest function calls the same service).
+ *
+ * @param container - Dependencies.
+ * @param name - Job name.
+ * @param payload - Job input.
+ * @returns Resolves when the job has ended.
+ */
+function runJob<N extends JobName>(container: Container, name: N, payload: JobPayloads[N]): Promise<void> {
+  return runDesignAnalysis(container, payload);
 }

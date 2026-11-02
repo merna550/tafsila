@@ -182,6 +182,21 @@ export const ERROR_CATALOGUE = {
     messageAr: "الصورة غير موجودة",
     messageEn: "That photo does not exist",
   },
+  CATEGORY_NOT_SUPPORTED: {
+    status: 422,
+    messageAr: "النوع ده لسه مش متاح، هنضيفه قريبا. جربي فستان أو جيبة أو بلوزة",
+    messageEn: "This garment type is coming soon. Try a dress, a skirt or a blouse",
+  },
+  ANALYSIS_IN_PROGRESS: {
+    status: 409,
+    messageAr: "التحليل شغال بالفعل لهذا التصميم، استني النتيجة",
+    messageEn: "An analysis is already running for this design, wait for its result",
+  },
+  AI_DAILY_LIMIT: {
+    status: 429,
+    messageAr: "وصلتي للحد اليومي من تحليل الصور، جربي بكرة",
+    messageEn: "You reached today's limit of photo analyses, try again tomorrow",
+  },
   INTERNAL_ERROR: {
     status: 500,
     messageAr: "حدث خطأ غير متوقع، حاولي مرة أخرى",

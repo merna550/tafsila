@@ -6,7 +6,7 @@ adr: ADR-012
 
 # Inngest
 
-**In one line:** Runs slow background work (AI photo analysis, PDF export, nesting) with automatic retries, without us running Redis or queue servers. Planned for M4 to M6; the dev server already runs in Compose.
+**In one line:** Runs slow background work (AI photo analysis, PDF export, nesting) with automatic retries, without us running Redis or queue servers. Used since M6 (#340) for the design analysis job; the dev server runs in Compose. Pinned at 4.24.0.
 
 ## What it is (plain words)
 
@@ -34,7 +34,7 @@ Checked on 2026-10-07 at [inngest.com/pricing](https://www.inngest.com/pricing):
 ## Where it lives in our code
 
 - `compose.yaml` (service `inngest`, dev server at `http://localhost:8288`).
-- Jobs will live in packages/api/src/jobs/ (planned) and be served at `/api/inngest`.
+- `packages/api/src/jobs/design-analyze.ts` (the function), `adapters/inngest/` (client and `JobQueue`), `routes/inngest.ts` (served at `/api/inngest`), `adapters/memory/inline-job-queue.ts` (local and CI). Setup: [ai-analysis tutorial](../../backend/tutorials/ai-analysis.md).
 
 ## The 20% you need
 

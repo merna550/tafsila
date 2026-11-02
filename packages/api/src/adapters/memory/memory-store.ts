@@ -6,6 +6,7 @@ import type {
   AdminFabricRule,
   Client,
   Design,
+  DesignAnalysisState,
   FabricCalc,
   MeasurementSet,
   PatternVersion,
@@ -28,6 +29,8 @@ export interface DesignRow extends Design {
   readonly ownerId: string;
   /** Stored photo object paths (`designs.photo_paths`). */
   readonly photoPaths?: readonly string[];
+  /** Stored analysis state (`designs.analysis`). */
+  readonly analysis?: DesignAnalysisState;
 }
 
 /** A pattern version row plus its owner. */

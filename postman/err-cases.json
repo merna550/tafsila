@@ -342,5 +342,22 @@
     },
     "status": 404,
     "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR POST /api/designs/{id}/analyze of an unknown design returns 404",
+    "method": "POST",
+    "path": "/api/designs/00000000-0000-4000-8000-00000000dead/analyze",
+    "auth": true,
+    "body": {},
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/designs/{id}/analysis of an unknown design returns 404",
+    "method": "GET",
+    "path": "/api/designs/00000000-0000-4000-8000-00000000dead/analysis",
+    "auth": true,
+    "status": 404,
+    "code": "NOT_FOUND"
   }
 ]

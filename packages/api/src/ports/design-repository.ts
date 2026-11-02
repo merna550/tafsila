@@ -1,6 +1,7 @@
 /** Design repository port: stores the signed-in user's designs. Every method acts for `ctx` only (RLS in the database). */
 import type {
   CreateDesignInput,
+  DesignAnalysisState,
   Design,
   DesignDetail,
   DesignListItem,
@@ -72,4 +73,21 @@ export interface DesignRepository {
    * @returns True when the design exists and is the caller's.
    */
   setPhotoPaths(ctx: AuthContext, id: string, paths: readonly string[]): Promise<boolean>;
+  /**
+   * Reads the stored analysis state of a design.
+   *
+   * @param ctx - Verified caller.
+   * @param id - Design id.
+   * @returns The state, null when the design was never analysed, or undefined when the design is missing or not the caller's.
+   */
+  getAnalysis(ctx: AuthContext, id: string): Promise<DesignAnalysisState | null | undefined>;
+  /**
+   * Replaces the stored analysis state. Does not touch `updatedAt`: an analysis is not an edit by the user.
+   *
+   * @param ctx - Verified caller.
+   * @param id - Design id.
+   * @param state - The new state (`pending`, `done` or `failed`).
+   * @returns True when the design exists and is the caller's.
+   */
+  setAnalysis(ctx: AuthContext, id: string, state: DesignAnalysisState): Promise<boolean>;
 }

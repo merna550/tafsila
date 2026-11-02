@@ -1,5 +1,11 @@
 /** Drizzle design repository: every query runs as the user through withUser, so RLS decides what is visible. */
-import type { Design, DesignListItem, ListDesignsQuery, Page } from "@tafsila/schemas";
+import {
+  designAnalysisStateSchema,
+  type Design,
+  type DesignListItem,
+  type ListDesignsQuery,
+  type Page,
+} from "@tafsila/schemas";
 import { and, desc, eq, exists, getTableColumns, ilike, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import type { DesignRepository } from "../../ports/design-repository";
@@ -98,6 +104,51 @@ async function listPage(
 }
 
 /**
+ * The methods that read and write the photo paths and the analysis state of a design (kept apart so the factory stays short).
+ *
+ * @param withUser - Transaction runner that applies the user's RLS.
+ * @returns The four methods.
+ */
+function storedDataMethods(
+  withUser: WithUser,
+): Pick<DesignRepository, "getPhotoPaths" | "setPhotoPaths" | "getAnalysis" | "setAnalysis"> {
+  return {
+    getPhotoPaths: (ctx, id) =>
+      withUser(ctx, async (tx) => {
+        const [row] = await tx
+          .select({ photoPaths: designs.photoPaths })
+          .from(designs)
+          .where(eq(designs.id, id));
+        return row?.photoPaths;
+      }),
+    getAnalysis: (ctx, id) =>
+      withUser(ctx, async (tx) => {
+        const [row] = await tx.select({ analysis: designs.analysis }).from(designs).where(eq(designs.id, id));
+        if (!row) return undefined;
+        return row.analysis === null ? null : designAnalysisStateSchema.parse(row.analysis);
+      }),
+    setAnalysis: (ctx, id, state) =>
+      withUser(ctx, async (tx) => {
+        const updated = await tx
+          .update(designs)
+          .set({ analysis: state })
+          .where(eq(designs.id, id))
+          .returning({ id: designs.id });
+        return updated.length > 0;
+      }),
+    setPhotoPaths: (ctx, id, paths) =>
+      withUser(ctx, async (tx) => {
+        const updated = await tx
+          .update(designs)
+          .set({ photoPaths: [...paths], updatedAt: sql`now()` })
+          .where(eq(designs.id, id))
+          .returning({ id: designs.id });
+        return updated.length > 0;
+      }),
+  };
+}
+
+/**
  * Creates the Drizzle design repository.
  *
  * @param withUser - Transaction runner that applies the user's RLS.
@@ -138,22 +189,6 @@ export function createDesignRepository(withUser: WithUser): DesignRepository {
         const deleted = await tx.delete(designs).where(eq(designs.id, id)).returning({ id: designs.id });
         return deleted.length > 0;
       }),
-    getPhotoPaths: (ctx, id) =>
-      withUser(ctx, async (tx) => {
-        const [row] = await tx
-          .select({ photoPaths: designs.photoPaths })
-          .from(designs)
-          .where(eq(designs.id, id));
-        return row?.photoPaths;
-      }),
-    setPhotoPaths: (ctx, id, paths) =>
-      withUser(ctx, async (tx) => {
-        const updated = await tx
-          .update(designs)
-          .set({ photoPaths: [...paths], updatedAt: sql`now()` })
-          .where(eq(designs.id, id))
-          .returning({ id: designs.id });
-        return updated.length > 0;
-      }),
+    ...storedDataMethods(withUser),
   };
 }

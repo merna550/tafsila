@@ -57,6 +57,12 @@ describe("analyzeDesign", () => {
     await expect(analyzeDesign({ photos }, scriptedDeps(model))).rejects.toBeInstanceOf(AiOutputInvalidError);
   });
 
+  it("puts the usage of both attempts on the typed error, so the caller can record the cost (issue #340)", async () => {
+    const model = scriptedModel([{ text: "not json" }, { text: '{"spec":{}}' }]);
+    const error = await analyzeDesign({ photos }, scriptedDeps(model)).catch((e: unknown) => e);
+    expect((error as AiOutputInvalidError).usage).toMatchObject({ attempts: 2, inputTokens: 20 });
+  });
+
   it("marks a feature the engine refuses with confidence 0 and a note", async () => {
     const refused = fakeAnalysis("blouse");
     refused.spec = { ...refused.spec, pockets: ["side-seam"] };
