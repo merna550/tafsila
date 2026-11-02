@@ -230,3 +230,64 @@ export const chatMessages = pgTable(
     index().on(table.designId, table.seq),
   ],
 );
+
+/** public.products. Prices in piastres; read by everyone, written only by admin functions. */
+export const products = pgTable("products", {
+  code: text("code").primaryKey(),
+  kind: text("kind", { enum: ["single", "pack", "subscription"] }).notNull(),
+  pricePiastres: integer("price_piastres").notNull(),
+  credits: integer("credits").notNull(),
+  creditDays: integer("credit_days"),
+  periodDays: integer("period_days"),
+  maxClients: integer("max_clients"),
+  chatPerDesign: integer("chat_per_design").notNull(),
+  active: boolean("active").notNull().default(true),
+  nameAr: text("name_ar").notNull(),
+  nameEn: text("name_en").notNull(),
+});
+
+/** public.credit_ledger. Read-only for users; written by private.grant_credits / consume_credit. Debits point at their lot. */
+export const creditLedger = pgTable(
+  "credit_ledger",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull(),
+    delta: integer("delta").notNull(),
+    reason: text("reason", {
+      enum: ["trial", "purchase", "subscription", "pattern", "admin", "refund"],
+    }).notNull(),
+    refId: text("ref_id"),
+    expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
+    lotId: uuid("lot_id"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [index().on(table.userId, table.expiresAt)],
+);
+
+/** public.subscriptions. One active row per user (partial unique index in SQL). */
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  productCode: text("product_code").notNull(),
+  status: text("status", { enum: ["active", "expired", "cancelled"] }).notNull(),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true, mode: "date" }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+});
+
+/** public.payments. Status changes only through private.record_payment. */
+export const payments = pgTable("payments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  productCode: text("product_code").notNull(),
+  amountPiastres: integer("amount_piastres").notNull(),
+  currency: text("currency").notNull().default("EGP"),
+  status: text("status", { enum: ["pending", "paid", "failed", "refunded"] })
+    .notNull()
+    .default("pending"),
+  method: text("method", { enum: ["card", "wallet", "kiosk", "fake"] }).notNull(),
+  paymobOrderId: text("paymob_order_id"),
+  paymobTransactionId: text("paymob_transaction_id"),
+  raw: jsonb("raw"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  paidAt: timestamp("paid_at", { withTimezone: true, mode: "date" }),
+});

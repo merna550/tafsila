@@ -37,3 +37,7 @@ No seed user is ever deleted. The tests that delete accounts create a throwaway 
 ## Seed design hashes (issue #237)
 
 The two `input_hash` values in `supabase/seed.sql` come from `inputHash(spec, measurements, options)` in `packages/engine/src/pipeline/input-hash.ts` with `DEFAULT_ENGINE_OPTIONS` and `sizeLabel: "M"`. To recompute: run a throwaway script with `pnpm exec tsx` from `packages/engine`, importing `seedDress`, the Client M measurements and `inputHash`. The hash is only a dedupe key, so a stale seed hash after an `ENGINE_VERSION` change is harmless.
+
+## Billing (issue #367)
+
+`products` is seeded by the migration (single 49 EGP, pack5 199 EGP, hobby 149 EGP, pro 349 EGP; prices in piastres). `supabase/seed.sql` gives `trial@tafsila.test` a trial grant of 3 credits (no expiry), a 5-credit pack that expires in 90 days and one debit for `Seed dress`, so the balance is 7. No seeded payments or subscriptions; tests create them.
