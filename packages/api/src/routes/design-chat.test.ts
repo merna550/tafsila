@@ -142,7 +142,7 @@ describe("POST /designs/:id/chat", () => {
     const failing = createFakeAi();
     api = await createMemoryApp(
       {},
-      { ai: { ...failing, config: { ...failing.config, provider: "openai" } } },
+      { ai: { ...failing, config: { ...failing.config, provider: "anthropic" } } },
     );
     const s = await seed(USER_A);
     const res = await chat(USER_A, s, "add pockets");
