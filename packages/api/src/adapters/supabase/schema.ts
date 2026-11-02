@@ -185,6 +185,27 @@ export const fabricCalcs = pgTable(
   ],
 );
 
+/** public.fabric_explanations. One row per version, language and catalogue state; owner-only (RLS, no admin read). */
+export const fabricExplanations = pgTable(
+  "fabric_explanations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    patternVersionId: uuid("pattern_version_id").notNull(),
+    ownerId: uuid("owner_id").notNull(),
+    locale: text("locale", { enum: ["ar", "en"] }).notNull(),
+    catalogueHash: text("catalogue_hash").notNull(),
+    text: text("text").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    unique().on(table.patternVersionId, table.locale, table.catalogueHash),
+    foreignKey({
+      columns: [table.patternVersionId, table.ownerId],
+      foreignColumns: [patternVersions.id, patternVersions.ownerId],
+    }),
+  ],
+);
+
 /** public.chat_messages. Owner-only (RLS, no admin read); only `applied_version_id` is updated after the insert. */
 export const chatMessages = pgTable(
   "chat_messages",

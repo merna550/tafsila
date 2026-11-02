@@ -9,6 +9,7 @@ import type {
   Design,
   DesignAnalysisState,
   FabricCalc,
+  FabricExplanation,
   MeasurementSet,
   PatternVersion,
   Profile,
@@ -58,6 +59,13 @@ export interface FabricCalcRow extends FabricCalc {
   readonly optionsHash: string;
 }
 
+/** A cached fabric explanation plus its owner. */
+export interface FabricExplanationRow extends FabricExplanation {
+  readonly ownerId: string;
+  readonly versionId: string;
+  readonly catalogueHash: string;
+}
+
 /** Edit time of a seeded fabric or rule (the migration's insert time in the database). */
 const SEEDED_AT = "1970-01-01T00:00:00.000Z";
 
@@ -104,6 +112,8 @@ export interface MemoryStore {
   fabricRules: AdminFabricRule[];
   /** Saved fabric calculations (written by the version fabric routes). */
   fabricCalcs: FabricCalcRow[];
+  /** Cached fabric explanations (written by the recommend route with `explain=true`). */
+  fabricExplanations: FabricExplanationRow[];
   /** Users the admin screens list (the fake of profiles joined with auth.users); an admin check reads `role` here. */
   users: UserRow[];
   /** Rows written to admin_audit, oldest first. */
@@ -138,6 +148,7 @@ export function createMemoryStore(): MemoryStore {
     fabrics: DRAFT_CATALOGUE.map((f) => ({ ...f, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),
     fabricRules: DRAFT_RULES.map((r) => ({ ...r, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),
     fabricCalcs: [],
+    fabricExplanations: [],
     users: [],
     audit: [],
     profiles: new Map(),

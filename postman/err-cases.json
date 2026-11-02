@@ -255,6 +255,14 @@
     "code": "UNAUTHENTICATED"
   },
   {
+    "name": "ERR GET /api/fabrics/recommend with explain=true for an unknown version returns 404",
+    "method": "GET",
+    "path": "/api/fabrics/recommend?versionId=00000000-0000-4000-8000-00000000dead&explain=true&locale=en",
+    "auth": true,
+    "status": 404,
+    "code": "NOT_FOUND"
+  },
+  {
     "name": "ERR PUT /api/versions/{unknown id}/fabric returns 404",
     "method": "PUT",
     "path": "/api/versions/00000000-0000-4000-8000-00000000dead/fabric",

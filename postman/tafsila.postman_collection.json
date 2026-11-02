@@ -1986,6 +1986,37 @@
           "response": []
         },
         {
+          "name": "ERR GET /api/fabrics/recommend with explain=true for an unknown version returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/fabrics/recommend?versionId=00000000-0000-4000-8000-00000000dead&explain=true&locale=en",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fabrics",
+                "recommend?versionId=00000000-0000-4000-8000-00000000dead&explain=true&locale=en"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR GET /api/fabrics/recommend without a token returns 401",
           "event": [
             {
@@ -3025,7 +3056,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "9f743499b9ca4a5e86ffb3db17409fc2e8de35554069cf1742374a90321ccd26"
+    "_postman_id": "273b659375b37b6a93a0bd56659270ca4aa683c43faf2439ff6e8464e4bc1b7c"
   },
   "auth": {
     "type": "bearer",

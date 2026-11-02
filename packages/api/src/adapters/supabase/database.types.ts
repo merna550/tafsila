@@ -181,6 +181,26 @@ export type Database = {
         };
         Update: { options?: Json; result?: Json; nesting_version?: string; updated_at?: string };
       };
+      fabric_explanations: {
+        Row: {
+          id: string;
+          pattern_version_id: string;
+          owner_id: string;
+          locale: string;
+          catalogue_hash: string;
+          text: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          pattern_version_id: string;
+          owner_id?: string;
+          locale: string;
+          catalogue_hash: string;
+          text: string;
+        };
+        Update: { text?: string };
+      };
       designs: {
         Row: {
           id: string;

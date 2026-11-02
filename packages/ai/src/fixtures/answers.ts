@@ -86,3 +86,24 @@ export function fakeChatCalls(message: string): readonly FakeToolCall[] {
     ]
   );
 }
+
+/**
+ * The fake explanation model's text: one sentence that names only the fabrics in the prompt's list, in the prompt's
+ * language. It reads the same markers the real prompt writes, so tests exercise the whole call path.
+ *
+ * @param prompt - The user message of the explanation call.
+ * @returns A short paragraph.
+ */
+export function fakeExplanation(prompt: string): string {
+  const english = /Language: en/.test(prompt);
+  const section = prompt.split("Recommended fabrics:")[1]?.split("\n\n")[0] ?? "";
+  const names = section
+    .split("\n")
+    .map((line) => /^- [^|]+\| ([^|]+) \| ([^|]+)/.exec(line.trim()))
+    .filter((match): match is RegExpExecArray => match !== null)
+    .map((match) => (english ? match[2]! : match[1]!).trim());
+  const list = names.join(english ? ", " : "، ");
+  return english
+    ? `These fabrics suit the design because of the reasons listed above: ${list}.`
+    : `هذه الأقمشة تناسب التصميم للأسباب المذكورة أعلاه: ${list}.`;
+}

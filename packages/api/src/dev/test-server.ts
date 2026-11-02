@@ -19,6 +19,7 @@ import { createMemoryDesignRepository } from "../adapters/memory/design-reposito
 import { createMemoryPatternVersionRepository } from "../adapters/memory/pattern-version-repository";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemoryFabricCalcRepository } from "../adapters/memory/fabric-calc-repository";
+import { createMemoryFabricExplanationRepository } from "../adapters/memory/fabric-explanation-repository";
 import {
   createMemoryFabricRepository,
   createMemoryFabricRuleRepository,
@@ -51,6 +52,7 @@ const app = createApp(
     fabrics: createMemoryFabricRepository(store),
     fabricRules: createMemoryFabricRuleRepository(store),
     fabricCalcs: createMemoryFabricCalcRepository(store),
+    fabricExplanations: createMemoryFabricExplanationRepository(store),
     profiles: createMemoryProfileRepository(store),
     accountDeleter: deletion.accountDeleter,
     userFilesRemover: deletion.userFilesRemover,

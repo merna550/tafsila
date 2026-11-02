@@ -5,6 +5,7 @@ import { FabricRecommendations } from "./FabricRecommendations";
 import { useFabricRecommendations } from "./hooks/use-fabric-recommendations";
 
 vi.mock("./hooks/use-fabric-recommendations", () => ({ useFabricRecommendations: vi.fn() }));
+vi.mock("./ExplainRecommendations", () => ({ ExplainRecommendations: () => <i>explain-slot</i> }));
 
 /**
  * Makes the hook answer with a query-like state.
@@ -26,6 +27,30 @@ describe("FabricRecommendations", () => {
     const html = renderWithIntl(<FabricRecommendations versionId="v1" />, "en");
     expect(html).toContain("Recommended fabrics");
     expect(html).not.toContain("Better avoided");
+  });
+
+  it("shows the explanation block after the fabrics once loaded", () => {
+    answer({
+      isPending: false,
+      data: {
+        recommended: [
+          {
+            fabricId: "crepe",
+            score: 9,
+            reason: { ar: "ينسدل", en: "Drapes" },
+            fabric: {
+              id: "crepe",
+              nameAr: "كريب",
+              nameEn: "Crepe",
+              properties: { drape: 4, weight: 2, body: 1, stretch: 0, sheen: 3 },
+            },
+          },
+        ],
+        avoid: [],
+        isDraft: false,
+      },
+    });
+    expect(renderWithIntl(<FabricRecommendations versionId="v1" />, "en")).toContain("explain-slot");
   });
 
   it("shows the empty state when no fabric matches", () => {

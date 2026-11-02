@@ -3,10 +3,10 @@
  * development and CI. It speaks the AI SDK model interface, so the real call path (schema, tools, retry) runs unchanged.
  */
 import type { LanguageModel } from "ai";
-import { fakeAnalysis, fakeChatCalls } from "./fixtures/answers";
+import { fakeAnalysis, fakeChatCalls, fakeExplanation } from "./fixtures/answers";
 
-/** Which of the two configured models a call uses. */
-export type ModelKind = "analyze" | "chat";
+/** Which of the configured models a call uses; `explain` uses the chat model (decision 346, 3). */
+export type ModelKind = "analyze" | "chat" | "explain";
 
 /** Marker the analysis prompt writes before the category hint; the fake model reads it back. */
 export const CATEGORY_HINT_MARKER = "Category hint:";
@@ -16,6 +16,12 @@ export const REQUEST_MARKER = "Request:";
 
 /** Photo URLs the models read directly, so the SDK never downloads a photo itself. */
 export const PHOTO_URLS: Readonly<Record<string, RegExp[]>> = { "image/*": [/^https:\/\//] };
+
+/** Marker the explanation prompt writes before the language; the fake model reads it back. */
+export const LANGUAGE_MARKER = "Language:";
+
+/** Marker the explanation prompt writes before the fabric names to explain, one per line as `- id | Arabic | English`. */
+export const FABRICS_MARKER = "Recommended fabrics:";
 
 /** A model object (not a model id string). */
 type Model = Exclude<LanguageModel, string>;
@@ -30,13 +36,15 @@ type GenerateResult = Awaited<ReturnType<Extract<Model, { specificationVersion: 
 const FAKE_TOKENS = { input: 100, output: 50 } as const;
 
 /**
- * The text of the last user message.
+ * The text of one user message.
  *
  * @param options - The call options.
+ * @param which - `last` (the newest request) or `first` (the original request, before any correction).
  * @returns Its text parts joined, or an empty string.
  */
-function lastUserText(options: CallOptions): string {
-  const user = options.prompt.filter((message) => message.role === "user").at(-1);
+function userText(options: CallOptions, which: "first" | "last" = "last"): string {
+  const users = options.prompt.filter((message) => message.role === "user");
+  const user = which === "first" ? users[0] : users.at(-1);
   if (user === undefined) return "";
   return user.content.map((part) => (part.type === "text" ? part.text : "")).join("\n");
 }
@@ -74,15 +82,17 @@ function result(content: GenerateResult["content"], toolCalls: boolean): Generat
 /**
  * Answers one call from the fixtures.
  *
- * @param kind - Analysis (JSON text) or chat (tool calls).
+ * @param kind - Analysis (JSON text), chat (tool calls) or explanation (plain text).
  * @param options - The call options.
  * @returns The answer.
  */
 function answer(kind: ModelKind, options: CallOptions): GenerateResult {
-  const text = lastUserText(options);
+  const text = userText(options);
   if (kind === "analyze") {
     return result([{ type: "text", text: JSON.stringify(fakeAnalysis(categoryHint(text))) }], false);
   }
+  if (kind === "explain")
+    return result([{ type: "text", text: fakeExplanation(userText(options, "first")) }], false);
   const marker = text.lastIndexOf(REQUEST_MARKER);
   const request = marker < 0 ? text : text.slice(marker + REQUEST_MARKER.length);
   const calls = fakeChatCalls(request).map((call, index) => ({

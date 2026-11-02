@@ -24,6 +24,7 @@ import {
   type MemoryPhoneVerification,
 } from "../adapters/memory/phone-verification-repository";
 import { createMemoryFabricCalcRepository } from "../adapters/memory/fabric-calc-repository";
+import { createMemoryFabricExplanationRepository } from "../adapters/memory/fabric-explanation-repository";
 import {
   createMemoryFabricRepository,
   createMemoryFabricRuleRepository,
@@ -103,6 +104,7 @@ function memoryRepositories(store: MemoryStore): Partial<Container> {
     fabrics: createMemoryFabricRepository(store),
     fabricRules: createMemoryFabricRuleRepository(store),
     fabricCalcs: createMemoryFabricCalcRepository(store),
+    fabricExplanations: createMemoryFabricExplanationRepository(store),
     profiles: createMemoryProfileRepository(store),
     admin: createMemoryAdminRepository(store),
   };

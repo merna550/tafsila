@@ -14,6 +14,21 @@ function recommend(versionId: string): readonly ["fabric-recommend", string] {
 }
 
 /**
+ * Key of the AI explanation of the recommendations of one saved version in one language. It starts with the
+ * recommendation prefix, so a catalogue change that invalidates `all` also drops it.
+ *
+ * @param versionId - Version id.
+ * @param locale - Language of the text.
+ * @returns The query key.
+ */
+function explain(
+  versionId: string,
+  locale: string,
+): readonly ["fabric-recommend", "explain", string, string] {
+  return ["fabric-recommend", "explain", versionId, locale] as const;
+}
+
+/**
  * Key of the saved fabric calculation of one saved version.
  *
  * @param versionId - Version id.
@@ -24,4 +39,4 @@ function calc(versionId: string): readonly ["fabric-calc", string] {
 }
 
 /** All query keys of the feature. */
-export const fabricKeys = { all: ALL, recommend, calc };
+export const fabricKeys = { all: ALL, recommend, explain, calc };

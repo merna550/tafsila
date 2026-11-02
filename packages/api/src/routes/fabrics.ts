@@ -8,8 +8,10 @@ import {
 } from "@tafsila/schemas";
 import type { Container } from "../container";
 import { requireAuth, type AuthedEnv } from "../middleware/auth";
+import { rateLimit } from "../middleware/rate-limit";
 import { errorResponses } from "../openapi/responses";
 import { HTTP_OK } from "../openapi/status";
+import { explainFabricRecommendations } from "../services/explain-fabric-recommendations";
 import { getFabricCalc } from "../services/get-fabric-calc";
 import { getFabricRecommendations } from "../services/get-fabric-recommendations";
 import { saveFabricCalc } from "../services/save-fabric-calc";
@@ -21,10 +23,13 @@ const versionParams = z.object({ id: z.uuid().meta({ example: "00000000-0000-400
 /** Bearer security requirement shared by every route here. */
 const SECURITY = [{ bearerAuth: [] }];
 
+/** Length of the rate-limit window. */
+const MINUTE_MS = 60_000;
+
 /**
  * Describes GET /fabrics/recommend.
  *
- * @param c - Dependencies (token verifier).
+ * @param c - Dependencies (token verifier, clock and the explanation rate limit).
  * @returns The route definition.
  */
 const recommendRoute = (c: Container) =>
@@ -32,13 +37,31 @@ const recommendRoute = (c: Container) =>
     method: "get",
     path: "/fabrics/recommend",
     tags: ["fabrics"],
-    summary: "Recommend 3 to 5 fabrics with reasons, and an avoid list, for a saved version",
+    summary:
+      "Recommend 3 to 5 fabrics with reasons, and an avoid list, for a saved version; `explain=true` adds a short AI explanation written only from those reasons (cached, capped per day)",
     security: SECURITY,
-    middleware: [requireAuth(c.tokenVerifier)] as const,
+    middleware: [
+      requireAuth(c.tokenVerifier),
+      // Only a request that asks for the AI explanation uses the AI rate limit (the plain recommendation is free).
+      rateLimit({
+        limit: c.jobsConfig.rateLimitPerMinute,
+        windowMs: MINUTE_MS,
+        now: () => c.clock.now().getTime(),
+        when: (ctx) => ctx.req.query("explain") === "true",
+      }),
+    ] as const,
     request: { query: recommendFabricsQuerySchema },
     responses: {
       [HTTP_OK]: { description: "The recommendation", ...jsonContent(recommendFabricsResponseSchema) },
-      ...errorResponses("VALIDATION_FAILED", "UNAUTHENTICATED", "NOT_FOUND", "INTERNAL_ERROR"),
+      ...errorResponses(
+        "VALIDATION_FAILED",
+        "UNAUTHENTICATED",
+        "NOT_FOUND",
+        "EXPLAIN_DAILY_LIMIT",
+        "RATE_LIMITED",
+        "AI_EXPLAIN_FAILED",
+        "INTERNAL_ERROR",
+      ),
     },
   });
 
@@ -99,12 +122,19 @@ const getCalcRoute = (c: Container) =>
  */
 export function fabricRoutes(container: Container): OpenAPIHono<AuthedEnv> {
   return new OpenAPIHono<AuthedEnv>()
-    .openapi(recommendRoute(container), async (c) =>
-      c.json(
-        await getFabricRecommendations(container, c.get("auth"), c.req.valid("query").versionId),
-        HTTP_OK,
-      ),
-    )
+    .openapi(recommendRoute(container), async (c) => {
+      const { versionId, explain, locale } = c.req.valid("query");
+      const result =
+        explain === "true"
+          ? await explainFabricRecommendations(
+              { ...container, explainDailyLimit: container.jobsConfig.explainDailyLimit },
+              c.get("auth"),
+              versionId,
+              locale,
+            )
+          : await getFabricRecommendations(container, c.get("auth"), versionId);
+      return c.json(result, HTTP_OK);
+    })
     .openapi(saveCalcRoute(container), async (c) =>
       c.json(
         await saveFabricCalc(container, c.get("auth"), c.req.valid("param").id, c.req.valid("json")),

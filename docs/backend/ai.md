@@ -27,13 +27,15 @@ Switching provider is an env change only. Real keys are out of scope until the e
 
 ## Fake provider
 
-`createFakeModel` (`src/fake-model.ts`) is an AI SDK language model that answers from `src/fixtures/answers.ts`: an analysis per category hint, and chat tool calls per keyword (`pocket`/`جيب`, `longer`/`أطول`, `jumpsuit`/`جمبسوت`; anything else is explained as not understood). API tests and e2e reuse these fixtures. Tests that need other answers pass an AI SDK test model (`MockLanguageModelV4` from `ai/test`) as `deps.model`; see `src/test-models.ts`. No test calls the network.
+`createFakeModel` (`src/fake-model.ts`) is an AI SDK language model that answers from `src/fixtures/answers.ts`: an analysis per category hint, chat tool calls per keyword (`pocket`/`جيب`, `longer`/`أطول`, `jumpsuit`/`جمبسوت`; anything else is explained as not understood). API tests and e2e reuse these fixtures. Tests that need other answers pass an AI SDK test model (`MockLanguageModelV4` from `ai/test`) as `deps.model`; see `src/test-models.ts`. No test calls the network.
 
 ## Output rules
 
 - **Analysis** uses structured output: the Zod schema goes to the model as JSON Schema, temperature 0. An invalid answer is retried once with the validation error; a second one throws `AiOutputInvalidError` (`AI_OUTPUT_INVALID`). A spec the engine refuses is corrected by `normalizeSpec`, with confidence 0 and a note on each changed feature.
 - **Chat** uses tool calling: `setFeature`, `setLength`, `addPocket`, `removePocket`, `explainUnsupported`. The calls become a `SpecPatch`; invalid calls or a refused patch are retried once with the reasons, then answered as unsupported with no ops.
 - **Prompt catalogue:** `buildCataloguePrompt()` lists every enum value of `designSpecSchema` with a short English visual definition (`FEATURE_DEFINITIONS`) and the length limits. A test fails when the schema and the definitions disagree: add a definition when you add an enum value.
+
+- **Explanation** (`explainRecommendations`, #346) is plain text from the chat-tier model (`kind: "explain"`), temperature 0. The prompt (`explainSystemPrompt`) gives only the fabric names and the rules' reasons. `explain-check.ts` then rejects a text that names a catalogue fabric outside the input (Arabic or English, letter variants unified), runs over 70 words or 1000 characters, or is empty; one retry with the problem, then `AiOutputInvalidError`. The API caches the text in `fabric_explanations` and caps new texts with `AI_EXPLAIN_DAILY_LIMIT` ([decision 346](../decisions/346-fabric-explanation.md)).
 
 ## Usage
 

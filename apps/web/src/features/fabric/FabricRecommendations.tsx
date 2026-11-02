@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { DataState } from "@/shared/data-state";
+import { ExplainRecommendations } from "./ExplainRecommendations";
 import { FabricRecommendationsView } from "./components/FabricRecommendationsView";
 import { useFabricRecommendations } from "./hooks/use-fabric-recommendations";
 
@@ -37,7 +38,12 @@ export function FabricRecommendations({ versionId }: Readonly<FabricRecommendati
         emptyDescription={t("emptyDescription")}
         onRetry={() => void query.refetch()}
       >
-        {query.data ? <FabricRecommendationsView data={query.data} /> : null}
+        {query.data ? (
+          <FabricRecommendationsView
+            data={query.data}
+            explain={<ExplainRecommendations versionId={versionId} />}
+          />
+        ) : null}
       </DataState>
     </section>
   );

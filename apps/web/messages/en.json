@@ -1515,6 +1515,15 @@
         "max": "Very high"
       }
     },
+    "explain": {
+      "title": "Why these fabrics?",
+      "ask": "Why these fabrics?",
+      "loading": "Writing the explanation...",
+      "aiBadge": "Written by AI",
+      "note": "The explanation is based on the catalogue rules only and adds no new information.",
+      "unavailable": "The explanation is not available right now. The reason for each fabric above comes from the catalogue rules and is enough to choose.",
+      "retry": "Try again"
+    },
     "calc": {
       "title": "Fabric lengths",
       "subtitle": "How many metres to buy for each fabric, with the layout of the pieces.",

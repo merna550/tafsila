@@ -14,13 +14,8 @@ import type { DesignRepository } from "../ports/design-repository";
 import type { ErrorReporter } from "../ports/error-reporter";
 import type { PatternVersionRepository } from "../ports/pattern-version-repository";
 import type { AuthContext } from "../ports/token-verifier";
-import {
-  buildChatAnswer,
-  CHAT_HISTORY_TURNS,
-  failedChatUsage,
-  recordChatUsage,
-  type ChatAnswer,
-} from "./chat-shared";
+import { failedAiUsage, recordAiUsage } from "./ai-usage-shared";
+import { buildChatAnswer, CHAT_HISTORY_TURNS, type ChatAnswer } from "./chat-shared";
 
 /** Ports and limits the use case needs. */
 export interface SendChatMessageDeps {
@@ -156,11 +151,11 @@ async function propose(
   } catch (error) {
     deps.errorReporter.captureException(error, { requestId: `chat:${designId}` });
     if (ai) {
-      const failed = failedChatUsage(ai, deps.clock.now().getTime() - began);
-      await recordChatUsage(deps.aiUsage, ctx.userId, designId, failed);
+      const failed = failedAiUsage(ai, deps.clock.now().getTime() - began);
+      await recordAiUsage(deps.aiUsage, { kind: "chat", userId: ctx.userId, designId }, failed);
     }
     throw new AppError("AI_CHAT_FAILED");
   }
-  await recordChatUsage(deps.aiUsage, ctx.userId, designId, proposed.usage);
+  await recordAiUsage(deps.aiUsage, { kind: "chat", userId: ctx.userId, designId }, proposed.usage);
   return buildChatAnswer(spec, proposed);
 }
