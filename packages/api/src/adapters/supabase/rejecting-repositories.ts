@@ -9,6 +9,7 @@ import type { ChatRepository } from "../../ports/chat-repository";
 import type { PatternVersionRepository } from "../../ports/pattern-version-repository";
 import type { MeasurementSetRepository } from "../../ports/measurement-set-repository";
 import type { FabricCalcRepository } from "../../ports/fabric-calc-repository";
+import type { FabricExplanationRepository } from "../../ports/fabric-explanation-repository";
 import type { FabricRepository, FabricRuleRepository } from "../../ports/fabric-repository";
 import type { SizeChartRepository } from "../../ports/size-chart-repository";
 import type { ProfileRepository } from "../../ports/profile-repository";
@@ -26,6 +27,7 @@ export interface Repositories {
   readonly fabrics: FabricRepository;
   readonly fabricRules: FabricRuleRepository;
   readonly fabricCalcs: FabricCalcRepository;
+  readonly fabricExplanations: FabricExplanationRepository;
   readonly phoneVerification: PhoneVerificationRepository;
   readonly trialEligibility: TrialEligibility;
   readonly profiles: ProfileRepository;
@@ -83,6 +85,7 @@ export function createRejectingRepositories(): Repositories {
     fabrics: { list: failing(), create: failing(), update: failing(), remove: failing() },
     fabricRules: { list: failing(), create: failing(), update: failing(), remove: failing() },
     fabricCalcs: { save: failing(), latest: failing() },
+    fabricExplanations: { find: failing(), save: failing() },
     phoneVerification: { status: failing(), attempt: failing(), confirm: failing() },
     trialEligibility: { isEligible: failing() },
     profiles: { get: failing(), update: failing() },

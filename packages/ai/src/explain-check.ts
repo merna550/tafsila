@@ -2,6 +2,7 @@
  * The guard of the fabric explanation (issue #346, FR-REC-04, decision 346, 2): a text may name only the fabrics it was
  * given and stay short. The model is told this too; the check is what makes it true.
  */
+import { MAX_EXPLANATION_CHARS } from "@tafsila/schemas";
 
 /** Most words an explanation may have. */
 export const MAX_EXPLANATION_WORDS = 70;
@@ -132,6 +133,9 @@ export function explanationProblems(
   const words = countWords(text);
   if (words > MAX_EXPLANATION_WORDS) {
     problems.push(`the text has ${words} words; the limit is ${MAX_EXPLANATION_WORDS}`);
+  }
+  if (text.length > MAX_EXPLANATION_CHARS) {
+    problems.push(`the text has ${text.length} characters; the limit is ${MAX_EXPLANATION_CHARS}`);
   }
   const outside = fabricsNamedOutside(text, allowed, catalogue);
   if (outside.length > 0) problems.push(`it names fabrics that are not in the list: ${outside.join(", ")}`);

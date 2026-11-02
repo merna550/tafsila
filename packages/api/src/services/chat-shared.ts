@@ -1,9 +1,7 @@
-/** Helpers shared by the chat services: the answer of a proposal and the AI usage rows of chat calls. */
-import type { AiDeps, AiUsage } from "@tafsila/ai";
+/** Helpers shared by the chat services: the answer of a proposal. */
 import { applySpecPatch } from "@tafsila/engine/spec-rules";
 import type { BilingualText, DesignSpec, SpecPatch } from "@tafsila/schemas";
 import { describeChanges } from "../domain/describe-changes";
-import type { AiUsageRepository } from "../ports/ai-usage-repository";
 
 /** Turns of the conversation sent back to the model with each request (decision 343, 5). */
 export const CHAT_HISTORY_TURNS = 6;
@@ -65,54 +63,4 @@ export function buildChatAnswer(
     patch: stored,
     changes: closestLines(spec, patch.unsupported?.closest),
   };
-}
-
-/** The part of an AI usage record a chat row needs. */
-type UsageFields = Pick<AiUsage, "provider" | "model" | "inputTokens" | "outputTokens" | "latencyMs"> & {
-  readonly costUsd: number | undefined;
-};
-
-/**
- * What a failed call cost: nothing is known about the tokens when the provider never answered.
- *
- * @param ai - The AI configuration used.
- * @param elapsedMs - Time spent.
- * @returns The usage fields to record.
- */
-export function failedChatUsage(ai: AiDeps, elapsedMs: number): UsageFields {
-  return {
-    provider: ai.config.provider,
-    model: ai.config.chatModel,
-    inputTokens: 0,
-    outputTokens: 0,
-    costUsd: 0,
-    latencyMs: elapsedMs,
-  };
-}
-
-/**
- * Writes one `ai_usage` row of kind `chat`.
- *
- * @param aiUsage - AI usage repository.
- * @param userId - The user.
- * @param designId - The design.
- * @param usage - Provider, model, tokens, cost and latency.
- */
-export async function recordChatUsage(
-  aiUsage: AiUsageRepository,
-  userId: string,
-  designId: string,
-  usage: UsageFields,
-): Promise<void> {
-  await aiUsage.record({
-    userId,
-    designId,
-    kind: "chat",
-    provider: usage.provider,
-    model: usage.model,
-    inputTokens: usage.inputTokens,
-    outputTokens: usage.outputTokens,
-    costUsd: usage.costUsd ?? 0,
-    latencyMs: Math.round(usage.latencyMs),
-  });
 }

@@ -90,6 +90,12 @@ describe("explainRecommendations", () => {
     expect(text).toBe("Crepe.");
   });
 
+  it("rejects a text over the character limit", async () => {
+    const model = scriptedModel([{ text: "a".repeat(1001) }, { text: "Crepe." }]);
+    const { text } = await explainRecommendations(input("en"), scriptedDeps(model));
+    expect(text).toBe("Crepe.");
+  });
+
   it("rejects an empty text", async () => {
     const model = scriptedModel([{ text: "  " }, { text: "" }]);
     await expect(explainRecommendations(input("en"), scriptedDeps(model))).rejects.toThrow(/empty/);

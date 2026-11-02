@@ -48,6 +48,7 @@ import { createWithApiRole, createWithUser } from "./adapters/supabase/with-user
 import { createHmacPhoneHasher, createRejectingPhoneHasher } from "./adapters/system/hmac-phone-hasher";
 import { createMeasurementSetRepository } from "./adapters/supabase/measurement-set-repository";
 import { createFabricCalcRepository } from "./adapters/supabase/fabric-calc-repository";
+import { createFabricExplanationRepository } from "./adapters/supabase/fabric-explanation-repository";
 import { createFabricRepository, createFabricRuleRepository } from "./adapters/supabase/fabric-repository";
 import { createSizeChartRepository } from "./adapters/supabase/size-chart-repository";
 import { createRejectingRepositories, type Repositories } from "./adapters/supabase/rejecting-repositories";
@@ -73,6 +74,7 @@ import type { ClientRepository } from "./ports/client-repository";
 import type { DesignRepository } from "./ports/design-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
 import type { FabricCalcRepository } from "./ports/fabric-calc-repository";
+import type { FabricExplanationRepository } from "./ports/fabric-explanation-repository";
 import type { FabricRepository, FabricRuleRepository } from "./ports/fabric-repository";
 import type { MeasurementSetRepository } from "./ports/measurement-set-repository";
 import type { PatternVersionRepository } from "./ports/pattern-version-repository";
@@ -118,6 +120,8 @@ export interface Container {
   readonly fabricRules: FabricRuleRepository;
   /** The signed-in user's saved fabric calculations. */
   readonly fabricCalcs: FabricCalcRepository;
+  /** Cached AI explanations of the fabric recommendations (owner only). */
+  readonly fabricExplanations: FabricExplanationRepository;
   /** Users and stats for the admin screens (admin only; the database checks the admin again). */
   readonly admin: AdminRepository;
   /** What the user's plan allows (unlimited until M7). */
@@ -184,6 +188,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     fabrics: createFabricRepository(withUser),
     fabricRules: createFabricRuleRepository(withUser),
     fabricCalcs: createFabricCalcRepository(withUser),
+    fabricExplanations: createFabricExplanationRepository(withUser),
     profiles: createProfileRepository(withUser),
     accountAudit: createAccountAudit(withApiRole),
     admin: createAdminRepository(withApiRole),

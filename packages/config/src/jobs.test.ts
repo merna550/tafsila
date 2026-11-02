@@ -20,6 +20,7 @@ describe("Jobs configuration (decision 340)", () => {
       rateLimitPerMinute: 5,
       chatMessagesPerDesign: 10,
       chatDailyLimit: 100,
+      explainDailyLimit: 20,
     });
   });
 
@@ -41,6 +42,11 @@ describe("Jobs configuration (decision 340)", () => {
       chatDailyLimit: 7,
     });
     expect(() => loadJobsConfig({ CHAT_MESSAGES_PER_DESIGN: "0" })).toThrow(/CHAT_MESSAGES_PER_DESIGN/);
+  });
+
+  it("reads the explanation cap from the environment", () => {
+    expect(loadJobsConfig({ AI_EXPLAIN_DAILY_LIMIT: "4" }).explainDailyLimit).toBe(4);
+    expect(() => loadJobsConfig({ AI_EXPLAIN_DAILY_LIMIT: "0" })).toThrow(/AI_EXPLAIN_DAILY_LIMIT/);
   });
 
   it("refuses inngest without keys in staging and production only", () => {

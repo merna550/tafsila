@@ -197,6 +197,16 @@ export const ERROR_CATALOGUE = {
     messageAr: "وصلتي للحد اليومي من تحليل الصور، جربي بكرة",
     messageEn: "You reached today's limit of photo analyses, try again tomorrow",
   },
+  EXPLAIN_DAILY_LIMIT: {
+    status: 429,
+    messageAr: "وصلتي للحد اليومي من شرح الأقمشة، جربي بكرة",
+    messageEn: "You reached today's limit of fabric explanations, try again tomorrow",
+  },
+  AI_EXPLAIN_FAILED: {
+    status: 502,
+    messageAr: "تعذر كتابة الشرح الآن، حاولي مرة أخرى",
+    messageEn: "The explanation could not be written right now, try again",
+  },
   CHAT_QUOTA_EXCEEDED: {
     status: 429,
     messageAr: "وصلتي للحد الأقصى من رسائل التعديل لهذا الباترون",

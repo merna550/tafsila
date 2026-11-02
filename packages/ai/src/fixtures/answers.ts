@@ -99,7 +99,7 @@ export function fakeExplanation(prompt: string): string {
   const section = prompt.split("Recommended fabrics:")[1]?.split("\n\n")[0] ?? "";
   const names = section
     .split("\n")
-    .map((line) => /^- [^|]+\| ([^|]+) \| (.+)$/.exec(line.trim()))
+    .map((line) => /^- [^|]+\| ([^|]+) \| ([^|]+)/.exec(line.trim()))
     .filter((match): match is RegExpExecArray => match !== null)
     .map((match) => (english ? match[2]! : match[1]!).trim());
   const list = names.join(english ? ", " : "، ");

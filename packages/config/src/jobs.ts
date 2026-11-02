@@ -59,6 +59,9 @@ export const DEFAULT_CHAT_MESSAGES_PER_DESIGN = 10;
 /** Default chat messages a user may send per UTC day (decision 343). */
 export const DEFAULT_AI_CHAT_DAILY_LIMIT = 100;
 
+/** Default fabric explanations a user may ask for per UTC day (decision 346, 3). */
+export const DEFAULT_AI_EXPLAIN_DAILY_LIMIT = 20;
+
 /** Background job and AI cost-control settings (decision 340, 343). */
 export interface JobsConfig {
   /** Where jobs run. */
@@ -77,6 +80,8 @@ export interface JobsConfig {
   readonly chatMessagesPerDesign: number;
   /** Chat messages a user may send per UTC day. */
   readonly chatDailyLimit: number;
+  /** Fabric explanations a user may ask for per UTC day (cache hits are free). */
+  readonly explainDailyLimit: number;
 }
 
 /**
@@ -113,6 +118,7 @@ export function loadJobsConfig(source: Record<string, string | undefined> = proc
         DEFAULT_CHAT_MESSAGES_PER_DESIGN,
       ),
       AI_CHAT_DAILY_LIMIT: positiveInt("AI_CHAT_DAILY_LIMIT").default(DEFAULT_AI_CHAT_DAILY_LIMIT),
+      AI_EXPLAIN_DAILY_LIMIT: positiveInt("AI_EXPLAIN_DAILY_LIMIT").default(DEFAULT_AI_EXPLAIN_DAILY_LIMIT),
     })
     .superRefine(refineJobQueueEnv)
     .safeParse(emptyAsMissing(source));
@@ -130,5 +136,6 @@ export function loadJobsConfig(source: Record<string, string | undefined> = proc
     rateLimitPerMinute: env.AI_RATE_LIMIT_PER_MINUTE,
     chatMessagesPerDesign: env.CHAT_MESSAGES_PER_DESIGN,
     chatDailyLimit: env.AI_CHAT_DAILY_LIMIT,
+    explainDailyLimit: env.AI_EXPLAIN_DAILY_LIMIT,
   };
 }

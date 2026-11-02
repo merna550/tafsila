@@ -36,13 +36,15 @@ type GenerateResult = Awaited<ReturnType<Extract<Model, { specificationVersion: 
 const FAKE_TOKENS = { input: 100, output: 50 } as const;
 
 /**
- * The text of the last user message.
+ * The text of one user message.
  *
  * @param options - The call options.
+ * @param which - `last` (the newest request) or `first` (the original request, before any correction).
  * @returns Its text parts joined, or an empty string.
  */
-function lastUserText(options: CallOptions): string {
-  const user = options.prompt.filter((message) => message.role === "user").at(-1);
+function userText(options: CallOptions, which: "first" | "last" = "last"): string {
+  const users = options.prompt.filter((message) => message.role === "user");
+  const user = which === "first" ? users[0] : users.at(-1);
   if (user === undefined) return "";
   return user.content.map((part) => (part.type === "text" ? part.text : "")).join("\n");
 }
@@ -85,11 +87,12 @@ function result(content: GenerateResult["content"], toolCalls: boolean): Generat
  * @returns The answer.
  */
 function answer(kind: ModelKind, options: CallOptions): GenerateResult {
-  const text = lastUserText(options);
+  const text = userText(options);
   if (kind === "analyze") {
     return result([{ type: "text", text: JSON.stringify(fakeAnalysis(categoryHint(text))) }], false);
   }
-  if (kind === "explain") return result([{ type: "text", text: fakeExplanation(text) }], false);
+  if (kind === "explain")
+    return result([{ type: "text", text: fakeExplanation(userText(options, "first")) }], false);
   const marker = text.lastIndexOf(REQUEST_MARKER);
   const request = marker < 0 ? text : text.slice(marker + REQUEST_MARKER.length);
   const calls = fakeChatCalls(request).map((call, index) => ({

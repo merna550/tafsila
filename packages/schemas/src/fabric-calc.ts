@@ -99,9 +99,17 @@ export const fabricCalcSchema = z.object({
 /** A parsed stored calculation. */
 export type FabricCalc = z.infer<typeof fabricCalcSchema>;
 
-/** Query of GET /api/fabrics/recommend. */
+/** Languages of the AI explanation. */
+export const explanationLocaleSchema = z.enum(["ar", "en"]);
+
+/** Query of GET /api/fabrics/recommend; `explain=true` adds the AI explanation (FR-REC-04). */
 export const recommendFabricsQuerySchema = z.object({
   versionId: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000f2" }),
+  explain: z
+    .enum(["true", "false"])
+    .optional()
+    .meta({ description: "`true` adds the AI explanation (counted in the daily cap); absent means none" }),
+  locale: explanationLocaleSchema.default("ar").meta({ description: "Language of the explanation" }),
 });
 
 /** Parsed recommend query. */
@@ -130,11 +138,28 @@ export const avoidedFabricSchema = fabricAvoidSchema.extend({ fabric: fabricSumm
 /** An avoided fabric with its summary. */
 export type AvoidedFabric = z.infer<typeof avoidedFabricSchema>;
 
+/** Longest explanation stored, in characters (the prompt asks for at most 70 words). */
+export const MAX_EXPLANATION_CHARS = 1000;
+
+/** The AI explanation of a recommendation: one short paragraph in the asked language (FR-REC-04). */
+export const fabricExplanationSchema = z.object({
+  text: z
+    .string()
+    .min(1)
+    .max(MAX_EXPLANATION_CHARS)
+    .meta({ example: "الكريب والساتان ينسدلان بنعومة فيناسبان التنورة الدائرية." }),
+  locale: explanationLocaleSchema,
+});
+
+/** A parsed explanation. */
+export type FabricExplanation = z.infer<typeof fabricExplanationSchema>;
+
 /** Response of GET /api/fabrics/recommend: the ranked fabrics, the avoid list and whether the data is still a draft. */
 export const recommendFabricsResponseSchema = z.object({
   recommended: z.array(recommendedFabricSchema).max(RECOMMENDED_COUNT.max),
   avoid: z.array(avoidedFabricSchema),
   isDraft: z.boolean().meta({ description: "True while the catalogue or rules used are not yet reviewed" }),
+  explanation: fabricExplanationSchema.optional().meta({ description: "Only when `explain=true` was asked" }),
 });
 
 /** Parsed recommend response. */

@@ -5,9 +5,10 @@ import { eq } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
 import type { AuthContext } from "../../ports/token-verifier";
 import { createFabricCalcRepository } from "./fabric-calc-repository";
+import { createFabricExplanationRepository } from "./fabric-explanation-repository";
 import { createFabricRepository, createFabricRuleRepository } from "./fabric-repository";
 import { createPatternVersionRepository } from "./pattern-version-repository";
-import { adminAudit, fabricCalcs } from "./schema";
+import { adminAudit, fabricCalcs, fabricExplanations } from "./schema";
 import { createWithUser } from "./with-user";
 
 const URL = loadDatabaseUrl() ?? "postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres";
@@ -136,6 +137,30 @@ describe("fabric repositories on local Supabase", () => {
       expect(await calcs.save(admin, input)).toBeUndefined();
     } finally {
       await withUser(trial, (tx) => tx.delete(fabricCalcs));
+    }
+  });
+
+  it("caches one explanation per version, language and hash, and hides it from another user", async () => {
+    const explanations = createFabricExplanationRepository(withUser);
+    const own = (
+      await createPatternVersionRepository(withUser).list(trial, SEED_DESIGN, { limit: 1, offset: 0 })
+    )?.items[0];
+    if (!own) throw new Error("seed version missing");
+    const input = { versionId: own.id, locale: "ar" as const, catalogueHash: "db-test-hash", text: "نص" };
+    try {
+      expect(await explanations.save(trial, input)).toBe(true);
+      expect(await explanations.save(trial, { ...input, text: "نص آخر" })).toBe(true);
+      expect(await explanations.find(trial, own.id, "ar", "db-test-hash")).toEqual({
+        text: "نص",
+        locale: "ar",
+      });
+      expect(await explanations.find(trial, own.id, "en", "db-test-hash")).toBeUndefined();
+      expect(await explanations.find(trial, own.id, "ar", "other-hash")).toBeUndefined();
+      expect(await explanations.find(pro, own.id, "ar", "db-test-hash")).toBeUndefined();
+      expect(await explanations.save(pro, input)).toBe(false);
+      expect(await explanations.save(admin, input)).toBe(false);
+    } finally {
+      await withUser(trial, (tx) => tx.delete(fabricExplanations));
     }
   });
 });
