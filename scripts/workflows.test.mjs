@@ -282,6 +282,11 @@ describe("expensive checks run only when needed (issue #86)", () => {
     expect(Object.keys(quality.jobs)).not.toContain("api");
   });
 
+  it("runs the quality tests with at most two turbo tasks at once, so a whole-repo run does not starve the property tests (issue #359)", () => {
+    const step = quality.jobs.quality.steps.find((candidate) => candidate.name === "Types and tests");
+    expect(step.run).toContain("--concurrency=2");
+  });
+
   it("keeps the checks that stay: quality is not path-filtered and docker still pushes from main", () => {
     expect(quality.jobs.quality.if).toBeUndefined();
     expect(docker.on.push.branches).toEqual(["main"]);
