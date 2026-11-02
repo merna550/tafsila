@@ -62,6 +62,9 @@ jobs:
         run: pnpm --filter web test:e2e
         env:
           CI: "true"
+          # The flows that start an analysis (#341) run the fake provider and the inline job queue: no network, fixed answers.
+          AI_PROVIDER: fake
+          JOB_QUEUE: inline
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

@@ -1,10 +1,10 @@
 "use client";
 /** The /designs/new screen: choose the garment type; the design is created on the choice and the editor opens. */
 import type { GarmentCategory } from "@tafsila/schemas";
-import { PageHeader } from "@tafsila/ui";
+import { PageHeader, Link as UiLink } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
-import { useRouter } from "@/shared/i18n";
+import { Link, useRouter } from "@/shared/i18n";
 import { useApiErrorHandler } from "@/shared/error-display";
 import { DesignsBreadcrumb } from "./components/DesignsBreadcrumb";
 import { CategoryStep } from "./components/CategoryStep";
@@ -49,6 +49,11 @@ export function CategoryStepScreen({ clientId }: Readonly<CategoryStepScreenProp
       {clientId === undefined ? null : (
         <ClientChipSlot clientId={clientId} onRemove={() => router.replace("/designs/new")} />
       )}
+      <UiLink asChild className="self-start font-semibold">
+        <Link href="/designs/new/photos" title={t("fromPhotosHint")}>
+          {t("fromPhotos")}
+        </Link>
+      </UiLink>
       <CategoryStep onChoose={(category) => void choose(category)} pending={create.isPending} />
     </div>
   );

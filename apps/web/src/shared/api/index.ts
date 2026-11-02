@@ -14,3 +14,4 @@ export {
   type ErrorContext,
   type ErrorPlacement,
 } from "./error-display";
+export { uploadToSignedUrl, type UploadOptions } from "./upload-file";

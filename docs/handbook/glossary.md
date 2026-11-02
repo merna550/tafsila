@@ -1649,6 +1649,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## O
 
+<a id="offscreencanvas"></a>
+
+### OffscreenCanvas
+
+**Plain words:** A browser drawing surface that works inside a Web Worker, so heavy image work does not freeze the page.  
+**In Tafsila:** `shared/image-prepare` draws each chosen photo at most 1600 px wide and re-encodes it to JPEG on an OffscreenCanvas, which also removes [EXIF](#exif); browsers without it use a normal canvas on the main thread (#341). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas>
+
 <a id="openapi"></a>
 
 ### OpenAPI

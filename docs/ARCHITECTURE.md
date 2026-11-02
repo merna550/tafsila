@@ -33,7 +33,7 @@ apps/web/src/
 ├─ app/                     # Next.js routes ONLY: thin pages that compose features (no logic)
 │  └─ [locale]/(dashboard)/designs/[id]/page.tsx
 ├─ features/                # one folder per feature, public API via index.ts
-│  ├─ upload-design/        # components/ hooks/ (useAnalyzeDesign) model/ index.ts
+│  ├─ upload-design/        # components/ hooks/ (usePhotoSlots, useStartAnalysis, useAnalysisStatus) model/ index.ts
 │  ├─ confirm-spec/
 │  ├─ measurements/
 │  ├─ pattern-viewer/
