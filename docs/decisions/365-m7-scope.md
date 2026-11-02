@@ -1,0 +1,30 @@
+# ADR-365 · 2026-11-02 · M7 scope: credits in the database, Paymob behind a port, test mode until Merna approves live
+
+**Context:** M7 (Billing & admin) adds credits, the free trial, Paymob, plans, receipts and the admin dashboard (SRS §12). The brief is `docs/milestones/M7-billing-and-admin.md`, issues #365-#383. Already fixed: the products and prices (FR-BILL-03), Paymob behind a `PaymentGateway` port (ADR-012), atomic credit + version writes in one `withUser` transaction (ADR-035 5), the trial eligibility flag (ADR-26a 7), admin functions in `private` with `assert_admin` and audit rows (ADR-32a), free tiers and no payment method without Merna (ADR-022), production only at M8 (ADR-026), no credits before M7 (ADR-236 5, ADR-335 4). These points were not written down; all are cheap to change before the beta, except going live with Paymob, which is asked in #383.
+
+**Decision:**
+
+1. **When a credit is used:** saving **version 1** of a design consumes one credit, in the same transaction as the version. Later versions (new measurements, ease, options), restores and chat-applied versions are free. A design's category cannot change (the save path refuses it), so a different garment is always a new design: this closes SRS §13 question 7. Designs that already had a version before M7 are never charged. Analysis needs a balance of at least 1 but does not consume it, so AI cost stays with trial or paying users.
+2. **Ledger with expiry:** `credit_ledger` gets `expires_at` (grants) and `lot_id` (debits); a debit takes the grant that expires first. Trial and single credits never expire; the 5-pack expires after 90 days; plan credits expire at the end of their period (no rollover). Balance is computed, never stored. Money is in **piastres** (integers).
+3. **Only database functions write billing rows.** Users read their own rows; `private` security-definer functions (`grant_credits`, `consume_credit`, `record_payment`, `credit_balance`) with `execute` for `api_app` do every write (ADR-26a 8, ADR-32a 2). `consume_credit` locks the user so two parallel saves cannot spend the same credit.
+4. **Trial:** 3 credits granted in the phone-verify transaction together with `trial_granted_at`; users verified before M7 get them lazily on their first credits read.
+5. **Plans:** one active subscription at a time; buying the same plan in the last 7 days renews it from the current end; a different plan while one is active is refused (`SUBSCRIPTION_ACTIVE`). **Manual renewal only** in M7 with an in-app reminder 7 days before the end; Paymob card tokens and auto-renew wait until the live account shows recurring support (SRS §13 question 5). The `subscription.renewal-reminder` job and e-mail reminders wait for an e-mail provider (M8).
+6. **Plan limits:** `products.max_clients` and `products.chat_per_design`. Pro: unlimited clients (FR-BILL-03), 20 chat messages per design; Hobby, pack, single and trial: 10 clients and 10 chat messages per design (FR-CHAT-06 default). Users already over the client limit keep their clients and cannot add more. Values are data an admin can change.
+7. **Paymob:** server-side intention with the secret key, Paymob's hosted checkout (card and wallet), kiosk cash reference; the transaction callback is the only thing that grants anything: HMAC-SHA512 checked in constant time, amount and currency compared with the stored payment, the transaction id unique so a replay changes nothing. The browser return page only polls the payment status. No card number, CVV or full PAN is stored or logged; `payments.raw` keeps the parsed event only. Variables: `PAYMENT_GATEWAY` (`fake` default outside production, refused in production), `PAYMOB_MODE`, `PAYMOB_SECRET_KEY`, `PAYMOB_PUBLIC_KEY`, `PAYMOB_HMAC_SECRET`, `PAYMOB_INTEGRATION_ID_CARD|WALLET|KIOSK` (they replace the unused `PAYMOB_API_KEY`), all through `packages/config/env.ts`, as `_STAGING` repository secrets and Vercel env vars set by Merna.
+8. **Fake gateway first:** CI, e2e and local work use a fake gateway that signs its own callbacks; staging uses Paymob **test mode** (#366, no payment method, no documents). Live keys are never used before #383 is answered.
+9. **Refunds:** money is refunded in the Paymob dashboard; the refund callback marks the payment `refunded`; the admin removes unused credits with reason `refund` (audited). Admin grant or deduct: -50 to 50 per action, never below 0, each with an `admin_audit` row in the same transaction.
+10. **Receipts** are payment receipts (إيصال دفع) printed from the browser, not tax invoices. Egyptian Tax Authority e-receipts are checked with the legal pages at M8.
+11. **Admin:** the dashboard reads counts through one `private` function (no personal data); failed validations are counted in a small `validation_failures` table (day, category, rule code, count). Admins see a user's designs only when she turned on `profiles.share_designs` (default off, FR-ADM-03); never measurements, client names or notes.
+12. **Out of M7:** coupons and referrals (FR-BILL-07, priority S; the admin grant covers one-off cases), auto-renew, refunds through the API, production keys and project (M8).
+
+**Open (`needs:decision` on #383):** the exit needs one live payment. A live Paymob account needs merchant activation with business documents and a bank account, charges a fee per transaction, and the test spends real money; production does not exist before M8 (ADR-026). ADR-022 leaves this to Merna.
+
+**Reason:** Charging at version 1 matches FR-BILL-01 with one check in the existing save path; database-only writes and a unique transaction id make double grants impossible even with retries; the fake gateway and test mode let 18 of 19 issues finish without money or documents.
+
+**Alternatives:**
+
+- Charge at design creation or at analysis (users would pay for designs they never draft).
+- A stored balance column (drifts from the ledger; expiry is harder).
+- Grant credits on the browser return URL (forgeable).
+- Auto-renew with card tokens now (needs Paymob recurring approval on a live account).
+- Live Paymob from the start (documents, fees and real money before the flow is proven).

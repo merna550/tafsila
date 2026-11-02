@@ -591,9 +591,9 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 | 2 | Verify FreeSewing licence for commercial SaaS; decide fork vs dependency | Decided: no dependency or fork; FreeSewing (MIT) is a cited reference only ([ADR-122](decisions/122-m2-engine-scope.md)) |
 | 3 | AI provider for v1 (Claude vs Gemini) after eval on 50 photos | Open |
 | 4 | Default Egyptian size chart source and values | Open — founder to compile |
-| 5 | Paymob fees, merchant onboarding requirements, recurring payments support | Open |
+| 5 | Paymob fees, merchant onboarding requirements, recurring payments support | Partly decided: test mode on staging, manual renewal, no card tokens in M7 ([ADR-365](decisions/365-m7-scope.md)); live onboarding and fees open on #383 |
 | 6 | Base avatar mesh source and licence for 3D (avoid restricted-licence body models) | Open |
-| 7 | Credit rule for heavy chat edits that change garment category | Proposed: counts as a new pattern |
+| 7 | Credit rule for heavy chat edits that change garment category | Decided: a design's category cannot change, so another garment is always a new design and costs one credit; chat edits are free ([ADR-365](decisions/365-m7-scope.md)) |
 | 8 | Production OTP channel: SMS (Twilio/Vonage/MessageBird) or WhatsApp | Deferred to M8; compare per-message prices then (ADR-024) |
 | 9 | Standard size range | Decided: S–XXL (ADR-024) |
 
