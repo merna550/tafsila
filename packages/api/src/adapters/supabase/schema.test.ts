@@ -7,6 +7,7 @@ import {
   adminAudit,
   chatMessages,
   clients,
+  creditLedger,
   designs,
   fabricCalcs,
   fabricExplanations,
@@ -14,8 +15,11 @@ import {
   fabrics,
   measurementSets,
   patternVersions,
+  payments,
+  products,
   profiles,
   sizeCharts,
+  subscriptions,
 } from "./schema";
 
 const TYPES = readFileSync(join(__dirname, "./database.types.ts"), "utf8");
@@ -115,6 +119,30 @@ describe("Drizzle schema mirror", () => {
   it("has the same columns as the generated Supabase types (fabric_explanations)", () => {
     expect(drizzleColumns(fabricExplanations).sort((a, b) => a.localeCompare(b))).toEqual(
       generatedColumns("fabric_explanations").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (products)", () => {
+    expect(drizzleColumns(products).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("products").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (credit_ledger)", () => {
+    expect(drizzleColumns(creditLedger).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("credit_ledger").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (subscriptions)", () => {
+    expect(drizzleColumns(subscriptions).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("subscriptions").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (payments)", () => {
+    expect(drizzleColumns(payments).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("payments").sort((a, b) => a.localeCompare(b)),
     );
   });
 });

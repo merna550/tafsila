@@ -128,6 +128,67 @@ export type Database = {
           updated_by?: string | null;
         };
       };
+      products: {
+        Row: {
+          code: string;
+          kind: "single" | "pack" | "subscription";
+          price_piastres: number;
+          credits: number;
+          credit_days: number | null;
+          period_days: number | null;
+          max_clients: number | null;
+          chat_per_design: number;
+          active: boolean;
+          name_ar: string;
+          name_en: string;
+        };
+        Insert: never;
+        Update: never;
+      };
+      credit_ledger: {
+        Row: {
+          id: string;
+          user_id: string;
+          delta: number;
+          reason: "trial" | "purchase" | "subscription" | "pattern" | "admin" | "refund";
+          ref_id: string | null;
+          expires_at: string | null;
+          lot_id: string | null;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+      };
+      subscriptions: {
+        Row: {
+          id: string;
+          user_id: string;
+          product_code: string;
+          status: "active" | "expired" | "cancelled";
+          current_period_end: string;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+      };
+      payments: {
+        Row: {
+          id: string;
+          user_id: string;
+          product_code: string;
+          amount_piastres: number;
+          currency: string;
+          status: "pending" | "paid" | "failed" | "refunded";
+          method: "card" | "wallet" | "kiosk" | "fake";
+          paymob_order_id: string | null;
+          paymob_transaction_id: string | null;
+          raw: Json | null;
+          created_at: string;
+          paid_at: string | null;
+        };
+        Insert: never;
+        Update: never;
+      };
       chat_messages: {
         Row: {
           id: string;

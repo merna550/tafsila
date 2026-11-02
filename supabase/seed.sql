@@ -86,3 +86,9 @@ where m.client_id = '00000000-0000-4000-8000-0000000000a1';
 
 update public.designs set current_version_id = '00000000-0000-4000-8000-0000000000f2'
   where id = '00000000-0000-4000-8000-0000000000d1';
+
+-- Billing (issue #367): the trial user has the 3-credit trial grant, a 5-credit pack that expires in 90 days and one
+-- debit for the seed dress (drawn from the pack, which expires first). Balance = 7.
+select private.grant_credits('00000000-0000-4000-8000-000000000001', 3, 'trial', null, null);
+select private.grant_credits('00000000-0000-4000-8000-000000000001', 5, 'purchase', 'seed-payment-1', now() + interval '90 days');
+select private.consume_credit('00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-0000000000d1');

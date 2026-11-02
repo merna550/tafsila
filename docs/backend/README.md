@@ -46,3 +46,5 @@ Sign-up, sign-in and reset go from the browser straight to Supabase Auth; our AP
 ## Environment: DATABASE_URL
 
 The API reads and writes through Drizzle on `DATABASE_URL` (optional in `packages/config/src/env.ts`; without it the repositories reject every call). Use the `api_app` login role, never `postgres` (the superuser bypasses RLS). Local: `postgresql://api_app:api_app_local_only@127.0.0.1:54322/postgres` (password in `supabase/roles.sql`). Staging: set the `api_app` password once and add the secret (ADR-24a, ADR-29a).
+
+Billing writes (`credit_ledger`, `subscriptions`, `payments`, `products`) go only through `private` security-definer functions run by `withApiRole`; users and admins can only read those tables ([decision 367](../decisions/367-billing-schema.md)).
