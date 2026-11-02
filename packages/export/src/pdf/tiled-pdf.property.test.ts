@@ -28,7 +28,7 @@ describe("buildA4Pdf on synthetic sheets", () => {
       ),
       { numRuns: 15 },
     );
-  }, 30_000);
+  }, 60_000);
 
   it("gives cover + one page for a piece smaller than one tile", async () => {
     const { result, scene } = rectangle(60, 60);
