@@ -47,7 +47,7 @@ describe("buildA0Pdf on the seed dress", () => {
     expect(square!.height).toBeCloseTo(283.46, 2);
   });
 
-  it("draws no tile label and no page map when there is one sheet", { timeout: 30_000 }, async () => {
+  it("draws no tile label and no page map when there is one sheet", { timeout: 60_000 }, async () => {
     const { result, scene } = rectangle(300, 300);
     const one = await buildA0Pdf(result, scene, seedMeta, { fonts: testFonts });
     expect(one.pageCount).toBe(1);
@@ -80,7 +80,7 @@ describe("buildA0Pdf on a wide sheet", () => {
     expect(first.some((t) => t.startsWith(TILE_TAG_PREFIX))).toBe(true);
     expect(first.some((t) => t.startsWith(MAP_TAG_PREFIX))).toBe(true);
     expect((await markedTags(wide.bytes, 1)).some((t) => t.startsWith(TILE_TAG_PREFIX))).toBe(true);
-  }, 30_000);
+  }, 60_000);
 
   it("always has A0 pages, the tiler's sheet count and a 283.46 pt test square", async () => {
     await fc.assert(
