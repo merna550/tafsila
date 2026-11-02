@@ -54,158 +54,6 @@
       "event": []
     },
     {
-      "name": "chat",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
-      "item": [
-        {
-          "name": "Apply a proposal: saves a new version (created_by chat); applying twice returns the same version",
-          "request": {
-            "name": "Apply a proposal: saves a new version (created_by chat); applying twice returns the same version",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "designs",
-                ":id",
-                "chat",
-                ":msgId",
-                "apply"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                },
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "msgId",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST"
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Read the chat history of a design (newest last) with the message quota",
-          "request": {
-            "name": "Read the chat history of a design (newest last) with the message quota",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "designs",
-                ":id",
-                "chat"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "name": "Send an edit request: a validated proposal or a polite 'not supported' (nothing is saved until apply)",
-          "request": {
-            "name": "Send an edit request: a validated proposal or a polite 'not supported' (nothing is saved until apply)",
-            "description": {},
-            "url": {
-              "path": [
-                "api",
-                "designs",
-                ":id",
-                "chat"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<uuid>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"message\": \"<string>\",\n  \"versionId\": \"<uuid>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        }
-      ],
-      "event": []
-    },
-    {
       "name": "Clients and measurements",
       "item": [
         {
@@ -1438,6 +1286,163 @@
                 "versions",
                 "{{versionId}}",
                 "restore"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25a Ask for a longer sleeve (fake provider)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has messageId\", () => pm.expect(pm.response.json()).to.have.property(\"messageId\"));",
+                  "pm.test(\"has outcome\", () => pm.expect(pm.response.json()).to.have.property(\"outcome\"));",
+                  "pm.test(\"has changes\", () => pm.expect(pm.response.json()).to.have.property(\"changes\"));",
+                  "pm.test(\"has used\", () => pm.expect(pm.response.json()).to.have.property(\"used\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));",
+                  "pm.environment.set(\"chatMessageId\", pm.response.json().messageId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"make the sleeve longer\",\n  \"versionId\": \"{{versionId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25b Read the chat history",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has used\", () => pm.expect(pm.response.json()).to.have.property(\"used\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25c Apply the proposal: a new version made by chat",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat",
+                "{{chatMessageId}}",
+                "apply"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25d Apply again returns the same version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat",
+                "{{chatMessageId}}",
+                "apply"
               ]
             }
           },
