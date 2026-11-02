@@ -8,6 +8,7 @@ import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
 import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion";
+import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
@@ -49,6 +50,7 @@ const app = createApp(
     userFilesRemover: deletion.userFilesRemover,
     identityEraser: deletion.identityEraser,
     accountAudit: deletion.accountAudit,
+    photoStorage: createMemoryPhotoStorage(deletion.objects),
     phoneOtp: createMemoryPhoneOtp(),
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,

@@ -157,6 +157,31 @@ export const ERROR_CATALOGUE = {
     messageAr: "طلبات كتير، حاولي مرة أخرى بعد شوية",
     messageEn: "Too many requests, retry later",
   },
+  PHOTO_FRONT_REQUIRED: {
+    status: 422,
+    messageAr: "الصورة الأمامية مطلوبة، أضيفي صورة أمامية للقطعة",
+    messageEn: "A front photo is required, add a front photo of the garment",
+  },
+  PHOTO_TOO_LARGE: {
+    status: 413,
+    messageAr: "حجم الصورة كبير، الحد الأقصى 10 ميجابايت",
+    messageEn: "The photo is too large, the limit is 10 MB",
+  },
+  PHOTO_TYPE_NOT_ALLOWED: {
+    status: 415,
+    messageAr: "نوع الصورة غير مدعوم، استخدمي JPG أو PNG أو WebP",
+    messageEn: "This photo type is not supported, use JPG, PNG or WebP",
+  },
+  PHOTO_LIMIT_REACHED: {
+    status: 422,
+    messageAr: "الحد الأقصى 3 صور لكل تصميم",
+    messageEn: "A design holds at most 3 photos",
+  },
+  PHOTO_NOT_FOUND: {
+    status: 404,
+    messageAr: "الصورة غير موجودة",
+    messageEn: "That photo does not exist",
+  },
   INTERNAL_ERROR: {
     status: 500,
     messageAr: "حدث خطأ غير متوقع، حاولي مرة أخرى",

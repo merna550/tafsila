@@ -67,6 +67,45 @@ function byUpdatedDesc(a: DesignRow, b: DesignRow): number {
 }
 
 /**
+ * Designs owned by the user (what RLS would show).
+ *
+ * @param store - Shared fake database.
+ * @param userId - The caller.
+ * @returns Their rows.
+ */
+function ownedBy(store: MemoryStore, userId: string): DesignRow[] {
+  return store.designs.filter((row) => row.ownerId === userId);
+}
+
+/**
+ * The photo path methods of the repository (kept apart so the factory stays short).
+ *
+ * @param store - Shared fake database.
+ * @param find - Finds one owned design.
+ * @param now - Time source.
+ * @returns The two photo path methods.
+ */
+function photoPathMethods(
+  store: MemoryStore,
+  find: (userId: string, id: string) => DesignRow | undefined,
+  now: () => Date,
+): Pick<DesignRepository, "getPhotoPaths" | "setPhotoPaths"> {
+  return {
+    getPhotoPaths(ctx, id) {
+      const row = find(ctx.userId, id);
+      return Promise.resolve(row ? [...(row.photoPaths ?? [])] : undefined);
+    },
+    setPhotoPaths(ctx, id, paths) {
+      const row = find(ctx.userId, id);
+      if (!row) return Promise.resolve(false);
+      const next: DesignRow = { ...row, photoPaths: [...paths], updatedAt: now().toISOString() };
+      store.designs = store.designs.map((existing) => (existing === row ? next : existing));
+      return Promise.resolve(true);
+    },
+  };
+}
+
+/**
  * Creates the in-memory design repository.
  *
  * @param store - Shared fake database.
@@ -80,20 +119,13 @@ export function createMemoryDesignRepository(
   const now = options.now ?? (() => new Date());
   const newId = options.newId ?? (() => crypto.randomUUID());
   /**
-   * Designs owned by the user (what RLS would show).
-   *
-   * @param userId - The caller.
-   * @returns Their rows.
-   */
-  const own = (userId: string) => store.designs.filter((row) => row.ownerId === userId);
-  /**
    * One owned design by id.
    *
    * @param userId - The caller.
    * @param id - Row id.
    * @returns The row, or undefined.
    */
-  const find = (userId: string, id: string) => own(userId).find((row) => row.id === id);
+  const find = (userId: string, id: string) => ownedBy(store, userId).find((row) => row.id === id);
   return {
     create(ctx, input) {
       const at = now().toISOString();
@@ -111,7 +143,7 @@ export function createMemoryDesignRepository(
     },
     list(ctx, { q, clientId, limit, offset }) {
       const needle = q?.toLowerCase();
-      const matching = own(ctx.userId)
+      const matching = ownedBy(store, ctx.userId)
         .filter((row) => !needle || row.title.toLowerCase().includes(needle))
         .filter((row) => !clientId || hasVersionFor(store, row, clientId))
         .sort(byUpdatedDesc);
@@ -144,5 +176,6 @@ export function createMemoryDesignRepository(
       store.versions = store.versions.filter((v) => v.designId !== id);
       return Promise.resolve(true);
     },
+    ...photoPathMethods(store, find, now),
   };
 }

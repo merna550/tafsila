@@ -6,7 +6,7 @@ const SRC_DIR = join(__dirname, "..");
 /** The only files that may hold the Supabase service role key (decision 27a, 8) besides the container that wires them. */
 const ALLOWED = [
   "adapters/supabase/gotrue-account-deleter.ts",
-  "adapters/supabase/storage-files-remover.ts",
+  "adapters/supabase/storage-rest.ts",
   "container.ts",
 ];
 
@@ -25,7 +25,7 @@ function sourceFiles(dir: string): string[] {
 }
 
 describe("service role key usage", () => {
-  it("is read only by the two admin adapters and the container", () => {
+  it("is read only by the admin adapters (account deleter and the shared Storage client) and the container", () => {
     const users = sourceFiles(SRC_DIR)
       .filter((file) => /serviceRoleKey|SERVICE_ROLE/.test(readFileSync(file, "utf8")))
       .map((file) => relative(SRC_DIR, file));

@@ -55,4 +55,21 @@ export interface DesignRepository {
    * @returns True when a row was deleted.
    */
   remove(ctx: AuthContext, id: string): Promise<boolean>;
+  /**
+   * Reads the stored photo paths of a design.
+   *
+   * @param ctx - Verified caller.
+   * @param id - Design id.
+   * @returns The paths, or undefined when the design is missing or not the caller's.
+   */
+  getPhotoPaths(ctx: AuthContext, id: string): Promise<string[] | undefined>;
+  /**
+   * Replaces the stored photo paths and touches `updatedAt`.
+   *
+   * @param ctx - Verified caller.
+   * @param id - Design id.
+   * @param paths - The new paths.
+   * @returns True when the design exists and is the caller's.
+   */
+  setPhotoPaths(ctx: AuthContext, id: string, paths: readonly string[]): Promise<boolean>;
 }

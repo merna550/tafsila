@@ -1,4 +1,5 @@
 /** Repositories used when DATABASE_URL is not configured: every call fails, so the API never falls back to memory silently. */
+import type { AiUsageRepository } from "../../ports/ai-usage-repository";
 import type { AdminRepository } from "../../ports/admin-repository";
 import type { AccountAudit } from "../../ports/account-audit";
 import type { ClientRepository } from "../../ports/client-repository";
@@ -27,6 +28,7 @@ export interface Repositories {
   readonly profiles: ProfileRepository;
   readonly accountAudit: AccountAudit;
   readonly admin: AdminRepository;
+  readonly aiUsage: AiUsageRepository;
 }
 
 /**
@@ -53,7 +55,15 @@ export function createRejectingRepositories(): Repositories {
       update: failing(),
       remove: failing(),
     },
-    designs: { create: failing(), list: failing(), get: failing(), rename: failing(), remove: failing() },
+    designs: {
+      create: failing(),
+      list: failing(),
+      get: failing(),
+      rename: failing(),
+      remove: failing(),
+      getPhotoPaths: failing(),
+      setPhotoPaths: failing(),
+    },
     versions: { appendVersion: failing(), list: failing(), get: failing() },
     measurementSets: {
       create: failing(),
@@ -71,5 +81,6 @@ export function createRejectingRepositories(): Repositories {
     profiles: { get: failing(), update: failing() },
     accountAudit: { recordDeleted: failing() },
     admin: { stats: failing(), list: failing(), get: failing() },
+    aiUsage: { record: failing(), countToday: failing() },
   };
 }

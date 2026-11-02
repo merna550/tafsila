@@ -2,6 +2,7 @@ import { sizeM, seedDress } from "@tafsila/test-fixtures";
 import { describe, expect, it } from "vitest";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
+import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryStore, type MemoryStore } from "../adapters/memory/memory-store";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
@@ -28,6 +29,7 @@ function setup() {
   const deps = {
     designs: createMemoryDesignRepository(store, { now: clock.now }),
     profiles: createMemoryProfileRepository(store),
+    photoStorage: createMemoryPhotoStorage(),
     clock,
   };
   return { store, deps };

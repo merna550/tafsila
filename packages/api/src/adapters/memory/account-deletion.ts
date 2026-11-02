@@ -17,6 +17,8 @@ export interface MemoryAccountDeletion {
   failAt(step: "files" | "identity" | "deleter" | "audit" | undefined): void;
   /** Files stored per user (the fake storage). */
   readonly files: Map<string, string[]>;
+  /** Storage object paths (`<userId>/...`) shared with the photo storage fake; removing a user removes their prefix. */
+  readonly objects: Set<string>;
 }
 
 /**
@@ -28,6 +30,7 @@ export interface MemoryAccountDeletion {
 export function createMemoryAccountDeletion(store: MemoryStore): MemoryAccountDeletion {
   const calls: string[] = [];
   const files = new Map<string, string[]>();
+  const objects = new Set<string>();
   let failing: string | undefined;
   /**
    * Records a step and fails it when switched on.
@@ -43,6 +46,7 @@ export function createMemoryAccountDeletion(store: MemoryStore): MemoryAccountDe
   return {
     calls,
     files,
+    objects,
     failAt: (step) => {
       failing = step;
     },
@@ -50,6 +54,7 @@ export function createMemoryAccountDeletion(store: MemoryStore): MemoryAccountDe
       removeAll: async (userId) => {
         await run("files", userId);
         files.delete(userId);
+        for (const path of [...objects]) if (path.startsWith(`${userId}/`)) objects.delete(path);
       },
     },
     identityEraser: { erase: (userId) => run("identity", userId) },

@@ -1,4 +1,6 @@
 /** Test helper: the real app wired with memory repositories and a local-key token verifier (no network, no database). */
+import { createMemoryAiUsageRepository, type MemoryAiUsage } from "../adapters/memory/ai-usage-repository";
+import { createMemoryPhotoStorage, type MemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryAdminRepository } from "../adapters/memory/admin-repository";
 import { createMemoryAccountDeletion, type MemoryAccountDeletion } from "../adapters/memory/account-deletion";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
@@ -53,6 +55,10 @@ export interface MemoryApp {
   readonly phones: MemoryPhoneVerification;
   /** Memory account deletion ports (call log, failure switch, fake storage). */
   readonly deletion: MemoryAccountDeletion;
+  /** Memory photo storage; shares its objects with `deletion.files` so account deletion can be checked. */
+  readonly photos: MemoryPhotoStorage;
+  /** Memory AI usage rows. */
+  readonly aiUsage: MemoryAiUsage;
   /** Calls the API with a bearer token of `userId` (or none when undefined). */
   call(userId: string | undefined, method: string, path: string, body?: unknown): Promise<Response>;
   /** Like `call`, with a token that also carries the given role and email claims. */
@@ -62,6 +68,27 @@ export interface MemoryApp {
     path: string,
     body?: unknown,
   ): Promise<Response>;
+}
+
+/**
+ * The memory repositories on one shared fake database.
+ *
+ * @param store - Shared fake database.
+ * @returns The repositories for the container.
+ */
+function memoryRepositories(store: MemoryStore): Partial<Container> {
+  return {
+    clients: createMemoryClientRepository(store),
+    designs: createMemoryDesignRepository(store),
+    versions: createMemoryPatternVersionRepository(store),
+    measurementSets: createMemoryMeasurementSetRepository(store),
+    sizeCharts: createMemorySizeChartRepository(store),
+    fabrics: createMemoryFabricRepository(store),
+    fabricRules: createMemoryFabricRuleRepository(store),
+    fabricCalcs: createMemoryFabricCalcRepository(store),
+    profiles: createMemoryProfileRepository(store),
+    admin: createMemoryAdminRepository(store),
+  };
 }
 
 /**
@@ -76,23 +103,18 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
   const phoneOtp = createMemoryPhoneOtp();
   const phones = createMemoryPhoneVerification({ now: () => new Date() });
   const deletion = createMemoryAccountDeletion(store);
+  const photos = createMemoryPhotoStorage(deletion.objects);
+  const aiUsage = createMemoryAiUsageRepository();
   const app = createApp(
     createContainer({
       tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
-      clients: createMemoryClientRepository(store),
-      designs: createMemoryDesignRepository(store),
-      versions: createMemoryPatternVersionRepository(store),
-      measurementSets: createMemoryMeasurementSetRepository(store),
-      sizeCharts: createMemorySizeChartRepository(store),
-      fabrics: createMemoryFabricRepository(store),
-      fabricRules: createMemoryFabricRuleRepository(store),
-      fabricCalcs: createMemoryFabricCalcRepository(store),
-      profiles: createMemoryProfileRepository(store),
-      admin: createMemoryAdminRepository(store),
+      ...memoryRepositories(store),
       accountDeleter: deletion.accountDeleter,
       userFilesRemover: deletion.userFilesRemover,
       identityEraser: deletion.identityEraser,
       accountAudit: deletion.accountAudit,
+      photoStorage: photos,
+      aiUsage,
       planLimits: createUnlimitedPlanLimits(),
       phoneOtp,
       phoneHasher: createHmacPhoneHasher("memory-app-phone-hash-secret-0123456789"),
@@ -132,6 +154,8 @@ export async function createMemoryApp(overrides: Partial<Container> = {}): Promi
     phoneOtp,
     phones,
     deletion,
+    photos,
+    aiUsage,
     call: (userId, method, path, body) => send(userId ? { userId } : undefined, method, path, body),
     callAs: (who, method, path, body) => send(who, method, path, body),
   };

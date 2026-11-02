@@ -23,3 +23,4 @@ export * from "./fabric-calc";
 export * from "./fabric-admin";
 export * from "./design-analysis";
 export * from "./spec-patch";
+export * from "./design-photos";
