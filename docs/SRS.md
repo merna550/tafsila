@@ -575,7 +575,7 @@ Milestone titles match the GitHub milestones exactly. Durations live on the mile
 | M3 - Design & pattern UI | Manual design picker (FR-DES-06), ease preference (FR-MEAS-06), pattern viewer, validation report UI, versions | A user builds a design by hand and sees a validated pattern for a saved client |
 | M4 - Outputs | Projector + calibration, direct-cut steps, PDF A4/A0 | Toile sewn from projector and from PDF fits |
 | M5 - Fabric | Yardage/nesting, fabric catalogue and rules, recommendations | Yardage within ±10 cm of a manual layout on 5 garments |
-| M6 - AI layer | Photo analysis, confirmation UI, chat edits | ≥ 80% feature accuracy on the 50-photo eval set |
+| M6 - AI layer | Photo analysis, confirmation UI, chat edits | ≥ 80% feature accuracy (micro, measured by `pnpm ai:eval`, rules in decision 338) on the 50-photo eval set |
 | M7 - Billing & admin | Credits, free trial, Paymob, plans, receipts, admin dashboard | Paid flow works in Paymob sandbox and one live test payment |
 | M8 - Beta & launch readiness | Production project + "Deploy to production" workflow (ADR-026), domain, production OTP channel (SMS vs WhatsApp), closed beta (20–30 sewists), feedback loop (FR-FBK), privacy policy/terms, landing page, onboarding, FAQ | Satisfaction ≥ 80%; no open fit-failure bugs; legal pages live |
 | M9 - Public launch | Production release, monitoring, launch marketing | Public sign-ups open; on-call checklist done |
