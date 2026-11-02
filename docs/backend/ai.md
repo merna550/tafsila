@@ -47,6 +47,26 @@ pnpm --filter @tafsila/ai print skirt "add side pockets"   # optional 3rd argume
 
 Prints the fake analysis and the chat patch. With `AI_PROVIDER` set to a real provider (only after #347), it calls that provider.
 
+## Evaluation
+
+`pnpm ai:eval` scores a provider and model on labelled photos (issue #338, [decision 338](../decisions/338-ai-eval-harness.md)); the provider choice (#347) and the M6 exit (≥ 80 % feature accuracy) use its numbers. It calls `analyzeDesign` once per label in id order and writes `eval-runs/<time>-<provider>-<model>.json` (raw answers and scores) and `.md` (summary), both git-ignored.
+
+```bash
+pnpm ai:eval --hint                                                    # fake provider, 3 sample labels
+pnpm ai:eval --provider anthropic --model <id> --photos <folder|url-list> --budget-usd <cap>   # only after #347
+```
+
+| Module (`src/eval/`)       | Does                                                                                                      |
+| -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `labels.ts`                | `labels.json` schema (`id`, `photo`, `category`, `spec`, `unsupported[]`), sorted by id                   |
+| `score.ts`                 | pure scoring: per-feature compare, micro/macro, confusion list, confidence-flag check, unsupported recall |
+| `percentile.ts`            | nearest-rank p50/p95                                                                                      |
+| `run.ts`                   | the run: timeout, failed photos, `--max-photos`, `--budget-usd`                                           |
+| `report.ts`, `markdown.ts` | the JSON report (latency vs NFR-02, cost in USD and EGP vs SRS §9) and its summary                        |
+| `cli.ts`                   | flags, photo loader (folder outside the repo, or `<photo> <URL>` lines), price flags                      |
+
+Photos never enter the repo: the command refuses a photos folder inside it. CI runs the fake provider on `packages/test-fixtures/src/ai-eval/labels.sample.json` in `src/eval/run.test.ts`. How to read the report: [test cases](../test-cases/ai/338-eval-run.md).
+
 ## How to add a provider
 
 1. Add the AI SDK provider package with an exact version and list it in the [AI providers card](../handbook/tech/ai-providers.md).

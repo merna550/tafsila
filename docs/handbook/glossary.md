@@ -32,6 +32,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Ticked one by one with `scripts/gh-ac.sh check <issue> <n>` as soon as each is verified; the PR shows `scripts/gh-ac.sh progress <issue>` ([WORKFLOW section 5](../WORKFLOW.md), ADR-009). **Level:** beginner  
 **Learn:** <https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues>
 
+<a id="accuracy"></a>
+
+### Accuracy (micro and macro)
+
+**Plain words:** The share of answers that were right. Micro accuracy pools every answer together; macro accuracy first scores each item, then averages the items, so one hard photo weighs as much as an easy one.  
+**In Tafsila:** The AI evaluation (`pnpm ai:eval`, `packages/ai/src/eval/score.ts`) reports per-feature accuracy and the micro figure is the M6 exit number (≥ 80 %, [decision 338](../decisions/338-ai-eval-harness.md)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Accuracy_and_precision>
+
 <a id="adapter"></a>
 
 ### Adapter
@@ -495,6 +503,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A number from 0 to 1 the AI gives with each answer to say how sure it is: 0 is a guess, 1 is certain.  
 **In Tafsila:** `DesignAnalysisResult.confidence` holds one per feature; a feature the engine had to change gets 0 and a note, and the confirmation screen asks the user to check low ones (FR-DES-07, [ADR-335](../decisions/335-m6-scope.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Confidence_score>
+
+<a id="confusion-list"></a>
+
+### Confusion list
+
+**Plain words:** The most common wrong answers, written as "expected → answered" with a count, such as `neckline.front: v → round (4)`. A short form of a confusion matrix.  
+**In Tafsila:** The AI evaluation report lists the 15 most common ones so the prompt or the catalogue definitions can be fixed where the model mixes two values up ([AI package](../backend/ai.md#evaluation)). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Confusion_matrix>
 
 <a id="construction-mark"></a>
 
@@ -1772,6 +1788,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **Plain words:** A way to write tests in SQL that run inside the database, so the rules of the database (RLS, grants, triggers) are checked where they live.  
 **In Tafsila:** `supabase/tests/database/rls.test.sql`, run by `pnpm db:test` and the `supabase` CI job; the tests act as different users and expect refusals. **Card:** [Supabase](tech/supabase.md) · **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/local-development/testing/overview>
+
+<a id="percentile"></a>
+
+### Percentile (p50, p95)
+
+**Plain words:** The value below which a given share of measurements fall. p50 is the median; p95 means 95 % of calls were at least this fast, so it shows the slow tail an average hides.  
+**In Tafsila:** NFR-02 bounds photo analysis at 30 s p95; the AI evaluation computes p50 and p95 latency with the nearest-rank method (`packages/ai/src/eval/percentile.ts`). **Level:** beginner  
+**Learn:** <https://en.wikipedia.org/wiki/Percentile>
 
 <a id="placket"></a>
 
