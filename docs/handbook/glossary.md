@@ -1681,6 +1681,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** Generated from the routes (`pnpm api:openapi` writes `packages/api/openapi.json`), served at `/api/openapi.json` and shown at `/api/docs` outside production; feeds the Postman collection. **Card:** [Hono](tech/hono.md) · **Level:** intermediate  
 **Learn:** <https://spec.openapis.org/oas/latest.html>
 
+<a id="overlay-compare"></a>
+
+### Overlay (version compare)
+
+**Plain words:** Two drawings printed on top of each other in the same place, one with a solid line and one dashed, so you see exactly what moved.  
+**In Tafsila:** The compare screen draws two saved versions of a pattern as an overlay and lists the changed choices, measurements and ease beside it (#345). **Level:** beginner  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations>
+
 <a id="orm"></a>
 
 ### ORM

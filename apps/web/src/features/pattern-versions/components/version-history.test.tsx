@@ -44,6 +44,16 @@ function html(row: VersionRowView): string {
 }
 
 describe("VersionRow", () => {
+  it("shows the compare checkbox only when the screen asks for it", () => {
+    expect(html(OLD)).not.toContain("compare-version");
+    const out = renderWithIntl(
+      <VersionRow row={OLD} openHref="/x" onRestore={noop} compareSelected onCompareChange={noop} />,
+      "en",
+    );
+    expect(out).toContain("compare-version");
+    expect(out).toContain("Compare");
+  });
+
   it("marks the current version and offers no restore for it", () => {
     const out = html(CURRENT);
     expect(out).toContain("Version 2");

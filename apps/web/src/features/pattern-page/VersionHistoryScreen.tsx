@@ -3,11 +3,13 @@
 import { ENGINE_VERSION } from "@tafsila/engine/version";
 import { Button } from "@tafsila/ui";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, type ReactElement } from "react";
+import { useMemo, useState, type ReactElement } from "react";
 import { useDesign } from "@/features/design-picker";
 import { RestoreVersionDialog, toVersionRow, useVersions, VersionRow } from "@/features/pattern-versions";
 import { DataState } from "@/shared/data-state";
 import { DIRECTION, type AppLocale } from "@/shared/i18n";
+import { compareHref, toggleCompare } from "./model/compare-selection";
+import { CompareBar } from "./components/CompareBar";
 import { VersionHistoryHeader } from "./components/VersionHistoryHeader";
 import { useRestoreAction } from "./hooks/use-restore-action";
 
@@ -33,6 +35,8 @@ export function VersionHistoryScreen({ designId }: Readonly<VersionHistoryScreen
     () => list.versions.map((v) => toVersionRow(v, ENGINE_VERSION, new Date(), locale)),
     [list.versions, locale],
   );
+  const [picked, setPicked] = useState<readonly string[]>([]);
+  const target = compareHref(designId, picked, list.versions);
   const title = design.data?.design.title ?? t("fallbackTitle");
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-4">
@@ -41,6 +45,7 @@ export function VersionHistoryScreen({ designId }: Readonly<VersionHistoryScreen
         total={list.isPending ? null : list.total}
         patternHref={`/designs/${designId}/pattern`}
       />
+      {list.total > 1 ? <CompareBar href={target} /> : null}
       <DataState
         isPending={list.isPending}
         error={list.error}
@@ -56,6 +61,8 @@ export function VersionHistoryScreen({ designId }: Readonly<VersionHistoryScreen
               row={row}
               openHref={`/designs/${designId}/versions/${row.id}`}
               onRestore={(r) => restore.ask({ id: r.id, versionNo: r.versionNo })}
+              compareSelected={picked.includes(row.id)}
+              onCompareChange={(r, on) => setPicked((cur) => toggleCompare(cur, r.id, on))}
             />
           ))}
         </ul>
