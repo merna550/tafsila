@@ -1,4 +1,4 @@
-# Decision 341 · 2026-11-02 · Upload photos and start the analysis
+# ADR-341 · 2026-11-02 · Upload photos and start the analysis
 
 **Context:** Issue #341 (M6, ADR-335 item 6) is the first screen of the photo flow: the person adds 1 to 3 photos, picks a category or lets the AI decide, and starts the analysis (FR-DES-01, FR-DES-02).
 
