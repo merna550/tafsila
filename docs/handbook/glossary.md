@@ -1689,6 +1689,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** See [Drizzle](#drizzle). **Card:** [Drizzle](tech/drizzle.md) · **Level:** intermediate  
 **Learn:** <https://en.wikipedia.org/wiki/Object-relational_mapping>
 
+<a id="output-guard"></a>
+
+### Output guard
+
+**Plain words:** A plain check that runs on what an AI model wrote, before anyone sees it, and sends it back when it breaks a rule. A prompt asks the model to behave; a guard makes sure it did.  
+**In Tafsila:** `explain-check.ts` in `packages/ai` rejects a fabric explanation that names a fabric outside the recommendation or runs too long, retries once, then fails ([decision 346](../decisions/346-fabric-explanation.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** intermediate  
+**Learn:** <https://ai-sdk.dev/docs/ai-sdk-core/generating-text>
+
 <a id="otp"></a>
 
 ### OTP (one-time password)

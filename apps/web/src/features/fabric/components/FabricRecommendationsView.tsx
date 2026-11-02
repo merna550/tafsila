@@ -1,7 +1,7 @@
 /** Presentation of the recommendation panel: heading, draft note, fabric cards and the avoid list. */
 import type { RecommendFabricsResponse } from "@tafsila/schemas";
 import { useTranslations } from "next-intl";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { AvoidList } from "./AvoidList";
 import { FabricCard } from "./FabricCard";
 
@@ -9,6 +9,8 @@ import { FabricCard } from "./FabricCard";
 interface FabricRecommendationsViewProps {
   /** The loaded recommendation with at least one recommended fabric. */
   readonly data: RecommendFabricsResponse;
+  /** Optional block shown after the avoid list (the AI explanation); the panel works without it. */
+  readonly explain?: ReactNode;
 }
 
 /**
@@ -17,7 +19,10 @@ interface FabricRecommendationsViewProps {
  * @param props - The recommendation.
  * @returns The panel body.
  */
-export function FabricRecommendationsView({ data }: Readonly<FabricRecommendationsViewProps>): ReactElement {
+export function FabricRecommendationsView({
+  data,
+  explain,
+}: Readonly<FabricRecommendationsViewProps>): ReactElement {
   const t = useTranslations("fabric.recommend");
   return (
     <div className="flex flex-col gap-4">
@@ -35,6 +40,7 @@ export function FabricRecommendationsView({ data }: Readonly<FabricRecommendatio
         ))}
       </ul>
       <AvoidList items={data.avoid} />
+      {explain}
     </div>
   );
 }
