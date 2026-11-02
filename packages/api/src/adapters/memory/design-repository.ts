@@ -106,6 +106,49 @@ function photoPathMethods(
 }
 
 /**
+ * The analysis methods of the repository.
+ *
+ * @param store - Shared fake database.
+ * @param find - Finds one owned design.
+ * @returns The two analysis methods.
+ */
+function analysisMethods(
+  store: MemoryStore,
+  find: (userId: string, id: string) => DesignRow | undefined,
+): Pick<DesignRepository, "getAnalysis" | "setAnalysis"> {
+  return {
+    getAnalysis(ctx, id) {
+      const row = find(ctx.userId, id);
+      return Promise.resolve(row ? (row.analysis ?? null) : undefined);
+    },
+    setAnalysis(ctx, id, state) {
+      const row = find(ctx.userId, id);
+      if (!row) return Promise.resolve(false);
+      store.designs = store.designs.map((existing) =>
+        existing === row ? { ...row, analysis: state } : existing,
+      );
+      return Promise.resolve(true);
+    },
+  };
+}
+
+/**
+ * The photo path and analysis methods of the repository.
+ *
+ * @param store - Shared fake database.
+ * @param find - Finds one owned design.
+ * @param now - Time source.
+ * @returns The four methods.
+ */
+function storedDataMethods(
+  store: MemoryStore,
+  find: (userId: string, id: string) => DesignRow | undefined,
+  now: () => Date,
+): Pick<DesignRepository, "getPhotoPaths" | "setPhotoPaths" | "getAnalysis" | "setAnalysis"> {
+  return { ...photoPathMethods(store, find, now), ...analysisMethods(store, find) };
+}
+
+/**
  * Creates the in-memory design repository.
  *
  * @param store - Shared fake database.
@@ -176,6 +219,6 @@ export function createMemoryDesignRepository(
       store.versions = store.versions.filter((v) => v.designId !== id);
       return Promise.resolve(true);
     },
-    ...photoPathMethods(store, find, now),
+    ...storedDataMethods(store, find, now),
   };
 }

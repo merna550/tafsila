@@ -132,7 +132,7 @@ async function attempt(deps: AiDeps, messages: ModelMessage[]): Promise<Attempt>
  * @param input - Photos and an optional category hint.
  * @param deps - Configuration (and a test model).
  * @returns The analysis and its usage.
- * @throws {AiOutputInvalidError} When both answers fail the schema.
+ * @throws {AiOutputInvalidError} When both answers fail the schema; the error carries the usage of both attempts.
  * @example
  * const { result } = await analyzeDesign({ photos: [photo] }, createFakeAi());
  */
@@ -143,8 +143,8 @@ export async function analyzeDesign(input: AnalyzeDesignInput, deps: AiDeps): Pr
   const first = await attempt(deps, messages);
   const final = first.ok ? first : await attempt(deps, [...messages, ...retryMessages(first)]);
   const usages = first.ok ? [first.usage] : [first.usage, final.usage];
-  if (!final.ok) throw new AiOutputInvalidError("analyzeDesign", final.error);
   const usage = buildUsage(deps.config.provider, modelId(deps.config, "analyze"), usages, now() - started);
+  if (!final.ok) throw new AiOutputInvalidError("analyzeDesign", final.error, usage);
   return { result: withEngineRules(final.result), usage };
 }
 

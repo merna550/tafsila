@@ -15,6 +15,7 @@
   "dependencies": {
     "@hono/zod-openapi": "^1.6.3",
     "@sentry/node": "11.6.0",
+    "@tafsila/ai": "workspace:*",
     "@tafsila/config": "workspace:*",
     "@tafsila/engine": "workspace:*",
     "@tafsila/fabric-kb": "workspace:*",
@@ -22,6 +23,7 @@
     "@tafsila/utils": "workspace:*",
     "drizzle-orm": "^0.45.4",
     "hono": "^4.13.13",
+    "inngest": "4.24.0",
     "jose": "6.2.12",
     "postgres": "^3.4.9",
     "posthog-node": "^5.55.1",

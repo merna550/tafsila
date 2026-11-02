@@ -9,7 +9,9 @@ import { adminFabricRoutes } from "./routes/admin-fabrics";
 import { fabricRoutes } from "./routes/fabrics";
 import { accountRoutes } from "./routes/account";
 import { clientRoutes } from "./routes/clients";
+import { designAnalysisRoutes } from "./routes/design-analysis";
 import { designPhotoRoutes } from "./routes/design-photos";
+import { inngestRoutes } from "./routes/inngest";
 import { designRoutes } from "./routes/designs";
 import { patternVersionRoutes } from "./routes/pattern-versions";
 import { measurementRoutes } from "./routes/measurements";
@@ -51,6 +53,8 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", clientRoutes(container));
   app.route("/", designRoutes(container));
   app.route("/", designPhotoRoutes(container));
+  app.route("/", designAnalysisRoutes(container));
+  app.route("/", inngestRoutes(container));
   app.route("/", patternVersionRoutes(container));
   app.route("/", measurementRoutes(container));
   app.route("/", sizeChartRoutes(container));

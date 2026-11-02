@@ -83,7 +83,8 @@ export default tseslint.config(
       "no-console": ["error", { allow: ["warn", "error"] }],
 
       // --- Structure ---
-      "import-x/no-cycle": "error",
+      // External packages cannot import our code, so the cycle check skips them (it cannot parse every vendor package, e.g. inngest).
+      "import-x/no-cycle": ["error", { ignoreExternal: true }],
       "import-x/no-duplicates": "error",
       "no-restricted-imports": [
         "error",
@@ -155,6 +156,14 @@ export default tseslint.config(
     // Storybook config imports ESM-only Vite plugins that the cycle resolver cannot load.
     files: ["packages/ui/.storybook/**"],
     rules: { "import-x/no-cycle": "off" },
+  },
+  {
+    // Binary image formats are made of marker bytes, which are named by the comment beside each, not by constants.
+    files: [
+      "packages/api/src/domain/strip-image-metadata.ts",
+      "packages/api/src/adapters/memory/photo-downloader.ts",
+    ],
+    rules: { "no-magic-numbers": "off" },
   },
   {
     // Stories are examples: the story name is its documentation.
