@@ -59,9 +59,7 @@ select throws_ok($$delete from public.subscriptions$$, '42501', null, '13 A cann
 select throws_ok($$update public.products set price_piastres = 1$$, '42501', null, '14 A cannot change products');
 select throws_ok($$select private.consume_credit('aaaaaaaa-0000-4000-8000-000000000001', gen_random_uuid())$$, '42501', null, '15 A cannot call the private writers');
 select pg_temp.reset();
-set local role api_app;
-select throws_ok($$select count(*) from public.credit_ledger$$, '42501', null, '16 api_app has no table access without set role');
-reset role;
+select is(has_table_privilege('api_app', 'public.credit_ledger', 'select') or has_table_privilege('api_app', 'public.payments', 'select'), false, '16 api_app has no table access without set role');
 
 -- Balance and FIFO: A has the 3-credit trial lot (no expiry) and gets a pack of 2 that expires in 10 days, plus an expired lot.
 insert into public.credit_ledger (user_id, delta, reason, ref_id, expires_at, created_at) values
