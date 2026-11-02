@@ -5,6 +5,7 @@ import type { AdminRepository } from "../../ports/admin-repository";
 import type { AccountAudit } from "../../ports/account-audit";
 import type { ClientRepository } from "../../ports/client-repository";
 import type { DesignRepository } from "../../ports/design-repository";
+import type { ChatRepository } from "../../ports/chat-repository";
 import type { PatternVersionRepository } from "../../ports/pattern-version-repository";
 import type { MeasurementSetRepository } from "../../ports/measurement-set-repository";
 import type { FabricCalcRepository } from "../../ports/fabric-calc-repository";
@@ -19,6 +20,7 @@ export interface Repositories {
   readonly clients: ClientRepository;
   readonly designs: DesignRepository;
   readonly versions: PatternVersionRepository;
+  readonly chat: ChatRepository;
   readonly measurementSets: MeasurementSetRepository;
   readonly sizeCharts: SizeChartRepository;
   readonly fabrics: FabricRepository;
@@ -69,6 +71,7 @@ export function createRejectingRepositories(): Repositories {
       setAnalysis: failing(),
     },
     versions: { appendVersion: failing(), list: failing(), get: failing() },
+    chat: { list: failing(), addExchange: failing(), get: failing(), markApplied: failing() },
     measurementSets: {
       create: failing(),
       list: failing(),

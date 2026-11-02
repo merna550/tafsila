@@ -18,6 +18,8 @@ describe("Jobs configuration (decision 340)", () => {
       inngestSigningKey: undefined,
       analyzeDailyLimit: 10,
       rateLimitPerMinute: 5,
+      chatMessagesPerDesign: 10,
+      chatDailyLimit: 100,
     });
   });
 
@@ -31,6 +33,14 @@ describe("Jobs configuration (decision 340)", () => {
       AI_RATE_LIMIT_PER_MINUTE: "2",
     });
     expect(config).toMatchObject({ queue: "inngest", analyzeDailyLimit: 3, rateLimitPerMinute: 2 });
+  });
+
+  it("reads the chat caps from the environment", () => {
+    expect(loadJobsConfig({ CHAT_MESSAGES_PER_DESIGN: "3", AI_CHAT_DAILY_LIMIT: "7" })).toMatchObject({
+      chatMessagesPerDesign: 3,
+      chatDailyLimit: 7,
+    });
+    expect(() => loadJobsConfig({ CHAT_MESSAGES_PER_DESIGN: "0" })).toThrow(/CHAT_MESSAGES_PER_DESIGN/);
   });
 
   it("refuses inngest without keys in staging and production only", () => {

@@ -53,7 +53,13 @@ export const DEFAULT_AI_ANALYZE_DAILY_LIMIT = 10;
 /** Default analysis requests a user may send per minute (decision 340, 3). */
 export const DEFAULT_AI_RATE_LIMIT_PER_MINUTE = 5;
 
-/** Background job and AI cost-control settings (decision 340). */
+/** Default chat messages a user may send per design (decision 343, FR-CHAT-06). */
+export const DEFAULT_CHAT_MESSAGES_PER_DESIGN = 10;
+
+/** Default chat messages a user may send per UTC day (decision 343). */
+export const DEFAULT_AI_CHAT_DAILY_LIMIT = 100;
+
+/** Background job and AI cost-control settings (decision 340, 343). */
 export interface JobsConfig {
   /** Where jobs run. */
   readonly queue: JobQueueName;
@@ -67,6 +73,20 @@ export interface JobsConfig {
   readonly analyzeDailyLimit: number;
   /** Analysis requests a user may send per minute. */
   readonly rateLimitPerMinute: number;
+  /** Chat messages a user may send per design (the pattern quota). */
+  readonly chatMessagesPerDesign: number;
+  /** Chat messages a user may send per UTC day. */
+  readonly chatDailyLimit: number;
+}
+
+/**
+ * Treats an empty variable as not set, so a blank line in `.env` falls back to the default.
+ *
+ * @param source - Key/value map to read from.
+ * @returns The same map without empty values.
+ */
+function emptyAsMissing(source: Record<string, string | undefined>): Record<string, string> {
+  return Object.fromEntries(Object.entries(source).filter(([, value]) => value)) as Record<string, string>;
 }
 
 /**
@@ -89,16 +109,13 @@ export function loadJobsConfig(source: Record<string, string | undefined> = proc
       AI_RATE_LIMIT_PER_MINUTE: positiveInt("AI_RATE_LIMIT_PER_MINUTE").default(
         DEFAULT_AI_RATE_LIMIT_PER_MINUTE,
       ),
+      CHAT_MESSAGES_PER_DESIGN: positiveInt("CHAT_MESSAGES_PER_DESIGN").default(
+        DEFAULT_CHAT_MESSAGES_PER_DESIGN,
+      ),
+      AI_CHAT_DAILY_LIMIT: positiveInt("AI_CHAT_DAILY_LIMIT").default(DEFAULT_AI_CHAT_DAILY_LIMIT),
     })
     .superRefine(refineJobQueueEnv)
-    .safeParse({
-      APP_ENV: source.APP_ENV || undefined,
-      JOB_QUEUE: source.JOB_QUEUE || undefined,
-      INNGEST_EVENT_KEY: source.INNGEST_EVENT_KEY || undefined,
-      INNGEST_SIGNING_KEY: source.INNGEST_SIGNING_KEY || undefined,
-      AI_ANALYZE_DAILY_LIMIT: source.AI_ANALYZE_DAILY_LIMIT || undefined,
-      AI_RATE_LIMIT_PER_MINUTE: source.AI_RATE_LIMIT_PER_MINUTE || undefined,
-    });
+    .safeParse(emptyAsMissing(source));
   if (!result.success) {
     const keys = result.error.issues.map((issue) => issue.path.join(".")).join(", ");
     throw new Error(`Invalid jobs configuration: ${keys}`);
@@ -111,5 +128,7 @@ export function loadJobsConfig(source: Record<string, string | undefined> = proc
     inngestSigningKey: env.INNGEST_SIGNING_KEY,
     analyzeDailyLimit: env.AI_ANALYZE_DAILY_LIMIT,
     rateLimitPerMinute: env.AI_RATE_LIMIT_PER_MINUTE,
+    chatMessagesPerDesign: env.CHAT_MESSAGES_PER_DESIGN,
+    chatDailyLimit: env.AI_CHAT_DAILY_LIMIT,
   };
 }

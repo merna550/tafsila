@@ -27,6 +27,8 @@ export const apiErrorBodySchema = z.object({
         )
         .optional(),
       report: validationReportSchema.optional(),
+      used: z.number().int().nonnegative().optional(),
+      limit: z.number().int().positive().optional(),
     })
     .optional(),
   /** Id of the failing request; users can copy it to support. */

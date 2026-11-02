@@ -359,5 +359,17 @@
     "auth": true,
     "status": 404,
     "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR POST /api/designs/{unknown id}/chat returns 404",
+    "method": "POST",
+    "path": "/api/designs/00000000-0000-4000-8000-00000000dead/chat",
+    "auth": true,
+    "body": {
+      "message": "add side pockets",
+      "versionId": "00000000-0000-4000-8000-00000000beef"
+    },
+    "status": 404,
+    "code": "NOT_FOUND"
   }
 ]

@@ -2051,6 +2051,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** The API checks the design is yours, then hands the browser a signed URL to upload a garment photo straight to the private `design-photos` bucket, or to read it for 5 minutes (#339). **Level:** intermediate  
 **Learn:** <https://supabase.com/docs/guides/storage/uploads/standard-uploads#signed-urls>
 
+<a id="stale-proposal"></a>
+
+### Stale proposal
+
+**Plain words:** A suggested change that was made for an older state of the thing, so applying it now could undo or clash with newer work.  
+**In Tafsila:** A chat proposal remembers the version it was made on; if the design has a newer version when you apply it, the API answers 409 `CHAT_PROPOSAL_STALE` and you ask again (#343, [decision 343](../decisions/343-chat-edits-api.md)). **Level:** intermediate  
+**Learn:** <https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/409>
+
 <a id="source-map"></a>
 
 ### Source map

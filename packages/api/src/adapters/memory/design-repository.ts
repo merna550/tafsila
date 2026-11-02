@@ -149,6 +149,17 @@ function storedDataMethods(
 }
 
 /**
+ * Removes what hangs off a deleted design, like the database cascade does.
+ *
+ * @param store - Shared fake database.
+ * @param designId - The deleted design.
+ */
+function dropDesignData(store: MemoryStore, designId: string): void {
+  store.versions = store.versions.filter((v) => v.designId !== designId);
+  store.chats = store.chats.filter((m) => m.designId !== designId);
+}
+
+/**
  * Creates the in-memory design repository.
  *
  * @param store - Shared fake database.
@@ -216,7 +227,7 @@ export function createMemoryDesignRepository(
       const row = find(ctx.userId, id);
       if (!row) return Promise.resolve(false);
       store.designs = store.designs.filter((existing) => existing !== row);
-      store.versions = store.versions.filter((v) => v.designId !== id);
+      dropDesignData(store, id);
       return Promise.resolve(true);
     },
     ...storedDataMethods(store, find, now),

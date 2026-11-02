@@ -22,6 +22,8 @@ export interface NewPatternVersion {
   readonly engineVersion: string;
   readonly validationStatus: "pass" | "warn";
   readonly inputHash: string;
+  /** Who made the version; a save by the user is `user` (the default), an applied chat edit is `chat`. */
+  readonly createdBy?: "user" | "chat";
 }
 
 /** The stored version and whether it already existed as the design's current version. */

@@ -49,7 +49,7 @@ async function appendIn(
       ...input,
       ownerId: ctx.userId,
       versionNo: (last?.n ?? 0) + 1,
-      createdBy: "user",
+      createdBy: input.createdBy ?? "user",
     })
     .returning();
   if (!row) throw new Error("insert returned no row");

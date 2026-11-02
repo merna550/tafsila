@@ -1,4 +1,5 @@
 /** In-memory tables shared by the memory repositories, so deleting a client can cascade to its sets like the database does. */
+import type { ChatRowFields } from "../../domain/chat-message-row";
 import { DRAFT, DRAFT_CATALOGUE, DRAFT_RULES } from "@tafsila/fabric-kb";
 import { patternVersionSchema } from "@tafsila/schemas";
 import type {
@@ -36,6 +37,13 @@ export interface DesignRow extends Design {
 /** A pattern version row plus its owner. */
 export interface VersionRow extends PatternVersion {
   readonly ownerId: string;
+}
+
+/** A chat message row plus its owner. */
+export interface ChatRow extends ChatRowFields {
+  readonly ownerId: string;
+  /** The patch of an assistant message. */
+  readonly proposedPatch: unknown;
 }
 
 /** A system size chart row with its edit trail (absent until an admin saves it). */
@@ -86,6 +94,8 @@ export interface MemoryStore {
   designs: DesignRow[];
   /** Pattern version rows in insertion order (written by the pattern version routes). */
   versions: VersionRow[];
+  /** Chat messages in insertion order. */
+  chats: ChatRow[];
   /** System size charts; the first default one is served. */
   sizeCharts: ChartRow[];
   /** The fabric catalogue; starts as the package's draft data, like the migration's seed. */
@@ -123,6 +133,7 @@ export function createMemoryStore(): MemoryStore {
     sets: [],
     designs: [],
     versions: [],
+    chats: [],
     sizeCharts: [],
     fabrics: DRAFT_CATALOGUE.map((f) => ({ ...f, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),
     fabricRules: DRAFT_RULES.map((r) => ({ ...r, isDraft: DRAFT, updatedAt: SEEDED_AT, updatedBy: null })),

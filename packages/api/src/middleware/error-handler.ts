@@ -16,6 +16,7 @@ function errorDetailsBody(details: ErrorDetails): NonNullable<ApiErrorBody["deta
   return {
     fields: { ...details.fields },
     ...(details.retryAfterSeconds === undefined ? {} : { retryAfterSeconds: details.retryAfterSeconds }),
+    ...(details.quota ? { used: details.quota.used, limit: details.quota.limit } : {}),
     ...(details.report ? { report: details.report } : {}),
     ...(details.issues
       ? { issues: details.issues.map((issue) => ({ ...issue, fields: [...issue.fields] })) }

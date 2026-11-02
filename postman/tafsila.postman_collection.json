@@ -54,6 +54,158 @@
       "event": []
     },
     {
+      "name": "chat",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Apply a proposal: saves a new version (created_by chat); applying twice returns the same version",
+          "request": {
+            "name": "Apply a proposal: saves a new version (created_by chat); applying twice returns the same version",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "designs",
+                ":id",
+                "chat",
+                ":msgId",
+                "apply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "msgId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Read the chat history of a design (newest last) with the message quota",
+          "request": {
+            "name": "Read the chat history of a design (newest last) with the message quota",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "designs",
+                ":id",
+                "chat"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Send an edit request: a validated proposal or a polite 'not supported' (nothing is saved until apply)",
+          "request": {
+            "name": "Send an edit request: a validated proposal or a polite 'not supported' (nothing is saved until apply)",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "designs",
+                ":id",
+                "chat"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\",\n  \"versionId\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
       "name": "Clients and measurements",
       "item": [
         {
@@ -2312,6 +2464,52 @@
           "response": []
         },
         {
+          "name": "ERR POST /api/designs/{unknown id}/chat returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"add side pockets\",\n  \"versionId\": \"00000000-0000-4000-8000-00000000beef\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/00000000-0000-4000-8000-00000000dead/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "00000000-0000-4000-8000-00000000dead",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR POST /api/measurements with highBust above bust returns 422",
           "event": [
             {
@@ -2822,7 +3020,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "f15ddba167cc6873e090d0e038edc7202d5e12d0e00357cae10314d16db3b0d1"
+    "_postman_id": "9f743499b9ca4a5e86ffb3db17409fc2e8de35554069cf1742374a90321ccd26"
   },
   "auth": {
     "type": "bearer",
