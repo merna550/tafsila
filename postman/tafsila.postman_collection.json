@@ -790,6 +790,116 @@
           "response": []
         },
         {
+          "name": "19a Get signed upload URLs for the front photo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has uploads\", () => pm.expect(pm.response.json()).to.have.property(\"uploads\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"photos\": [\n    {\n      \"slot\": \"front\",\n      \"contentType\": \"image/jpeg\",\n      \"sizeBytes\": 120000\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/photos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "photos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "19b List the photos (none uploaded yet)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has photos\", () => pm.expect(pm.response.json()).to.have.property(\"photos\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/photos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "photos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "19c Delete the front photo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/photos/front",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "photos",
+                "front"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "20 Save a set for the versions",
           "event": [
             {
@@ -1886,6 +1996,52 @@
           "response": []
         },
         {
+          "name": "ERR POST /api/designs/{id}/photos of an unknown design returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"photos\": [\n    {\n      \"slot\": \"back\",\n      \"contentType\": \"image/jpeg\",\n      \"sizeBytes\": 1000\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/00000000-0000-4000-8000-00000000dead/photos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "00000000-0000-4000-8000-00000000dead",
+                "photos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR POST /api/designs/{id}/versions with an unknown measurement set returns 404",
           "event": [
             {
@@ -2442,7 +2598,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "3c0a8a237540ca3f66f2e933756f104cead0a2418f10bb5fc2a373e24198b45b"
+    "_postman_id": "3827bf68d7f8b0816115446c890b988a949404f2fdf4dd29a14ebf47d2294c30"
   },
   "auth": {
     "type": "bearer",

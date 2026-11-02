@@ -22,6 +22,10 @@ Today (issue #24) the seed creates the four accounts with their profiles, the de
 | Fabrics & rules                                                                     | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle)                                                                                                                                                                                                                                                                                                                                                                                                                |
 | Products                                                                            | All plans and prices (sandbox)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+## Design photos and AI usage (issue #339)
+
+No seeded photos, `ai_usage` rows or `unsupported_features` rows: photos are private user files and the other two are written by the AI calls. Tests create what they need ([tutorial](tutorials/design-photos.md)).
+
 ## Account deletion tests (issue #27)
 
 No seed user is ever deleted. The tests that delete accounts create a throwaway user themselves and remove it, so nothing is seeded for them.

@@ -461,9 +461,9 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 | `subscriptions` | id, user_id, product_id, status, current_period_end, paymob_token? |
 | `credit_ledger` | id, user_id, delta, reason (`trial`/`purchase`/`subscription`/`pattern`/`admin`/`refund`), ref_id, created_at |
 | `payments` | id, user_id, product_id, amount_egp, status, paymob_order_id, raw (jsonb), created_at |
-| `ai_usage` | id, user_id, design_id?, kind (`analyze`/`chat`), model, input_tokens, output_tokens, cost_usd, latency_ms, created_at |
+| `ai_usage` | id, user_id, design_id?, kind (`analyze`/`chat`/`explain`), provider, model, input_tokens, output_tokens, cost_usd (an estimate), latency_ms, created_at. Owner and admin read; written only by the API role through `private.record_ai_usage` ([decision 339](decisions/339-design-photos.md)) |
 | `feedback` | id, pattern_version_id, fit_rating, problem_areas (text[]), photo_path?, comment |
-| `unsupported_features` | id, design_id, feature_text, created_at |
+| `unsupported_features` | id, design_id, owner_id (same owner as the design, composite FK), feature_text (1-500 chars), created_at. Owner and admin read; written only by the API role |
 
 Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`); admin via role (`is_admin()`). Users cannot change `role` or `phone_verified_at` (column grants). Photos in a private bucket with signed URLs. Backlog: EU size labels are a display hint before the beta; private workshop size charts (`size_charts.owner_id`) are a Pro feature after launch, with no UI yet (ADR-24a).
 
@@ -478,6 +478,8 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | GET | `/api/docs` | Scalar API viewer (not served in production) |
 | GET | `/api/me` | Current user `{ userId, role }` from the verified access token (401 without a valid token) |
 | POST, GET | `/api/designs` | Create a design from `{ category, title? }` (no title: category word in the profile language + Cairo date, no upload URLs until M6); list with `q` (title search), `clientId`, `limit`, `offset`, newest `updated_at` first, each item with `summary { versionCount, currentStatus, clientName }`; returns `{ items, total, limit, offset }` |
+| POST, GET | `/api/designs/:id/photos` | POST `{ photos: [{ slot, contentType, sizeBytes }] }` (1 to 3, slots `front`/`back`/`side` once each, `front` required unless stored; JPEG/PNG/WebP, 10 MB each) returns `{ uploads: [{ slot, path, signedUrl, token }] }` and records the paths (a photo in an occupied slot replaces it); errors `PHOTO_FRONT_REQUIRED`, `PHOTO_TOO_LARGE`, `PHOTO_TYPE_NOT_ALLOWED`, `PHOTO_LIMIT_REACHED`. GET returns `{ photos: [{ slot, path, url }] }` with 5-minute signed read URLs, only for photos that were uploaded |
+| DELETE | `/api/designs/:id/photos/:slot` | Remove one photo (404 `PHOTO_NOT_FOUND` for an empty slot; `front` goes last). Deleting the design or the account removes all its photos. Bucket `design-photos` is private; objects live at `<userId>/<designId>/<slot>.<ext>` |
 | POST | `/api/designs/:id/analyze` | Enqueue AI analysis job (consumes credit on first generation, not here) |
 | GET, PATCH, DELETE | `/api/designs/:id` | Read the design and its current version's stored inputs (`{ design, currentVersion }`; the version list and the regenerated pattern come from the version routes (#245)); rename (`{ title }`); delete (its versions go with it) |
 | POST, GET | `/api/designs/:id/versions` | Save: `{ spec, measurementSetId, easeProfile, options }`; the server re-runs the engine, a `fail` report is refused (422 `PATTERN_INVALID` with `details.report`), the same inputs as the current version return it (200 `reused`), otherwise a new version (201) and the design's `current_version_id` change in one transaction. Returns `{ version, report, reused }` and a `Server-Timing: engine` header. List: `limit`, `offset`, newest `version_no` first, light rows with `isCurrent` |

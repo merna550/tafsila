@@ -8322,6 +8322,2839 @@
         }
       }
     },
+    "/api/designs/{id}/photos": {
+      "post": {
+        "tags": [
+          "designs"
+        ],
+        "summary": "Get signed upload URLs for 1 to 3 photos (front required); the paths are recorded on the design",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-4000-8000-0000000000d1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "slot": {
+                          "type": "string",
+                          "enum": [
+                            "front",
+                            "back",
+                            "side"
+                          ],
+                          "example": "front"
+                        },
+                        "contentType": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "example": "image/jpeg"
+                        },
+                        "sizeBytes": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "example": 1800000
+                        }
+                      },
+                      "required": [
+                        "slot",
+                        "contentType",
+                        "sizeBytes"
+                      ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  }
+                },
+                "required": [
+                  "photos"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "One signed upload per photo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploads": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slot": {
+                            "type": "string",
+                            "enum": [
+                              "front",
+                              "back",
+                              "side"
+                            ],
+                            "example": "front"
+                          },
+                          "path": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-00000000000a/00000000-0000-4000-8000-0000000000d1/front.jpg"
+                          },
+                          "signedUrl": {
+                            "type": "string",
+                            "description": "Short-lived URL that accepts the file without a sign-in"
+                          },
+                          "token": {
+                            "type": "string",
+                            "description": "Upload token contained in the signed URL"
+                          }
+                        },
+                        "required": [
+                          "slot",
+                          "path",
+                          "signedUrl",
+                          "token"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "uploads"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND: Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "PHOTO_TOO_LARGE: The photo is too large, the limit is 10 MB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "PHOTO_TYPE_NOT_ALLOWED: This photo type is not supported, use JPG, PNG or WebP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "PHOTO_LIMIT_REACHED: A design holds at most 3 photos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "designs"
+        ],
+        "summary": "List the design's photos with signed read URLs (valid for 5 minutes)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-4000-8000-0000000000d1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The photos that exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "photos": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slot": {
+                            "type": "string",
+                            "enum": [
+                              "front",
+                              "back",
+                              "side"
+                            ],
+                            "example": "front"
+                          },
+                          "path": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-00000000000a/00000000-0000-4000-8000-0000000000d1/front.jpg"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Signed read URL, valid for 5 minutes"
+                          }
+                        },
+                        "required": [
+                          "slot",
+                          "path",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "photos"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND: Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/designs/{id}/photos/{slot}": {
+      "delete": {
+        "tags": [
+          "designs"
+        ],
+        "summary": "Remove one photo (front can only be removed last)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-4000-8000-0000000000d1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "front",
+                "back",
+                "side"
+              ],
+              "example": "front"
+            },
+            "required": true,
+            "name": "slot",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED: Some fields are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: Sign-in required or session expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PHOTO_NOT_FOUND: That photo does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "PHOTO_FRONT_REQUIRED: A front photo is required, add a front photo of the garment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR: Unexpected error, please try again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message_ar": {
+                      "type": "string"
+                    },
+                    "message_en": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "retryAfterSeconds": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "message_ar": {
+                                "type": "string"
+                              },
+                              "message_en": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "fields",
+                              "message_ar",
+                              "message_en"
+                            ]
+                          }
+                        },
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "pass",
+                                "warn",
+                                "fail"
+                              ]
+                            },
+                            "checks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "enum": [
+                                      "FR-VAL-01",
+                                      "FR-VAL-02",
+                                      "FR-VAL-03",
+                                      "FR-VAL-04",
+                                      "FR-VAL-05",
+                                      "FR-VAL-06",
+                                      "FR-VAL-07",
+                                      "FR-VAL-08",
+                                      "FR-MEAS-01"
+                                    ]
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "pass",
+                                      "warn",
+                                      "fail"
+                                    ]
+                                  },
+                                  "message": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ar": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      },
+                                      "en": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "required": [
+                                      "ar",
+                                      "en"
+                                    ]
+                                  },
+                                  "measuredMm": {
+                                    "type": "number"
+                                  },
+                                  "expectedMm": {
+                                    "type": "number"
+                                  },
+                                  "refs": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "status",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "checks"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message_ar",
+                    "message_en",
+                    "request_id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/designs/{id}/versions": {
       "post": {
         "tags": [

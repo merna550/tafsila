@@ -9,6 +9,7 @@ import { adminFabricRoutes } from "./routes/admin-fabrics";
 import { fabricRoutes } from "./routes/fabrics";
 import { accountRoutes } from "./routes/account";
 import { clientRoutes } from "./routes/clients";
+import { designPhotoRoutes } from "./routes/design-photos";
 import { designRoutes } from "./routes/designs";
 import { patternVersionRoutes } from "./routes/pattern-versions";
 import { measurementRoutes } from "./routes/measurements";
@@ -49,6 +50,7 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", meRoutes(container));
   app.route("/", clientRoutes(container));
   app.route("/", designRoutes(container));
+  app.route("/", designPhotoRoutes(container));
   app.route("/", patternVersionRoutes(container));
   app.route("/", measurementRoutes(container));
   app.route("/", sizeChartRoutes(container));

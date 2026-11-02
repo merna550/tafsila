@@ -230,6 +230,35 @@
     "has": ["id", "title"]
   },
   {
+    "name": "19a Get signed upload URLs for the front photo",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/photos",
+    "body": {
+      "photos": [
+        {
+          "slot": "front",
+          "contentType": "image/jpeg",
+          "sizeBytes": 120000
+        }
+      ]
+    },
+    "status": 200,
+    "has": ["uploads"]
+  },
+  {
+    "name": "19b List the photos (none uploaded yet)",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}/photos",
+    "status": 200,
+    "has": ["photos"]
+  },
+  {
+    "name": "19c Delete the front photo",
+    "method": "DELETE",
+    "path": "/api/designs/{{designId}}/photos/front",
+    "status": 204
+  },
+  {
     "name": "20 Save a set for the versions",
     "method": "POST",
     "path": "/api/measurements",

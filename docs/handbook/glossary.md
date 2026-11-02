@@ -2043,6 +2043,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 
 ## S
 
+<a id="signed-url"></a>
+
+### Signed URL
+
+**Plain words:** A web address with a secret token inside that lets whoever holds it read or upload one private file for a few minutes, without signing in.  
+**In Tafsila:** The API checks the design is yours, then hands the browser a signed URL to upload a garment photo straight to the private `design-photos` bucket, or to read it for 5 minutes (#339). **Level:** intermediate  
+**Learn:** <https://supabase.com/docs/guides/storage/uploads/standard-uploads#signed-urls>
+
 <a id="source-map"></a>
 
 ### Source map

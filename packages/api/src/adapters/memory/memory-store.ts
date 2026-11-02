@@ -26,6 +26,8 @@ export interface SetRow extends Omit<MeasurementSet, "warnings"> {
 /** A design row plus its owner. */
 export interface DesignRow extends Design {
   readonly ownerId: string;
+  /** Stored photo object paths (`designs.photo_paths`). */
+  readonly photoPaths?: readonly string[];
 }
 
 /** A pattern version row plus its owner. */

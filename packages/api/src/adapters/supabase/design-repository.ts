@@ -138,5 +138,22 @@ export function createDesignRepository(withUser: WithUser): DesignRepository {
         const deleted = await tx.delete(designs).where(eq(designs.id, id)).returning({ id: designs.id });
         return deleted.length > 0;
       }),
+    getPhotoPaths: (ctx, id) =>
+      withUser(ctx, async (tx) => {
+        const [row] = await tx
+          .select({ photoPaths: designs.photoPaths })
+          .from(designs)
+          .where(eq(designs.id, id));
+        return row?.photoPaths;
+      }),
+    setPhotoPaths: (ctx, id, paths) =>
+      withUser(ctx, async (tx) => {
+        const updated = await tx
+          .update(designs)
+          .set({ photoPaths: [...paths], updatedAt: sql`now()` })
+          .where(eq(designs.id, id))
+          .returning({ id: designs.id });
+        return updated.length > 0;
+      }),
   };
 }

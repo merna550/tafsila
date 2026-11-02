@@ -10,6 +10,9 @@ import {
 } from "@tafsila/config";
 import { createNoopIdentityEraser } from "./adapters/noop/noop-identity-eraser";
 import { createPosthogIdentityEraser } from "./adapters/posthog/posthog-identity-eraser";
+import { createAiUsageRepository } from "./adapters/supabase/ai-usage-repository";
+import { createSupabasePhotoStorage } from "./adapters/supabase/photo-storage";
+import { createStorageRest } from "./adapters/supabase/storage-rest";
 import { createAdminRepository } from "./adapters/supabase/admin-repository";
 import { createAccountAudit } from "./adapters/supabase/account-audit";
 import { createGotrueAccountDeleter } from "./adapters/supabase/gotrue-account-deleter";
@@ -40,6 +43,8 @@ import { createRejectingRepositories, type Repositories } from "./adapters/supab
 import { createPosthogAnalytics } from "./adapters/posthog/posthog-analytics";
 import { createSentryErrorReporter } from "./adapters/sentry/sentry-error-reporter";
 import { createSystemClock } from "./adapters/system/system-clock";
+import type { AiUsageRepository } from "./ports/ai-usage-repository";
+import type { PhotoStorage } from "./ports/photo-storage";
 import type { AdminRepository } from "./ports/admin-repository";
 import type { AccountAudit } from "./ports/account-audit";
 import type { AccountDeleter } from "./ports/account-deleter";
@@ -115,6 +120,10 @@ export interface Container {
   readonly accountDeleter: AccountDeleter;
   /** Removes the user's stored files (service role). */
   readonly userFilesRemover: UserFilesRemover;
+  /** Signed upload and read URLs and removal for design photos (service role, inside the adapter only). */
+  readonly photoStorage: PhotoStorage;
+  /** One row per AI call and the daily counts (written through the API role). */
+  readonly aiUsage: AiUsageRepository;
   /** Erases the person at the analytics provider. */
   readonly identityEraser: IdentityEraser;
   /** Records the anonymous deletion row. */
@@ -147,6 +156,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     profiles: createProfileRepository(withUser),
     accountAudit: createAccountAudit(withApiRole),
     admin: createAdminRepository(withApiRole),
+    aiUsage: createAiUsageRepository(withApiRole),
   };
 }
 
@@ -155,11 +165,11 @@ export function createRepositories(source: Record<string, string | undefined> = 
  * anything irreversible happens; without PostHog credentials erasure at PostHog is skipped with a warning.
  *
  * @param source - Environment variables to read (defaults to process.env).
- * @returns The account deleter, the files remover and the identity eraser.
+ * @returns The account deleter, the files remover, the identity eraser and the photo storage (also needs the service role).
  */
 export function createAccountErasure(
   source: Record<string, string | undefined> = process.env,
-): Pick<Container, "accountDeleter" | "userFilesRemover" | "identityEraser"> {
+): Pick<Container, "accountDeleter" | "userFilesRemover" | "identityEraser" | "photoStorage"> {
   const config = loadAccountErasureConfig(source);
   const admin =
     config.supabaseUrl && config.serviceRoleKey
@@ -175,6 +185,9 @@ export function createAccountErasure(
   return {
     accountDeleter: admin ? createGotrueAccountDeleter(admin) : { deleteUser: missing },
     userFilesRemover: admin ? createStorageFilesRemover(admin) : { removeAll: missing },
+    photoStorage: admin
+      ? createSupabasePhotoStorage(createStorageRest(admin))
+      : { createUploadUrls: missing, signedReadUrls: missing, remove: missing, removeDesign: missing },
     identityEraser: config.posthog ? createPosthogIdentityEraser(config.posthog) : createNoopIdentityEraser(),
   };
 }

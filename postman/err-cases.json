@@ -325,5 +325,22 @@
     },
     "status": 403,
     "code": "FORBIDDEN"
+  },
+  {
+    "name": "ERR POST /api/designs/{id}/photos of an unknown design returns 404",
+    "method": "POST",
+    "path": "/api/designs/00000000-0000-4000-8000-00000000dead/photos",
+    "auth": true,
+    "body": {
+      "photos": [
+        {
+          "slot": "back",
+          "contentType": "image/jpeg",
+          "sizeBytes": 1000
+        }
+      ]
+    },
+    "status": 404,
+    "code": "NOT_FOUND"
   }
 ]
