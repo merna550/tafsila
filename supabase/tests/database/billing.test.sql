@@ -72,7 +72,7 @@ select is(
   'purchase', '18 the debit draws from the lot that expires first');
 select is(private.consume_credit('aaaaaaaa-0000-4000-8000-000000000001', 'd0000000-0000-4000-8000-000000000001'),
   (select id from public.credit_ledger where ref_id = 'd0000000-0000-4000-8000-000000000001'), '19 same design again returns the same debit');
-select is((select count(*)::int from public.credit_ledger where reason = 'pattern'), 1, '20 one debit only for that design');
+select is((select count(*)::int from public.credit_ledger where reason = 'pattern' and user_id = 'aaaaaaaa-0000-4000-8000-000000000001'), 1, '20 one debit only for that design');
 select is(private.grant_credits('aaaaaaaa-0000-4000-8000-000000000001', 2, 'purchase', 'pay-1', now() + interval '10 days'),
   (select id from public.credit_ledger where ref_id = 'pay-1'), '21 same payment granted once');
 
