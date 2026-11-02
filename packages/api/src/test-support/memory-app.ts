@@ -13,6 +13,7 @@ import { createMemoryPhotoStorage, type MemoryPhotoStorage } from "../adapters/m
 import { createMemoryAdminRepository } from "../adapters/memory/admin-repository";
 import { createMemoryAccountDeletion, type MemoryAccountDeletion } from "../adapters/memory/account-deletion";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
+import { createMemoryChatRepository } from "../adapters/memory/chat-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
 import { createMemoryPatternVersionRepository } from "../adapters/memory/pattern-version-repository";
@@ -96,6 +97,7 @@ function memoryRepositories(store: MemoryStore): Partial<Container> {
     clients: createMemoryClientRepository(store),
     designs: createMemoryDesignRepository(store),
     versions: createMemoryPatternVersionRepository(store),
+    chat: createMemoryChatRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
     sizeCharts: createMemorySizeChartRepository(store),
     fabrics: createMemoryFabricRepository(store),

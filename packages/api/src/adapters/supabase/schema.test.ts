@@ -5,6 +5,7 @@ import type { PgTable } from "drizzle-orm/pg-core";
 import { describe, expect, it } from "vitest";
 import {
   adminAudit,
+  chatMessages,
   clients,
   designs,
   fabricCalcs,
@@ -95,6 +96,12 @@ describe("Drizzle schema mirror", () => {
   it("has the same columns as the generated Supabase types (fabric_rules)", () => {
     expect(drizzleColumns(fabricRules).sort((a, b) => a.localeCompare(b))).toEqual(
       generatedColumns("fabric_rules").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (chat_messages)", () => {
+    expect(drizzleColumns(chatMessages).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("chat_messages").sort((a, b) => a.localeCompare(b)),
     );
   });
 

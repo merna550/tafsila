@@ -32,7 +32,7 @@ export function createMemoryPatternVersionRepository(
         id: newId(),
         ownerId: ctx.userId,
         versionNo,
-        createdBy: "user",
+        createdBy: input.createdBy ?? "user",
         createdAt: at,
       };
       store.versions.push(row);

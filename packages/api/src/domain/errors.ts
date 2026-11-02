@@ -197,6 +197,31 @@ export const ERROR_CATALOGUE = {
     messageAr: "وصلتي للحد اليومي من تحليل الصور، جربي بكرة",
     messageEn: "You reached today's limit of photo analyses, try again tomorrow",
   },
+  CHAT_QUOTA_EXCEEDED: {
+    status: 429,
+    messageAr: "وصلتي للحد الأقصى من رسائل التعديل لهذا الباترون",
+    messageEn: "You used all the edit messages of this pattern",
+  },
+  CHAT_DAILY_LIMIT: {
+    status: 429,
+    messageAr: "وصلتي للحد اليومي من رسائل التعديل، جربي بكرة",
+    messageEn: "You reached today's limit of edit messages, try again tomorrow",
+  },
+  CHAT_PROPOSAL_STALE: {
+    status: 409,
+    messageAr: "التصميم اتغير بعد هذا الاقتراح، اطلبي التعديل مرة أخرى على النسخة الحالية",
+    messageEn: "The design changed after this proposal, ask again on the current version",
+  },
+  CHAT_NOTHING_TO_APPLY: {
+    status: 422,
+    messageAr: "هذه الرسالة ليس فيها تعديل لتطبيقه",
+    messageEn: "This message has no change to apply",
+  },
+  AI_CHAT_FAILED: {
+    status: 502,
+    messageAr: "تعذر فهم طلب التعديل الآن، حاولي مرة أخرى",
+    messageEn: "The edit request could not be processed right now, try again",
+  },
   INTERNAL_ERROR: {
     status: 500,
     messageAr: "حدث خطأ غير متوقع، حاولي مرة أخرى",
@@ -217,6 +242,8 @@ export interface ErrorDetails {
   readonly report?: ValidationReport;
   /** Seconds until the caller may try again (429 phone codes); also sent as the Retry-After header. */
   readonly retryAfterSeconds?: number;
+  /** Messages used and allowed (CHAT_QUOTA_EXCEEDED). */
+  readonly quota?: { readonly used: number; readonly limit: number };
 }
 
 /** Optional overrides when throwing an error. */

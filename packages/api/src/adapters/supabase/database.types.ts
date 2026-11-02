@@ -128,6 +128,35 @@ export type Database = {
           updated_by?: string | null;
         };
       };
+      chat_messages: {
+        Row: {
+          id: string;
+          seq: number;
+          design_id: string;
+          owner_id: string;
+          role: "user" | "assistant";
+          content: string;
+          base_version_id: string | null;
+          proposed_patch: Json | null;
+          changes: Json;
+          outcome: "proposal" | "unsupported" | "none";
+          applied_version_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          design_id: string;
+          owner_id?: string;
+          role: "user" | "assistant";
+          content: string;
+          base_version_id?: string | null;
+          proposed_patch?: Json | null;
+          changes?: Json;
+          outcome?: "proposal" | "unsupported" | "none";
+          applied_version_id?: string | null;
+        };
+        Update: { applied_version_id?: string | null };
+      };
       fabric_calcs: {
         Row: {
           id: string;

@@ -440,6 +440,41 @@
     "has": ["version", "reused"]
   },
   {
+    "name": "25a Ask for a longer sleeve (fake provider)",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/chat",
+    "body": {
+      "message": "make the sleeve longer",
+      "versionId": "{{versionId}}"
+    },
+    "status": 200,
+    "has": ["messageId", "outcome", "changes", "used", "limit"],
+    "capture": {
+      "chatMessageId": "messageId"
+    }
+  },
+  {
+    "name": "25b Read the chat history",
+    "method": "GET",
+    "path": "/api/designs/{{designId}}/chat",
+    "status": 200,
+    "has": ["items", "used", "limit"]
+  },
+  {
+    "name": "25c Apply the proposal: a new version made by chat",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+    "status": 201,
+    "has": ["version", "report", "reused"]
+  },
+  {
+    "name": "25d Apply again returns the same version",
+    "method": "POST",
+    "path": "/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+    "status": 200,
+    "has": ["version", "report", "reused"]
+  },
+  {
     "name": "26 Recommend fabrics for the version",
     "method": "GET",
     "path": "/api/fabrics/recommend?versionId={{versionId}}",

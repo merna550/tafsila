@@ -102,6 +102,8 @@ const baseServerEnvSchema = z.object({
   INNGEST_SIGNING_KEY: z.string().min(1).optional(),
   AI_ANALYZE_DAILY_LIMIT: positiveInt("AI_ANALYZE_DAILY_LIMIT").optional(),
   AI_RATE_LIMIT_PER_MINUTE: positiveInt("AI_RATE_LIMIT_PER_MINUTE").optional(),
+  CHAT_MESSAGES_PER_DESIGN: positiveInt("CHAT_MESSAGES_PER_DESIGN").optional(),
+  AI_CHAT_DAILY_LIMIT: positiveInt("AI_CHAT_DAILY_LIMIT").optional(),
   PAYMOB_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
   PAYMOB_API_KEY: z.string().min(1).optional(),
   SENTRY_DSN: z.url().optional(),

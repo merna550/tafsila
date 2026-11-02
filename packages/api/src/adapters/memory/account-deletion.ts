@@ -65,6 +65,7 @@ export function createMemoryAccountDeletion(store: MemoryStore): MemoryAccountDe
         store.sets = store.sets.filter((row) => row.ownerId !== userId);
         store.designs = store.designs.filter((row) => row.ownerId !== userId);
         store.versions = store.versions.filter((row) => row.ownerId !== userId);
+        store.chats = store.chats.filter((row) => row.ownerId !== userId);
         store.profiles.delete(userId);
         store.deletedUsers.add(userId);
       },

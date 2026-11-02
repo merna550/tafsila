@@ -1292,6 +1292,163 @@
           "response": []
         },
         {
+          "name": "25a Ask for a longer sleeve (fake provider)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has messageId\", () => pm.expect(pm.response.json()).to.have.property(\"messageId\"));",
+                  "pm.test(\"has outcome\", () => pm.expect(pm.response.json()).to.have.property(\"outcome\"));",
+                  "pm.test(\"has changes\", () => pm.expect(pm.response.json()).to.have.property(\"changes\"));",
+                  "pm.test(\"has used\", () => pm.expect(pm.response.json()).to.have.property(\"used\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));",
+                  "pm.environment.set(\"chatMessageId\", pm.response.json().messageId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"make the sleeve longer\",\n  \"versionId\": \"{{versionId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25b Read the chat history",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));",
+                  "pm.test(\"has used\", () => pm.expect(pm.response.json()).to.have.property(\"used\"));",
+                  "pm.test(\"has limit\", () => pm.expect(pm.response.json()).to.have.property(\"limit\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25c Apply the proposal: a new version made by chat",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat",
+                "{{chatMessageId}}",
+                "apply"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25d Apply again returns the same version",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has version\", () => pm.expect(pm.response.json()).to.have.property(\"version\"));",
+                  "pm.test(\"has report\", () => pm.expect(pm.response.json()).to.have.property(\"report\"));",
+                  "pm.test(\"has reused\", () => pm.expect(pm.response.json()).to.have.property(\"reused\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/{{designId}}/chat/{{chatMessageId}}/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "{{designId}}",
+                "chat",
+                "{{chatMessageId}}",
+                "apply"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "26 Recommend fabrics for the version",
           "event": [
             {
@@ -2312,6 +2469,52 @@
           "response": []
         },
         {
+          "name": "ERR POST /api/designs/{unknown id}/chat returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => pm.expect(pm.response.json().code).to.eql(\"NOT_FOUND\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"add side pockets\",\n  \"versionId\": \"00000000-0000-4000-8000-00000000beef\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/designs/00000000-0000-4000-8000-00000000dead/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "designs",
+                "00000000-0000-4000-8000-00000000dead",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR POST /api/measurements with highBust above bust returns 422",
           "event": [
             {
@@ -2822,7 +3025,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "f15ddba167cc6873e090d0e038edc7202d5e12d0e00357cae10314d16db3b0d1"
+    "_postman_id": "9f743499b9ca4a5e86ffb3db17409fc2e8de35554069cf1742374a90321ccd26"
   },
   "auth": {
     "type": "bearer",

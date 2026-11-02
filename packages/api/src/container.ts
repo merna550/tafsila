@@ -36,6 +36,7 @@ import {
 } from "./adapters/supabase/jwks-token-verifier";
 import { createUnlimitedPlanLimits } from "./adapters/plan/unlimited-plan-limits";
 import { createClientRepository } from "./adapters/supabase/client-repository";
+import { createChatRepository } from "./adapters/supabase/chat-repository";
 import { createDesignRepository } from "./adapters/supabase/design-repository";
 import { createPatternVersionRepository } from "./adapters/supabase/pattern-version-repository";
 import { createGotruePhoneOtp } from "./adapters/supabase/gotrue-phone-otp";
@@ -67,6 +68,7 @@ import type { ProfileRepository } from "./ports/profile-repository";
 import type { UserFilesRemover } from "./ports/user-files-remover";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
+import type { ChatRepository } from "./ports/chat-repository";
 import type { ClientRepository } from "./ports/client-repository";
 import type { DesignRepository } from "./ports/design-repository";
 import type { ErrorReporter } from "./ports/error-reporter";
@@ -104,6 +106,8 @@ export interface Container {
   readonly designs: DesignRepository;
   /** Append-only versions of the signed-in user's designs. */
   readonly versions: PatternVersionRepository;
+  /** Chat edit history of the signed-in user's designs (owner only). */
+  readonly chat: ChatRepository;
   /** The signed-in user's saved measurement sets. */
   readonly measurementSets: MeasurementSetRepository;
   /** The default size chart (system data, readable by every signed-in user). */
@@ -174,6 +178,7 @@ export function createRepositories(source: Record<string, string | undefined> = 
     clients: createClientRepository(withUser),
     designs: createDesignRepository(withUser),
     versions: createPatternVersionRepository(withUser),
+    chat: createChatRepository(withUser),
     measurementSets: createMeasurementSetRepository(withUser),
     sizeCharts: createSizeChartRepository(withUser),
     fabrics: createFabricRepository(withUser),

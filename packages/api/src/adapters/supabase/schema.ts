@@ -2,6 +2,7 @@
 import type {
   BilingualText,
   DesignSpec,
+  SpecPatch,
   FabricCalcResult,
   FabricOptions,
   FabricProperties,
@@ -11,6 +12,7 @@ import type {
   SizeChart,
 } from "@tafsila/schemas";
 import {
+  bigint,
   boolean,
   foreignKey,
   index,
@@ -180,5 +182,30 @@ export const fabricCalcs = pgTable(
       columns: [table.patternVersionId, table.ownerId],
       foreignColumns: [patternVersions.id, patternVersions.ownerId],
     }),
+  ],
+);
+
+/** public.chat_messages. Owner-only (RLS, no admin read); only `applied_version_id` is updated after the insert. */
+export const chatMessages = pgTable(
+  "chat_messages",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    seq: bigint("seq", { mode: "number" }).notNull().generatedAlwaysAsIdentity(),
+    designId: uuid("design_id").notNull(),
+    ownerId: uuid("owner_id").notNull(),
+    role: text("role", { enum: ["user", "assistant"] }).notNull(),
+    content: text("content").notNull(),
+    baseVersionId: uuid("base_version_id"),
+    proposedPatch: jsonb("proposed_patch").$type<SpecPatch>(),
+    changes: jsonb("changes").$type<BilingualText[]>().notNull().default([]),
+    outcome: text("outcome", { enum: ["proposal", "unsupported", "none"] })
+      .notNull()
+      .default("none"),
+    appliedVersionId: uuid("applied_version_id"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    foreignKey({ columns: [table.designId, table.ownerId], foreignColumns: [designs.id, designs.ownerId] }),
+    index().on(table.designId, table.seq),
   ],
 );

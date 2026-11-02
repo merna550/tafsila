@@ -13,6 +13,7 @@ import { createMemoryUnsupportedFeatures } from "../adapters/memory/unsupported-
 import { createMemoryPhotoDownloader } from "../adapters/memory/photo-downloader";
 import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
+import { createMemoryChatRepository } from "../adapters/memory/chat-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryDesignRepository } from "../adapters/memory/design-repository";
 import { createMemoryPatternVersionRepository } from "../adapters/memory/pattern-version-repository";
@@ -44,6 +45,7 @@ const app = createApp(
     clients: createMemoryClientRepository(store),
     designs: createMemoryDesignRepository(store),
     versions: createMemoryPatternVersionRepository(store),
+    chat: createMemoryChatRepository(store),
     measurementSets: createMemoryMeasurementSetRepository(store),
     sizeCharts: createMemorySizeChartRepository(store),
     fabrics: createMemoryFabricRepository(store),

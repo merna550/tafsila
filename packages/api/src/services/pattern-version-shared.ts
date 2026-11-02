@@ -34,7 +34,12 @@ export interface AppendOutcome {
 export async function appendPatternVersion(
   deps: AppendDeps,
   ctx: AuthContext,
-  target: { readonly designId: string; readonly measurementSetId: string | null },
+  target: {
+    readonly designId: string;
+    readonly measurementSetId: string | null;
+    /** Who made the version (default `user`). */
+    readonly createdBy?: "user" | "chat";
+  },
   inputs: PatternInputs,
 ): Promise<AppendOutcome> {
   const run = runPattern(deps.clock, inputs);
@@ -49,6 +54,7 @@ export async function appendPatternVersion(
     engineVersion: run.engineVersion,
     validationStatus: run.status,
     inputHash: run.inputHash,
+    ...(target.createdBy ? { createdBy: target.createdBy } : {}),
   });
   if (!appended) throw new NotFoundError("design");
   deps.analytics.capture(ctx.userId, "pattern_version_saved", {
