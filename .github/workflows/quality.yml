@@ -64,7 +64,8 @@ jobs:
           elif [ -n "$LINT_FILES" ]; then xargs -a "$LINT_FILES" pnpm eslint --max-warnings 0 --no-warn-ignored
           else echo "No changed source files to lint."; fi
       - name: Types and tests
-        run: pnpm turbo run typecheck test ${{ steps.scope.outputs.filter }}
+        # Two tasks at a time: with turbo's default of ten, a whole-repo run on two vCPUs starves the heavy property tests (issue #359).
+        run: pnpm turbo run typecheck test --concurrency=2 ${{ steps.scope.outputs.filter }}
       - name: Duplicate code
         if: steps.paths.outputs.jscpd == 'true'
         run: pnpm jscpd .
