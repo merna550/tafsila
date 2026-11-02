@@ -22,6 +22,10 @@ Today (issue #24) the seed creates the four accounts with their profiles, the de
 | Fabrics & rules                                                                     | Full catalogue (crepe, chiffon, georgette, satin, linen, poplin, viscose, taffeta, tulle)                                                                                                                                                                                                                                                                                                                                                                                                                |
 | Products                                                                            | All plans and prices (sandbox)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+## Design analysis (issue #340)
+
+No seed rows: `designs.analysis` and `unsupported_features` are written by the analysis job; tests and the Newman journey create what they need.
+
 ## Design photos and AI usage (issue #339)
 
 No seeded photos, `ai_usage` rows or `unsupported_features` rows: photos are private user files and the other two are written by the AI calls. Tests create what they need ([tutorial](tutorials/design-photos.md)).

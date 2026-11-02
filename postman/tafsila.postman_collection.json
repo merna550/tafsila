@@ -1472,51 +1472,6 @@
             }
           },
           "response": []
-        },
-        {
-          "name": "ERR POST /api/designs/{id}/analyze with an unsupported category returns 422 (coming soon)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"status is 422\", () => pm.response.to.have.status(422));"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"categoryHint\": \"abaya\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/designs/{{designId}}/analyze",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "designs",
-                "{{designId}}",
-                "analyze"
-              ]
-            }
-          },
-          "response": []
         }
       ]
     },

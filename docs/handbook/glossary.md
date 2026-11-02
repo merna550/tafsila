@@ -1239,7 +1239,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### Inngest
 
 **Plain words:** A service that runs background jobs (work that should not block a web request).  
-**In Tafsila:** Dev server in `compose.yaml`; jobs in `packages/api/src/jobs/` (planned). **Card:** [Inngest](tech/inngest.md) · **Level:** intermediate  
+**In Tafsila:** Dev server in `compose.yaml`; jobs in `packages/api/src/jobs/` (`design.analyze`, #340). **Card:** [Inngest](tech/inngest.md) · **Level:** intermediate  
 **Learn:** <https://www.inngest.com/docs>
 
 <a id="issue"></a>

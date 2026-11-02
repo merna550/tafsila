@@ -277,15 +277,6 @@
     "has": ["status", "startedAt", "finishedAt", "result"]
   },
   {
-    "name": "ERR POST /api/designs/{id}/analyze with an unsupported category returns 422 (coming soon)",
-    "method": "POST",
-    "path": "/api/designs/{{designId}}/analyze",
-    "body": {
-      "categoryHint": "abaya"
-    },
-    "status": 422
-  },
-  {
     "name": "19g Analyse without a body",
     "method": "POST",
     "path": "/api/designs/{{designId}}/analyze",

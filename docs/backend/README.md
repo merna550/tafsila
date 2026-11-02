@@ -21,6 +21,7 @@ Kept current in the same PR as every backend change (Definition of Done).
 | `tutorials/run-locally.md`         | First time on a machine; daily start                                                  |
 | `tutorials/add-endpoint.md`        | New API route (schema → service → adapter → tests → OpenAPI → Postman)                |
 | `tutorials/add-migration.md`       | Any DB change (migration, RLS, seed update, types regen)                              |
+| `tutorials/ai-analysis.md`         | Background photo analysis: inline vs Inngest, local dev server, staging keys          |
 | `tutorials/use-postman.md`         | Testing the API by hand                                                               |
 | `tutorials/run-agents-in-cloud.md` | Let agents build issues while the laptop is off (setup, start, stop, pause, tokens)   |
 | `tutorials/switch-environment.md`  | Pointing the app/tools at dev, staging or prod                                        |
