@@ -9,6 +9,7 @@ import {
   clients,
   designs,
   fabricCalcs,
+  fabricExplanations,
   fabricRules,
   fabrics,
   measurementSets,
@@ -108,6 +109,12 @@ describe("Drizzle schema mirror", () => {
   it("has the same columns as the generated Supabase types (fabric_calcs)", () => {
     expect(drizzleColumns(fabricCalcs).sort((a, b) => a.localeCompare(b))).toEqual(
       generatedColumns("fabric_calcs").sort((a, b) => a.localeCompare(b)),
+    );
+  });
+
+  it("has the same columns as the generated Supabase types (fabric_explanations)", () => {
+    expect(drizzleColumns(fabricExplanations).sort((a, b) => a.localeCompare(b))).toEqual(
+      generatedColumns("fabric_explanations").sort((a, b) => a.localeCompare(b)),
     );
   });
 });

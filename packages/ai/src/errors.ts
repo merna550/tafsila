@@ -9,7 +9,7 @@ export class AiOutputInvalidError extends Error {
   /**
    * Builds the error.
    *
-   * @param operation - Which function failed (`analyzeDesign` or `proposeEdit`).
+   * @param operation - Which function failed (`analyzeDesign`, `proposeEdit` or `explainRecommendations`).
    * @param detail - The last validation error, in English.
    * @param usage - Tokens and cost of the attempts, so the caller can still record what the call cost (issue #340).
    */

@@ -24,7 +24,7 @@ export interface AiDeps {
  * The model id a call reports in its usage.
  *
  * @param config - The configuration.
- * @param kind - Analysis or chat.
+ * @param kind - Analysis, chat or explanation (the cheaper chat model).
  * @returns The configured model id.
  */
 export function modelId(config: AiConfig, kind: ModelKind): string {
