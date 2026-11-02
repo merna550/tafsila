@@ -48,6 +48,9 @@ export const designLengthPathSchema = z.enum(DESIGN_LENGTH_PATHS);
 /** One length of a design, such as `"skirt.lengthMm"`. */
 export type DesignLengthPath = z.infer<typeof designLengthPathSchema>;
 
+/** Below this confidence a feature must be confirmed by the user (FR-DES-04, decision 335, 5). */
+export const LOW_CONFIDENCE = 0.6;
+
 /** How sure the model is about one feature: 0 is a guess, 1 is certain. */
 export const confidenceSchema = z.number().min(0).max(1);
 
