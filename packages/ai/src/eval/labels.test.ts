@@ -1,13 +1,8 @@
 /** Label file tests (issue #338): the sample labels CI runs on are valid, and a bad label is refused. */
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
+import { SAMPLE_LABELS_PATH } from "./cli";
 import { parseLabels } from "./labels";
-
-/** Path of the 3-label sample set in `@tafsila/test-fixtures`. */
-const SAMPLE_LABELS_PATH = createRequire(import.meta.url).resolve(
-  "@tafsila/test-fixtures/ai-eval/labels.sample.json",
-);
 
 /** The sample file's text. */
 const sample = readFileSync(SAMPLE_LABELS_PATH, "utf8");

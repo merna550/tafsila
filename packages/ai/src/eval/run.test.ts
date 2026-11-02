@@ -3,23 +3,18 @@
  * photo cap and budget guard. No network: the fake provider and scripted answers only.
  */
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import { analyzeDesign, type AnalyzeDesignInput, type AnalyzeDesignOutput } from "../analyze-design";
 import { createFakeAi } from "../index";
 import { scriptedDeps, scriptedModel } from "../test-models";
+import { SAMPLE_LABELS_PATH } from "./cli";
 import { parseLabels } from "./labels";
 import { toMarkdown } from "./markdown";
 import { buildReport, DEFAULT_CHAT_ALLOWANCE_EGP, DEFAULT_USD_EGP, type ReportMeta } from "./report";
 import { DEFAULT_TIMEOUT_MS, runEval, type RunDeps, type RunLimits } from "./run";
 
 /** The 3 sample labels, sorted by id. */
-const labels = parseLabels(
-  readFileSync(
-    createRequire(import.meta.url).resolve("@tafsila/test-fixtures/ai-eval/labels.sample.json"),
-    "utf8",
-  ),
-);
+const labels = parseLabels(readFileSync(SAMPLE_LABELS_PATH, "utf8"));
 
 /** Report details of a fake run. */
 const meta: ReportMeta = {
