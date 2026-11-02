@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
 import { DataState } from "@/shared/data-state";
-import { ExplainRecommendations } from "./components/ExplainRecommendations";
+import { ExplainRecommendations } from "./ExplainRecommendations";
 import { FabricRecommendationsView } from "./components/FabricRecommendationsView";
 import { useFabricRecommendations } from "./hooks/use-fabric-recommendations";
 

@@ -2,8 +2,8 @@
 /** The "Why these fabrics?" block of the recommendation panel: asks the API for the AI explanation on demand (FR-REC-04). */
 import { useLocale } from "next-intl";
 import type { ReactElement } from "react";
-import { useFabricExplanation, type FabricExplanationState } from "../hooks/use-fabric-explanation";
-import { ExplainView, type ExplainViewProps } from "./ExplainView";
+import { useFabricExplanation, type FabricExplanationState } from "./hooks/use-fabric-explanation";
+import { ExplainView, type ExplainViewProps } from "./components/ExplainView";
 
 /** Props of {@link ExplainRecommendations}. */
 interface ExplainRecommendationsProps {

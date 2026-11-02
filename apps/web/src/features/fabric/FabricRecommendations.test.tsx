@@ -5,7 +5,7 @@ import { FabricRecommendations } from "./FabricRecommendations";
 import { useFabricRecommendations } from "./hooks/use-fabric-recommendations";
 
 vi.mock("./hooks/use-fabric-recommendations", () => ({ useFabricRecommendations: vi.fn() }));
-vi.mock("./components/ExplainRecommendations", () => ({ ExplainRecommendations: () => <i>explain-slot</i> }));
+vi.mock("./ExplainRecommendations", () => ({ ExplainRecommendations: () => <i>explain-slot</i> }));
 
 /**
  * Makes the hook answer with a query-like state.

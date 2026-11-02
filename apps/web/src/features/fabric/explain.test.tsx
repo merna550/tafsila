@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderWithIntl } from "@/shared/i18n/testing";
 import { ExplainRecommendations } from "./ExplainRecommendations";
-import { ExplainView } from "./ExplainView";
-import { useFabricExplanation } from "../hooks/use-fabric-explanation";
+import { ExplainView } from "./components/ExplainView";
+import { useFabricExplanation } from "./hooks/use-fabric-explanation";
 
-vi.mock("../hooks/use-fabric-explanation", () => ({ useFabricExplanation: vi.fn() }));
+vi.mock("./hooks/use-fabric-explanation", () => ({ useFabricExplanation: vi.fn() }));
 
 const noop = (): void => undefined;
 
