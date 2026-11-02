@@ -70,11 +70,12 @@ test("compare: two versions with a different sleeve length show the overlay and 
 /** A version that does not exist (or belongs to someone else) shows the error state, not a drawing. */
 test("compare: unknown versions show the error state", async ({ page }, testInfo) => {
   const env = projectLocale(testInfo);
+  const { t } = env;
   await openSeedClient(page, env);
   const none = "00000000-0000-4000-8000-000000000001";
   await page.goto(
     `${env.prefix}/designs/${none}/versions/compare?a=${none}&b=00000000-0000-4000-8000-000000000002`,
   );
-  await expect(page.getByTestId("request-id")).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText(t.errors.pageErrorTitle)).toBeVisible({ timeout: 30_000 });
   await expect(page.getByTestId("compare-overlay")).toHaveCount(0);
 });
