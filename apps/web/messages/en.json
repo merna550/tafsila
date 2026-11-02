@@ -1084,7 +1084,9 @@
       "neckline_depthFrontMm": "Front neck depth",
       "skirt_lengthMm": "Skirt length",
       "skirt_slit_lengthMm": "Slit length"
-    }
+    },
+    "fromPhotos": "From a photo",
+    "fromPhotosHint": "Upload photos of a finished garment and the analysis suggests its details"
   },
   "patternOptions": {
     "title": "Pattern options",
@@ -1591,6 +1593,77 @@
       },
       "project": "Project the layout",
       "projectDisabled": "Calculate the fabric first"
+    }
+  },
+  "uploadDesign": {
+    "title": "Pattern from a photo",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "newDesign": "New pattern",
+    "current": "From a photo",
+    "categoryGroup": "Garment type",
+    "category": {
+      "dress": "Dress",
+      "skirt": "Skirt",
+      "blouse": "Blouse",
+      "auto": "Let the AI decide",
+      "pants": "Pants"
+    },
+    "soon": "Coming soon",
+    "dropTitle": "Add photos of the garment",
+    "dropHint": "From 1 to 3 photos. The whole garment in good light works best.",
+    "choose": "Choose photos",
+    "add": "Add photo",
+    "count": "{count} of 3 photos. Photos are resized and their extra data (such as location) is removed on your device before upload.",
+    "slot": {
+      "front": "front",
+      "back": "back",
+      "side": "side"
+    },
+    "photoAlt": "{slot} photo",
+    "remove": "Remove photo",
+    "retryPhoto": "Upload the photo again",
+    "preparing": "Preparing the photo",
+    "uploading": "Uploading {percent}%",
+    "tipsTitle": "For a better result",
+    "tips": {
+      "one": "One garment in the photo, seen from the front.",
+      "two": "A plain background that hides no details.",
+      "three": "A second photo of the back or the details helps."
+    },
+    "privacy": "Photos are private to your account, sent only to the AI provider for the analysis, and deleted with the design or the account.",
+    "start": "Start analysis",
+    "starting": "Uploading and analysing",
+    "manual": "Choose the details by hand",
+    "needFront": "Add a front photo of the garment to start the analysis.",
+    "errors": {
+      "type": "This file type is not supported. Use JPG, PNG, WebP or HEIC.",
+      "tooLarge": "The photo is larger than 10 MB. Choose a smaller one.",
+      "unreadable": "The photo could not be read. Share it as JPEG or PNG and add it again.",
+      "heic": "This browser cannot read HEIC photos. Share the photo as JPEG and add it again.",
+      "limit": "At most 3 photos.",
+      "uploadFailed": "The photo could not be uploaded. Check the connection and try again."
+    },
+    "analysing": {
+      "breadcrumb": "Analysis",
+      "title": "Photo analysis",
+      "heading": "Analysing the photos",
+      "upload": "Uploading photos",
+      "read": "Reading the details (neckline, sleeves, length...)",
+      "prepare": "Preparing suggestions",
+      "usually": "The analysis usually takes under 30 seconds. You can leave the page and come back from \"My designs\".",
+      "slow": "The analysis is still running. You can wait or choose the details by hand.",
+      "failed": "The photos could not be analysed. Check the connection and try again, or choose the details by hand.",
+      "notCounted": "This analysis did not count towards today's limit.",
+      "cancel": "Cancel",
+      "retry": "Try again",
+      "manual": "Choose the details by hand",
+      "done": "Analysis complete",
+      "doneHint": "Ready to review the suggestions.",
+      "doneAction": "Open the design",
+      "stepDone": "Step done",
+      "stepActive": "In progress",
+      "stepFailed": "Step failed"
     }
   }
 }
