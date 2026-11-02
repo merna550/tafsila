@@ -123,6 +123,8 @@ editor store (spec)  +  page store (options, base version)        <- sections / 
 
 Version history (issue #252): `/designs/[id]/versions` lists the versions (hooks in `features/pattern-versions`, screens in `features/pattern-page`); `/designs/[id]/versions/[versionId]` draws an old version read only from its stored inputs in the same worker, and restore (`useRestoreAction`) asks, calls `POST /api/versions/:id/restore`, then replaces the stores of the loaded design. The running engine version comes from `@tafsila/engine/version`.
 
+Version compare (issue #345, ADR-345): `features/version-compare` owns `/designs/[id]/versions/compare?a&b`. The history ticks two versions (`pattern-page/model/compare-selection.ts`, older first in the link); the screen reads both with `useVersion`, drafts both stored inputs in two preview workers, matches pieces by id (`model/match-pieces.ts`, each piece of the second version moved onto the corner of the first so a change shows in place) and lists the differences of spec, measurements and ease (`model/diff-versions.ts`, worded from the existing `designPicker` messages by `describe-difference.ts`). No new API.
+
 Save states (`model/save-state.ts`, first match wins; Save is enabled only for `unsaved` and `outdated`):
 
 | kind              | when                                                                | Save                          |
