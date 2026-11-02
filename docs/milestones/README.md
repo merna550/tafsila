@@ -11,6 +11,7 @@ One page per active milestone: goal, scope, SRS IDs, deliverables, exit criteria
 | M4 - Outputs                   | [M4-outputs.md](M4-outputs.md)                             |
 | M5 - Fabric                    | [M5-fabric.md](M5-fabric.md)                               |
 | M6 - AI layer                  | [M6-ai-layer.md](M6-ai-layer.md)                           |
+| M7 - Billing & admin           | [M7-billing-and-admin.md](M7-billing-and-admin.md)         |
 
 Rules (issue #22, [ADR-024](../DECISIONS.md)):
 

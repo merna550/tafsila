@@ -52,9 +52,10 @@ Core rule: **AI understands, the engine draws** — AI only fills/edits a valida
 
 _Updated when the milestone, the next step or an open decision changes. What was done is in the merged PRs, the learning log and the board: a per-PR log here conflicted in every PR (#76)._
 
-- Milestone: M1 - Accounts & data (built; closes after Merna's staging run of the exit check, #34)
-- Next: M4 outputs, `/plan-wave M4`
+- Milestone: M6 - AI layer (18 of 26 issues closed)
+- Next: M7 billing, `/plan-wave M7` (screens #365 and Paymob test mode #366 need Merna first)
 - M2 engine built (#121–#147 merged); M2 exit #148 waits for toiles
 - M3 UI built (#236–#253 merged); M3 exit #254 waits for engine bugs #229–#232
-- M4 brief and issues drafted (#281–#296, `docs/milestones/M4-outputs.md`, ADR-281); next for M4: `/plan-wave M4` (screens #281 need Merna first)
-- Open decisions: final product name/domain; AI provider after eval
+- M4 and M5 built; their exits (#293–#296, #322–#323) are manual checks
+- M7 brief and issues drafted (#365–#383, `docs/milestones/M7-billing-and-admin.md`, ADR-365)
+- Open decisions: final product name/domain; AI provider after eval (#347); live Paymob payment (#383)
