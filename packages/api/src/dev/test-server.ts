@@ -8,6 +8,9 @@ import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
 import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion";
+import { createMemoryAiUsageRepository } from "../adapters/memory/ai-usage-repository";
+import { createMemoryUnsupportedFeatures } from "../adapters/memory/unsupported-feature-repository";
+import { createMemoryPhotoDownloader } from "../adapters/memory/photo-downloader";
 import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
 import { createMemoryProfileRepository } from "../adapters/memory/profile-repository";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
@@ -34,6 +37,7 @@ const store = createMemoryStore();
 store.sizeCharts.push({ id: "00000000-0000-4000-8000-0000000000d1", name: "Demo", sizes: demoSizeChart });
 const deletion = createMemoryAccountDeletion(store);
 const phones = createMemoryPhoneVerification({ now: () => new Date() });
+const photos = createMemoryPhotoStorage(deletion.objects);
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
@@ -50,7 +54,17 @@ const app = createApp(
     userFilesRemover: deletion.userFilesRemover,
     identityEraser: deletion.identityEraser,
     accountAudit: deletion.accountAudit,
-    photoStorage: createMemoryPhotoStorage(deletion.objects),
+    // Newman cannot PUT a file to a signed URL, so asking for upload URLs also stores the object (the browser's upload).
+    photoStorage: {
+      ...photos,
+      createUploadUrls: (paths) => {
+        for (const path of paths) photos.put(path);
+        return photos.createUploadUrls(paths);
+      },
+    },
+    photoDownloader: createMemoryPhotoDownloader(),
+    aiUsage: createMemoryAiUsageRepository(),
+    unsupportedFeatures: createMemoryUnsupportedFeatures(),
     phoneOtp: createMemoryPhoneOtp(),
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,
