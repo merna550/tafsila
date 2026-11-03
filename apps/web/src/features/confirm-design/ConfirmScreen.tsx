@@ -8,7 +8,7 @@ import { useAnalysisStatus } from "@/features/upload-design";
 import { DataState } from "@/shared/data-state";
 import { useApiErrorHandler } from "@/shared/error-display";
 import { useRouter } from "@/shared/i18n";
-import { ConfirmBody } from "./components/ConfirmBody";
+import { ConfirmBody } from "./ConfirmBody";
 import { ConfirmBreadcrumb } from "./components/ConfirmBreadcrumb";
 import { FailedPanel } from "./components/FailedPanel";
 

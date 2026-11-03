@@ -2,7 +2,7 @@ import { defaultSpec } from "@tafsila/engine/spec-rules";
 import type { DesignAnalysisResult } from "@tafsila/schemas";
 import { describe, expect, it, vi } from "vitest";
 import { MESSAGES, renderWithIntl } from "@/shared/i18n/testing";
-import { ConfirmBody } from "./ConfirmBody";
+import { ConfirmBody } from "../ConfirmBody";
 import { ContinueBar } from "./ContinueBar";
 import { UnsupportedPanel } from "./UnsupportedPanel";
 

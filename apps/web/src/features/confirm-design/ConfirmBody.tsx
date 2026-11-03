@@ -1,12 +1,12 @@
 "use client";
 /** The confirmation content for one finished analysis: summary, cards by section, unsupported panel and continue bar (FR-DES-03 to FR-DES-07). */
 import { specOptions, type FeaturePath } from "@tafsila/engine/spec-rules";
-import type { DesignAnalysisResult } from "@tafsila/schemas";
+import type { DesignAnalysisResult, DesignSpec } from "@tafsila/schemas";
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useReducer, useState, type ReactElement } from "react";
 import { EditorNotice, pathMessageKey } from "@/features/design-picker";
 import type { AppLocale } from "@/shared/i18n";
-import { useValueLabel } from "../hooks/use-value-label";
+import { useValueLabel } from "./hooks/use-value-label";
 import {
   canContinue,
   changeFeature,
@@ -16,13 +16,13 @@ import {
   remainingPaths,
   undoChange,
   type ConfirmState,
-} from "../model/confirm-state";
-import { featureGroups } from "../model/feature-groups";
-import { ContinueBar } from "./ContinueBar";
-import { FeatureCard } from "./FeatureCard";
-import { FeatureEditor } from "./FeatureEditor";
-import { SummaryHeader } from "./SummaryHeader";
-import { UnsupportedPanel } from "./UnsupportedPanel";
+} from "./model/confirm-state";
+import { featureGroups } from "./model/feature-groups";
+import { ContinueBar } from "./components/ContinueBar";
+import { FeatureCard } from "./components/FeatureCard";
+import { FeatureEditor } from "./components/FeatureEditor";
+import { SummaryHeader } from "./components/SummaryHeader";
+import { UnsupportedPanel } from "./components/UnsupportedPanel";
 
 /** What the reducer can be asked to do. */
 type Action =
@@ -58,7 +58,7 @@ interface ConfirmBodyProps {
   /** True while the draft is being handed over. */
   readonly busy: boolean;
   /** Goes on to the pattern with the confirmed spec. */
-  readonly onContinue: (spec: ConfirmState["spec"]) => void;
+  readonly onContinue: (spec: DesignSpec) => void;
 }
 
 /**
