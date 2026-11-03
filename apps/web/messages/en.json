@@ -1674,7 +1674,7 @@
       "manual": "Choose the details by hand",
       "done": "Analysis complete",
       "doneHint": "Ready to review the suggestions.",
-      "doneAction": "Open the design",
+      "doneAction": "Review the features",
       "stepDone": "Step done",
       "stepActive": "In progress",
       "stepFailed": "Step failed"
@@ -1715,6 +1715,41 @@
       "removed": "Removed pieces: {names}",
       "note": "The list shows the saved choices, measurements and ease of each version. A comparison in numbers is not available yet.",
       "engineDiffers": "These versions were made with different engine versions, so the drawing may differ slightly."
+    }
+  },
+  "confirmDesign": {
+    "title": "Confirm the features",
+    "breadcrumb": "Breadcrumb",
+    "designs": "My designs",
+    "photos": "Pattern from a photo",
+    "aiHint": "This is the AI's suggestion and it may be wrong. Features with low confidence (under 60%) must be confirmed or changed before you continue.",
+    "weak": "The AI was unsure about most of this garment. Check every feature before you continue.",
+    "failed": "The photos could not be analysed. Try again, or choose the details by hand.",
+    "retry": "Try again",
+    "manual": "Choose the details by hand",
+    "level": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "card": {
+      "ai": "AI",
+      "confirm": "Looks right",
+      "confirmed": "Confirmed",
+      "change": "Change",
+      "close": "Close",
+      "needsConfirm": "Confirm this before you continue.",
+      "noPockets": "No pockets",
+      "notSet": "Not set"
+    },
+    "unsupported": {
+      "title": "Not supported yet",
+      "hint": "We noticed these details but cannot draw them yet. The pattern is drawn without them."
+    },
+    "continue": {
+      "action": "Continue to the pattern",
+      "left": "{count, plural, one {1 feature left to check} other {# features left to check}}",
+      "allDone": "All features confirmed"
     }
   }
 }

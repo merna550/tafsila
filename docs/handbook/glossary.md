@@ -504,6 +504,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `DesignAnalysisResult.confidence` holds one per feature; a feature the engine had to change gets 0 and a note, and the confirmation screen asks the user to check low ones (FR-DES-07, [ADR-335](../decisions/335-m6-scope.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Confidence_score>
 
+<a id="confirmation-screen"></a>
+
+### Confirmation screen
+
+**Plain words:** The page after the AI reads the photos. It shows every detail the AI found; the ones it was unsure of must be confirmed or changed before you continue.  
+**In Tafsila:** `/designs/[id]/confirm` (`features/confirm-design`, issue #342, FR-DES-04); the confirmed design reaches the pattern page as the editor's browser draft. **Level:** beginner  
+**Learn:** [decision 342](../decisions/342-confirm-design.md)
+
 <a id="confusion-list"></a>
 
 ### Confusion list

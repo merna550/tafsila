@@ -93,7 +93,7 @@ describe("AnalysisPanel", () => {
     expect(html).toContain(t.manual);
     expect(html).toContain(esc(t.notCounted));
   });
-  it("links to the design when done", () => {
-    expect(render("done")).toContain('href="/en/designs/d1"');
+  it("links to the confirmation when done", () => {
+    expect(render("done")).toContain('href="/en/designs/d1/confirm"');
   });
 });
