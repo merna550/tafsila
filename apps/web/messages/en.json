@@ -1220,7 +1220,8 @@
       "label": "Pattern panel",
       "details": "Piece details",
       "report": "Validation report",
-      "options": "Options"
+      "options": "Options",
+      "chat": "Assistant"
     },
     "updating": "Updating the pattern...",
     "noSet": {
@@ -1750,6 +1751,46 @@
       "action": "Continue to the pattern",
       "left": "{count, plural, one {1 feature left to check} other {# features left to check}}",
       "allDone": "All features confirmed"
+    }
+  },
+  "chatEdit": {
+    "remaining": "Messages left: {n} of {limit}",
+    "empty": "Describe a change in your own words, for example \"make the sleeves long\" or \"add side pockets\". Nothing changes until you apply a proposal.",
+    "loading": "Loading the conversation",
+    "loadFailed": "The conversation could not be loaded.",
+    "retry": "Try again",
+    "preparing": "Preparing the proposal...",
+    "noVersion": {
+      "title": "Save a version first",
+      "text": "The assistant edits a saved version of the pattern. Save a version, then ask for changes here."
+    },
+    "composer": {
+      "label": "Your edit request",
+      "placeholder": "For example: make the sleeves long",
+      "counter": "{n} / {max}",
+      "send": "Send",
+      "blocked": {
+        "no-version": "Save a version first, then ask for changes.",
+        "quota": "You used all {limit} messages of this pattern. You can edit by hand in Options, or save a version and continue from it.",
+        "daily": "You reached today's limit of edit messages. Try again tomorrow."
+      }
+    },
+    "proposal": {
+      "title": "Suggested change",
+      "valid": "Valid",
+      "apply": "Apply as a new version",
+      "applying": "Applying...",
+      "cancel": "Dismiss",
+      "dismissed": "Dismissed. Nothing was changed.",
+      "applied": "Saved as version {n} with the suggested change.",
+      "appliedGeneric": "Saved as a new version with the suggested change.",
+      "viewHistory": "View version history",
+      "stale": "The pattern changed since this suggestion. Ask again so it fits the current version.",
+      "askAgain": "Ask again"
+    },
+    "unsupported": {
+      "title": "Not supported yet",
+      "closest": "The closest changes we can do:"
     }
   }
 }

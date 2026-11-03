@@ -8,6 +8,7 @@ import { PatternPageHeader } from "./components/PatternPageHeader";
 import { PatternSidePanel, type PanelTab } from "./components/PatternSidePanel";
 import { ViewerPane } from "./components/ViewerPane";
 import { usePatternPage } from "./hooks/use-pattern-page";
+import { useChatApplied } from "./hooks/use-chat-applied";
 import { useReportSelection } from "./hooks/use-report-selection";
 import { editorPath, shownReport, viewerFlags } from "./model/page-flags";
 
@@ -28,6 +29,7 @@ interface PatternPageScreenProps {
 export function PatternPageScreen({ designId, clientId }: Readonly<PatternPageScreenProps>): ReactElement {
   const t = useTranslations("patternPage");
   const page = usePatternPage(designId, clientId);
+  const onChatApplied = useChatApplied(designId);
   const viewer = useViewerState();
   const selection = useReportSelection(viewer);
   const [chosenTab, setTab] = useState<PanelTab | null>(null);
@@ -72,6 +74,9 @@ export function PatternPageScreen({ designId, clientId }: Readonly<PatternPageSc
             options={page.options}
             onOptions={page.setOptions}
             preselectClientId={clientId ?? null}
+            designId={designId}
+            versionId={page.baseVersion?.id ?? null}
+            onChatApplied={onChatApplied}
           />
         </div>
       </DataState>

@@ -5,6 +5,8 @@ const PORT = 3100;
 
 // The app needs a valid configuration to boot. The home flows call no external service, so the non-secret CI
 // placeholders are used; values already in the environment win (Node does not override them).
+// The chat flow (#344) ends its quota after three messages; the API reads this when the production server starts.
+process.env.CHAT_MESSAGES_PER_DESIGN ??= "3";
 process.loadEnvFile(new URL("../../.github/ci.env", import.meta.url).pathname);
 const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH;
 

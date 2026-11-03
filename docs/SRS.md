@@ -275,7 +275,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 ### 4.12 Chat Edits & Versions (CHAT)
 | ID | Requirement | Pri |
 |---|---|---|
-| FR-CHAT-01 | User writes a request in Arabic or English ("add side pockets", "make the sleeve 5 cm longer") | M |
+| FR-CHAT-01 | User writes a request in Arabic or English ("add side pockets", "make the sleeve 5 cm longer") (panel built in #344) | M |
 | FR-CHAT-02 | AI translates the request into a list of `DesignSpec` patch operations via tool calling; patches validated by Zod and the catalogue | M |
 | FR-CHAT-03 | Before applying, show a summary of changes; user confirms → new pattern version | M |
 | FR-CHAT-04 | Unsupported requests → AI explains politely what is not supported and suggests the closest supported option | M |
