@@ -1,4 +1,5 @@
 /** Builds the OpenAPI document from the real routes, with every dependency fixed so the output is byte-stable. */
+import { createFakePaymentGateway, type FakePaymentConfig } from "../adapters/fake-payment/fake-gateway";
 import { createNoopAnalytics } from "../adapters/noop/noop-analytics";
 import { createNoopIdentityEraser } from "../adapters/noop/noop-identity-eraser";
 import { createNoopErrorReporter } from "../adapters/noop/noop-error-reporter";
@@ -6,7 +7,7 @@ import { createRejectingTokenVerifier } from "../adapters/supabase/jwks-token-ve
 import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
 import { createRejectingRepositories } from "../adapters/supabase/rejecting-repositories";
 import { createFakeAi } from "@tafsila/ai";
-import { loadJobsConfig } from "@tafsila/config";
+import { loadJobsConfig, loadPaymentConfig } from "@tafsila/config";
 import { createInlineJobQueue } from "../adapters/memory/inline-job-queue";
 import { createMemoryPhotoDownloader } from "../adapters/memory/photo-downloader";
 import { createMemoryPhotoStorage } from "../adapters/memory/photo-storage";
@@ -37,6 +38,7 @@ const DOCUMENT_CONTAINER: Container = {
   jobQueue: createInlineJobQueue(() => Promise.resolve()),
   inngest: undefined,
   aiDeps: () => createFakeAi(),
+  paymentGateway: createFakePaymentGateway(loadPaymentConfig({}) as FakePaymentConfig, () => undefined),
 };
 
 /**

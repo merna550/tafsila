@@ -8,6 +8,7 @@ import {
   loadPublicConfig,
   loadServerEnv,
 } from "./env";
+import { loadPaymentConfig } from "./payment";
 
 const valid = {
   SUPABASE_URL: "http://127.0.0.1:54321",
@@ -17,12 +18,22 @@ const valid = {
 
 const observability = { SENTRY_DSN: "https://key@o1.ingest.sentry.io/1", POSTHOG_KEY: "phc_test" };
 const phoneSecret = { PHONE_HASH_SECRET: "s".repeat(32) };
+const paymobKeys = {
+  PAYMOB_SECRET_KEY: "sk",
+  PAYMOB_PUBLIC_KEY: "pk",
+  PAYMOB_HMAC_SECRET: "hmac",
+  PAYMOB_INTEGRATION_ID_CARD: "1",
+  PAYMOB_INTEGRATION_ID_WALLET: "2",
+  PAYMOB_INTEGRATION_ID_KIOSK: "3",
+};
 const aiAndPaymob = {
   AI_PROVIDER: "anthropic",
   AI_MODEL_ANALYZE: "model",
   AI_MODEL_CHAT: "chat-model",
   AI_API_KEY: "key",
-  PAYMOB_API_KEY: "pay",
+  PAYMENT_GATEWAY: "paymob",
+  PAYMOB_MODE: "live",
+  ...paymobKeys,
   ...observability,
   ...phoneSecret,
 };
@@ -55,9 +66,44 @@ describe("loadServerEnv", () => {
 
   it("requires AI and Paymob variables in production", () => {
     expect(() => loadServerEnv({ ...valid, ...phoneSecret, APP_ENV: "production" })).toThrow(
-      /AI_PROVIDER, AI_MODEL_ANALYZE, AI_MODEL_CHAT, AI_API_KEY, PAYMOB_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
+      /AI_PROVIDER, AI_MODEL_ANALYZE, AI_MODEL_CHAT, AI_API_KEY, SENTRY_DSN, POSTHOG_KEY/,
     );
     expect(() => loadServerEnv({ ...valid, ...aiAndPaymob, APP_ENV: "production" })).not.toThrow();
+  });
+});
+
+describe("payment configuration", () => {
+  it("defaults to the fake gateway in sandbox mode with no Paymob key", () => {
+    const env = loadServerEnv(valid);
+    expect(env.PAYMENT_GATEWAY).toBe("fake");
+    expect(env.PAYMOB_SECRET_KEY).toBeUndefined();
+  });
+
+  it("requires every Paymob key when the gateway is paymob", () => {
+    expect(() => loadServerEnv({ ...valid, PAYMENT_GATEWAY: "paymob" })).toThrow(/PAYMOB_SECRET_KEY/);
+    expect(() => loadServerEnv({ ...valid, PAYMENT_GATEWAY: "paymob", ...paymobKeys })).not.toThrow();
+  });
+
+  it("refuses the fake gateway and the Paymob sandbox in production", () => {
+    const prod = { ...valid, ...aiAndPaymob, APP_ENV: "production" };
+    expect(() => loadServerEnv({ ...prod, PAYMENT_GATEWAY: "fake" })).toThrow(/PAYMENT_GATEWAY/);
+    expect(() => loadServerEnv({ ...prod, PAYMOB_MODE: "sandbox" })).toThrow(/PAYMOB_MODE/);
+  });
+});
+
+describe("loadPaymentConfig", () => {
+  it("returns the fake gateway with the dev secret when nothing is set", () => {
+    const config = loadPaymentConfig({});
+    expect(config).toMatchObject({ gateway: "fake", appUrl: "http://localhost:3000" });
+  });
+
+  it("returns the Paymob settings and names missing variables without values", () => {
+    const config = loadPaymentConfig({ PAYMENT_GATEWAY: "paymob", ...paymobKeys });
+    expect(config).toMatchObject({ gateway: "paymob", mode: "sandbox", integrationIds: { kiosk: "3" } });
+    expect(() => loadPaymentConfig({ PAYMENT_GATEWAY: "paymob", PAYMOB_SECRET_KEY: "topsecret" })).toThrow(
+      /PAYMOB_PUBLIC_KEY/,
+    );
+    expect(() => loadPaymentConfig({ PAYMENT_GATEWAY: "nope" })).toThrow(/PAYMENT_GATEWAY/);
   });
 });
 
