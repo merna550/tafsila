@@ -7,7 +7,8 @@ import {
   vNeckBlouse,
 } from "@tafsila/test-fixtures";
 import { describe, expect, it } from "vitest";
-import { edgeLengthMm } from "../pieces/measure";
+import { edgeCurve } from "../pieces/edge-curve";
+import { edgeLengthMm, edgeSegments } from "../pieces/measure";
 import { generatePattern } from "../pipeline/generate-pattern";
 import { buildPatternScene } from "./scene";
 import { measureBetween, resolveRef } from "./scene-queries";
@@ -30,6 +31,18 @@ describe("buildPatternScene", () => {
         expect(edge.lengthMm).toBe(edgeLengthMm(piece, edge.id));
       }
     }
+  });
+
+  it("marks an edge as a curve with its depth exactly when it is one (issue #391)", () => {
+    for (const piece of result.pieces) {
+      for (const edge of scene.pieces.find((p) => p.id === piece.id)!.edges) {
+        const curve = edgeCurve(edgeSegments(piece, edge.id));
+        expect(edge.curve?.depthMm).toBe(curve?.depthMm);
+        expect(edge.curve?.radiusMm).toBe(curve?.radiusMm);
+      }
+    }
+    expect(scene.pieces.some((p) => p.edges.some((e) => e.curve))).toBe(true);
+    expect(scene.pieces.some((p) => p.edges.some((e) => !e.curve))).toBe(true);
   });
 
   it("offers a snap point for every notch and every corner, inside the sheet", () => {

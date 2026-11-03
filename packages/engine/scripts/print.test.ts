@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { rectanglePattern } from "@tafsila/test-fixtures";
 import { describe, expect, it } from "vitest";
-import { renderPrintSheet } from "../src/render";
+import { renderPrintSheet, renderSvg, SVG_LAYERS } from "../src/render";
 import { run } from "./print";
 
 /**
@@ -25,6 +25,14 @@ describe("engine:print", () => {
     const { code } = runCli(["rectangle", "size-m", "--out", file]);
     expect(code).toBe(0);
     expect(readFileSync(file, "utf8")).toBe(renderPrintSheet(rectanglePattern));
+  });
+
+  it("adds edge lengths and curve markers with --dimensions (issue #391)", () => {
+    const file = join(mkdtempSync(join(tmpdir(), "print-")), "dims.svg");
+    const { code } = runCli(["rectangle", "size-m", "--dimensions", "--out", file]);
+    expect(code).toBe(0);
+    expect(readFileSync(file, "utf8")).toBe(renderSvg(rectanglePattern, { layers: SVG_LAYERS }));
+    expect(readFileSync(file, "utf8")).toContain('<g id="layer-dimensions">');
   });
 
   it("writes the seam-rectangle sheet with its cutting line outside the stitch line", () => {

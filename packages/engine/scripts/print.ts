@@ -41,7 +41,7 @@ import type { PatternResult } from "@tafsila/schemas";
 import { DEFAULT_ENGINE_OPTIONS, generatePattern } from "../src/pipeline";
 import { marksRegistry } from "../src/pipeline/test-support/marks-module";
 import { rectangleRegistry } from "../src/pipeline/test-support/rectangle-module";
-import { renderPrintSheet } from "../src/render";
+import { renderPrintSheet, renderSvg, SVG_LAYERS } from "../src/render";
 
 /** Exit code: success. */
 const EXIT_OK = 0;
@@ -95,6 +95,9 @@ const SEAM_RECTANGLE = "seam-rectangle";
 /** Name of the front and back test panels with every mark: notches, dart, grain line, labels, scale square (#131). */
 const MARKS_PAIR = "marks-pair";
 
+/** Command line flag that adds the dimension layer (edge lengths in cm and curve markers). */
+const DIMENSIONS_FLAG = "--dimensions";
+
 /** Where the script writes its messages; replaced in tests. */
 export interface PrintIo {
   /** Normal output. */
@@ -114,6 +117,8 @@ interface Parsed {
   readonly fixture: string;
   readonly size: string;
   readonly out?: string;
+  /** True with `--dimensions`: edge lengths in cm and curve markers are drawn on the sheet (issue #391). */
+  readonly dimensions: boolean;
 }
 
 /**
@@ -124,7 +129,7 @@ interface Parsed {
 function usage(): string {
   const names = [RECTANGLE, SEAM_RECTANGLE, MARKS_PAIR, ...Object.keys(DESIGN_FIXTURES)].join(" | ");
   const sizes = SIZE_MATRIX.map((e) => e.id).join(" ");
-  return `Usage: pnpm engine:print <fixture> <size> [--out file.svg]\n  fixture: ${names}\n  size: ${sizes}`;
+  return `Usage: pnpm engine:print <fixture> <size> [--out file.svg] [--dimensions]\n  fixture: ${names}\n  size: ${sizes}`;
 }
 
 /**
@@ -134,11 +139,13 @@ function usage(): string {
  * @returns The parsed arguments, or undefined when they are wrong.
  */
 function parseArgs(argv: readonly string[]): Parsed | undefined {
-  const outAt = argv.indexOf("--out");
-  const rest = outAt === -1 ? argv : argv.filter((_, i) => i !== outAt && i !== outAt + 1);
-  const out = outAt === -1 ? undefined : argv[outAt + 1];
+  const dimensions = argv.includes(DIMENSIONS_FLAG);
+  const args = argv.filter((arg) => arg !== DIMENSIONS_FLAG);
+  const outAt = args.indexOf("--out");
+  const rest = outAt === -1 ? args : args.filter((_, i) => i !== outAt && i !== outAt + 1);
+  const out = outAt === -1 ? undefined : args[outAt + 1];
   if (rest.length !== 2 || (outAt !== -1 && !out)) return undefined;
-  return { fixture: rest[0]!, size: rest[1]!, out };
+  return { fixture: rest[0]!, size: rest[1]!, out, dimensions };
 }
 
 /**
@@ -185,7 +192,10 @@ export function run(argv: readonly string[], io: PrintIo = DEFAULT_IO): number {
     return EXIT_NO_PIECES;
   }
   const file = args.out ?? `toile-${args.fixture}-${args.size}.svg`;
-  writeFileSync(file, renderPrintSheet(pattern));
+  writeFileSync(
+    file,
+    args.dimensions ? renderSvg(pattern, { layers: SVG_LAYERS }) : renderPrintSheet(pattern),
+  );
   io.out(`Wrote ${file}. Print at 100% (actual size) and check that the square measures 100 mm.`);
   return EXIT_OK;
 }

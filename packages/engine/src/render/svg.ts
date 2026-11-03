@@ -2,6 +2,7 @@
 import type { PatternResult } from "@tafsila/schemas";
 import { DraftingError } from "../errors/drafting-error";
 import { escapeXml, fmt } from "./format";
+import { dimensionsLayer } from "./dimensions";
 import {
   cutLayer,
   dartsLayer,
@@ -24,6 +25,7 @@ export const SVG_LAYERS = [
   "grain",
   "darts",
   "marks",
+  "dimensions",
   "labels",
   "scale",
 ] as const;
@@ -31,9 +33,15 @@ export const SVG_LAYERS = [
 /** One layer name. */
 export type SvgLayer = (typeof SVG_LAYERS)[number];
 
+/**
+ * Layers drawn when the caller names none: everything except `dimensions`, which a hand cutter turns on (issue
+ * #391) so the standard print and every stored snapshot stay as they were.
+ */
+export const DEFAULT_SVG_LAYERS: readonly SvgLayer[] = SVG_LAYERS.filter((name) => name !== "dimensions");
+
 /** Render options. */
 export interface SvgOptions {
-  /** Layers to draw; default all. The order given does not matter, the output order is fixed. */
+  /** Layers to draw; default `DEFAULT_SVG_LAYERS` (all but `dimensions`). The order given does not matter, the output order is fixed. */
   readonly layers?: readonly SvgLayer[];
   /** Multiplies the physical `width`/`height` only, never the `viewBox`; default 1 (a 1:1 print). */
   readonly scale?: number;
@@ -48,6 +56,7 @@ const LAYER_RENDERERS: Readonly<Record<SvgLayer, (layout: SheetLayout) => string
   grain: grainLayer,
   darts: dartsLayer,
   marks: marksLayer,
+  dimensions: dimensionsLayer,
   labels: labelsLayer,
   scale: scaleLayer,
 };
@@ -66,7 +75,7 @@ export function renderSvg(result: PatternResult, options: SvgOptions = {}): stri
   if (!Number.isFinite(scale) || scale <= 0) {
     throw new DraftingError("RENDER_BAD_SCALE", `Scale must be a positive number, got ${scale}`);
   }
-  const wanted = new Set<SvgLayer>(options.layers ?? SVG_LAYERS);
+  const wanted = new Set<SvgLayer>(options.layers ?? DEFAULT_SVG_LAYERS);
   const layout = layoutSheet(result.pieces);
   const groups = SVG_LAYERS.filter((name) => wanted.has(name)).map(
     (name) => `<g id="layer-${name}">\n${LAYER_RENDERERS[name](layout)}\n</g>`,

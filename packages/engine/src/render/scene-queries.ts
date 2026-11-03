@@ -16,6 +16,8 @@ export interface SceneEdge {
   readonly lengthMm: number;
   /** Seam allowance of the edge, in mm. */
   readonly seamAllowanceMm: number;
+  /** Present only for a curved edge: how deep its arc is and, for one circular arc, its radius (issue #391). */
+  readonly curve?: { readonly depthMm: number; readonly radiusMm?: number };
 }
 
 /** A point the measure tool can snap to, in sheet mm. */

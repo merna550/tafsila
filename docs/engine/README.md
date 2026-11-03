@@ -141,7 +141,7 @@ Decision: [131](../decisions/131-marks-and-labels.md).
 
 ## Rendering and printing a toile (`src/render/`)
 
-`renderSvg(result, { layers, scale })` turns a `PatternResult` into one SVG text; the same result always gives the same bytes ([decision 127](../decisions/127-svg-renderer.md)). Units are mm (`viewBox` and `width`/`height` use the same numbers). Layers, in fixed order: `grid`, `cut`, `stitch`, `notches`, `grain`, `darts`, `labels`, `scale`.
+`renderSvg(result, { layers, scale })` turns a `PatternResult` into one SVG text; the same result always gives the same bytes ([decision 127](../decisions/127-svg-renderer.md)). Units are mm (`viewBox` and `width`/`height` use the same numbers). Layers, in fixed order: `grid`, `cut`, `stitch`, `notches`, `grain`, `darts`, `marks`, `dimensions`, `labels`, `scale`. The default is every layer except `dimensions` (`DEFAULT_SVG_LAYERS`).
 
 **Print a toile at 1:1:**
 
@@ -149,6 +149,8 @@ Decision: [131](../decisions/131-marks-and-labels.md).
 2. Open `toile.svg` in Chrome and print with **scale 100% / actual size** (never "fit to page"), or send the file to a plotter print shop.
 3. Measure the scale square with a ruler: it must be 100 mm (plus or minus 1 mm). If it is not, the print was scaled; do not cut.
 4. If the shop has no Arabic font, open the file in Chrome and print to PDF first.
+
+**Dimensions for hand cutting ([decision 391](../decisions/391-dimension-layer.md)):** `pnpm engine:print dartedBlouse size-m --dimensions` (or `renderSvg(result, { layers: SVG_LAYERS })`) writes the sewn length of every edge in cm along the edge, inside the piece. A curved edge also gets a dashed chord, a depth line and `قوس <depth>`; a true circular arc (circle skirt) adds `نق <radius>`. Straight edges carry the length only. All numbers are cm with one decimal. Check one against a tape measure on the printed sheet.
 
 **Viewer scene (`render/scene.ts`, issue #243):** `buildPatternScene(result)` returns plain, JSON-safe data for the web viewer: the same sheet layout and path data as `renderSvg` (they share the helpers in `layers.ts`), plus per-edge `lengthMm`, notch points and snap points. The browser builds it in the preview worker. `@tafsila/engine/viewer` exports only its types and two small queries, `resolveRef(scene, ref)` (a validation `refs` string to a piece, edge or dart) and `measureBetween(a, b)` (mm), so no drafting code reaches the page bundle.
 

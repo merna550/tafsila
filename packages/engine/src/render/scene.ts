@@ -1,6 +1,7 @@
 /** Builds the viewer's scene from a pattern: the same layout and path data as `renderSvg`, but as data (issue #243). */
 import type { Piece, PatternResult, Point } from "@tafsila/schemas";
 import { pointAtLength, translate } from "../geometry";
+import { edgeCurve } from "../pieces/edge-curve";
 import { edgeLengthMm, edgeSegments } from "../pieces/measure";
 import { pathData } from "./format";
 import { DEFAULT_LABEL_SIZE_MM, dartData, grainData, notchData, onSheet } from "./layers";
@@ -49,6 +50,33 @@ function sceneNotch(pl: PiecePlacement, notch: Piece["notches"][number]): SceneP
 }
 
 /**
+ * One edge as scene data, with its curve depth when it is a curve.
+ *
+ * @param pl - Where the edge's piece sits.
+ * @param edge - The edge.
+ * @returns The scene edge.
+ */
+function sceneEdge(pl: PiecePlacement, edge: Piece["edges"][number]): ScenePiece["edges"][number] {
+  const piece = pl.piece;
+  const curve = edgeCurve(edgeSegments(piece, edge.id));
+  return {
+    id: edge.id,
+    d: pathData(translate(edgeSegments(piece, edge.id), pl.offset), false),
+    ...(edge.kind === undefined ? {} : { kind: edge.kind }),
+    lengthMm: edgeLengthMm(piece, edge.id),
+    seamAllowanceMm: edge.seamAllowanceMm,
+    ...(curve
+      ? {
+          curve: {
+            depthMm: curve.depthMm,
+            ...(curve.radiusMm === undefined ? {} : { radiusMm: curve.radiusMm }),
+          },
+        }
+      : {}),
+  };
+}
+
+/**
  * One piece as scene data.
  *
  * @param pl - Where the piece sits.
@@ -68,13 +96,7 @@ function scenePiece(pl: PiecePlacement): ScenePiece {
     cutD: pathData(translate(piece.cutPath, pl.offset), true),
     stitchD: pathData(translate(piece.stitchPath, pl.offset), true),
     grainD: grainData(from!, to!),
-    edges: piece.edges.map((edge) => ({
-      id: edge.id,
-      d: pathData(translate(edgeSegments(piece, edge.id), pl.offset), false),
-      ...(edge.kind === undefined ? {} : { kind: edge.kind }),
-      lengthMm: edgeLengthMm(piece, edge.id),
-      seamAllowanceMm: edge.seamAllowanceMm,
-    })),
+    edges: piece.edges.map((edge) => sceneEdge(pl, edge)),
     notches,
     darts: piece.darts.map((dart) => ({ id: dart.id, d: dartData(pl, dart) })),
     labels: piece.labels
