@@ -11,24 +11,27 @@ import type { MemoryStore } from "./memory-store";
 export function createMemoryProfileRepository(store: MemoryStore): ProfileRepository {
   /**
    * Finds the caller's profile, creating the default one when the account has never been seen.
+   * A profile stored without a consent flag has not agreed to share (the column default).
    *
    * @param userId - The caller.
    * @returns The stored profile.
    */
   const ensure = (userId: string): StoredProfile => {
     const existing = store.profiles.get(userId);
-    if (existing) return existing;
-    const created: StoredProfile = { name: null, locale: "ar" };
+    if (existing) return { ...existing, shareDesigns: existing.shareDesigns ?? false };
+    const created: StoredProfile = { name: null, locale: "ar", shareDesigns: false };
     store.profiles.set(userId, created);
     return created;
   };
   return {
-    get: (ctx) => Promise.resolve(store.deletedUsers.has(ctx.userId) ? undefined : { ...ensure(ctx.userId) }),
+    get: (ctx) => Promise.resolve(store.deletedUsers.has(ctx.userId) ? undefined : ensure(ctx.userId)),
     update: (ctx, patch) => {
       if (store.deletedUsers.has(ctx.userId)) return Promise.resolve(undefined);
+      const current = ensure(ctx.userId);
       const next: StoredProfile = {
-        name: patch.name ?? ensure(ctx.userId).name,
-        locale: patch.locale ?? ensure(ctx.userId).locale,
+        name: patch.name ?? current.name,
+        locale: patch.locale ?? current.locale,
+        shareDesigns: patch.shareDesigns ?? current.shareDesigns,
       };
       store.profiles.set(ctx.userId, next);
       return Promise.resolve({ ...next });

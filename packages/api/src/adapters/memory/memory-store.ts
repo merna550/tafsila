@@ -119,7 +119,7 @@ export interface MemoryStore {
   /** Rows written to admin_audit, oldest first. */
   audit: AuditRow[];
   /** Profile rows by user id; a missing row means the account does not exist (or was deleted). */
-  profiles: Map<string, Pick<Profile, "name" | "locale">>;
+  profiles: Map<string, Pick<Profile, "name" | "locale"> & { shareDesigns?: boolean }>;
   /** Users whose account was deleted: they have no profile any more even if their token is still valid. */
   deletedUsers: Set<string>;
 }

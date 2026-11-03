@@ -6,6 +6,7 @@ import { createMemoryPhotoDownloader, type MemoryPhotoDownloader } from "../adap
 import { createInlineJobQueue, type InlineJobQueue } from "../adapters/memory/inline-job-queue";
 import {
   createMemoryUnsupportedFeatures,
+  type UnsupportedFeatureRow,
   type MemoryUnsupportedFeatures,
 } from "../adapters/memory/unsupported-feature-repository";
 import { createFakeAi, type AiDeps } from "@tafsila/ai";
@@ -93,9 +94,13 @@ export interface MemoryApp {
  * The memory repositories on one shared fake database.
  *
  * @param store - Shared fake database.
+ * @param features - Unsupported-feature rows the admin list reads.
  * @returns The repositories for the container.
  */
-function memoryRepositories(store: MemoryStore): Partial<Container> {
+function memoryRepositories(
+  store: MemoryStore,
+  features: readonly UnsupportedFeatureRow[],
+): Partial<Container> {
   return {
     clients: createMemoryClientRepository(store),
     designs: createMemoryDesignRepository(store),
@@ -108,7 +113,7 @@ function memoryRepositories(store: MemoryStore): Partial<Container> {
     fabricCalcs: createMemoryFabricCalcRepository(store),
     fabricExplanations: createMemoryFabricExplanationRepository(store),
     profiles: createMemoryProfileRepository(store),
-    admin: createMemoryAdminRepository(store),
+    admin: createMemoryAdminRepository(store, {}, features),
   };
 }
 
@@ -194,7 +199,7 @@ export async function createMemoryApp(
     aiDeps: () => options.ai ?? createFakeAi(),
     paymentGateway: createFakePaymentGateway(loadPaymentConfig({}) as FakePaymentConfig, () => undefined),
     tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
-    ...memoryRepositories(store),
+    ...memoryRepositories(store, unsupported.rows),
     accountDeleter: deletion.accountDeleter,
     userFilesRemover: deletion.userFilesRemover,
     identityEraser: deletion.identityEraser,

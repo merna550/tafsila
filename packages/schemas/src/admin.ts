@@ -1,5 +1,6 @@
 /** Admin contracts for /api/admin/* (FR-ADM, issue #32): the users list, the stats and the default size chart editor. */
 import { z } from "zod";
+import { designSpecSchema, garmentCategorySchema } from "./design-spec";
 import { measurementIssueSchema } from "./measurement-sets";
 import { pageOf, pageQuerySchema } from "./pagination";
 import { sizeChartSchema } from "./size-chart";
@@ -125,3 +126,47 @@ export const updateSizeChartResponseSchema = adminSizeChartSchema.extend({
 
 /** Parsed size chart update response. */
 export type UpdateSizeChartResponse = z.infer<typeof updateSizeChartResponseSchema>;
+
+/** Query of the admin design and unsupported-feature lists: paging only. */
+export const adminPageQuerySchema = pageQuerySchema;
+
+/** Parsed paging query of the admin design lists. */
+export type AdminPageQuery = z.infer<typeof adminPageQuerySchema>;
+
+/** One photo of a shared design: the storage path and a 5-minute signed read URL. */
+export const adminSharedPhotoSchema = z.object({
+  path: z.string().meta({ example: "u1/d1/front.jpg" }),
+  url: z.string().meta({
+    example: "https://example.supabase.co/storage/v1/object/sign/design-photos/u1/d1/front.jpg?token=t",
+  }),
+});
+
+/** A design whose owner agreed to share: the current spec and photos, never measurements, clients or notes (FR-ADM-03, #369). */
+export const adminSharedDesignSchema = z.object({
+  designId: z.uuid().meta({ example: "00000000-0000-4000-8000-0000000000d2" }),
+  category: garmentCategorySchema.meta({ example: "dress" }),
+  title: z.string().meta({ example: "فستان سهرة" }),
+  currentSpec: designSpecSchema,
+  createdAt: z.iso.datetime().meta({ example: "2026-11-03T10:00:00.000Z" }),
+  ownerDisplayName: z.string().nullable().meta({ example: "Pro Workshop" }),
+  photos: z.array(adminSharedPhotoSchema),
+});
+
+/** Parsed shared design. */
+export type AdminSharedDesign = z.infer<typeof adminSharedDesignSchema>;
+
+/** One page of shared designs. */
+export const adminSharedDesignPageSchema = pageOf(adminSharedDesignSchema);
+
+/** An unsupported-feature text with its garment category; no user id and no design id (#369). */
+export const adminUnsupportedFeatureSchema = z.object({
+  text: z.string().meta({ example: "detachable bow at the neckline" }),
+  category: garmentCategorySchema.meta({ example: "dress" }),
+  createdAt: z.iso.datetime().meta({ example: "2026-11-03T10:00:00.000Z" }),
+});
+
+/** Parsed unsupported-feature row. */
+export type AdminUnsupportedFeature = z.infer<typeof adminUnsupportedFeatureSchema>;
+
+/** One page of unsupported features. */
+export const adminUnsupportedFeaturePageSchema = pageOf(adminUnsupportedFeatureSchema);

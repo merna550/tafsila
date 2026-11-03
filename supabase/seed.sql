@@ -92,3 +92,17 @@ update public.designs set current_version_id = '00000000-0000-4000-8000-00000000
 select private.grant_credits('00000000-0000-4000-8000-000000000001', 3, 'trial', null, null);
 select private.grant_credits('00000000-0000-4000-8000-000000000001', 5, 'purchase', 'seed-payment-1', now() + interval '90 days');
 select private.consume_credit('00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-0000000000d1');
+
+-- Design sharing (issue #369): the Pro workshop agrees to share; it has one design (the seed dress spec, no photos).
+-- The other seed users keep the default (not sharing).
+update public.profiles set share_designs = true where id = '00000000-0000-4000-8000-000000000002';
+insert into public.designs (id, owner_id, category, title) values
+  ('00000000-0000-4000-8000-0000000000d2', '00000000-0000-4000-8000-000000000002', 'dress', 'Pro shared dress');
+insert into public.pattern_versions (
+  id, design_id, owner_id, version_no, spec, measurements, ease_profile, options, engine_version, validation_status, input_hash
+)
+select '00000000-0000-4000-8000-0000000000f3', '00000000-0000-4000-8000-0000000000d2',
+  '00000000-0000-4000-8000-000000000002', 1, spec, '{}'::jsonb, 'regular', '{}'::jsonb, '0.16.0', 'pass', 'fnv1a64:1208b8d84c283787'
+from public.pattern_versions where id = '00000000-0000-4000-8000-0000000000f1';
+update public.designs set current_version_id = '00000000-0000-4000-8000-0000000000f3'
+  where id = '00000000-0000-4000-8000-0000000000d2';

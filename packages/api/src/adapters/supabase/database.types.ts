@@ -16,10 +16,12 @@ export type Database = {
           phone_verified_at: string | null;
           locale: string;
           role: string;
+          share_designs: boolean;
+          share_designs_changed_at: string | null;
           created_at: string;
         };
         Insert: never;
-        Update: { name?: string | null; locale?: string };
+        Update: { name?: string | null; locale?: string; share_designs?: boolean };
       };
       clients: {
         Row: { id: string; owner_id: string; name: string; notes: string | null; created_at: string };
