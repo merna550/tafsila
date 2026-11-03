@@ -1,0 +1,32 @@
+{
+  "note": "Docs-shaped sample with invented values and a test secret; replace with a recorded sandbox callback when #366 provides keys.",
+  "secret": "test-hmac-secret-not-real",
+  "hmac": "07651ee7d765b7083cf8e073a4806bd99b8f056f7fe292233592691719fb5fb39a7e13f4c19ba5db64d4f8b4968fbcf332a3c0276af836991501112ad150a4d8",
+  "transaction": {
+    "id": 100200300,
+    "pending": false,
+    "amount_cents": 15000,
+    "success": true,
+    "is_auth": false,
+    "is_capture": false,
+    "is_standalone_payment": true,
+    "is_voided": false,
+    "is_refunded": false,
+    "is_3d_secure": true,
+    "integration_id": 4001,
+    "has_parent_transaction": false,
+    "owner": 5001,
+    "error_occured": false,
+    "created_at": "2026-10-30T12:30:00.123456",
+    "currency": "EGP",
+    "order": {
+      "id": 900100,
+      "merchant_order_id": "11111111-2222-3333-4444-555555555555"
+    },
+    "source_data": {
+      "pan": "2346",
+      "sub_type": "MasterCard",
+      "type": "card"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 /** Runtime configuration: every environment variable is declared and validated here (ADR-004, build once / run anywhere). */
 import { z } from "zod";
 import { APP_ENVIRONMENTS } from "./app-env";
+import { paymentEnvFields, refinePaymentEnv } from "./payment";
 import { JOB_QUEUES, positiveInt, refineJobQueueEnv } from "./jobs";
 
 export { APP_ENVIRONMENTS } from "./app-env";
@@ -105,8 +106,8 @@ const baseServerEnvSchema = z.object({
   CHAT_MESSAGES_PER_DESIGN: positiveInt("CHAT_MESSAGES_PER_DESIGN").optional(),
   AI_CHAT_DAILY_LIMIT: positiveInt("AI_CHAT_DAILY_LIMIT").optional(),
   AI_EXPLAIN_DAILY_LIMIT: positiveInt("AI_EXPLAIN_DAILY_LIMIT").optional(),
-  PAYMOB_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
-  PAYMOB_API_KEY: z.string().min(1).optional(),
+  APP_URL: z.url().default("http://localhost:3000"),
+  ...paymentEnvFields,
   SENTRY_DSN: z.url().optional(),
   POSTHOG_KEY: z.string().min(1).optional(),
   POSTHOG_HOST: z.url().default("https://us.i.posthog.com"),
@@ -136,12 +137,11 @@ function refinePosthogErasureEnv(
   });
 }
 
-/** Variables that are optional until their milestone (AI in M6, Paymob in M7) or locally (observability) but mandatory in production. */
+/** Variables that are optional until their milestone (AI in M6) or locally (observability) but mandatory in production. */
 export const PRODUCTION_REQUIRED_KEYS = [
   "AI_MODEL_ANALYZE",
   "AI_MODEL_CHAT",
   "AI_API_KEY",
-  "PAYMOB_API_KEY",
   "SENTRY_DSN",
   "POSTHOG_KEY",
 ] as const;
@@ -151,6 +151,7 @@ export const serverEnvSchema = baseServerEnvSchema.superRefine((env, ctx) => {
   refinePhoneEnv(env, ctx);
   refinePosthogErasureEnv(env, ctx);
   refineJobQueueEnv(env, ctx);
+  refinePaymentEnv(env, ctx);
   if (env.APP_ENV !== "production") return;
   if (env.AI_PROVIDER === "fake") {
     ctx.addIssue({

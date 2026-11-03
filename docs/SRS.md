@@ -300,7 +300,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | FR-BILL-01 | Credit ledger: each new pattern (new design) consumes 1 credit; regenerations of the same design with new measurements do **not** consume credits | M |
 | FR-BILL-02 | Free trial grants 3 credits after phone verification. _Issue #26 only exposes the eligibility flag (`trialEligible`, `private.is_trial_eligible`); granting credits is M7_ | M |
 | FR-BILL-03 | Products: single pattern (49 EGP), 5-pack (199 EGP, 90-day expiry), Hobby monthly (149 EGP, 8 credits), Pro monthly (349 EGP, 30 credits, unlimited client profiles). Prices stored in DB, not code | M |
-| FR-BILL-04 | Paymob integration: cards, mobile wallets, Fawry reference; server-side payment intention; webhook with HMAC verification; idempotent processing | M |
+| FR-BILL-04 | Paymob integration: cards, mobile wallets, cash at a kiosk (Aman/Masary reference; Fawry only if Paymob confirms it); server-side payment intention; webhook with HMAC verification; idempotent processing | M |
 | FR-BILL-05 | Subscription renewal reminders and manual renewal (auto-renew if Paymob tokenisation is available) | M |
 | FR-BILL-06 | Invoices/receipts page | S |
 | FR-BILL-07 | Coupons / referral credits | S |
