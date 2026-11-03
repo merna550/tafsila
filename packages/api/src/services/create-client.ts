@@ -1,6 +1,7 @@
 /** Use case: create a client, unless the plan limit says no. */
 import type { Client, CreateClientInput } from "@tafsila/schemas";
 import { AppError } from "../domain/errors";
+import { canAddClient } from "../domain/plan-limits";
 import type { ClientRepository } from "../ports/client-repository";
 import type { PlanLimits } from "../ports/plan-limits";
 import type { AuthContext } from "../ports/token-verifier";
@@ -26,6 +27,6 @@ export async function createClient(
   input: CreateClientInput,
 ): Promise<Client> {
   const count = await deps.clients.count(ctx);
-  if (!(await deps.planLimits.canAddClient(ctx, count))) throw new AppError("FORBIDDEN");
+  if (!canAddClient(await deps.planLimits.limits(ctx), count)) throw new AppError("FORBIDDEN");
   return deps.clients.create(ctx, input);
 }

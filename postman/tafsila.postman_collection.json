@@ -54,6 +54,104 @@
       "event": []
     },
     {
+      "name": "billing",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Active products (prices in piastres), cheapest first",
+          "request": {
+            "name": "Active products (prices in piastres), cheapest first",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "billing",
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"items\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Credit balance, grants with their expiry, the active plan and the plan limits; grants the free trial first when a verified user never got it",
+          "request": {
+            "name": "Credit balance, grants with their expiry, the active plan and the plan limits; grants the free trial first when a verified user never got it",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "me",
+                "credits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"response has the documented fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  for (const key of [\"balance\",\"grants\",\"plan\",\"limits\"]) pm.expect(body).to.have.property(key);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
       "name": "Clients and measurements",
       "item": [
         {
@@ -1629,6 +1727,71 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "42 Read credits (unverified user, no trial yet)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has balance\", () => pm.expect(pm.response.json()).to.have.property(\"balance\"));",
+                  "pm.test(\"has grants\", () => pm.expect(pm.response.json()).to.have.property(\"grants\"));",
+                  "pm.test(\"has plan\", () => pm.expect(pm.response.json()).to.have.property(\"plan\"));",
+                  "pm.test(\"has limits\", () => pm.expect(pm.response.json()).to.have.property(\"limits\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me/credits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me",
+                "credits"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "43 List the products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has items\", () => pm.expect(pm.response.json()).to.have.property(\"items\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing",
+                "products"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1888,6 +2051,40 @@
           "response": []
         },
         {
+          "name": "ERR GET /api/billing/products without a token returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error code is UNAUTHENTICATED\", () => pm.expect(pm.response.json().code).to.eql(\"UNAUTHENTICATED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR GET /api/clients without a token returns 401",
           "event": [
             {
@@ -2140,6 +2337,40 @@
               "path": [
                 "api",
                 "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR GET /api/me/credits without a token returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error code is UNAUTHENTICATED\", () => pm.expect(pm.response.json().code).to.eql(\"UNAUTHENTICATED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me/credits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me",
+                "credits"
               ]
             }
           },
@@ -3118,7 +3349,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "38de1ba8954a764f5db3160666eb68f5afd23e9528e9501a4f3b7ae1b68fa554"
+    "_postman_id": "278f13cc7b82a396a88338b80dc8b9e6583f8e2b5f1479b512b68dd0e5254279"
   },
   "auth": {
     "type": "bearer",

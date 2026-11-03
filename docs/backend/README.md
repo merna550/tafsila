@@ -28,6 +28,7 @@ Kept current in the same PR as every backend change (Definition of Done).
 | `tutorials/delete-account.md`      | What account deletion removes, where, how to check it, the admin SQL, the PostHog key |
 | `tutorials/docker.md`              | Images, containers, compose profiles, prod-like local run                             |
 | `tutorials/add-garment-module.md`  | New pattern feature in the engine (geometry, validation, tests, sew test)             |
+| `tutorials/credits-and-trial.md`   | The free trial, the credits read and how to give a local user credits                 |
 
 ## Authentication (plan #25, part B)
 

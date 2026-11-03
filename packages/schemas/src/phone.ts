@@ -38,6 +38,8 @@ export type VerifyPhoneBody = z.infer<typeof verifyPhoneBodySchema>;
 export const verifyPhoneResponseSchema = z.object({
   verifiedAt: z.iso.datetime().meta({ example: "2026-10-12T10:00:00.000Z" }),
   trialEligible: z.boolean(),
+  /** True when the free trial credits were granted by this call. */
+  trialGranted: z.boolean().optional().meta({ example: true }),
 });
 
 /** Parsed verify response. */

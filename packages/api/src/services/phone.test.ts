@@ -178,20 +178,21 @@ describe("verifyPhone", () => {
   it("verifies, marks eligible for the trial and emits phone_verified without the number", async () => {
     await send(s, USER_A);
     const result = await verify(s, USER_A, "١٢٣٤٥٦");
-    expect(result).toEqual({ verifiedAt: START.toISOString(), trialEligible: true });
+    expect(result).toEqual({ verifiedAt: START.toISOString(), trialEligible: true, trialGranted: true });
+    // The trial is granted in the same step, so she is no longer "eligible" afterwards.
     expect(await getPhoneStatus(s.phones, authFor(USER_A))).toEqual({
       verified: true,
       phone: PHONE,
-      trialEligible: true,
+      trialEligible: false,
     });
-    expect(s.events.at(-1)).toEqual({ name: "phone_verified", props: { trial_eligible: true } });
+    expect(s.events.map((e) => e.name).slice(-2)).toEqual(["phone_verified", "trial_granted"]);
+    expect(s.events.at(-1)).toEqual({ name: "trial_granted", props: { source: "verify" } });
     expect(JSON.stringify(s.events)).not.toContain("0000");
   });
 
   it("is not eligible once the trial was granted", async () => {
     await send(s, USER_A);
     await verify(s, USER_A);
-    s.phones.grantTrial(USER_A);
     expect((await getPhoneStatus(s.phones, authFor(USER_A))).trialEligible).toBe(false);
     expect(await s.phones.isEligible(USER_A)).toBe(false);
   });

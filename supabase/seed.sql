@@ -93,6 +93,15 @@ select private.grant_credits('00000000-0000-4000-8000-000000000001', 3, 'trial',
 select private.grant_credits('00000000-0000-4000-8000-000000000001', 5, 'purchase', 'seed-payment-1', now() + interval '90 days');
 select private.consume_credit('00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-0000000000d1');
 
+-- Trial and plan (issue #370): every phone-verified seed account got its trial through the same function the API uses
+-- (the trial user already holds its grant above, so only the flag is set); the Pro workshop has an active Pro plan that
+-- ends in 5 days, so the credits screen shows "renews soon".
+update public.trial_phones set trial_granted_at = now() where user_id = '00000000-0000-4000-8000-000000000001';
+select private.grant_trial('00000000-0000-4000-8000-000000000002', 3);
+select private.grant_trial('00000000-0000-4000-8000-000000000004', 3);
+insert into public.subscriptions (user_id, product_code, status, current_period_end)
+values ('00000000-0000-4000-8000-000000000002', 'pro', 'active', now() + interval '5 days');
+
 -- Design sharing (issue #369): the Pro workshop agrees to share; it has one design (the seed dress spec, no photos).
 -- The other seed users keep the default (not sharing).
 update public.profiles set share_designs = true where id = '00000000-0000-4000-8000-000000000002';

@@ -21,6 +21,9 @@ const phoneCodeRequestedSchema = z.object({ attempt: z.enum(["first", "resend"])
 /** Server event: the phone was verified; says only whether the free trial is still available. */
 const phoneVerifiedSchema = z.object({ trial_eligible: z.boolean() }).strict();
 
+/** Server event: the free trial credits were granted, at phone verification or lazily on the first credits read. */
+const trialGrantedSchema = z.object({ source: z.enum(["verify", "lazy"]) }).strict();
+
 /** Server event: a verification step failed, with a fixed reason (never the number or the code). */
 const phoneVerificationFailedSchema = z
   .object({ reason: z.enum(["invalid_code", "already_used", "rate_limited", "send_failed"]) })
@@ -60,6 +63,7 @@ export const ANALYTICS_EVENTS = {
   signup_completed: signupCompletedSchema,
   phone_code_requested: phoneCodeRequestedSchema,
   phone_verified: phoneVerifiedSchema,
+  trial_granted: trialGrantedSchema,
   phone_verification_failed: phoneVerificationFailedSchema,
   phone_verify_viewed: phoneVerifyViewedSchema,
   phone_verify_skipped: phoneVerifySkippedSchema,

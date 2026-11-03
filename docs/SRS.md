@@ -298,7 +298,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 | ID | Requirement | Pri |
 |---|---|---|
 | FR-BILL-01 | Credit ledger: each new pattern (new design) consumes 1 credit; regenerations of the same design with new measurements do **not** consume credits | M |
-| FR-BILL-02 | Free trial grants 3 credits after phone verification. _Issue #26 only exposes the eligibility flag (`trialEligible`, `private.is_trial_eligible`); granting credits is M7_ | M |
+| FR-BILL-02 | Free trial grants 3 credits after phone verification. _Done in #370: `private.grant_trial` runs in the same transaction as the phone verification (`trialGranted` in the verify response); a user verified earlier gets it on the first `GET /api/me/credits`. Once per phone number_ | M |
 | FR-BILL-03 | Products: single pattern (49 EGP), 5-pack (199 EGP, 90-day expiry), Hobby monthly (149 EGP, 8 credits), Pro monthly (349 EGP, 30 credits, unlimited client profiles). Prices stored in DB, not code | M |
 | FR-BILL-04 | Paymob integration: cards, mobile wallets, cash at a kiosk (Aman/Masary reference; Fawry only if Paymob confirms it); server-side payment intention; webhook with HMAC verification; idempotent processing | M |
 | FR-BILL-05 | Subscription renewal reminders and manual renewal (auto-renew if Paymob tokenisation is available) | M |
@@ -506,7 +506,8 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | GET, PUT, DELETE | `/api/measurements/:id` | Read (fresh warnings), replace label/size label/measurements, delete |
 | POST | `/api/billing/checkout` | Create Paymob payment intention for a product |
 | POST | `/api/billing/webhook` | Paymob callback (HMAC verified, idempotent) |
-| GET | `/api/me/credits` | Balance + plan |
+| GET | `/api/me/credits` | Balance, grants with expiry (earliest first), active plan with `renewSoon` (or null) and limits `{ maxClients (null = unlimited), chatPerDesign }`; grants the free trial first when a verified user never got it (#370). 401 without a token |
+| GET | `/api/billing/products` | Active products, cheapest first (prices in piastres, credits, validity, limits, Arabic and English names); signed-in users only (#370) |
 | GET | `/api/admin/stats` | Admin only: users, verified phones, sign-ups today and in 7 days, clients (ADR-32a) |
 | GET | `/api/admin/users` | Admin only: users newest first with `q` (name, e-mail, phone), `verified`, `limit`, `offset`; a client count, never measurements or notes |
 | GET | `/api/admin/users/:id` | Admin only: one user, read-only |
