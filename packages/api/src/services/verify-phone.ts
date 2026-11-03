@@ -2,6 +2,7 @@
 import type { VerifyPhoneResponse } from "@tafsila/schemas";
 import { toAsciiDigits } from "@tafsila/utils";
 import { AppError } from "../domain/errors";
+import { TRIAL_CREDITS } from "../domain/billing";
 import { VERIFY_FAIL_LIMITS, type AttemptResult } from "../domain/phone-limits";
 import type { AuthContext } from "../ports/token-verifier";
 import type { PhoneDeps } from "./phone-shared";
@@ -57,7 +58,7 @@ async function providerUser(deps: PhoneDeps, e164: string, code: string): Promis
  * @param userId - Caller.
  * @param e164 - Number.
  * @param phoneHash - Keyed hash of the number.
- * @returns When verified and whether the trial is available.
+ * @returns When verified, whether the trial was available and whether it was granted now.
  */
 async function confirm(
   deps: PhoneDeps,
@@ -66,8 +67,9 @@ async function confirm(
   phoneHash: Uint8Array,
 ): Promise<VerifyPhoneResponse> {
   try {
-    const confirmed = await deps.phones.confirm(userId, e164, phoneHash);
+    const confirmed = await deps.phones.confirm(userId, e164, phoneHash, TRIAL_CREDITS);
     deps.analytics.capture(userId, "phone_verified", { trial_eligible: confirmed.trialEligible });
+    if (confirmed.trialGranted) deps.analytics.capture(userId, "trial_granted", { source: "verify" });
     return confirmed;
   } catch (error) {
     if (error instanceof AppError && error.code === "PHONE_ALREADY_USED") {

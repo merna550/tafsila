@@ -22,6 +22,7 @@ import { OPENAPI_DOCUMENT_CONFIG } from "./openapi/document-config";
 import { docsRoutes } from "./routes/docs";
 import { healthRoutes } from "./routes/health";
 import { meRoutes } from "./routes/me";
+import { billingRoutes } from "./routes/billing";
 import { phoneRoutes } from "./routes/phone";
 import { profileRoutes } from "./routes/profile";
 
@@ -61,6 +62,7 @@ export function createApp(container: Container = createContainer()): OpenAPIHono
   app.route("/", measurementRoutes(container));
   app.route("/", sizeChartRoutes(container));
   app.route("/", phoneRoutes(container));
+  app.route("/", billingRoutes(container));
   app.route("/", profileRoutes(container));
   app.route("/", accountRoutes(container));
   app.route("/", adminRoutes(container));

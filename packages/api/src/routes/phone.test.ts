@@ -37,7 +37,7 @@ describe("phone routes", () => {
     expect(await (await call(USER_A, "GET", "/phone")).json()).toEqual({
       verified: true,
       phone: "+201000000005",
-      trialEligible: true,
+      trialEligible: false,
     });
   });
 

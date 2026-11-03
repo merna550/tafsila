@@ -35,7 +35,8 @@ import {
   createRejectingTokenVerifier,
   createJwksTokenVerifier,
 } from "./adapters/supabase/jwks-token-verifier";
-import { createUnlimitedPlanLimits } from "./adapters/plan/unlimited-plan-limits";
+import { createBillingRepository } from "./adapters/supabase/billing-repository";
+import { createPlanLimits } from "./adapters/supabase/plan-limits";
 import { createClientRepository } from "./adapters/supabase/client-repository";
 import { createChatRepository } from "./adapters/supabase/chat-repository";
 import { createDesignRepository } from "./adapters/supabase/design-repository";
@@ -70,6 +71,7 @@ import type { ProfileRepository } from "./ports/profile-repository";
 import type { UserFilesRemover } from "./ports/user-files-remover";
 import type { Analytics } from "./ports/analytics";
 import type { Clock } from "./ports/clock";
+import type { BillingRepository } from "./ports/billing-repository";
 import type { ChatRepository } from "./ports/chat-repository";
 import type { ClientRepository } from "./ports/client-repository";
 import type { DesignRepository } from "./ports/design-repository";
@@ -129,8 +131,10 @@ export interface Container {
   readonly fabricExplanations: FabricExplanationRepository;
   /** Users and stats for the admin screens (admin only; the database checks the admin again). */
   readonly admin: AdminRepository;
-  /** What the user's plan allows (unlimited until M7). */
+  /** What the user's plan allows (10 clients without a plan, ADR-365 item 6). */
   readonly planLimits: PlanLimits;
+  /** Credits, plans, the trial grant and the products on sale. */
+  readonly billing: BillingRepository;
   /** Sends and checks phone codes. */
   readonly phoneOtp: PhoneOtp;
   /** Keyed hashes of phones and IPs. */
@@ -172,6 +176,20 @@ export interface Container {
 }
 
 /**
+ * Chat messages per design without a plan; a bad jobs configuration (reported by createJobs) falls back to the default.
+ *
+ * @param source - Environment variables to read.
+ * @returns The limit.
+ */
+function chatPerDesign(source: Record<string, string | undefined>): number {
+  try {
+    return loadJobsConfig(source).chatMessagesPerDesign;
+  } catch {
+    return loadJobsConfig({}).chatMessagesPerDesign;
+  }
+}
+
+/**
  * Chooses the repositories: Drizzle on DATABASE_URL, otherwise ones that fail with INTERNAL_ERROR,
  * so a missing URL can never silently fall back to memory in production.
  *
@@ -186,6 +204,8 @@ export function createRepositories(source: Record<string, string | undefined> = 
   return {
     phoneVerification: createPhoneVerificationRepository(withApiRole),
     trialEligibility: createTrialEligibility(withApiRole),
+    billing: createBillingRepository(withApiRole, withUser),
+    planLimits: createPlanLimits(withApiRole, chatPerDesign(source)),
     clients: createClientRepository(withUser),
     designs: createDesignRepository(withUser),
     versions: createPatternVersionRepository(withUser),
@@ -388,7 +408,6 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     ...createObservability(),
     tokenVerifier: createTokenVerifier(),
     ...createRepositories(),
-    planLimits: createUnlimitedPlanLimits(),
     ...createPhoneServices(),
     ...createAccountErasure(),
     photoDownloader: createFetchPhotoDownloader(),

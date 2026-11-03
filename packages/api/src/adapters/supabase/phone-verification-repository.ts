@@ -2,8 +2,13 @@
 import { sql } from "drizzle-orm";
 import { AppError } from "../../domain/errors";
 import type { AttemptResult, LimitScope } from "../../domain/phone-limits";
-import type { PhoneVerificationRepository, NumberState } from "../../ports/phone-verification-repository";
+import type {
+  ConfirmResult,
+  PhoneVerificationRepository,
+  NumberState,
+} from "../../ports/phone-verification-repository";
 import type { TrialEligibility } from "../../ports/trial-eligibility";
+import { scalar } from "./scalar";
 import { sqlState } from "./sql-state";
 import type { Tx, WithApiRole } from "./with-user";
 
@@ -23,17 +28,38 @@ function byteaLiteral(bytes: Uint8Array | null): string | null {
 }
 
 /**
- * Runs a one-row, one-column `select fn(...) as result` and returns the value.
+ * Writes the verified phone and grants the trial in the caller's transaction, so a failed grant rolls the verification back.
+ * Maps the database's phone errors to AppError.
  *
  * @param tx - Transaction.
- * @param query - The select statement.
- * @returns The `result` column.
+ * @param input - Account, verified number, its keyed hash and the credits of the free trial.
+ * @returns When verified, whether the trial was available and whether it was granted now.
  */
-async function scalar<T>(tx: Tx, query: ReturnType<typeof sql>): Promise<T> {
-  const rows = (await tx.execute(query)) as unknown as { result: T }[];
-  const row = rows[0];
-  if (!row) throw new Error("private function returned no row");
-  return row.result;
+async function confirmAndGrant(
+  tx: Tx,
+  input: { userId: string; e164: string; phoneHash: Uint8Array; trialCredits: number },
+): Promise<ConfirmResult> {
+  const { userId, e164, phoneHash, trialCredits } = input;
+  try {
+    const r = await scalar<{ verified_at: string; trial_eligible: boolean }>(
+      tx,
+      sql`select private.confirm_phone(${userId}::uuid, ${e164}::text, ${byteaLiteral(phoneHash)}::bytea) as result`,
+    );
+    const trialGranted = await scalar<boolean>(
+      tx,
+      sql`select private.grant_trial(${userId}::uuid, ${trialCredits}::integer) as result`,
+    );
+    return {
+      verifiedAt: new Date(r.verified_at).toISOString(),
+      trialEligible: r.trial_eligible,
+      trialGranted,
+    };
+  } catch (error) {
+    const state = sqlState(error);
+    if (state === SQLSTATE_USED) throw new AppError("PHONE_ALREADY_USED");
+    if (state === SQLSTATE_VERIFIED) throw new AppError("PHONE_ALREADY_VERIFIED");
+    throw error;
+  }
 }
 
 /**
@@ -81,21 +107,8 @@ export function createPhoneVerificationRepository(withApiRole: WithApiRole): Pho
         };
         return result;
       }),
-    confirm: (userId, e164, phoneHash) =>
-      withApiRole(async (tx) => {
-        try {
-          const r = await scalar<{ verified_at: string; trial_eligible: boolean }>(
-            tx,
-            sql`select private.confirm_phone(${userId}::uuid, ${e164}::text, ${byteaLiteral(phoneHash)}::bytea) as result`,
-          );
-          return { verifiedAt: new Date(r.verified_at).toISOString(), trialEligible: r.trial_eligible };
-        } catch (error) {
-          const state = sqlState(error);
-          if (state === SQLSTATE_USED) throw new AppError("PHONE_ALREADY_USED");
-          if (state === SQLSTATE_VERIFIED) throw new AppError("PHONE_ALREADY_VERIFIED");
-          throw error;
-        }
-      }),
+    confirm: (userId, e164, phoneHash, trialCredits) =>
+      withApiRole((tx) => confirmAndGrant(tx, { userId, e164, phoneHash, trialCredits })),
   };
 }
 

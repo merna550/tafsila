@@ -29,6 +29,8 @@ export interface AttemptInput {
 export interface ConfirmResult {
   readonly verifiedAt: string;
   readonly trialEligible: boolean;
+  /** True when the trial credits were granted in the same transaction. */
+  readonly trialGranted: boolean;
 }
 
 /** Reads and writes phone verification state; adapters run through `withApiRole` and the `private` functions. */
@@ -37,6 +39,9 @@ export interface PhoneVerificationRepository {
   status(ctx: AuthContext, number?: { e164: string; phoneHash: Uint8Array }): Promise<PhoneStatus>;
   /** Atomic rate-limit check, recording the event when allowed and asked. */
   attempt(input: AttemptInput): Promise<AttemptResult>;
-  /** Writes the verified phone; throws AppError PHONE_ALREADY_USED or PHONE_ALREADY_VERIFIED. */
-  confirm(userId: string, e164: string, phoneHash: Uint8Array): Promise<ConfirmResult>;
+  /**
+   * Writes the verified phone and grants the trial in the same transaction (a failed grant rolls the verification back);
+   * throws AppError PHONE_ALREADY_USED or PHONE_ALREADY_VERIFIED.
+   */
+  confirm(userId: string, e164: string, phoneHash: Uint8Array, trialCredits: number): Promise<ConfirmResult>;
 }

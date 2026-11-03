@@ -24,7 +24,11 @@ function setup() {
   const measurementSets = createMemoryMeasurementSetRepository(store);
   return {
     store,
-    deps: { clients, measurementSets, planLimits: { canAddClient: () => Promise.resolve(true) } },
+    deps: {
+      clients,
+      measurementSets,
+      planLimits: { limits: () => Promise.resolve({ maxClients: null, chatPerDesign: 10 }) },
+    },
   };
 }
 

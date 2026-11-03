@@ -35,7 +35,7 @@ import {
 import { createMemorySizeChartRepository } from "../adapters/memory/size-chart-repository";
 import { createHmacPhoneHasher } from "../adapters/system/hmac-phone-hasher";
 import { createMemoryStore, type MemoryStore } from "../adapters/memory/memory-store";
-import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
+import { createMemoryBilling, type MemoryBilling } from "../adapters/memory/billing-repository";
 import { createJwksTokenVerifier } from "../adapters/supabase/jwks-token-verifier";
 import { createApp } from "../app";
 import { createContainer, type Container } from "../container";
@@ -67,6 +67,8 @@ export interface MemoryApp {
   readonly phoneOtp: MemoryPhoneOtp;
   /** Memory phone verification state (can delete accounts and grant trials). */
   readonly phones: MemoryPhoneVerification;
+  /** Memory credits, plans and products (shares the trial rule with `phones`). */
+  readonly billing: MemoryBilling;
   /** Memory account deletion ports (call log, failure switch, fake storage). */
   readonly deletion: MemoryAccountDeletion;
   /** Memory photo storage; shares its objects with `deletion.files` so account deletion can be checked. */
@@ -142,6 +144,8 @@ export interface MemoryAppOptions {
   readonly ai?: AiDeps;
   /** Changes to the jobs configuration (the daily cap, the rate limit). */
   readonly jobsConfig?: Partial<JobsConfig>;
+  /** Credits every user has on top of her lots (default 0; tests that save versions will need some). */
+  readonly startingCredits?: number;
 }
 
 /** Who a test request is made as: a user id and optional role and email claims. */
@@ -171,6 +175,22 @@ function createSender(
 }
 
 /**
+ * The memory billing, sharing the trial rule with the memory phone verification.
+ *
+ * @param phones - Memory phone verification.
+ * @param options - Jobs configuration and starting credits.
+ * @returns The memory billing.
+ */
+function memoryBilling(phones: MemoryPhoneVerification, options: MemoryAppOptions): MemoryBilling {
+  return createMemoryBilling({
+    clock: { now: () => new Date() },
+    phones,
+    chatPerDesign: { ...loadJobsConfig({}), ...options.jobsConfig }.chatMessagesPerDesign,
+    startingCredits: options.startingCredits,
+  });
+}
+
+/**
  * Creates the app with memory repositories.
  *
  * @param overrides - Container parts to replace (e.g. plan limits that deny).
@@ -185,6 +205,7 @@ export async function createMemoryApp(
   const store = createMemoryStore();
   const phoneOtp = createMemoryPhoneOtp();
   const phones = createMemoryPhoneVerification({ now: () => new Date() });
+  const billing = memoryBilling(phones, options);
   const deletion = createMemoryAccountDeletion(store);
   const photos = createMemoryPhotoStorage(deletion.objects);
   const { aiUsage, unsupported, downloader } = memoryAiParts();
@@ -206,7 +227,8 @@ export async function createMemoryApp(
     accountAudit: deletion.accountAudit,
     photoStorage: photos,
     aiUsage,
-    planLimits: createUnlimitedPlanLimits(),
+    planLimits: billing,
+    billing,
     phoneOtp,
     phoneHasher: createHmacPhoneHasher("memory-app-phone-hash-secret-0123456789"),
     phoneVerification: phones,
@@ -221,6 +243,7 @@ export async function createMemoryApp(
     store,
     phoneOtp,
     phones,
+    billing,
     deletion,
     photos,
     aiUsage,

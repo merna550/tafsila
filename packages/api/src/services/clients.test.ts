@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { createMemoryClientRepository } from "../adapters/memory/client-repository";
 import { createMemoryStore } from "../adapters/memory/memory-store";
 import { createMemoryMeasurementSetRepository } from "../adapters/memory/measurement-set-repository";
-import { createUnlimitedPlanLimits } from "../adapters/plan/unlimited-plan-limits";
 import { authFor, USER_A, USER_B } from "../test-support/memory-app";
 import { sizeM } from "@tafsila/test-fixtures";
 import { createClient } from "./create-client";
@@ -23,7 +22,7 @@ function setup(canAdd = true) {
   const store = createMemoryStore();
   const clients = createMemoryClientRepository(store);
   const measurementSets = createMemoryMeasurementSetRepository(store);
-  const planLimits = canAdd ? createUnlimitedPlanLimits() : { canAddClient: () => Promise.resolve(false) };
+  const planLimits = { limits: () => Promise.resolve({ maxClients: canAdd ? null : 0, chatPerDesign: 10 }) };
   return { store, deps: { clients, measurementSets, planLimits } };
 }
 
