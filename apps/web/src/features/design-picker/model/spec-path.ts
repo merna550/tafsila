@@ -63,3 +63,27 @@ export function pathMessageKey(path: FeaturePath): PathMessageKey {
 export function joinNames(names: readonly string[], locale: string): string {
   return new Intl.ListFormat(locale, { style: "long", type: "conjunction" }).format(names);
 }
+
+/**
+ * Reads the current value of a choice as the text its card carries.
+ *
+ * @param spec - The design.
+ * @param path - The feature.
+ * @returns The value as text; a missing slit reads as "none".
+ */
+export function currentChoice(spec: DesignSpec, path: FeaturePath): string | undefined {
+  if (path === "skirt.slit") return spec.skirt?.slit?.position ?? "none";
+  const value = readFeature(spec, path);
+  return typeof value === "string" || typeof value === "boolean" ? String(value) : undefined;
+}
+
+/**
+ * Turns the text of a chosen card back into the value the design holds.
+ *
+ * @param text - The card value.
+ * @returns A boolean for "true" and "false", else the text.
+ */
+export function fromCard(text: string): string | boolean {
+  if (text === "true") return true;
+  return text === "false" ? false : text;
+}

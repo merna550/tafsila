@@ -5,3 +5,10 @@ export { useEditorStore, selectIsDirty, type EditorStore } from "./hooks/use-edi
 export { parseEditorQuery, type EditorQuery } from "./model/editor-query";
 export { OptionIllustration } from "./illustrations";
 export { useDesign } from "./hooks/use-design";
+export { FieldChoice } from "./components/FieldChoice";
+export { FieldMulti } from "./components/FieldMulti";
+export { EditorNotice } from "./components/EditorNotice";
+export { seedEditorDraft } from "./hooks/seed-editor-draft";
+export { sectionsFor, SECTION_PATHS, type SectionId } from "./model/sections";
+export { rawFeatureEdit } from "./model/editor-state";
+export { currentChoice, fromCard, pathMessageKey } from "./model/spec-path";

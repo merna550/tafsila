@@ -74,6 +74,24 @@ export function hydrateState(
 }
 
 /**
+ * Applies one feature edit without the rules (the caller runs `normalizeSpec`).
+ *
+ * @param spec - The design.
+ * @param path - The feature.
+ * @param value - The new value; for `pockets` an array replaces all styles.
+ * @returns The edited design, not yet normalised.
+ */
+export function rawFeatureEdit(
+  spec: DesignSpec,
+  path: FeaturePath,
+  value: FeatureValue | readonly string[],
+): DesignSpec {
+  return path === "pockets" && Array.isArray(value)
+    ? { ...spec, pockets: value as DesignSpec["pockets"] }
+    : withFeatureValue(spec, path, value as FeatureValue);
+}
+
+/**
  * Sets one feature, lets the rules correct what no longer fits, and remembers the corrections.
  *
  * @param state - The current state.
@@ -87,11 +105,7 @@ export function setFeatureState(
   value: FeatureValue | readonly string[],
 ): EditorState {
   if (state.spec === null) return state;
-  const raw =
-    path === "pockets" && Array.isArray(value)
-      ? { ...state.spec, pockets: value as DesignSpec["pockets"] }
-      : withFeatureValue(state.spec, path, value as FeatureValue);
-  return commitState(state, raw);
+  return commitState(state, rawFeatureEdit(state.spec, path, value));
 }
 
 /**

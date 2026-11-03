@@ -7,7 +7,7 @@ import type { ReactElement } from "react";
 import { FIELDS_BY_SECTION } from "../model/section-fields";
 import type { SectionId } from "../model/sections";
 import { overrideApplies, readOverride } from "../model/override-spec";
-import { readFeature } from "../model/spec-path";
+import { currentChoice, fromCard } from "../model/spec-path";
 import { FieldChoice } from "./FieldChoice";
 import { FieldMulti } from "./FieldMulti";
 import { FieldNumber } from "./FieldNumber";
@@ -26,30 +26,6 @@ interface SectionPanelProps {
   readonly onChange: (path: FeaturePath, value: string | boolean | string[]) => void;
   /** Sets or removes a length override in mm. */
   readonly onOverride: (path: OverridePath, mm: number | undefined) => void;
-}
-
-/**
- * Reads the current value of a choice as the text its card carries.
- *
- * @param spec - The design.
- * @param path - The feature.
- * @returns The value as text; a missing slit reads as "none".
- */
-function currentChoice(spec: DesignSpec, path: FeaturePath): string | undefined {
-  if (path === "skirt.slit") return spec.skirt?.slit?.position ?? "none";
-  const value = readFeature(spec, path);
-  return typeof value === "string" || typeof value === "boolean" ? String(value) : undefined;
-}
-
-/**
- * Turns the text of a chosen card back into the value the design holds.
- *
- * @param text - The card value.
- * @returns A boolean for "true" and "false", else the text.
- */
-function fromCard(text: string): string | boolean {
-  if (text === "true") return true;
-  return text === "false" ? false : text;
 }
 
 /** Props for {@link ChoiceFields}. */

@@ -63,7 +63,7 @@ export function AnalysisPanel({
         ) : null}
         {done ? (
           <UiLink asChild>
-            <Link href={`/designs/${designId}`}>{t("doneAction")}</Link>
+            <Link href={`/designs/${designId}/confirm`}>{t("doneAction")}</Link>
           </UiLink>
         ) : null}
         {failed || phase === "slow" ? (
