@@ -3,7 +3,7 @@ import type { Profile, UpdateProfileInput } from "@tafsila/schemas";
 import type { AuthContext } from "./token-verifier";
 
 /** The stored part of the profile; the email comes from the verified token. */
-export type StoredProfile = Pick<Profile, "name" | "locale">;
+export type StoredProfile = Pick<Profile, "name" | "locale" | "shareDesigns">;
 
 /** Stores the caller's profile. */
 export interface ProfileRepository {
@@ -11,11 +11,11 @@ export interface ProfileRepository {
    * Reads the caller's profile.
    *
    * @param ctx - Verified caller.
-   * @returns The name and language, or undefined when the profile does not exist (deleted account).
+   * @returns The name, language and consent, or undefined when the profile does not exist (deleted account).
    */
   get(ctx: AuthContext): Promise<StoredProfile | undefined>;
   /**
-   * Changes name and/or language of the caller's profile.
+   * Changes name, language and/or design-sharing consent of the caller's profile.
    *
    * @param ctx - Verified caller.
    * @param patch - Fields to change.

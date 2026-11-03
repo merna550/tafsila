@@ -1,9 +1,12 @@
-/** Admin routes (FR-ADM, #32): stats, users and the default size chart editor. Every route needs a signed-in admin (the database checks again). */
+/** Admin routes (FR-ADM, #32, #369): stats, users, shared designs, unsupported features and the default size chart editor. Every route needs a signed-in admin (the database checks again). */
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import {
+  adminPageQuerySchema,
+  adminSharedDesignPageSchema,
   adminSizeChartSchema,
   adminStatsSchema,
   adminUserDetailSchema,
+  adminUnsupportedFeaturePageSchema,
   adminUserPageSchema,
   listAdminUsersQuerySchema,
   updateSizeChartInputSchema,
@@ -16,6 +19,7 @@ import { HTTP_OK } from "../openapi/status";
 import { getAdminSizeChart } from "../services/get-admin-size-chart";
 import { getAdminStats } from "../services/get-admin-stats";
 import { getAdminUser } from "../services/get-admin-user";
+import { listAdminSharedDesigns, listAdminUnsupportedFeatures } from "../services/list-admin-shared-designs";
 import { listAdminUsers } from "../services/list-admin-users";
 import { updateDefaultSizeChart } from "../services/update-default-size-chart";
 import { jsonContent } from "./json-content";
@@ -90,6 +94,52 @@ const userRoute = (c: Container) =>
   });
 
 /**
+ * Describes GET /admin/designs.
+ *
+ * @param c - Dependencies.
+ * @returns The route definition.
+ */
+const designsRoute = (c: Container) =>
+  createRoute({
+    method: "get",
+    path: "/admin/designs",
+    tags: ["admin"],
+    summary:
+      "List designs of owners who agreed to share (newest first): current spec and 5-minute photo URLs, never measurements, clients or notes",
+    security: SECURITY,
+    middleware: [requireAuth(c.tokenVerifier), requireRole("admin")] as const,
+    request: { query: adminPageQuerySchema },
+    responses: {
+      [HTTP_OK]: { description: "One page of shared designs", ...jsonContent(adminSharedDesignPageSchema) },
+      ...errorResponses("VALIDATION_FAILED", "UNAUTHENTICATED", "FORBIDDEN", "INTERNAL_ERROR"),
+    },
+  });
+
+/**
+ * Describes GET /admin/unsupported-features.
+ *
+ * @param c - Dependencies.
+ * @returns The route definition.
+ */
+const unsupportedRoute = (c: Container) =>
+  createRoute({
+    method: "get",
+    path: "/admin/unsupported-features",
+    tags: ["admin"],
+    summary: "List unsupported garment features (text and category only, no user or design id)",
+    security: SECURITY,
+    middleware: [requireAuth(c.tokenVerifier), requireRole("admin")] as const,
+    request: { query: adminPageQuerySchema },
+    responses: {
+      [HTTP_OK]: {
+        description: "One page of unsupported features",
+        ...jsonContent(adminUnsupportedFeaturePageSchema),
+      },
+      ...errorResponses("VALIDATION_FAILED", "UNAUTHENTICATED", "FORBIDDEN", "INTERNAL_ERROR"),
+    },
+  });
+
+/**
  * Describes GET /admin/size-charts/default.
  *
  * @param c - Dependencies.
@@ -157,6 +207,12 @@ export function adminRoutes(container: Container): OpenAPIHono<AuthedEnv> {
     )
     .openapi(userRoute(container), async (c) =>
       c.json(await getAdminUser(container, c.get("auth"), c.req.valid("param").id), HTTP_OK),
+    )
+    .openapi(designsRoute(container), async (c) =>
+      c.json(await listAdminSharedDesigns(container, c.get("auth"), c.req.valid("query")), HTTP_OK),
+    )
+    .openapi(unsupportedRoute(container), async (c) =>
+      c.json(await listAdminUnsupportedFeatures(container, c.get("auth"), c.req.valid("query")), HTTP_OK),
     )
     .openapi(getChartRoute(container), async (c) =>
       c.json(await getAdminSizeChart(container, c.get("auth")), HTTP_OK),

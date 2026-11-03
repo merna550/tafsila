@@ -1727,6 +1727,37 @@
           "response": []
         },
         {
+          "name": "ERR GET /api/admin/designs as a normal user returns 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error code is FORBIDDEN\", () => pm.expect(pm.response.json().code).to.eql(\"FORBIDDEN\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/designs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "designs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "ERR GET /api/admin/fabrics without a token returns 401",
           "event": [
             {
@@ -1789,6 +1820,37 @@
                 "api",
                 "admin",
                 "stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ERR GET /api/admin/unsupported-features as a normal user returns 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error code is FORBIDDEN\", () => pm.expect(pm.response.json().code).to.eql(\"FORBIDDEN\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/unsupported-features",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "unsupported-features"
               ]
             }
           },
@@ -3056,7 +3118,7 @@
       "content": "",
       "type": "text/plain"
     },
-    "_postman_id": "273b659375b37b6a93a0bd56659270ca4aa683c43faf2439ff6e8464e4bc1b7c"
+    "_postman_id": "38de1ba8954a764f5db3160666eb68f5afd23e9528e9501a4f3b7ae1b68fa554"
   },
   "auth": {
     "type": "bearer",
