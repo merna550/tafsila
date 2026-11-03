@@ -395,5 +395,21 @@
     },
     "status": 404,
     "code": "NOT_FOUND"
+  },
+  {
+    "name": "ERR GET /api/me/credits without a token returns 401",
+    "method": "GET",
+    "path": "/api/me/credits",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
+  },
+  {
+    "name": "ERR GET /api/billing/products without a token returns 401",
+    "method": "GET",
+    "path": "/api/billing/products",
+    "auth": false,
+    "status": 401,
+    "code": "UNAUTHENTICATED"
   }
 ]

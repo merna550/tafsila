@@ -101,7 +101,9 @@ describe("clients API", () => {
   });
 
   it("answers FORBIDDEN when the plan denies another client", async () => {
-    const limited = await createMemoryApp({ planLimits: { canAddClient: () => Promise.resolve(false) } });
+    const limited = await createMemoryApp({
+      planLimits: { limits: () => Promise.resolve({ maxClients: 0, chatPerDesign: 10 }) },
+    });
     await expectError(await limited.call(USER_A, "POST", "/clients", { name: "x" }), 403, "FORBIDDEN");
   });
 });

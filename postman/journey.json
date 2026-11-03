@@ -529,5 +529,19 @@
     "method": "DELETE",
     "path": "/api/designs/{{designId}}",
     "status": 204
+  },
+  {
+    "name": "42 Read credits (unverified user, no trial yet)",
+    "method": "GET",
+    "path": "/api/me/credits",
+    "status": 200,
+    "has": ["balance", "grants", "plan", "limits"]
+  },
+  {
+    "name": "43 List the products",
+    "method": "GET",
+    "path": "/api/billing/products",
+    "status": 200,
+    "has": ["items"]
   }
 ]

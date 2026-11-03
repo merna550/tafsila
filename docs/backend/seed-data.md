@@ -40,7 +40,7 @@ The two `input_hash` values in `supabase/seed.sql` come from `inputHash(spec, me
 
 ## Billing (issue #367)
 
-`products` is seeded by the migration (single 49 EGP, pack5 199 EGP, hobby 149 EGP, pro 349 EGP; prices in piastres). `supabase/seed.sql` gives `trial@tafsila.test` a trial grant of 3 credits (no expiry), a 5-credit pack that expires in 90 days and one debit for `Seed dress`, so the balance is 7. No seeded payments or subscriptions; tests create them.
+`products` is seeded by the migration (single 49 EGP, pack5 199 EGP, hobby 149 EGP, pro 349 EGP; prices in piastres). `supabase/seed.sql` gives `trial@tafsila.test` a trial grant of 3 credits (no expiry), a 5-credit pack that expires in 90 days and one debit for `Seed dress`, so the balance is 7. `pro@tafsila.test` and `admin@tafsila.test` also got their 3-credit trial through `private.grant_trial` (issue #370; every verified seed account has `trial_granted_at` set), and `pro@tafsila.test` has an active `pro` subscription ending in 5 days (the credits screen shows `renewSoon`). No seeded payments; tests create them. To test the lazy grant, clear `trial_granted_at` of a seed account that has no trial lot (`empty@tafsila.test` after it verifies).
 
 ## Design sharing (issue #369)
 

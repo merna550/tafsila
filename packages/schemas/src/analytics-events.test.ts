@@ -43,6 +43,12 @@ describe("analytics events", () => {
     });
   });
 
+  it("accepts trial_granted with a fixed source only", () => {
+    expect(parseAnalyticsEvent("trial_granted", { source: "lazy" })).toEqual({ source: "lazy" });
+    expect(() => parseAnalyticsEvent("trial_granted", { source: "x" })).toThrow();
+    expect(() => parseAnalyticsEvent("trial_granted", { source: "verify", credits: 3 })).toThrow();
+  });
+
   it("accepts the two browser events of the verify screen with fixed values only", () => {
     expect(parseAnalyticsEvent("phone_verify_viewed", {})).toEqual({});
     expect(parseAnalyticsEvent("phone_verify_skipped", { step: "code" })).toEqual({ step: "code" });

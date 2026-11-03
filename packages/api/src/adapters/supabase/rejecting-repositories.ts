@@ -14,6 +14,8 @@ import type { FabricRepository, FabricRuleRepository } from "../../ports/fabric-
 import type { SizeChartRepository } from "../../ports/size-chart-repository";
 import type { ProfileRepository } from "../../ports/profile-repository";
 import type { PhoneVerificationRepository } from "../../ports/phone-verification-repository";
+import type { PlanLimits } from "../../ports/plan-limits";
+import type { BillingRepository } from "../../ports/billing-repository";
 import type { TrialEligibility } from "../../ports/trial-eligibility";
 
 /** The repositories and ports that need the database. */
@@ -30,6 +32,8 @@ export interface Repositories {
   readonly fabricExplanations: FabricExplanationRepository;
   readonly phoneVerification: PhoneVerificationRepository;
   readonly trialEligibility: TrialEligibility;
+  readonly billing: BillingRepository;
+  readonly planLimits: PlanLimits;
   readonly profiles: ProfileRepository;
   readonly accountAudit: AccountAudit;
   readonly admin: AdminRepository;
@@ -88,6 +92,8 @@ export function createRejectingRepositories(): Repositories {
     fabricExplanations: { find: failing(), save: failing() },
     phoneVerification: { status: failing(), attempt: failing(), confirm: failing() },
     trialEligibility: { isEligible: failing() },
+    planLimits: { limits: failing() },
+    billing: { summary: failing(), grantTrial: failing(), listProducts: failing() },
     profiles: { get: failing(), update: failing() },
     accountAudit: { recordDeleted: failing() },
     admin: {

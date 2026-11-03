@@ -27,6 +27,10 @@ export interface MemoryPhoneVerification extends PhoneVerificationRepository, Tr
   deleteAccount(userId: string): void;
   /** Simulates the billing code granting the trial. */
   grantTrial(userId: string): void;
+  /** Simulates a user verified before M7: verified, trial row present, trial not granted. */
+  verifyWithoutTrial(userId: string, e164: string, phoneHash: Uint8Array): void;
+  /** Registers the billing side that receives the trial credits when `confirm` grants them. */
+  onTrialGranted(listener: (userId: string, credits: number) => void): void;
   /** Recorded rate-limit events. */
   readonly events: LimitEvent[];
 }
@@ -79,8 +83,16 @@ function numberState(
 export function createMemoryPhoneVerification(clock: Clock): MemoryPhoneVerification {
   const state: State = { trial: new Map(), profiles: new Map(), events: [] };
   const { events } = state;
+  const trialListeners: ((userId: string, credits: number) => void)[] = [];
   return {
     events,
+    verifyWithoutTrial(userId, e164, phoneHash) {
+      state.profiles.set(userId, { phone: e164, verifiedAt: clock.now() });
+      state.trial.set(hex(phoneHash), { userId, trialGrantedAt: null });
+    },
+    onTrialGranted(listener) {
+      trialListeners.push(listener);
+    },
     deleteAccount(userId) {
       state.profiles.delete(userId);
       for (const row of state.trial.values()) if (row.userId === userId) row.userId = null;
@@ -111,15 +123,16 @@ export function createMemoryPhoneVerification(clock: Clock): MemoryPhoneVerifica
       if (result.allowed && input.record) events.push({ kind: input.kind, ...keys, at: now });
       return Promise.resolve(result);
     },
-    confirm(userId, e164, phoneHash) {
+    confirm(userId, e164, phoneHash, trialCredits) {
       if (state.profiles.has(userId)) return Promise.reject(new AppError("PHONE_ALREADY_VERIFIED"));
       if (numberState(state, userId, { e164, phoneHash }) !== "free") {
         return Promise.reject(new AppError("PHONE_ALREADY_USED"));
       }
       const now = clock.now();
       state.profiles.set(userId, { phone: e164, verifiedAt: now });
-      state.trial.set(hex(phoneHash), { userId, trialGrantedAt: null });
-      return Promise.resolve({ verifiedAt: now.toISOString(), trialEligible: true });
+      state.trial.set(hex(phoneHash), { userId, trialGrantedAt: now });
+      for (const listener of trialListeners) listener(userId, trialCredits);
+      return Promise.resolve({ verifiedAt: now.toISOString(), trialEligible: true, trialGranted: true });
     },
   };
 }

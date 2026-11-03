@@ -1,14 +1,14 @@
-/** Plan limits port: what the user's plan allows. M7 (payments) replaces the unlimited adapter. */
+/** Plan limits port: what the user's plan allows. The rules that use the values live in domain/plan-limits.ts. */
+import type { PlanLimitValues } from "../domain/plan-limits";
 import type { AuthContext } from "./token-verifier";
 
 /** Answers plan questions for a user. */
 export interface PlanLimits {
   /**
-   * Whether the user may add one more client.
+   * The limits of the user's active plan, or the default limits when she has none.
    *
    * @param ctx - Verified caller.
-   * @param currentCount - Clients the caller has now.
-   * @returns True when one more is allowed.
+   * @returns Max clients (null = unlimited) and chat messages per design.
    */
-  canAddClient(ctx: AuthContext, currentCount: number): Promise<boolean>;
+  limits(ctx: AuthContext): Promise<PlanLimitValues>;
 }

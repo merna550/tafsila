@@ -7,6 +7,7 @@ import { serve } from "@hono/node-server";
 import type { AddressInfo } from "node:net";
 import { createApp } from "../app";
 import { createContainer } from "../container";
+import { createMemoryBilling } from "../adapters/memory/billing-repository";
 import { createMemoryAccountDeletion } from "../adapters/memory/account-deletion";
 import { createMemoryAiUsageRepository } from "../adapters/memory/ai-usage-repository";
 import { createMemoryUnsupportedFeatures } from "../adapters/memory/unsupported-feature-repository";
@@ -40,6 +41,7 @@ store.sizeCharts.push({ id: "00000000-0000-4000-8000-0000000000d1", name: "Demo"
 const deletion = createMemoryAccountDeletion(store);
 const phones = createMemoryPhoneVerification({ now: () => new Date() });
 const photos = createMemoryPhotoStorage(deletion.objects);
+const billing = createMemoryBilling({ clock: { now: () => new Date() }, phones, chatPerDesign: 10 });
 const app = createApp(
   createContainer({
     appInfo: { environment: "test", version: "test", gitSha: "test" },
@@ -73,6 +75,8 @@ const app = createApp(
     phoneHasher: createHmacPhoneHasher("postman-newman-phone-secret-0123456789"),
     phoneVerification: phones,
     trialEligibility: phones,
+    billing,
+    planLimits: billing,
     phoneRules: { testOnly: true, testNumbers: ["+201000000005"] },
     tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
   }),
