@@ -1,9 +1,10 @@
 "use client";
 /** The tabbed side panel: piece details, validation report and options. */
-import type { ValidationReport as Report } from "@tafsila/schemas";
+import type { PatternVersion, ValidationReport as Report } from "@tafsila/schemas";
 import { Card, Tabs } from "@tafsila/ui";
 import { useTranslations } from "next-intl";
 import type { ReactElement } from "react";
+import { ChatPanel } from "@/features/chat-edit";
 import { PatternOptionsPanel, type PatternOptionsValue } from "@/features/pattern-options";
 import {
   PieceList,
@@ -16,7 +17,7 @@ import type { ReportSelection } from "../model/report-selection";
 import { ServerRejectedNotice } from "./ServerRejectedNotice";
 
 /** The tab values. */
-export type PanelTab = "details" | "report" | "options";
+export type PanelTab = "details" | "report" | "options" | "chat";
 
 /** Props of {@link PatternSidePanel}. */
 interface PatternSidePanelProps {
@@ -40,6 +41,12 @@ interface PatternSidePanelProps {
   readonly onOptions: (options: PatternOptionsValue) => void;
   /** Client from the URL, applied while none is chosen. */
   readonly preselectClientId: string | null;
+  /** The design (the chat belongs to it). */
+  readonly designId: string;
+  /** The saved version the chat edits, or null before the first save. */
+  readonly versionId: string | null;
+  /** Called with the new version after a chat proposal was applied. */
+  readonly onChatApplied: (version: PatternVersion) => void;
 }
 
 /**
@@ -106,6 +113,17 @@ export function PatternSidePanel(props: Readonly<PatternSidePanelProps>): ReactE
                 value={props.options}
                 onChange={props.onOptions}
                 preselectClientId={props.preselectClientId}
+              />
+            ),
+          },
+          {
+            value: "chat",
+            label: t("chat"),
+            content: (
+              <ChatPanel
+                designId={props.designId}
+                versionId={props.versionId}
+                onApplied={props.onChatApplied}
               />
             ),
           },
