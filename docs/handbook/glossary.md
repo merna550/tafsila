@@ -504,6 +504,14 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 **In Tafsila:** `DesignAnalysisResult.confidence` holds one per feature; a feature the engine had to change gets 0 and a note, and the confirmation screen asks the user to check low ones (FR-DES-07, [ADR-335](../decisions/335-m6-scope.md)). **Card:** [AI providers](tech/ai-providers.md) · **Level:** beginner  
 **Learn:** <https://en.wikipedia.org/wiki/Confidence_score>
 
+<a id="chat-panel"></a>
+
+### Chat panel
+
+**Plain words:** The "Assistant" tab beside the pattern. You write a change in your own words, see what would change, and press Apply to save it as a new version.  
+**In Tafsila:** `features/chat-edit`, a tab of the pattern page's side panel (issue #344, FR-CHAT-01 to FR-CHAT-04, FR-CHAT-06); apply is always an explicit button. **Level:** beginner  
+**Learn:** [decision 344](../decisions/344-chat-panel.md)
+
 <a id="confirmation-screen"></a>
 
 ### Confirmation screen
