@@ -2,15 +2,15 @@ import { expect, test } from "@playwright/test";
 import { projectLocale } from "./support/app";
 import { newEmail, signUpAndConfirm } from "./support/accounts";
 import { jpegWithGps } from "./support/photos";
-import { saveVersion } from "./support/pattern";
+import { openSeedClient, saveVersion } from "./support/pattern";
 
 /** Photos to a saved pattern (issue #342, FR-DES-03 to FR-DES-05): analyse with the fake provider, confirm the unsure feature, change one, continue and save. */
 test("confirm the AI's features, change one, continue to the pattern and save a version", async ({
   page,
 }, testInfo) => {
-  const { prefix, t } = projectLocale(testInfo);
-  await signUpAndConfirm(page, t, prefix, newEmail());
-  await page.getByRole("link", { name: t.phoneVerification.back }).click();
+  const env = projectLocale(testInfo);
+  const { prefix, t } = env;
+  const clientId = await openSeedClient(page, env);
   await page.goto(`${prefix}/designs/new/photos`);
   await page.getByRole("radio", { name: t.uploadDesign.category.dress }).click();
   const photo = await jpegWithGps(page, 1200, 800);
@@ -49,11 +49,13 @@ test("confirm the AI's features, change one, continue to the pattern and save a 
 
   // The pattern page shows the confirmed design and saves it as a version.
   await expect(page).toHaveURL(new RegExp(`/designs/${designId}/pattern`));
+  // The pattern needs a client's measurements; the confirmed draft stays in the browser.
+  await page.goto(`${prefix}/designs/${designId}/pattern?clientId=${clientId}`);
   await expect(page.locator("[data-piece-id]").first()).toBeAttached({ timeout: 30_000 });
   expect(await saveVersion(page)).toBe(1);
 
   // The editor shows the sleeve we chose.
-  await page.goto(`${prefix}/designs/${designId}?section=sleeve`);
+  await page.goto(`${prefix}/designs/${designId}?clientId=${clientId}&section=sleeve`);
   await expect(
     page
       .getByRole("radiogroup", { name: t.designPicker.paths.sleeve_type })
