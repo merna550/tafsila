@@ -173,7 +173,7 @@ Add new terms in alphabetical order with an explicit `<a id="..."></a>` anchor (
 ### HMAC (keyed hash)
 
 **Plain words:** A fingerprint of a text made with a secret key; without the key nobody can recompute or reverse it, unlike a plain hash of a short value such as a phone number.  
-**In Tafsila:** `trial_phones` keeps `HMAC-SHA256(PHONE_HASH_SECRET, phone)` so a number cannot get a second trial and a leaked table reveals no numbers. **Level:** intermediate  
+**In Tafsila:** `trial_phones` keeps `HMAC-SHA256(PHONE_HASH_SECRET, phone)` so a number cannot get a second trial and a leaked table reveals no numbers. **Level:** intermediate Paymob payment callbacks are checked with HMAC-SHA512 (`adapters/paymob/hmac.ts`).
 **Learn:** <https://en.wikipedia.org/wiki/HMAC>
 
 <a id="otp"></a>

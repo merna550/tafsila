@@ -30,8 +30,8 @@ If Paymob fees or reliability become a problem, add a second gateway behind the 
 
 ## Where it lives in our code
 
-- `packages/config/src/env.ts` (`PAYMOB_MODE`), `.env.example`.
-- Requirements: [SRS section 4.14](../../SRS.md). The adapter will live under packages/api/src/adapters/paymob/ (planned).
+- `packages/config/src/env.ts` (`PAYMENT_GATEWAY`, `PAYMOB_*`, `loadPaymentConfig`), `.env.example`.
+- Requirements: [SRS section 4.14](../../SRS.md). Port: `packages/api/src/ports/payment-gateway.ts`; adapters: `packages/api/src/adapters/paymob/` and `fake-payment/` ([ADR-368](../../decisions/368-payment-gateway.md), [tutorial](../../backend/tutorials/paymob.md)).
 
 ## The 20% you need
 

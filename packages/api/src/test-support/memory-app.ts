@@ -1,4 +1,6 @@
 /** Test helper: the real app wired with memory repositories and a local-key token verifier (no network, no database). */
+import { createFakePaymentGateway, type FakePaymentConfig } from "../adapters/fake-payment/fake-gateway";
+import { loadPaymentConfig } from "@tafsila/config";
 import { createMemoryAiUsageRepository, type MemoryAiUsage } from "../adapters/memory/ai-usage-repository";
 import { createMemoryPhotoDownloader, type MemoryPhotoDownloader } from "../adapters/memory/photo-downloader";
 import { createInlineJobQueue, type InlineJobQueue } from "../adapters/memory/inline-job-queue";
@@ -190,6 +192,7 @@ export async function createMemoryApp(
     unsupportedFeatures: unsupported,
     photoDownloader: downloader,
     aiDeps: () => options.ai ?? createFakeAi(),
+    paymentGateway: createFakePaymentGateway(loadPaymentConfig({}) as FakePaymentConfig, () => undefined),
     tokenVerifier: createJwksTokenVerifier({ supabaseUrl: TEST_SUPABASE_URL, keys: keys.keys }),
     ...memoryRepositories(store),
     accountDeleter: deletion.accountDeleter,

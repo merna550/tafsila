@@ -232,6 +232,11 @@ export const ERROR_CATALOGUE = {
     messageAr: "تعذر فهم طلب التعديل الآن، حاولي مرة أخرى",
     messageEn: "The edit request could not be processed right now, try again",
   },
+  PAYMENT_GATEWAY_UNAVAILABLE: {
+    status: 502,
+    messageAr: "تعذر الاتصال ببوابة الدفع الآن، حاولي مرة أخرى بعد قليل",
+    messageEn: "The payment provider is unreachable or refused the request, try again shortly",
+  },
   INTERNAL_ERROR: {
     status: 500,
     messageAr: "حدث خطأ غير متوقع، حاولي مرة أخرى",

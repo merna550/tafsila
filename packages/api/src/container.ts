@@ -3,6 +3,7 @@ import type { AiDeps } from "@tafsila/ai";
 import {
   loadAccountErasureConfig,
   loadAiConfig,
+  loadPaymentConfig,
   loadJobsConfig,
   type JobsConfig,
   loadBuildInfo,
@@ -82,6 +83,10 @@ import type { PhoneHasher } from "./ports/phone-hasher";
 import type { PhoneOtp } from "./ports/phone-otp";
 import type { PhoneVerificationRepository } from "./ports/phone-verification-repository";
 import type { PlanLimits } from "./ports/plan-limits";
+import { createFakePaymentGateway } from "./adapters/fake-payment/fake-gateway";
+import { createPaymobGateway } from "./adapters/paymob/paymob-gateway";
+import { AppError } from "./domain/errors";
+import type { PaymentGateway } from "./ports/payment-gateway";
 import type { SizeChartRepository } from "./ports/size-chart-repository";
 import type { TrialEligibility } from "./ports/trial-eligibility";
 import type { PhoneRules } from "./services/phone-shared";
@@ -156,6 +161,8 @@ export interface Container {
   readonly inngest: Inngest | undefined;
   /** Job queue and cost-control settings (daily cap, rate limit). */
   readonly jobsConfig: JobsConfig;
+  /** The payment provider (Paymob, or the fake one outside production); no route uses it before #371. */
+  readonly paymentGateway: PaymentGateway;
   /** The AI configuration, read when a job runs (a bad one fails the job, never the app). */
   readonly aiDeps: () => AiDeps;
   /** Erases the person at the analytics provider. */
@@ -345,6 +352,30 @@ export function createJobs(
 }
 
 /**
+ * Picks the payment gateway from PAYMENT_GATEWAY. A bad payment configuration must not take the API down:
+ * the gateway then rejects every call (reported as PAYMENT_GATEWAY_UNAVAILABLE).
+ *
+ * @param source - Key/value map to read from (defaults to process.env).
+ * @returns The fake or the Paymob gateway.
+ */
+export function createPaymentGateway(
+  source: Record<string, string | undefined> = process.env,
+): PaymentGateway {
+  try {
+    const config = loadPaymentConfig(source);
+    return config.gateway === "paymob" ? createPaymobGateway(config) : createFakePaymentGateway(config);
+  } catch (error) {
+    console.error(JSON.stringify({ level: "error", message: (error as Error).message }));
+    return {
+      createIntention: () => Promise.reject(new AppError("PAYMENT_GATEWAY_UNAVAILABLE")),
+      verifyCallback: () => {
+        throw new AppError("PAYMENT_GATEWAY_UNAVAILABLE");
+      },
+    };
+  }
+}
+
+/**
  * Wires real adapters for the running environment; tests pass overrides with fakes.
  *
  * @param overrides - Ports to replace (e.g. a fixed clock in tests).
@@ -361,6 +392,7 @@ export function createContainer(overrides: Partial<Container> = {}): Container {
     ...createPhoneServices(),
     ...createAccountErasure(),
     photoDownloader: createFetchPhotoDownloader(),
+    paymentGateway: createPaymentGateway(),
     aiDeps: () => ({ config: loadAiConfig() }),
     ...createJobs((name, payload) => runJob(container, name, payload)),
     ...overrides,
