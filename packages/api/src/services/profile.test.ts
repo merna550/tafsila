@@ -26,7 +26,12 @@ const a = { ...authFor(USER_A), claims: { sub: USER_A, email: "mona@example.com"
 describe("get profile", () => {
   it("returns the default profile with the email from the token", async () => {
     const { deps } = setup();
-    expect(await getProfile(deps, a)).toEqual({ name: null, locale: "ar", email: "mona@example.com" });
+    expect(await getProfile(deps, a)).toEqual({
+      name: null,
+      locale: "ar",
+      email: "mona@example.com",
+      shareDesigns: false,
+    });
   });
 
   it("returns a null email when the token has none", async () => {
@@ -47,6 +52,7 @@ describe("update profile", () => {
     expect(await updateProfile(deps, a, { name: "منى" })).toEqual({
       name: "منى",
       locale: "ar",
+      shareDesigns: false,
       email: "mona@example.com",
     });
   });

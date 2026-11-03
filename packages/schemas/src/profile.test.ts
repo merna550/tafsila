@@ -10,8 +10,15 @@ describe("profile schemas", () => {
   });
 
   it("accepts a null name in the response but not in a patch", () => {
-    expect(profileSchema.safeParse({ name: null, locale: "ar", email: null }).success).toBe(true);
+    expect(
+      profileSchema.safeParse({ name: null, locale: "ar", email: null, shareDesigns: false }).success,
+    ).toBe(true);
     expect(updateProfileInputSchema.safeParse({ name: null }).success).toBe(false);
+  });
+
+  it("takes the sharing consent alone and only as a boolean", () => {
+    expect(updateProfileInputSchema.safeParse({ shareDesigns: true }).success).toBe(true);
+    expect(updateProfileInputSchema.safeParse({ shareDesigns: "yes" }).success).toBe(false);
   });
 
   it("rejects an unknown locale and an empty patch", () => {

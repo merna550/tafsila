@@ -41,3 +41,7 @@ The two `input_hash` values in `supabase/seed.sql` come from `inputHash(spec, me
 ## Billing (issue #367)
 
 `products` is seeded by the migration (single 49 EGP, pack5 199 EGP, hobby 149 EGP, pro 349 EGP; prices in piastres). `supabase/seed.sql` gives `trial@tafsila.test` a trial grant of 3 credits (no expiry), a 5-credit pack that expires in 90 days and one debit for `Seed dress`, so the balance is 7. No seeded payments or subscriptions; tests create them.
+
+## Design sharing (issue #369)
+
+`pro@tafsila.test` has `share_designs = true` and one design, `Pro shared dress` (the seed dress spec, no photos, no measurements). The other seed users do not share, so the admin list shows exactly that design.

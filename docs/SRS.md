@@ -310,7 +310,7 @@ The engine runs these checks on every generation and returns a report (`pass | w
 |---|---|---|
 | FR-ADM-01 | Dashboard: signups, trials, conversions, revenue, AI cost per pattern, failed validations | M |
 | FR-ADM-02 | Manage size charts, fabric catalogue, recommendation rules, prices. Size chart editing and a read-only users list with stats: API built in #32 (Part A), screens built in #32 (Part B: `/admin/users`, `/admin/sizes`, CSV import and export); the default chart holds the Egyptian S-XXL values from #158. Fabric catalogue and recommendation rules: screens built in #320 | M |
-| FR-ADM-03 | View user designs (with consent flag) and unsupported-feature log | M |
+| FR-ADM-03 | View user designs (with consent flag) and unsupported-feature log. _API built in #369: `profiles.share_designs` consent; admins see only the current spec and photos of consenting owners, never measurements, clients or notes; unsupported features come without user or design ids; each list call writes an `admin_audit` row_ | M |
 | FR-ADM-04 | Grant credits / refund | M |
 
 ### 4.16 Feedback loop (FBK)
@@ -445,7 +445,7 @@ interface ValidationReport { status: 'pass' | 'warn' | 'fail'; checks: Array<{ i
 
 | Table | Key columns |
 |---|---|
-| `profiles` | id (= auth.users.id), name, phone, phone_verified_at, locale, role (`user`/`admin`), created_at |
+| `profiles` | id (= auth.users.id), name, phone, phone_verified_at, locale, role (`user`/`admin`), share_designs (consent, default false; owner may change it), share_designs_changed_at, created_at |
 | `clients` | id, owner_id, name, notes, created_at (unique id + owner_id) |
 | `measurement_sets` | id, owner_id, client_id?, label, size_label?, data (jsonb Measurements), created_at (client must have the same owner) |
 | `designs` | id, owner_id, category (`dress`/`skirt`/`blouse`), title (1-120 chars), photo_paths (text[]), analysis (jsonb DesignAnalysisResult), current_version_id, created_at, updated_at (set by the API; unique id + owner_id) |
@@ -510,6 +510,9 @@ Security: Row Level Security on every user-owned table (`owner_id = auth.uid()`)
 | GET | `/api/admin/stats` | Admin only: users, verified phones, sign-ups today and in 7 days, clients (ADR-32a) |
 | GET | `/api/admin/users` | Admin only: users newest first with `q` (name, e-mail, phone), `verified`, `limit`, `offset`; a client count, never measurements or notes |
 | GET | `/api/admin/users/:id` | Admin only: one user, read-only |
+| GET | `/api/admin/designs` | Admin only: designs of owners who consented (`limit`, `offset`): title, category, current spec, 5-minute signed photo URLs; never measurements (#369) |
+| GET | `/api/admin/unsupported-features` | Admin only: unsupported-feature texts with the garment category, no user or design id (#369) |
+| PATCH | `/api/profile` | Also takes `shareDesigns` (boolean): the owner's consent to share designs with admins |
 | GET, PUT | `/api/admin/size-charts/default` | Admin only: read the default size chart with its last editor; replace it (every size checked by the engine, errors give 422 `SIZE_CHART_INVALID`, chart and audit row saved together) |
 | — | `/api/admin/*` (later) | Other admin endpoints (role-guarded) |
 

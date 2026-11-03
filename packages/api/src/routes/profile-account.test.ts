@@ -23,7 +23,12 @@ describe("GET and PATCH /api/profile", () => {
   it("returns the profile with the email from the token", async () => {
     const res = await m.callAs({ userId: USER_A, email: "mona@example.com" }, "GET", "/profile");
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ name: null, locale: "ar", email: "mona@example.com" });
+    expect(await res.json()).toEqual({
+      name: null,
+      locale: "ar",
+      email: "mona@example.com",
+      shareDesigns: false,
+    });
   });
 
   it("changes the name and the language and shows them on the next read", async () => {
@@ -31,6 +36,16 @@ describe("GET and PATCH /api/profile", () => {
     expect(patch.status).toBe(200);
     const read = await m.call(USER_A, "GET", "/profile");
     expect(await read.json()).toMatchObject({ name: "منى", locale: "en" });
+  });
+
+  it("round-trips the design-sharing consent (off by default, PATCH then GET)", async () => {
+    expect(await (await m.call(USER_A, "GET", "/profile")).json()).toMatchObject({ shareDesigns: false });
+    const patch = await m.call(USER_A, "PATCH", "/profile", { shareDesigns: true });
+    expect(await patch.json()).toMatchObject({ shareDesigns: true });
+    expect(await (await m.call(USER_A, "GET", "/profile")).json()).toMatchObject({ shareDesigns: true });
+    expect(await (await m.call(USER_B, "GET", "/profile")).json()).toMatchObject({ shareDesigns: false });
+    await m.call(USER_A, "PATCH", "/profile", { shareDesigns: false });
+    expect(await (await m.call(USER_A, "GET", "/profile")).json()).toMatchObject({ shareDesigns: false });
   });
 
   it("never changes another user's profile", async () => {

@@ -67,7 +67,7 @@ export const sizeCharts = pgTable("size_charts", {
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 });
 
-/** public.profiles. The API reads and changes only `name` and `locale` (column grants); the other columns are mirrored for completeness. */
+/** public.profiles. The API reads and changes only `name`, `locale` and `share_designs` (column grants); the other columns are mirrored for completeness. */
 export const profiles = pgTable("profiles", {
   id: uuid("id").primaryKey(),
   name: text("name"),
@@ -75,6 +75,8 @@ export const profiles = pgTable("profiles", {
   phoneVerifiedAt: timestamp("phone_verified_at", { withTimezone: true, mode: "date" }),
   locale: text("locale", { enum: ["ar", "en"] }).notNull(),
   role: text("role", { enum: ["user", "admin"] }).notNull(),
+  shareDesigns: boolean("share_designs").notNull().default(false),
+  shareDesignsChangedAt: timestamp("share_designs_changed_at", { withTimezone: true, mode: "date" }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 });
 

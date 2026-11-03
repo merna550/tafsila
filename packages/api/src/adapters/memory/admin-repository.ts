@@ -1,8 +1,9 @@
 /** In-memory admin repository for tests and `pnpm api:test`; reads the fake users and counts clients and sets like the SQL functions. */
 import type { AdminUser, AdminUserDetail } from "@tafsila/schemas";
-import { AppError } from "../../domain/errors";
 import type { AdminRepository } from "../../ports/admin-repository";
 import { newestFirst, type MemoryOptions, type MemoryStore, type UserRow } from "./memory-store";
+import { assertMemoryAdmin, createMemoryAdminDesigns } from "./admin-designs";
+import type { UnsupportedFeatureRow } from "./unsupported-feature-repository";
 
 /** Milliseconds in an hour and a day. */
 const HOUR_MS = 3_600_000;
@@ -49,23 +50,24 @@ function matches(user: UserRow, q: string | undefined): boolean {
  * Creates the in-memory admin repository.
  *
  * @param store - Shared fake database (`users` holds the profiles joined with auth.users).
- * @param options - Time source for "sign-ups today".
+ * @param options - Time source for "sign-ups today" and the audit rows.
+ * @param features - The unsupported-feature rows the analysis recorded (the fake keeps them outside the store).
  * @returns An AdminRepository.
  */
 export function createMemoryAdminRepository(
   store: MemoryStore,
   options: MemoryOptions = {},
+  features: readonly UnsupportedFeatureRow[] = [],
 ): AdminRepository {
   const now = options.now ?? (() => new Date());
   /**
-   * The database re-checks the admin inside every function; so does the fake.
+   * Refuses a caller that is not an admin in the fake users.
    *
    * @param adminId - Caller id.
-   * @throws {AppError} FORBIDDEN when the caller is not an admin in `users`.
+   * @returns Nothing.
+   * @throws {AppError} FORBIDDEN when the caller is not an admin.
    */
-  const assertAdmin = (adminId: string): void => {
-    if (store.users.find((user) => user.id === adminId)?.role !== "admin") throw new AppError("FORBIDDEN");
-  };
+  const assertAdmin = (adminId: string): void => assertMemoryAdmin(store, adminId);
   return {
     stats: (adminId) => {
       assertAdmin(adminId);
@@ -114,5 +116,6 @@ export function createMemoryAdminRepository(
       };
       return Promise.resolve(detail);
     },
+    ...createMemoryAdminDesigns(store, now, features),
   };
 }

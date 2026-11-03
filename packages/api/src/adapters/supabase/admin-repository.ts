@@ -1,13 +1,9 @@
 /** AdminRepository through the `api_app` door: calls the `private.admin_*` functions, which re-check the admin in the database. */
 import type { AdminStats, AdminUser, AdminUserDetail } from "@tafsila/schemas";
 import { sql } from "drizzle-orm";
-import { AppError } from "../../domain/errors";
 import type { AdminRepository } from "../../ports/admin-repository";
-import { sqlState } from "./sql-state";
+import { adminRows, createAdminDesignsRepository } from "./admin-designs-repository";
 import type { WithApiRole } from "./with-user";
-
-/** SQLSTATE raised by private.assert_admin when the caller is not an admin. */
-const SQLSTATE_NOT_ADMIN = "42501";
 
 /** A timestamp as the driver returns it (Date or ISO text). */
 type Timestamp = Date | string;
@@ -82,19 +78,12 @@ function toUser(row: UserRow): AdminUser {
  */
 export function createAdminRepository(withApiRole: WithApiRole): AdminRepository {
   /**
-   * Runs one query and turns "not an admin" into FORBIDDEN.
+   * Runs one admin query (FORBIDDEN when the caller is not an admin).
    *
    * @param query - The select statement.
    * @returns The rows.
    */
-  const rowsOf = async <T>(query: ReturnType<typeof sql>): Promise<T[]> => {
-    try {
-      return await withApiRole(async (tx) => (await tx.execute(query)) as unknown as T[]);
-    } catch (error) {
-      if (sqlState(error) === SQLSTATE_NOT_ADMIN) throw new AppError("FORBIDDEN");
-      throw error;
-    }
-  };
+  const rowsOf = <T>(query: ReturnType<typeof sql>): Promise<T[]> => adminRows<T>(withApiRole, query);
   return {
     stats: async (adminId) => {
       const [row] = await rowsOf<StatsRow>(sql`select * from private.admin_stats(${adminId}::uuid)`);
@@ -132,5 +121,6 @@ export function createAdminRepository(withApiRole: WithApiRole): AdminRepository
       };
       return detail;
     },
+    ...createAdminDesignsRepository(withApiRole),
   };
 }

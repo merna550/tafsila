@@ -6,6 +6,8 @@ export interface UnsupportedFeatureRow {
   readonly userId: string;
   readonly designId: string;
   readonly text: string;
+  /** When the row was stored (ISO). */
+  readonly createdAt: string;
 }
 
 /** The repository plus the rows it holds. */
@@ -31,7 +33,7 @@ export function createMemoryUnsupportedFeatures(): MemoryUnsupportedFeatures {
       for (const raw of texts) {
         const text = raw.trim().slice(0, MAX_TEXT);
         if (text === "" || rows.some((row) => row.designId === designId && row.text === text)) continue;
-        rows.push({ userId, designId, text });
+        rows.push({ userId, designId, text, createdAt: new Date().toISOString() });
         added += 1;
       }
       return Promise.resolve(added);

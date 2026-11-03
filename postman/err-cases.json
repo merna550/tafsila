@@ -170,6 +170,22 @@
     "code": "FORBIDDEN"
   },
   {
+    "name": "ERR GET /api/admin/designs as a normal user returns 403",
+    "method": "GET",
+    "path": "/api/admin/designs",
+    "auth": true,
+    "status": 403,
+    "code": "FORBIDDEN"
+  },
+  {
+    "name": "ERR GET /api/admin/unsupported-features as a normal user returns 403",
+    "method": "GET",
+    "path": "/api/admin/unsupported-features",
+    "auth": true,
+    "status": 403,
+    "code": "FORBIDDEN"
+  },
+  {
     "name": "ERR PUT /api/admin/size-charts/default as a normal user returns 403",
     "method": "PUT",
     "path": "/api/admin/size-charts/default",

@@ -90,7 +90,13 @@ export function createRejectingRepositories(): Repositories {
     trialEligibility: { isEligible: failing() },
     profiles: { get: failing(), update: failing() },
     accountAudit: { recordDeleted: failing() },
-    admin: { stats: failing(), list: failing(), get: failing() },
+    admin: {
+      stats: failing(),
+      list: failing(),
+      get: failing(),
+      listSharedDesigns: failing(),
+      listUnsupportedFeatures: failing(),
+    },
     aiUsage: { record: failing(), countToday: failing() },
     unsupportedFeatures: { recordMany: failing() },
   };

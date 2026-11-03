@@ -18,6 +18,10 @@ export const profileSchema = z.object({
   name: profileNameSchema.nullable().meta({ example: "منى أحمد" }),
   locale: localeSchema,
   email: z.string().nullable().meta({ example: "mona@example.com" }),
+  shareDesigns: z.boolean().meta({
+    example: false,
+    description: "The user agrees that admins may see the specs and photos of their designs",
+  }),
 });
 
 /** Parsed profile. */
@@ -25,12 +29,17 @@ export type Profile = z.infer<typeof profileSchema>;
 
 /** Body of PATCH /api/profile: at least one field; any other field (such as a user id) is refused. */
 export const updateProfileInputSchema = z
-  .object({ name: profileNameSchema.optional(), locale: localeSchema.optional() })
+  .object({
+    name: profileNameSchema.optional(),
+    locale: localeSchema.optional(),
+    shareDesigns: z.boolean().optional().meta({ example: true }),
+  })
   .strict()
   .meta({ example: { name: "منى أحمد", locale: "ar" } })
-  .refine((value) => value.name !== undefined || value.locale !== undefined, {
-    message: "Send at least one of name or locale",
-  });
+  .refine(
+    (value) => value.name !== undefined || value.locale !== undefined || value.shareDesigns !== undefined,
+    { message: "Send at least one of name, locale or shareDesigns" },
+  );
 
 /** Parsed update-profile body. */
 export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
